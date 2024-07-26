@@ -1,0 +1,220 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap");
+
+:root {
+    --ifm-color-content: #1d1d1f;
+    --ifm-color-content-inverse: var(--ifm-color-white);
+    --ifm-color-primary: #2756fc;
+    --ifm-color-primary-dark: #0849e4;
+    --ifm-color-primary-darker: #0037b3;
+    --ifm-color-primary-darkest: #11277e;
+    --ifm-color-primary-light: #3688ff;
+    --ifm-color-primary-lighter: #68b1ff;
+    --ifm-color-primary-lightest: #94d0ff;
+
+    --ifm-color-secondary: #ebedf0;
+    --ifm-color-success: #00c853;
+    --ifm-color-info: #8758ff;
+    --ifm-color-warning: #ff8f2e;
+    --ifm-color-danger: #ff2e36;
+
+    --ifm-color-gray-50: #f5f5f7;
+    --ifm-color-gray-100: #e8e8ed;
+    --ifm-color-gray-200: #d2d2d7;
+    --ifm-color-gray-300: #86868b;
+    --ifm-color-gray-400: #6e6e73;
+    --ifm-color-gray-500: #424245;
+    --ifm-color-gray-600: #333336;
+    --ifm-color-gray-700: #242426;
+    --ifm-color-gray-800: #1d1d1f;
+    --ifm-color-gray-900: #161617;
+    --ifm-color-gray-950: #101010;
+
+    --ifm-color-primary-contrast-background: rgb(16, 36, 69);
+    --ifm-color-primary-contrast-foreground: rgb(235, 242, 252);
+    --ifm-color-secondary-contrast-background: #f5f5f7;
+    --ifm-color-secondary-contrast-foreground: #1d1d1f;
+    --ifm-color-success-contrast-background: rgba(0, 200, 83, 0.5);
+    --ifm-color-success-contrast-foreground: #00531e;
+    --ifm-color-success-dark: rgba(0, 200, 83, 1);
+    --ifm-color-info-contrast-background: rgba(104, 177, 255, 0.5);
+    --ifm-color-info-contrast-foreground: #0037b3;
+    --ifm-color-info-dark: #2756fc;
+    --ifm-color-warning-contrast-background: rgba(255, 143, 46, 0.5);
+    --ifm-color-warning-contrast-foreground: #7e4412;
+    --ifm-color-warning-dark: rgba(255, 143, 46, 1);
+    --ifm-color-danger-contrast-background: rgba(255, 46, 54, 0.5);
+    --ifm-color-danger-contrast-foreground: #900014;
+    --ifm-color-danger-dark: rgba(255, 46, 54, 1);
+
+    --ifm-code-font-size: 95%;
+    --docusaurus-highlighted-code-line-bg: #e8e8ed;
+    --ifm-font-family-base: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    --ifm-menu-color: #424245;
+    --ifm-hover-overlay: #f5f5f7;
+    --ifm-code-background: #f5f5f7;
+    --ifm-toc-border-color: var(--ifm-color-emphasis-100);
+    --ifm-table-stripe-background: var(--ifm-color-gray-50);
+    --ifm-table-border-color: var(--ifm-color-gray-200);
+    --ifm-blockquote-border-color: color-mix(in srgb,
+            var(--ifm-color-primary) 50%,
+            white 0%);
+    --ifm-blockquote-color: var(--ifm-color-primary);
+
+    --ifm-navbar-height: 5rem;
+}
+
+.pagination-nav__link {
+    border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.codeBlockTitle_node_modules-\@docusaurus-theme-classic-lib-theme-CodeBlock-Content-styles-module {
+    border-bottom: 1px solid var(--ifm-color-emphasis-200) !important;
+}
+
+html[data-theme="dark"] .codeBlockTitle_node_modules-\@docusaurus-theme-classic-lib-theme-CodeBlock-Content-styles-module {
+    border-bottom: 1px solid var(--ifm-color-emphasis-500) !important;
+}
+
+.backToTopButton_node_modules-\@docusaurus-theme-classic-lib-theme-BackToTopButton-styles-module {
+    background-color: var(--ifm-color-emphasis-100) !important;
+}
+
+html[data-theme="dark"] .backToTopButton_node_modules-\@docusaurus-theme-classic-lib-theme-BackToTopButton-styles-module {
+    background-color: var(--ifm-color-emphasis-100) !important;
+}
+
+h1,
+.theme-admonition,
+.toc-highlight,
+.theme-doc-sidebar-menu {
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        Segoe UI,
+        Roboto,
+        Ubuntu,
+        Cantarell,
+        Noto Sans,
+        sans-serif,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Helvetica,
+        Arial,
+        sans-serif,
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol";
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme="dark"] {
+    --ifm-color-content: #f5f5f7;
+    --ifm-color-primary: #cbb5ff;
+    --ifm-color-primary-dark: #ba9cff;
+    --ifm-color-primary-darker: #a17bff;
+    --ifm-color-primary-darkest: #8758ff;
+    --ifm-color-primary-light: #e8defb;
+    --ifm-color-primary-lighter: #f3effc;
+    --ifm-color-primary-lightest: white;
+    --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+    --ifm-menu-color: #6e6e73;
+    --ifm-table-border-color: var(--ifm-color-gray-600);
+}
+
+html[data-theme="dark"] {
+    --ifm-heading-color: #f5f5f7;
+    --ifm-color-content: #d2d2d7;
+    --ifm-background-color: #000000;
+    --ifm-navbar-background-color: #000000;
+    --ifm-toc-border-color: #1d1d1f;
+    --ifm-global-shadow-lw: 0 1px 2px 0 rgba(255, 255, 255, 0.2);
+    --ifm-hover-overlay: rgba(22, 22, 23, 0.9);
+    --ifm-code-background: #1d1d1f;
+
+    --ifm-color-success-contrast-background: rgba(0, 200, 83, 0.3);
+    --ifm-color-success-contrast-foreground: #e6f9e6;
+    --ifm-color-danger-contrast-background: rgba(255, 46, 54, 0.3);
+    --ifm-color-danger-contrast-foreground: #fcedeb;
+    --ifm-color-info-contrast-background: rgba(54, 136, 255, 0.3);
+    --ifm-color-info-contrast-foreground: #def5ff;
+    --ifm-color-warning-contrast-background: rgba(255, 143, 46, 0.3);
+    --ifm-color-warning-contrast-foreground: #fceee5;
+    --ifm-color-secondary-contrast-background: #1d1d1f;
+    --ifm-color-secondary-contrast-foreground: #f5f5f7;
+}
+
+.footer--dark {
+    --ifm-footer-background-color: #1d1d1f;
+}
+
+.navbar__items--right {
+    color: #6e6e73;
+}
+
+/* Mermaid Hell  */
+.docusaurus-mermaid-container .cluster rect,
+.container_node_modules-\@docusaurus-theme-mermaid-lib-theme-Mermaid-styles-module .cluster rect {
+    fill: transparent !important;
+    stroke: var(--ifm-color-gray-100) !important;
+}
+
+.docusaurus-mermaid-container .node rect,
+.container_node_modules-\@docusaurus-theme-mermaid-lib-theme-Mermaid-styles-module .node rect {
+    fill: transparent !important;
+    stroke: var(--ifm-color-gray-900) !important;
+}
+
+.docusaurus-mermaid-container .cluster span,
+.container_node_modules-\@docusaurus-theme-mermaid-lib-theme-Mermaid-styles-module .cluster span {
+    fill: transparent !important;
+    color: var(--ifm-color-gray-400) !important;
+}
+
+.docusaurus-mermaid-container .edgeLabel,
+.container_node_modules-\@docusaurus-theme-mermaid-lib-theme-Mermaid-styles-module .edgeLabel {
+    background-color: white !important;
+    color: var(--ifm-color-gray-400) !important;
+}
+
+[data-theme="dark"] .docusaurus-mermaid-container .cluster rect,
+[data-theme="dark"] .container_node_modules-\@docusaurus-theme-mermaid-lib-theme-Mermaid-styles-module .cluster rect {
+    fill: transparent !important;
+    stroke: var(--ifm-color-gray-700) !important;
+}
+
+[data-theme="dark"] .docusaurus-mermaid-container .node rect,
+[data-theme="dark"] .container_node_modules-\@docusaurus-theme-mermaid-lib-theme-Mermaid-styles-module .node rect {
+    fill: transparent !important;
+    stroke: var(--ifm-color-gray-50) !important;
+}
+
+[data-theme="dark"] .docusaurus-mermaid-container .cluster span,
+[data-theme="dark"] .container_node_modules-\@docusaurus-theme-mermaid-lib-theme-Mermaid-styles-module .cluster span {
+    fill: transparent !important;
+    color: var(--ifm-color-gray-400) !important;
+    stroke: #999;
+}
+
+[data-theme="dark"] .docusaurus-mermaid-container .edgeLabel,
+[data-theme="dark"] .container_node_modules-\@docusaurus-theme-mermaid-lib-theme-Mermaid-styles-module .edgeLabel {
+    background-color: #000000 !important;
+    color: var(--ifm-color-gray-400) !important;
+}
+
+.navbar__logo {
+    cursor: pointer;
+}
+
+/* CodeBlock Hack */
+.codeBlockContainer_src-theme-CodeBlock-Container-styles-module {
+    background: var(--ifm-background-color) !important;
+}

@@ -1,0 +1,153 @@
+name: Build
+on:
+  push:
+    tags:        
+      - '**' 
+    branches:
+      - main
+  release:
+    types: [published]
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  docker-release:
+    name: Tagged Docker release to Google Artifact Registry
+    runs-on: ubuntu-latest
+    #if: github.event_name == 'push' && startsWith(github.ref, 'main')
+
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    steps:
+      - id: checkout
+        name: Checkout
+        uses: actions/checkout@v2
+
+      - id: auth
+        name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          token_format: access_token
+          workload_identity_provider: ${{ secrets.WORKFLOW_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.SERVICE_ACCOUNT }}
+          access_token_lifetime: 300s
+
+      - id: auth-registry
+        name: Login to Artifact Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ secrets.GOOGLE_PROJECT_REGION}}-docker.pkg.dev
+          username: oauth2accesstoken
+          password: ${{ steps.auth.outputs.access_token }}
+
+      - id: get-tag
+        name: Get tag
+        run: echo REF_TAG=${GITHUB_REF#refs/*/} >> $GITHUB_OUTPUT
+  
+      - id: get-ref
+        name: Get short ref
+        run: echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - id: docker-push-tagged
+        name: Tag Docker image and push to Google Artifact Registry
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          build-args: |
+            GOOGLE_TAG=${{ secrets.GOOGLE_TAG }}
+            ALGOLIA_ID=${{ secrets.ALGOLIA_ID }}
+            ALGOLIA_KEY=${{ secrets.ALGOLIA_KEY }}
+          tags: |
+            ${{ secrets.GOOGLE_PROJECT_REGION}}-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/reactive-network/documentation:${{ steps.get-tag.outputs.REF_TAG }}
+            ${{ secrets.GOOGLE_PROJECT_REGION}}-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/reactive-network/documentation:${{ steps.get-ref.outputs.SHA_SHORT }}
+            ${{ secrets.GOOGLE_PROJECT_REGION}}-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/reactive-network/documentation:latest
+
+  # deploy-staging:
+  #   name: "Deploy main branch to Staging"
+  #   runs-on: ubuntu-latest
+  #   needs: docker-release
+
+  #   permissions:
+  #     contents: "read"
+  #     id-token: "write"
+  #   if: github.ref == 'refs/heads/main'
+  #   steps:
+
+  #     - id: checkout
+  #       name: Checkout
+  #       uses: actions/checkout@v2
+  
+  #     - id: auth
+  #       uses: "google-github-actions/auth@v2"
+  #       with:
+  #         project_id: "${{ secrets.GOOGLE_PROJECT }}"
+  #         workload_identity_provider: ${{ secrets.WORKFLOW_IDENTITY_PROVIDER }}
+  #         service_account: ${{ secrets.SERVICE_ACCOUNT }}
+
+  #     - id: get-credentials
+  #       uses: "google-github-actions/get-gke-credentials@v2"
+  #       with:
+  #         cluster_name: "${{ secrets.PRODUCTION_K8S_CLUSTER }}"
+  #         location: "${{ secrets.GOOGLE_PROJECT_REGION}}"
+  #         namespace: ${{ secrets.DEPLOYMENT_NAMESPACE }}
+  
+  #     - id: get-tag
+  #       name: Get tag
+  #       run: echo REF_TAG=${GITHUB_REF#refs/*/} >> $GITHUB_OUTPUT
+
+  #     - id: get-ref
+  #       name: Get short ref
+  #       run: echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+  #     - id: set-image
+  #       run: "kubectl -n ${{ secrets.DEPLOYMENT_NAMESPACE }} set image deployment/reactive-docs reactive-docs=${{ secrets.GOOGLE_PROJECT_REGION}}-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/reactive-network/documentation:${{ steps.get-ref.outputs.SHA_SHORT }}"
+
+  #     - id: wait-deployment
+  #       run: "kubectl -n ${{ secrets.DEPLOYMENT_NAMESPACE }} rollout status deployment reactive-docs"
+
+  deploy-production:
+    name: "Deploy release"
+    runs-on: ubuntu-latest
+    needs: docker-release
+
+    permissions:
+      contents: "read"
+      id-token: "write"
+    if: startsWith(github.event.ref, 'refs/tags/v')
+    steps:
+
+      - id: checkout
+        name: Checkout
+        uses: actions/checkout@v2
+
+      - id: auth
+        uses: "google-github-actions/auth@v2"
+        with:
+          project_id: "${{ secrets.GOOGLE_PROJECT }}"
+          workload_identity_provider: ${{ secrets.WORKFLOW_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.SERVICE_ACCOUNT }}
+
+      - id: get-credentials
+        uses: "google-github-actions/get-gke-credentials@v2"
+        with:
+          cluster_name: "${{ secrets.PRODUCTION_K8S_CLUSTER }}"
+          location: "${{ secrets.GOOGLE_PROJECT_REGION}}"
+          namespace: ${{ secrets.DEPLOYMENT_NAMESPACE }}
+
+      - id: get-tag
+        name: Get tag
+        run: echo REF_TAG=${GITHUB_REF#refs/*/} >> $GITHUB_OUTPUT
+
+      - id: get-ref
+        name: Get short ref
+        run: echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - id: set-image
+        run: "kubectl -n ${{ secrets.DEPLOYMENT_NAMESPACE }} set image deployment/reactive-docs reactive-docs=${{ secrets.GOOGLE_PROJECT_REGION}}-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/reactive-network/documentation:${{ steps.get-ref.outputs.SHA_SHORT }}"
+      
+      - id: wait-deployment
+        run: "kubectl -n ${{ secrets.DEPLOYMENT_NAMESPACE }} rollout status deployment reactive-docs"
