@@ -216,6 +216,14 @@ const config = {
             {
               from: "/docs/demos",
               to: "/demos"
+            },
+            {
+              from: "/architecture",
+              to: "/"
+            },
+            {
+              from: "/compendium",
+              to: "/"
             }
           ]
         }
