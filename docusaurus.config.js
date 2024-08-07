@@ -164,39 +164,63 @@ const config = {
       },
     }),
 
-  plugins: [
-    [
-      "@docusaurus/plugin-client-redirects",
-      {
-        redirects: [
-          {
-            from: "/education/getting-started/",
-            to: "/education/introduction/"
-          },
-          {
-            from: "/education/getting-started/reactive-smart-contracts",
-            to: "/education/introduction/reactive-smart-contracts"
-          },
-          {
-            from: "/docs/data-origins-and-destinations",
-            to: "/origins-and-destinations"
-          },
-          {
-            from: "/docs/chains",
-            to: "/origins-and-destinations"
-          },
-          {
-            from: "/category/getting-started",
-            to: "/education/introduction/"
-          },
-          {
-            from: "/docs/kopli-testnet",
-            to: "/kopli-testnet"
-          },
-        ]
-      }
+    plugins: [
+      [
+        "@docusaurus/plugin-client-redirects",
+        {
+          redirects: [
+            {
+              from: "/education/getting-started/",
+              to: "/education/introduction/"
+            },
+            {
+              from: "/education/getting-started/reactive-smart-contracts",
+              to: "/education/introduction/reactive-smart-contracts"
+            },
+            {
+              from: "/docs/data-origins-and-destinations",
+              to: "/origins-and-destinations"
+            },
+            {
+              from: "/category/getting-started",
+              to: "/education/introduction/"
+            },
+            {
+              from: "/docs/kopli-testnet",
+              to: "/kopli-testnet"
+            },
+            {
+              from: "/docs/getting-started",
+              to: "/"
+            },
+            // {
+            //   from: "/docs/architecture",
+            //   to: "/architecture"
+            // },
+            {
+              from: "/docs/architecture/reactive-smart-contracts",
+              to: "/reactive-smart-contracts"
+            },
+            {
+              from: "/architecture/reactive-smart-contracts",
+              to: "/reactive-smart-contracts"
+            },
+            {
+              from: "/docs/architecture/react-vm",
+              to: "/reactvm"
+            },
+            {
+              from: "/architecture/react-vm",
+              to: "/reactvm"
+            },
+            {
+              from: "/docs/demos",
+              to: "/demos"
+            }
+          ]
+        }
+      ]
     ]
-  ]
-};
+  };
 
 export default config;
