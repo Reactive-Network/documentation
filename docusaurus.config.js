@@ -41,7 +41,7 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         gtag: {
-          trackingID: process.env.GOOGLE_TAG,
+          trackingID: process.env.GOOGLE_TAG ?? 'none',
           anonymizeIP: true
         },
         docs: {
@@ -143,8 +143,8 @@ const config = {
         },
       },
       algolia: {
-        appId: process.env.ALGOLIA_ID,
-        apiKey: process.env.ALGOLIA_KEY,
+        appId: process.env.ALGOLIA_ID ?? 'none',
+        apiKey: process.env.ALGOLIA_KEY ?? 'none',
         indexName: 'reactive',
         contextualSearch: true,
         externalUrlRegex: 'external\\.com|domain\\.com',
