@@ -8,10 +8,6 @@ on:
   release:
     types: [published]
 
-concurrency:
-  group: ${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   docker-release:
     name: Tagged Docker release to Google Artifact Registry
@@ -117,7 +113,7 @@ jobs:
     permissions:
       contents: "read"
       id-token: "write"
-    if: startsWith(github.event.ref, 'refs/tags/v')
+    if: github.ref == 'refs/heads/main'
     steps:
 
       - id: checkout
