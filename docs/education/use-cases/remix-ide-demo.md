@@ -46,7 +46,7 @@ On the *Add a network* page, click "**Add a network manually**".
 
 ### Step 4
 
-Enter the relevant details from the [Kopli Testnet](/kopli-tstnet#get-kopli-testnet-react) into the form. Fill out the details manually and click **Save**.
+Enter the relevant details from the [Kopli Testnet](/kopli-testnet#get-kopli-testnet-react) into the form. Fill out the details manually and click **Save**.
 
 ![Step 4](img/4.png)
 
