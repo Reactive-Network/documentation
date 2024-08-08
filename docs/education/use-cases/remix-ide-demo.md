@@ -46,7 +46,7 @@ On the *Add a network* page, click "**Add a network manually**".
 
 ### Step 4
 
-Enter the relevant details from the [Kopli Testnet](https://dev.reactive.network/docs/kopli-testnet#how-to-get-kopli-testnet-react) into the form. Fill out the details manually and click **Save**.
+Enter the relevant details from the [Kopli Testnet](/kopli-testnet#get-kopli-testnet-react) into the form. Fill out the details manually and click **Save**.
 
 ![Step 4](img/4.png)
 
@@ -108,7 +108,7 @@ Now you have both the Origin chain contract and Destination chain contract deplo
 
 * In the **Deploy** section, fill out the following fields:
 
-    `service_address`: The deployed address of the subscription service contract ([System Contract Address](../../docs/kopli-testnet.md#kopli-testnet-information)).
+    `service_address`: The deployed address of the subscription service contract ([System Contract Address](/kopli-testnet#kopli-testnet-information)).
     
     `_contract`: The address of the event-emitting contract you want to react to (Origin Chain Contract).
     

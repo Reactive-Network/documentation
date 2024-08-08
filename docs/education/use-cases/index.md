@@ -26,7 +26,7 @@ Visit our [GitHub repository](https://github.com/Reactive-Network/reactive-smart
 
 Acquire Kopli REACT tokens by simply interacting with the Reactive faucet contract on Sepolia. Follow the link below for the details.
 
-[More information on Kopli Testnet →](../../docs/kopli-testnet.md)
+[More information on Kopli Testnet →](/kopli-testnet)
 
 ## Environment Setup
 

@@ -25,7 +25,7 @@ Reactive Smart Contracts receive event logs from various chains, executing Solid
 
 Acquire Kopli REACT tokens by simply interacting with the Reactive faucet contract on Sepolia. Follow the link below for the details.
 
-[Get Kopli Testnet React →](./kopli-testnet.md#get-kopli-testnet-react)
+[Get Kopli Testnet React →](./kopli-testnet#get-kopli-testnet-react)
 
 ## Deploy Your First Reactive Smart Contract
 
