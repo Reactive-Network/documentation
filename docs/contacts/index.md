@@ -7,7 +7,7 @@ hide_title: true
 custom_edit_url: null
 ---
 
-# Contact Us
+![Contacts Image](./img/contacts.jpg)
 
 Welcome to Team Reactive! We are here to assist you with any inquiries or support you may need. Whether you're looking for help with integrating Reactive Smart Contracts into your dApps, troubleshooting issues, or understanding our platform's unique features, our team is ready to guide you.
 
