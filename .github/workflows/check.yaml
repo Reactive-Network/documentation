@@ -1,0 +1,26 @@
+name: Check build
+on:
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+
+jobs:
+  docker-build:
+    name: Build project
+    runs-on: ubuntu-latest
+    permissions:
+      contents: "read"
+      id-token: "write"
+  
+    steps:
+      - id: checkout
+        name: Checkout
+        uses: actions/checkout@v2
+
+      - id: docker-build
+        name: Build Docker image for checking project
+        uses: docker/build-push-action@v6
+        with:
+          build-args: |
+              GOOGLE_TAG=${{ secrets.GOOGLE_TAG }}
+              ALGOLIA_ID=${{ secrets.ALGOLIA_ID }}
+              ALGOLIA_KEY=${{ secrets.ALGOLIA_KEY }}
