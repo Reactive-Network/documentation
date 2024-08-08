@@ -15,6 +15,26 @@ ReactVM is a specialized type of EVM (Ethereum Virtual Machine) within the React
 
 Technically, a ReactVM is an isolated execution environment within the Reactive Network. It activates when an event matches the RSC's subscription. While this approach adds some overhead, we have optimized it by separating the EVM from Geth, resulting in a ReactVM boot time of approximately 100μs, which is insignificant relative to the Network's processing capabilities.
 
+## My ReactVM
+
+When you deploy a reactive smart contract, it will be assigned to a ReactVM. The ReactVM's address will match the EOA address used for the deployment. Every smart contract deployed to the reactive network will ultimately reside within your personal ReactVM. State can be shared within the ReactVM, allowing for interaction among contracts. While multiple RSCs can be deployed within a single ReactVM but generally discouraged.
+
+### Calling subscribe()
+
+Calling `subscribe()` or `unsubscribe()` from within an RVM will not produce any real effect. Use callbacks for interaction instead of directly invoking these functions within RVMs.
+
+## State
+
+The Reactive Network's state is determined by the collective states of individual ReactVMs and their connections to external blockchains. Each ReactVM's state is tied to specific block numbers and hashes from these chains, embedded within ReactVM blocks. This linkage is necessary for tracking and managing reorgs in the originating chains, enabling the network to respond to changes.
+
+### Dual-State Environment
+
+The Reactive Network features a dual-state environment to enable parallel transaction execution. While the EVM operates in a single-threaded manner, processing commands sequentially, the Reactive Network uses RVMs that can operate independently and in parallel on different cores or threads. This architecture supports the handling of various operations, including fund flows and token management, with each contract copy having its own state and execution context.
+
+Each [Reactive Smart Contract](./reactive-smart-contracts.md) has two instances with different states, both initialized in the constructor. The ReactVM instance updates its state when an event occurs, while the Reactive Network instance updates its state when you manually call its functions.
+
+As an example, in a governance contract, vote counts are maintained in the ReactVM state, whereas operational commands like `pause()` are part of the Reactive Network state. The primary logic resides within the ReactVM state.
+
 ## Reactive Network Processing Flow
 
 The following diagram illustrates a process involving the interaction between an Origin Chain, the Reactive Network along with ReactVM, and a Destination Chain.
@@ -37,40 +57,20 @@ Here’s a step-by-step description of the process:
 
 - **ReactVM Processing**:
 
-  - **ReactVM Exists?**: The system checks if a ReactVM already exists.
+    - **ReactVM Exists?**: The system checks if a ReactVM already exists.
 
-  - **No**: If no ReactVM exists, the system sets up a new ReactVM.
+    - **No**: If no ReactVM exists, the system sets up a new ReactVM.
 
-  - **Run ReactVM**: The ReactVM is run to process the transaction.
+    - **Run ReactVM**: The ReactVM is run to process the transaction.
 
-  - **Execute Transaction**: The transaction is executed within the ReactVM.
+    - **Execute Transaction**: The transaction is executed within the ReactVM.
 
-  - **Stop ReactVM**: After executing the transaction, the ReactVM is stopped.
+    - **Stop ReactVM**: After executing the transaction, the ReactVM is stopped.
 
 - **Transaction Receipt**: After the ReactVM completes processing the transaction, a transaction receipt is generated.
 
 - **Prepare Transaction for Destination Chain**: Based on the transaction receipt, a new transaction is prepared for the Destination Chain.
 
 - **Transaction at Mem. Pool in Destination Chain**: The prepared transaction is placed in the memory pool of the Destination Chain, ready to be included in a new block on that chain.
-
-## Personal ReactVM
-
-When you deploy a reactive smart contract, it will be assigned to a ReactVM. The ReactVM's address will match the EOA address used for the deployment. Every smart contract deployed to the reactive network will ultimately reside within your personal ReactVM. State can be shared within the ReactVM, allowing for interaction among contracts. While multiple RSCs can be deployed within a single ReactVM but generally discouraged.
-
-## Calling subscribe()
-
-Calling `subscribe()` or `unsubscribe()` from within an RVM will not produce any real effect. Use callbacks for interaction instead of directly invoking these functions within RVMs.
-
-## State
-
-The Reactive Network's state is determined by the collective states of individual ReactVMs and their connections to external blockchains. Each ReactVM's state is tied to specific block numbers and hashes from these chains, embedded within ReactVM blocks. This linkage is necessary for tracking and managing reorgs in the originating chains, enabling the network to respond to changes.
-
-## Dual-State Environment
-
-The Reactive Network features a dual-state environment to enable parallel transaction execution. While the EVM operates in a single-threaded manner, processing commands sequentially, the Reactive Network uses RVMs that can operate independently and in parallel on different cores or threads. This architecture supports the handling of various operations, including fund flows and token management, with each contract copy having its own state and execution context.
-
-Each [Reactive Smart Contract](./reactive-smart-contracts.md) has two instances with different states, both initialized in the constructor. The ReactVM instance updates its state when an event occurs, while the Reactive Network instance updates its state when you manually call its functions.
-
-As an example, in a governance contract, vote counts are maintained in the ReactVM state, whereas operational commands like `pause()` are part of the Reactive Network state. The primary logic resides within the ReactVM state.
 
 [More on ReactVM →](../education/module-1/react-vm.md)
