@@ -55,13 +55,7 @@ Here’s a step-by-step description of the process:
 
 ## Personal ReactVM
 
-Deploying an RSC provides a dedicated ReactVM, with its address matching the EOA used for deployment. The ReactVM hosts all smart contracts you deploy within the Reactive Network, allowing state sharing within the same ReactVM.
-
-:::warning[Word of Caution]
-
-Though multiple RSCs can be deployed within a single ReactVM, overusing this feature can negate the benefits of parallelized execution. We recommend subscribing to events from other RSCs, similar to subscribing to `Origin` events, to maximize efficiency.
-
-:::
+When you deploy a reactive smart contract, it will be assigned to a ReactVM. The ReactVM's address will match the EOA address used for the deployment. Every smart contract deployed to the reactive network will ultimately reside within your personal ReactVM. State can be shared within the ReactVM, allowing for interaction among contracts. While multiple RSCs can be deployed within a single ReactVM but generally discouraged.
 
 ## Calling subscribe()
 
