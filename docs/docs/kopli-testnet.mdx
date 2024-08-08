@@ -7,6 +7,39 @@ hide_title: true
 custom_edit_url: null
 ---
 
+
+export const AddToWeb3Provider = async () => {
+  const chainId = '0x512578';
+
+  try {
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{chainId: chainId}],
+    });
+  } catch (e) {
+    if (e.code === 4902) {
+      try {
+        await window.ethereum.request({
+          method: "wallet_addEthereumChain",
+          params: [{
+            chainId: "0x512578",
+            rpcUrls: ["https://kopli-rpc.reactive.network/"],
+            chainName: "Reactive Kopli",
+            nativeCurrency: {
+              name: "REACT",
+              symbol: "REACT",
+              decimals: 18
+            },
+            blockExplorerUrls: ["https://kopli.reactscan.net/"]
+          }]
+        });
+      } catch (e) {
+
+      }
+    }
+  }
+}
+
 ![Kopli Testnet Image](./img/kopli-testnet.jpg)
 
 ## Overview
@@ -25,6 +58,8 @@ Kopli Testnet is a proof-of-stake testnet, representing Reactive Network's pre-a
 * Callback Sender Address on Sepolia — 0x356bc9241f9b004323fE0Fe75C3d75DD946cF15c
 * Callback Sender Address on Reactive — 0xB7b1ee427Ff1339f5e139Adc0F3E2523fC61268f
 
+<button onClick={AddToWeb3Provider}>Connect to Kopli Testnet</button>
+
 ## Callback Sender Address
 
 `CALLBACK_SENDER_ADDR` serves as a validity check for the EOA address, identified by the correct RVM ID (or deployer address), to ensure the callback originates from the correct source. This parameter can be omitted for a Uniswap stop order, as the contract executing the stop order already verifies its correctness. To skip this check, use the address `0x0000000000000000000000000000000000000000`.
@@ -38,7 +73,7 @@ If an external caller initiates the function, they will either:
 
 ## Get Kopli Testnet REACT
 
-The first method is ideal for cases where the address initiating the transfer is also the recipient. Users can acquire REACT tokens on the Reactive Network (RN) by interacting with the Reactive faucet contract. Transfer SepETH directly to the faucet contract on the Sepolia Network. Upon completion, an equivalent number of REACT tokens will be transferred to the sender's address on the Reactive Network. This transfer is subject to a predefined limit (0.1 ETH by default) and assumes the faucet has available funds. The process can be executed using MetaMask or any other wallet.  
+The first method is ideal for cases where the address initiating the transfer is also the recipient. Users can acquire REACT tokens on the Reactive Network (RN) by interacting with the Reactive faucet contract. Transfer SepETH directly to the faucet contract on the Sepolia Network. Upon completion, an equivalent number of REACT tokens will be transferred to the sender's address on the Reactive Network. This transfer is subject to a predefined limit (0.1 ETH by default) and assumes the faucet has available funds. The process can be executed using MetaMask or any other wallet.
 
 Alternatively, users can call the payable method `request(address)` on the Reactive Faucet Contract on Sepolia to transfer REACT tokens directly to a specified RN address. In that case, users must provide the corresponding amount of SepETH when invoking this method. This approach is suitable for situations where the address initiating the transfer is not necessarily the recipient on the Reactive Network, allowing for flexible token transfers across different addresses.
 
