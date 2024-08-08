@@ -9,23 +9,34 @@ custom_edit_url: null
 
 
 export const AddToWeb3Provider = async () => {
+  const chainId = '0x512578';
+
   try {
     await window.ethereum.request({
-      method: "wallet_addEthereumChain",
-      params: [{
-        chainId: "0x512578",
-        rpcUrls: ["https://kopli-rpc.reactive.network/"],
-        chainName: "Reactive Kopli",
-        nativeCurrency: {
-          name: "REACT",
-          symbol: "REACT",
-          decimals: 18
-        },
-        blockExplorerUrls: ["https://kopli.reactscan.net/"]
-      }]
+      method: 'wallet_switchEthereumChain',
+      params: [{chainId: chainId}],
     });
   } catch (e) {
+    if (e.code === 4902) {
+      try {
+        await window.ethereum.request({
+          method: "wallet_addEthereumChain",
+          params: [{
+            chainId: "0x512578",
+            rpcUrls: ["https://kopli-rpc.reactive.network/"],
+            chainName: "Reactive Kopli",
+            nativeCurrency: {
+              name: "REACT",
+              symbol: "REACT",
+              decimals: 18
+            },
+            blockExplorerUrls: ["https://kopli.reactscan.net/"]
+          }]
+        });
+      } catch (e) {
 
+      }
+    }
   }
 }
 
