@@ -6,7 +6,7 @@ slug: react-vm
 custom_edit_url: null
 ---
 
-# Lesson 2: ReactVM and Reactive Network As a Dual-State Environment
+# Lesson 3: ReactVM and Reactive Network As a Dual-State Environment
 
 ## Overview
 
