@@ -10,9 +10,16 @@ custom_edit_url: null
 
 ## Overview
 
-In the Ethereum blockchain, events serve as a means for smart contracts to communicate with the external world. When certain conditions within a smart contract are met, it can emit events to log specific information on the blockchain. These events are crucial for decentralized applications (dApps) because they provide a gas-efficient way to trigger and listen for specific occurrences without constantly polling the blockchain.
+In the Ethereum blockchain, events enable smart contracts to communicate with the external world by logging specific information when certain conditions are met. This allows decentralized applications (dApps) to trigger and respond to occurrences without constantly polling the blockchain. Events are indexed by the EVM, making them easily searchable, which is particularly useful for monitoring blockchain activities like transfers, contract updates, and price changes from oracles.
 
-Events in Ethereum are indexed by the EVM, making them searchable. This feature is especially useful for dApps that need to monitor blockchain activities, like transfers, contract updates, or, as we'll see, price updates from oracles.
+This lesson focuses on the critical role of events and callbacks in smart contracts. By learning how to emit, process, and listen to events, developers can create dynamic dApps that respond to blockchain changes in real-time. We will also explore how Reactive Smart Contracts use the `react()` method to handle events and initiate cross-chain transactions through callbacks, enabling improved functionality within the Reactive Network.
+
+By the end of this lesson, you will learn to:
+
+* Define and emit events in an Ethereum smart contract.
+* Listen for and process events using decentralized applications.
+* Implement event processing in Reactive Smart Contracts.
+*  callbacks to trigger actions on destination chains.
 
 ## How Do EVM Events Work?
 
@@ -134,6 +141,8 @@ emit Callback(chain_id, stop_order, CALLBACK_GAS_LIMIT, payload);
 
 ## Conclusion
 
-EVM events are a powerful feature for smart contracts on the Ethereum blockchain, enabling efficient communication and interaction with the external world. By integrating with services like Chainlink's price oracle, smart contracts can leverage real-time data to make informed decisions, automate actions, and enhance the functionality of dApps. Through events, Ethereum not only records transactions but also bridges the gap between the blockchain and the dynamic data of the real world, opening a myriad of possibilities for developers and users alike.
+In this lesson, we’ve explored the fundamental mechanisms of events and callbacks in Ethereum and how they are utilized within Reactive Smart Contracts. Events serve as a powerful tool for recording and responding to on-chain activities, facilitating communication between smart contracts and external systems. We've also examined how Reactive Smart Contracts can handle these events through the `react()` method, processing incoming data in a secure and isolated environment.
+
+Furthermore, we introduced callbacks, which allow Reactive Smart Contracts to initiate cross-chain transactions, expanding the possibilities for decentralized applications beyond a single blockchain. By mastering these concepts, you are now equipped to develop Reactive Smart Contracts that not only interact with the Ethereum blockchain but also extend their reach across multiple networks.
 
 The concepts from this lesson are illustrated in the [Basic Demo Smart Contract](../use-cases/use-case-1.md) use case, feel free to try it yourself.
