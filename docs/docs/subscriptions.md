@@ -43,7 +43,7 @@ During the testnet stage, the Reactive Network provides the originating contract
 
 ### Using REACTIVE_IGNORE and 0
 
-`REACTIVE_IGNORE` is a random value (`0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad`) that can be used for topics when you intend to subscribe to any topic. For the same purpose, `0` can be used for chain ID or contract address. At least one criterion must be a specific value to ensure meaningful subscriptions.
+`REACTIVE_IGNORE` is an arbitrary predefined value (`0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad`) that can be used for topics when you intend to subscribe to any topic. For the same purpose, `0` can be used for chain ID or contract address. At least one criterion must be a specific value to ensure meaningful subscriptions.
 
 ### Subscription Examples
 
