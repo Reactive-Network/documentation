@@ -4,7 +4,6 @@ sidebar_position: 4
 description: Explore ReactVM, a dedicated EVM within the Reactive Network for executing Reactive Smart Contracts. It enables random transactions while maintaining order, serving as a sandbox for contract deployment.
 slug: /reactvm
 hide_title: true
-custom_edit_url: null
 ---
 
 ![ReactVM Image](./img/rvm.jpg)

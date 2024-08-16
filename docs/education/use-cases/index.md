@@ -3,7 +3,6 @@ title: "Use Cases"
 sidebar_position: 1
 description: Discover practical uses of Reactive Smart Contracts with demos on low-latency log monitoring and Uniswap V2 stop orders. Deploy and test these examples to boost your expertise.
 slug: /education/use-cases
-custom_edit_url: null
 ---
 
 # Use Cases

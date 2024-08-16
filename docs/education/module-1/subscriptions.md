@@ -3,7 +3,6 @@ title: "Lesson 4: How Subscriptions Work"
 sidebar_position: 4
 description: Understand how to implement subscriptions in the constructor of reactive smart contracts and how to manage subscriptions dynamically using callbacks to destination chains 
 slug: how-subscriptions-work
-custom_edit_url: null
 ---
 
 # Lesson 4: How Subscriptions Work

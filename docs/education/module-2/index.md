@@ -3,7 +3,6 @@ title: "Module 2: Intermediate - Building Blocks for Reactivity"
 sidebar_position: 1
 description: Learn the basics of DeFi with Uniswap V2 and Reactive Smart Contracts. Discover how liquidity pools work and see RSCs in action as they autonomously execute trades.
 slug: /education/module-2
-custom_edit_url: null
 ---
 
 # Module 2: Intermediate - Building Blocks for Reactivity

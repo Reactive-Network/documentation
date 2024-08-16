@@ -3,7 +3,6 @@ title: "Lesson 5: How Oracles Work"
 sidebar_position: 5
 description: Discover the power of oracles in Reactive Smart Contracts (RSCs) and explore their role in integrating real-world data with blockchain applications.
 slug: how-oracles-work
-custom_edit_url: null
 ---
 
 # Lesson 5: How Oracles Work

@@ -3,7 +3,6 @@ title: "Use Case: Uniswap V2 Stop Order Demo"
 sidebar_position: 3
 description: Discover how a Reactive Smart Contract executes stop orders on Uniswap V2 pools, automating trade actions based on predefined conditions. Gain practical insights into its setup, functionality, and deployment.
 slug: use-case-3
-custom_edit_url: null
 ---
 
 # Use Case: Uniswap V2 Stop Order Demo

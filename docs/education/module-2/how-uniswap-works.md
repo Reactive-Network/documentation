@@ -3,7 +3,6 @@ title: "Lesson 6: How Uniswap Works / Understanding Uniswap V2 Pools and Smart C
 sidebar_position: 1
 description: Discover how Uniswap V2 pools and smart contracts work, including the constant product formula and key events like Swap and Sync. Learn about token swaps, liquidity provisioning, and see a smart contract example.
 slug: how-uniswap-works
-custom_edit_url: null
 ---
 
 # Lesson 6: How Uniswap Works / Understanding Uniswap V2 Pools and Smart Contracts

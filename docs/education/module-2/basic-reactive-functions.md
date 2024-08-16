@@ -3,7 +3,6 @@ title: "Lesson 7: Implementing Basic Reactive Functions"
 sidebar_position: 2
 description: Learn to implement Reactive Smart Contracts for Uniswap V2, automate stop orders, and understand their execution based on Sync events.
 slug: basic-reactive-functions
-custom_edit_url: null
 ---
 
 # Lesson 7: Implementing Basic Reactive Functions

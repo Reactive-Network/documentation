@@ -3,7 +3,6 @@ title: "Use Case: Basic Demo Smart Contract"
 sidebar_position: 1
 description: Learn to build and deploy a Basic Reactive Smart Contract. Understand low-latency log monitoring and cross-chain calls using Ethereum testnets. Ideal for mastering Reactive Network fundamentals.
 slug: use-case-1
-custom_edit_url: null
 ---
 
 # Use Case: Basic Demo Smart Contract

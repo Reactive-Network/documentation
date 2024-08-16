@@ -4,7 +4,6 @@ title: Getting Started
 description: Explore Reactive Network, an EVM-compatible layer for advanced dApps. Learn about Reactive Smart Contracts that use data flows from multiple blockchains. Get started with setup, development and testing, and our unique architecture.
 slug: /
 hide_title: true
-custom_edit_url: null
 ---
 
 ![Reactive Network Docs Image](./img/reactive-docs.jpg)

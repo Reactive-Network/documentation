@@ -3,7 +3,6 @@ title: "Deploying Reactive Smart Contracts with Remix"
 sidebar_position: 2
 description: Learn how to deploy a Basic Reactive Smart Contract using Remix IDE. Ideal for mastering Reactive Network fundamentals.
 slug: remix-ide-demo
-custom_edit_url: null
 ---
 
 # Deploying Reactive Smart Contracts with Remix

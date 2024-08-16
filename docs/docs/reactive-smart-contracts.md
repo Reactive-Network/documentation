@@ -4,7 +4,6 @@ sidebar_position: 3
 description: Explore Reactive Smart Contracts, which enable event-driven interactions and transaction creation. Learn their setup, processing, and applications through clear examples.
 slug: /reactive-smart-contracts
 hide_title: true
-custom_edit_url: null
 ---
 
 ![Reactive Smart Contracts Image](./img/reactive-smart-contracts.jpg)

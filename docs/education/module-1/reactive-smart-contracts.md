@@ -3,7 +3,6 @@ title: "Lesson 1: Reactive Smart Contracts"
 sidebar_position: 1
 description: Learn how RSCs autonomously respond to blockchain events, contrasting traditional smart contracts. Understand Inversion of Control (IoC) and discover practical use cases.
 slug: reactive-smart-contracts
-custom_edit_url: null
 ---
 
 # Lesson 1: Reactive Smart Contracts

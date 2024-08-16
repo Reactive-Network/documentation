@@ -3,7 +3,6 @@ title: "Module 1: Beginner — Foundations of Reactive Smart Contracts"
 sidebar_position: 1
 description: Learn the basics of RSCs, including their reactive nature, state management, EVM events, and oracles. Ideal for beginners looking to understand and apply RSCs in blockchain projects.
 slug: /education/module-1
-custom_edit_url: null
 ---
 
 # Module 1: Beginner — Foundations of Reactive Smart Contracts

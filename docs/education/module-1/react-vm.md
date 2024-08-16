@@ -3,7 +3,6 @@ title: "Lesson 3: ReactVM and Reactive Network As a Dual-State Environment"
 sidebar_position: 3
 description: Understand the dual-state environment of Reactive Smart Contracts. Learn to manage data, identify execution contexts, and handle transactions in both Reactive Network and ReactVM for efficient RSC development.
 slug: react-vm
-custom_edit_url: null
 ---
 
 # Lesson 3: ReactVM and Reactive Network As a Dual-State Environment

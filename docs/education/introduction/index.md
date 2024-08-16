@@ -4,7 +4,6 @@ title: Introduction
 description: Embark on a journey through Reactive Smart Contracts with our educational program. Dive into lectures, GitHub code, and video demos for a hands-on learning experience.
 slug: /education/introduction
 hide_title: true
-custom_edit_url: null
 ---
 
 ![Reactive Network Education Image](../img/reactive-education.jpg)

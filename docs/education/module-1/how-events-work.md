@@ -3,7 +3,6 @@ title: "Lesson 2: How Events and Callbacks Work"
 sidebar_position: 2
 description: Discover how EVM events enable smart contracts to communicate with the outside world on the Ethereum blockchain. Learn about event creation, emission, and listening, with a Chainlink's price oracle integration example. Learn on callbacks to destination chains.
 slug: how-events-work
-custom_edit_url: null
 ---
 
 # Lesson 2: How Events and Callbacks Work

@@ -4,7 +4,6 @@ sidebar_position: 5
 description: Explore how to subscribe to events via Reactive Smart Contracts, allowing for event-driven interactions and transaction creation.
 slug: /subscriptions
 hide_title: true
-custom_edit_url: null
 ---
 
 ![Subscriptions Image](./img/subscriptions.jpg)
