@@ -10,7 +10,7 @@ custom_edit_url: null
 
 ## Overview
 
-In the previous lesson, we discussed one of the basic concepts of Reactive Smart Contracts (RSCs) — Inversion of Control. In this one, we will focus on another crucial property of RSCs: the fact they exist in two instances with separate states in the Reactive Network and ReactVM. Understanding this idea is necessary for successful Reactive Smart Contract development.
+In the previous lessons, we discussed one of the basic concepts of Reactive Smart Contracts (RSCs) — Inversion of Control, and how events and callbacks work in RSCs. In this one, we will focus on another crucial property of RSCs: the fact they exist in two instances with separate states in the Reactive Network and ReactVM. Understanding this idea is necessary for successful Reactive Smart Contract development.
 
 By the end of this lesson, you will learn to:
 
