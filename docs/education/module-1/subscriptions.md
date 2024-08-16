@@ -10,7 +10,13 @@ custom_edit_url: null
 
 ## Overview
 
-Subscriptions in Reactive Smart Contracts enable a contract to listen for specific events emitted by other contracts. When these events occur, the subscribing contract can automatically execute predefined logic.
+In the previous lesson, we covered the basic differences between the Reactive Network and ReactVM. In this one, we will dive into subscriptions, a key feature that allows RSCs to automatically respond to events emitted by other contracts. Subscriptions in Reactive Smart Contracts enable a contract to listen for specific events emitted by other contracts. When these events occur, the subscribing contract can automatically execute predefined logic.
+
+By the end of this article, you will learn to:
+
+* Configure and manage subscriptions both statically and dynamically.
+* Handle subscription and unsubscription events within your smart contracts.
+* Recognize the limitations and best practices for using subscriptions in Reactive Smart Contracts.
 
 ## How to Implement Subscriptions
 
@@ -256,3 +262,7 @@ emit Callback(CHAIN_ID, address(service), CALLBACK_GAS_LIMIT, payload);
 ```
 
 That’s how Reactive Smart Contracts can handle real-time subscription and unsubscription events. By processing specific topics and emitting appropriate callbacks, contracts ensure they stay updated with changes and maintain constant communication with the Reactive Network.
+
+## Conclusion
+
+In this article, we’ve explored the use of subscriptions in Reactive Smart Contracts, focusing on their implementation and management. We've also examined how to configure subscriptions, handle subscription events, and manage unsubscriptions, both in static and dynamic contexts. Understanding these concepts is crucial for building advanced and responsive Reactive Smart Contracts.
