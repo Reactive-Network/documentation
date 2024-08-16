@@ -12,6 +12,13 @@ custom_edit_url: null
 
 In the [introduction article](../introduction/reactive-smart-contracts.md), we discussed the basics of Reactive Smart Contracts (RSCs), what they are, and why we need them. Let us dive a little deeper into the technical concepts of RSCs, as well as provide examples to illustrate those concepts.
 
+By the end of this lesson, you will learn to:
+
+* Understand the key differences between Reactive Smart Contracts (RSCs) and traditional smart contracts.
+* Grasp the concept of Inversion of Control and its significance in RSCs.
+* Recognize how RSCs autonomously monitor and react to blockchain events.
+* Explore various practical use cases where RSCs can be applied, such as data collection from oracles, UniSwap stop orders, DEX arbitrage, and pools rebalancing.
+
 ## How RSCs Differ from Traditional Smart Contracts
 
 The main distinction between RSCs and traditional smart contracts lies in their reactivity. Traditional smart contracts are passive, only executing in response to direct EOA transactions. In contrast, RSCs are reactive, continuously monitoring the blockchains for events of interest and autonomously executing predefined blockchain actions in response.
