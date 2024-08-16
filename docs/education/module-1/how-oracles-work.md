@@ -12,6 +12,13 @@ custom_edit_url: null
 
 Reactive Smart Contracts are adept at monitoring on-chain events and executing subsequent on-chain actions in response. Yet within the smart contract ecosystem, a distinct category exists specifically for importing off-chain data onto the blockchain. These are known as oracles. Among the myriad events to which Reactive Smart Contracts can respond, those emitted by oracles hold significant importance. This article delves deeper into the concept of oracles, setting the stage for a clearer comprehension of the upcoming use case we'll explore. By unpacking the mechanisms and implications of oracles within the blockchain framework, we aim to equip you with the knowledge needed to fully grasp the potential and utility of Reactive Smart Contracts in interacting with real-world data.
 
+By the end of this lesson, you will learn to:
+
+* Understand the role of oracles in bridging the gap between blockchain and real-world data.
+* Address the oracle problem by exploring how oracles bring off-chain data onto the blockchain.
+* Implement and integrate oracles within smart contracts, using examples like Chainlink to fetch external data.
+* Recognize the advantages of combining Reactive Smart Contracts with oracles for real-time interaction with on-chain and off-chain events.
+
 ## What Oracles Do
 
 In the realm of blockchain and smart contracts, the necessity to interact with the real world presents a unique challenge. Smart contracts operate in a deterministic environment, where every operation must be verifiable and repeatable. However, to unlock the full potential of smart contracts, there's often a need to access data from the outside world — be it price feeds, weather reports, or other off-chain information. This requirement introduces the oracle problem: how to fetch off-chain data onto the blockchain without sacrificing the core principles of decentralization and trustlessness.
