@@ -3,7 +3,6 @@ title: Technical and Knowledge Prerequisites for Mastering Reactive Smart Contra
 sidebar_position: 2
 description: Learn Reactive Smart Contracts (RSCs) with prerequisites like Solidity, EVM basics, Git, and an Ethereum wallet.
 slug: prerequisites
-custom_edit_url: null
 ---
 
 # Technical and Knowledge Prerequisites for Mastering Reactive Smart Contracts

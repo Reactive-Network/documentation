@@ -4,7 +4,6 @@ sidebar_position: 2
 description: Discover how Reactive Network manages event streams and transactions across different ecosystems and learn about network compatibility.
 slug: /origins-and-destinations
 hide_title: true
-custom_edit_url: null
 ---
 
 ![Origins & Destinations Image](./img/origins-and-destinations.jpg)

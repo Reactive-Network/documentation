@@ -4,7 +4,6 @@ sidebar_position: 7
 description: Discover the Reactive Network's capabilities through practical demos. From basic log monitoring to advanced Uniswap V2 stop order implementation, discover versatile real-world applications and refinements.
 slug: /demos
 hide_title: true
-custom_edit_url: null
 ---
 
 ![Demos Image](img/demos.jpg)

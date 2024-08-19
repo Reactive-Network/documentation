@@ -4,7 +4,6 @@ sidebar_position: 8
 description: Find the answers to the most frequetly asked questions about the Reactive Network's architecture, features, and capabilities.
 slug: /faq
 hide_title: true
-custom_edit_url: null
 ---
 
 ![Reactive FAQ Image](./img/faq.jpg)

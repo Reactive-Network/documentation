@@ -3,34 +3,30 @@ title: "Module 1: Beginner — Foundations of Reactive Smart Contracts"
 sidebar_position: 1
 description: Learn the basics of RSCs, including their reactive nature, state management, EVM events, and oracles. Ideal for beginners looking to understand and apply RSCs in blockchain projects.
 slug: /education/module-1
-custom_edit_url: null
 ---
 
 # Module 1: Beginner — Foundations of Reactive Smart Contracts
 
 # Overview
 
-Welcome to Module 1: Beginner — Foundations of Reactive Smart Contracts (RSCs)! Get ready to level up your blockchain skills
-as we step into the realm of RSCs!
+Welcome to Module 1: Beginner — Foundations of Reactive Smart Contracts (RSCs)! This module introduces the core concepts and functionalities of RSCs, providing a foundation for applying them in blockchain projects.
 
-[Lesson 1](reactive-smart-contracts.md) unfolds the mechanisms of RSCs, where code meets action in a dynamic and reactive
-environment. Discover the concept of Inversion of Control as RSCs autonomously respond to blockchain events. Through thrilling
-use cases like data collection with oracles and executing stop orders on decentralized exchanges, you'll harness the full
-potential of RSCs.
+[Lesson 1: Reactive Smart Contracts](reactive-smart-contracts.md)
 
-[Lesson 2](react-vm.md) unveils the dual-state landscape of RSCs, where contracts exist simultaneously in the Reactive
-Network and ReactVM. Navigate through these parallel dimensions and understand how to wield the power of state management and
-transaction execution on the blockchain. With examples that blur the boundaries between both domains, you'll grasp the
-intricacies of managing state and executing actions within RSCs.
+Explore the mechanisms of RSCs, focusing on their reactive nature and Inversion of Control. Learn through use cases such as data collection with oracles and executing stop orders on decentralized exchanges.
 
-[Lesson 3](how-events-work.md) explores the secrets of EVM events, the hidden treasures that drive interaction between smart
-contracts and the external world. Dive deep into the mechanics of event emission and storage with a practical example
-demonstrating Chainlink's price oracle integration.
+[Lesson 2: How Events and Callbacks Work](how-events-work.md)
 
-[Lesson 4](how-oracles-work.md) unravels the mysteries of oracles, the legendary gatekeepers between the blockchain and
-off-chain data sources, which enable smart contracts to access real-world information securely and reliably. With insights
-into multisig protocols and practical applications in DeFi, insurance, and online betting, you'll learn about the pivotal role
-of oracles in expanding the capabilities of blockchain applications.
+Understand how EVM events and callbacks enable interaction between smart contracts and external systems. Includes a practical example of Chainlink's price oracle integration.
 
-By the end of this module, you'll have a solid understanding of the foundational concepts, functionalities, and applications
-of Reactive Smart Contracts.
+[Lesson 3: ReactVM and Reactive Network As a Dual-State Environment](react-vm.md)
+
+Examine the dual-state environment of RSCs within the Reactive Network and ReactVM. Learn about state management and transaction execution across these domains.
+
+[Lesson 4: How Subscriptions Work](subscriptions.md)
+
+Learn about setting up and managing subscriptions in RSCs to streamline event handling and automate contract execution.
+
+[Lesson 5: How Oracles Work](how-oracles-work.md)
+
+Discover the role of oracles in connecting blockchain with off-chain data. Explore multisig protocols and practical applications in DeFi, insurance, and online betting.

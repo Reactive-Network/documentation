@@ -3,7 +3,6 @@ title: "Reactive Smart Contracts: What They Are and Why We Need Them"
 sidebar_position: 1
 description: Discover Reactive Smart Contracts (RSCs), revolutionizing blockchain interaction with decentralized automation. Join our course to explore their potential, from Uniswap stop orders to NFT synchronization.
 slug: reactive-smart-contracts
-custom_edit_url: null
 ---
 
 # Reactive Smart Contracts: What They Are and Why We Need Them

@@ -4,7 +4,6 @@ sidebar_position: 4
 description: Unlock the language of blockchain with our glossary, covering Airdrops to Yield Farming. Dive into essential terms and concepts to navigate the Web3 world effortlessly.
 slug: glossary
 hide_title: true
-custom_edit_url: null
 ---
 
 ![Glossary Image](img/glossary.jpg)

@@ -4,7 +4,6 @@ sidebar_position: 5
 description: Explore how to subscribe to events via Reactive Smart Contracts, allowing for event-driven interactions and transaction creation.
 slug: /subscriptions
 hide_title: true
-custom_edit_url: null
 ---
 
 ![Subscriptions Image](./img/subscriptions.jpg)
@@ -38,17 +37,15 @@ constructor() {
 }
 ```
 
-## Subscription Criteria
-
 The subscription system allows the Reactive Network (the event provider) to associate any number of `uint256` fields with a given event. Subscribers can then request events that match any subset of these fields exactly.
 
 During the testnet stage, the Reactive Network provides the originating contract's chain ID, address, and all four topics as filtering criteria. These criteria may be expanded or changed in the future.
 
 ### Using REACTIVE_IGNORE and 0
 
-`REACTIVE_IGNORE` is a random value (`0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad`) used to indicate disinterest in a specific topic. `0` serves the same purpose for chain IDs and contract addresses. However, it's important to note that you can't use `REACTIVE_IGNORE` and `0` simultaneously. Specify one of these criteria: either use `REACTIVE_IGNORE` for topics or `0` for chain ID and contract address.
+`REACTIVE_IGNORE` is an arbitrary predefined value (`0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad`) that can be used for topics when you intend to subscribe to any topic. For the same purpose, `0` can be used for chain ID or contract address. At least one criterion must be a specific value to ensure meaningful subscriptions.
 
-## Subscription Examples
+### Subscription Examples
 
 - **All Events from a Specific Contract**: Subscribe to all events from `0x7E0987E5b3a30e3f2828572Bb659A548460a3003`.
 
@@ -110,7 +107,7 @@ constructor() {
 }
 ```
 
-## Prohibited Subscriptions
+### Prohibited Subscriptions
 
 - **Non-Equality Operations**: No matching event parameters using less than, greater than, range, or bitwise operations. Only strict equality is supported.
 

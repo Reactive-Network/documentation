@@ -4,7 +4,6 @@ title: Contact Us
 description: The contacts of the Reactive Network development team.
 slug: /contacts/
 hide_title: true
-custom_edit_url: null
 ---
 
 ![Contacts Image](./img/contacts.jpg)

@@ -1,16 +1,15 @@
 ---
-title: "Lesson 2: ReactVM and Reactive Network As Dual-State Environment"
-sidebar_position: 2
+title: "Lesson 3: ReactVM and Reactive Network As a Dual-State Environment"
+sidebar_position: 3
 description: Understand the dual-state environment of Reactive Smart Contracts. Learn to manage data, identify execution contexts, and handle transactions in both Reactive Network and ReactVM for efficient RSC development.
 slug: react-vm
-custom_edit_url: null
 ---
 
-# Lesson 2: ReactVM and Reactive Network As Dual-State Environment
+# Lesson 3: ReactVM and Reactive Network As a Dual-State Environment
 
 ## Overview
 
-In the previous lesson, we discussed one of the basic concepts of Reactive Smart Contracts (RSCs) — Inversion of Control. In this one, we will focus on another crucial property of RSCs: the fact they exist in two instances with separate states in the Reactive Network and ReactVM. Understanding this idea is necessary for successful Reactive Smart Contract development.
+In the previous lessons, we discussed one of the basic concepts of Reactive Smart Contracts (RSCs) — Inversion of Control, and how events and callbacks work in RSCs. In this one, we will focus on another crucial property of RSCs: the fact they exist in two instances with separate states in the Reactive Network and ReactVM. Understanding this idea is necessary for successful Reactive Smart Contract development.
 
 By the end of this lesson, you will learn to:
 
