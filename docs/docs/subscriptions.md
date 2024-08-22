@@ -10,11 +10,13 @@ hide_title: true
 
 ## Overview
 
-This section covers the subscription system in Reactive Contracts within the Reactive Network. It explains how to configure subscriptions in the contract's constructor using the `subscribe()` method, handle dynamic subscriptions via callbacks, and use filtering criteria such as chain ID, contract address, and topics.
+This section explains how to configure and manage subscriptions in Reactive Smart Contracts within the Reactive Network. It covers the basics of setting up subscriptions in the contract's constructor, handling dynamic subscriptions through callbacks, and applying filtering criteria like chain ID, contract address, and event topics.
 
 ## Subscription Basics
 
-Reactive contract's subscriptions are configured by calling the `subscribe()` method of the Reactive Network's system contract. This either happens in the `constructor()` or alternatively in a callback (see [Dynamic Subscriptions](./subscriptions.md#dynamic-subscriptions)). The reactive contract must adeptly handle reverts due to deployments on both the Reactive Network and their deployer's private ReactVM where the system contract is not present.
+In Reactive Smart Contracts, subscriptions are established by invoking the `subscribe()` method of the Reactive Network's system contract. This method is typically called in the contract's `constructor()` or dynamically via a callback (see [Dynamic Subscriptions](./subscriptions.md#dynamic-subscriptions)).
+
+Since deployments occur both on the Reactive Network and in the deployer's private ReactVM, where the system contract is unavailable, the reactive contract must handle potential reverts.
 
 ```solidity
 bool private vm;
@@ -37,13 +39,15 @@ constructor() {
 }
 ```
 
-The subscription system allows the Reactive Network (the event provider) to associate any number of `uint256` fields with a given event. Subscribers can then request events that match any subset of these fields exactly.
+The Reactive Network uses the subscription system to link various `uint256` fields to specific events. Subscribers can then filter events based on exact matches of these fields.
 
-During the testnet stage, the Reactive Network provides the originating contract's chain ID, address, and all four topics as filtering criteria. These criteria may be expanded or changed in the future.
+During the testnet phase, the Reactive Network provides filtering criteria based on the originating contract's chain ID, address, and all four topics. These criteria may evolve in the future.
 
 ### Using REACTIVE_IGNORE and 0
 
-`REACTIVE_IGNORE` is an arbitrary predefined value (`0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad`) that can be used for topics when you intend to subscribe to any topic. For the same purpose, `0` can be used for chain ID or contract address. At least one criterion must be a specific value to ensure meaningful subscriptions.
+- `REACTIVE_IGNORE` is an arbitrary predefined value (`0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad`) that allows you to subscribe to any topic.
+
+- `0` can be used for chain ID or contract address to match any value. Ensure at least one criterion is specific to create a meaningful subscription.
 
 ### Subscription Examples
 
@@ -109,9 +113,9 @@ constructor() {
 
 ### Prohibited Subscriptions
 
-- **Non-Equality Operations**: No matching event parameters using less than, greater than, range, or bitwise operations. Only strict equality is supported.
+- **Non-Equality Operations**: Subscriptions can’t match event parameters using less than (\<), greater than (\>), range, or bitwise operations. Only strict equality is supported.
 
-- **Complex Criteria Sets**: No disjunction or sets of criteria in a single subscription. Calling the `subscribe()` method multiple times to achieve similar results is possible but may lead to combinatorial explosion.
+- **Complex Criteria Sets**: Subscriptions can’t use disjunction or sets of criteria within a single subscription. While calling the `subscribe()` method multiple times can achieve similar results, it may lead to combinatorial explosion.
 
 - **Single Chain and All Contracts**: Subscribing to events from all chains or all contracts simultaneously is not allowed. Subscribing to all events from only one chain is also prohibited, as it is considered unnecessary.
 
@@ -119,11 +123,10 @@ constructor() {
 
 ## Dynamic Subscriptions
 
-Subscriptions are managed via the system contract accessible only from the Reactive Network. Events are sent to the ReactVM's contract copy, which has no system contract in it. To handle dynamic subscriptions and unsubscriptions based on incoming events, callbacks must be sent from the ReactVM to the Reactive Network.
+Subscriptions in the Reactive Network are managed through a system contract, which is accessible only from the network. Events are sent to the ReactVM's contract copy, which has no direct access to the system contract. Therefore, dynamic subscriptions and unsubscriptions based on incoming events must be handled via callbacks.
 
-The `react()` method handles incoming events and checks whether `topic_0` indicates a `subscribe` or `unsubscribe` event. If so, it generates a callback to the Reactive Network.
+The `react()` method processes incoming events and checks if `topic_0` indicates a `subscribe` or `unsubscribe` event. If so, it generates a callback to the Reactive Network to manage the subscription.
 
-The `subscribe()` and `unsubscribe()` methods can only be invoked within the Reactive Network via a callback. They interact with the system contract to subscribe to or unsubscribe from approval events for specific addresses.
 
 ```solidity
 function react(
