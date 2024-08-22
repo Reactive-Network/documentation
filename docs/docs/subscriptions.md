@@ -168,3 +168,5 @@ function react(
     }
 }
 ```
+
+[More on Subscriptions →](../education/module-1/how-subscriptions-work)
