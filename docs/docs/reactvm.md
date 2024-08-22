@@ -10,17 +10,17 @@ hide_title: true
 
 ## Overview
 
-ReactVM is a specialized type of EVM (Ethereum Virtual Machine) within the Reactive Network, designed to execute [Reactive Smart Contracts](./reactive-smart-contracts.md) (RSCs). It enables transactions within blocks to occur in random order across multiple threads, though the order is maintained within each ReactVM.
+The ReactVM is a specialized Ethereum Virtual Machine (EVM) within the Reactive Network, designed to execute [Reactive Smart Contracts](./reactive-smart-contracts.md) (RSCs). It allows transactions to occur in random order across multiple threads while maintaining order within each ReactVM.
 
-Technically, a ReactVM is an isolated execution environment within the Reactive Network. It activates when an event matches the RSC's subscription. While this approach adds some overhead, we have optimized it by separating the EVM from Geth, resulting in a ReactVM boot time of approximately 100μs, which is insignificant relative to the Network's processing capabilities.
+Technically, ReactVM is an isolated execution environment that activates when an event matches an RSC's subscription. Although this approach introduces some overhead, we've optimized the process by separating the EVM from Geth, reducing ReactVm's boot time to approximately 100 microseconds. This overhead is insignificant relative to the network's processing capabilities.
 
 ## My ReactVM
 
-When you deploy a reactive smart contract, it will be assigned to a ReactVM. The ReactVM's address will match the EOA address used for the deployment. Every smart contract deployed to the reactive network will ultimately reside within your personal ReactVM. State can be shared within the ReactVM, allowing for interaction among contracts. While multiple RSCs can be deployed within a single ReactVM but generally discouraged.
+When you deploy a Reactive Smart Contract, it is assigned to a ReactVM. The ReactVM's address will match the Externally Owned Account (EOA) address used for the deployment. All smart contracts deployed to the Reactive Network will ultimately reside within your personal ReactVM, enabling shared state and interaction among contracts. Although multiple RSCs can be deployed within a single ReactVM, this practice is generally discouraged.
 
 ### Calling subscribe()
 
-Calling `subscribe()` or `unsubscribe()` from within an RVM will not produce any real effect. Use callbacks for interaction instead of directly invoking these functions within RVMs.
+Invoking `subscribe()` or `unsubscribe()` within an RVM will not have any tangible effect. For interactions, use callbacks instead of directly calling these functions within RVMs.
 
 ## State
 
@@ -28,11 +28,14 @@ The Reactive Network's state is determined by the collective states of individua
 
 ### Dual-State Environment
 
-The Reactive Network features a dual-state environment to enable parallel transaction execution. While the EVM operates in a single-threaded manner, processing commands sequentially, the Reactive Network uses RVMs that can operate independently and in parallel on different cores or threads. This architecture supports the handling of various operations, including fund flows and token management, with each contract copy having its own state and execution context.
+The Reactive Network operates within a dual-state environment that supports parallel transaction execution. While the EVM processes commands sequentially in a single-threaded manner, ReactVMs can operate independently and in parallel across different cores or threads. This architecture facilitates the management of various operations, including fund flows and token management, with each contract copy having its own state and execution context.
 
-Each [Reactive Smart Contract](./reactive-smart-contracts.md) has two instances with different states, both initialized in the constructor. The ReactVM instance updates its state when an event occurs, while the Reactive Network instance updates its state when you manually call its functions.
+Each [Reactive Smart Contract](./reactive-smart-contracts.md) has two instances with different states, both initialized in the constructor:
+ 
+- **ReactVM State**: Updates when an event occurs.
+- **Reactive Network State**: Updates when you manually call its functions.
 
-As an example, in a governance contract, vote counts are maintained in the ReactVM state, whereas operational commands like `pause()` are part of the Reactive Network state. The primary logic resides within the ReactVM state.
+For example, in a governance contract, vote counts are maintained in the ReactVM state, whereas operational commands like `pause()` are part of the Reactive Network state. The primary logic resides within the ReactVM state.
 
 ## Reactive Network Processing Flow
 
