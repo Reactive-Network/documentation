@@ -26,19 +26,21 @@ The Introduction chapter provides an overview of Reactive Smart Contracts, highl
 
 ## Module One
 
-[Module 1](../module-1/index.md) is designed for beginners and dedicated to the basics of Reactive Smart Contracts, the ReactVM and Reactive Network, along with the function of oracles in integrating off-chain data.
+[Module 1](../module-1/index.md) is dedicated to the basics of Reactive Smart Contracts, events and callbacks, the ReactVM and Reactive Network, along with the function of oracles in integrating off-chain data.
 
 [Reactive Smart Contracts →](../module-1/reactive-smart-contracts.md)
 
+[How Events and Callbacks Work →](../module-1/how-events-work.md)
+
 [ReactVM and Reactive Network →](../module-1/react-vm.md)
 
-[How Events Work →](../module-1/how-events-work.md)
+[How Subscriptions Work →](../module-1/subscriptions.md)
 
 [How Oracles Work →](../module-1/how-oracles-work.md)
 
 ## Module Two
 
-[Module 2](../module-2/index.md) is created for intermediate users and explores Uniswap V2, focusing on liquidity pools and smart contract operations. It also elaborates on the basic functions of Reactive Smart Contracts that enable autonomous execution.
+[Module 2](../module-2/index.md) explores Uniswap V2, focusing on liquidity pools and smart contract operations. It also elaborates on the basic functions of Reactive Smart Contracts that enable autonomous execution.
 
 [How Uniswap Works →](../module-2/how-uniswap-works.md)
 
