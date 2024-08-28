@@ -695,7 +695,7 @@ Returns the value stored at a specific key in the storage of a contract for a gi
 ### cURL
 
 ```bash
-curl --location 'http://141.94.141.219:38599' \
+curl --location 'https://kopli-rpc.rkt.ink' \
 --header 'Content-Type: application/json' \
 --data '{
   "jsonrpc": "2.0",
@@ -711,8 +711,6 @@ curl --location 'http://141.94.141.219:38599' \
 ```
 
 ### Response
-
-**Example Response:**
 
 ```json
 {
@@ -751,7 +749,7 @@ Simulates a call to a contract’s method without making an actual transaction, 
 ### cURL
 
 ```bash
-curl --location 'http://141.94.141.219:38599' \
+curl --location 'https://kopli-rpc.rkt.ink' \
 --header 'Content-Type: application/json' \
 --data '{
   "jsonrpc": "2.0",
