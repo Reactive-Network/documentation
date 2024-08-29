@@ -8,7 +8,7 @@ hide_title: true
 
 ## Overview
 
-This page provides an overview of the RPC methods specific to our Geth fork, essential for interacting with nodes and ReactVMs within the Reactive Network (RNK). These methods enable transaction retrieval, log access, callback information, and more. Below, you will find a detailed description of each method, including its parameters, usage examples, and responses.
+This page provides an overview of the RPC methods specific to the Reactive Network's Geth version, essential for interacting with nodes and ReactVMs within the Reactive Network (RNK). These methods enable transaction retrieval, log access, callback information, and more. Below, you will find a detailed description of each method, including its parameters, usage examples, and responses.
 
 ## rnk_getTransactionByHash
 
