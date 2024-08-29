@@ -8,7 +8,7 @@ hide_title: true
 
 ## Overview
 
-This page provides an overview of Reactive Network's (RNK) RPC methods, which enables interaction with nodes and ReactVMs. The methods include transaction retrieval, log access, callback information, and more. Below is a detailed description of each method along with its parameters, usage examples, and responses.
+This page provides an overview of Reactive Network's (RNK) RPC methods, which enable interaction with nodes and ReactVMs. The methods include transaction retrieval, log access, callback information, and more. Below is a detailed description of each method along with its parameters, usage examples, and responses.
 
 ## rnk_getTransactionByHash
 
