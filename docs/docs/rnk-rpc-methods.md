@@ -12,7 +12,7 @@ INSERT DESCRIPTIVE TEXT
 
 ## rnk_getTransactionByHash
 
-Returns the details of a transaction for a given ReactVM ID and transaction hash.
+Returns the details of a transaction for the specified ReactVM ID and transaction hash.
 
 ### Parameters
 
@@ -74,11 +74,11 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 ## rnk_getTransactionByNumber
 
-Returns the details of a transaction by its sequence number within the specified ReactVM.
+Returns the details of a transaction based on its sequence number within the specified ReactVM.
 
 ### Parameters
 
-1. **rvmId**: `DATA`, 20 Bytes — The ReactVM ID for which the transaction is being queried.
+1. **rvmId**: `DATA`, 20 Bytes — The ReactVM ID associated with the transaction.
 2. **txNumber**: `QUANTITY` — The sequence number of the transaction to retrieve.
 
 **Example Parameters:**
@@ -136,7 +136,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 ## rnk_getTransactionLogs
 
-Retrieves logs for a transaction by its sequence number within the ReactVM.
+Returns logs for a transaction based on its sequence number within the specified ReactVM.
 
 ### Parameters
 
@@ -192,7 +192,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 ## rnk_getCallbackTransaction
 
-Returns callback transactions associated with a specific ReactVM transaction.
+Returns callback transactions associated with a specified ReactVM transaction.
 
 ### Parameters
 
@@ -244,7 +244,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 ## rnk_getHeadNumber
 
-Returns the latest transaction number for a given ReactVM.
+Returns the latest transaction number for the specified ReactVM.
 
 ### Parameters
 
@@ -285,7 +285,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 ## rnk_getTransactions
 
-Returns a range of transactions starting from a specific number within the ReactVM.
+Returns a range of transactions starting from a specified transaction number within the ReactVM.
 
 ### Parameters
 
@@ -299,7 +299,7 @@ Returns a range of transactions starting from a specific number within the React
 [
   "0xc1d48a9173212567bd358e40c50bfe131a9fabf1",
   15,
-  3
+  2
 ]
 ```
 
@@ -371,7 +371,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 ## rnk_getRnkAddressMapping
 
-Returns the RVM ID mapped to a specific Reactive Network contract address.
+Returns the RVM ID mapped to the specified Reactive Network contract address.
 
 ### Parameters
 
@@ -461,7 +461,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 ## rnk_getVms
 
-Returns information about all RVMs, including their transaction and contract counts.
+Returns information about all RVMs, including the number of transactions processed and the count of associated contracts.
 
 ### Parameters
 
@@ -533,7 +533,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 ## rnk_getVm
 
-Returns detailed information about a single RVM, specifically its transaction count.
+Returns detailed information about a specific RVM, including its transaction count and the number of associated contracts.
 
 ### Parameters
 
@@ -631,7 +631,7 @@ Returns the smart contract code at a specific transaction state for a given RVM 
 
 1. **rvmId**: `DATA`, 20 bytes — The unique identifier of the RVM.
 2. **contract** `DATA`, 20 bytes — The address of the smart contract.
-3. **txNumberOrHash** `QUANTITY | TAG` — Specifies the state of the contract code to be retrieved. Accepts either a block number (`QUANTITY`) or a tag (`"latest"`, `"earliest"`, `"pending"`).
+3. **txNumberOrHash** `QUANTITY | TAG` — Specifies the state at which the contract code is retrieved. Accepts either a block number (`QUANTITY`) or a tag (`"latest"`, `"earliest"`, `"pending"`).
 
 **Example Parameters:**
 
@@ -722,7 +722,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 ## rnk_call
 
-Simulates a call to a contract’s method without making an actual transaction, using the state of the blockchain at a specific transaction or block.
+Simulates a contract method call without an actual transaction, using the blockchain state at a specific transaction or block.
 
 ### Parameters
 
