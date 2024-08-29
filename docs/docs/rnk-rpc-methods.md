@@ -727,9 +727,13 @@ Simulates a contract method call without an actual transaction, using the blockc
 ### Parameters
 
 1. **rvmId**: `DATA`, 20 bytes — The unique identifier of the RVM.
-2. **args**: `OBJECT` — The transaction arguments, including the contract method and parameters. Typically includes:
+2. **args**: `OBJECT` — The transaction arguments, including the contract method and parameters. Should include:
     - `to`: `DATA`, 20 bytes — The address of the contract.
     - `data`: `DATA` — The call data, representing the method and parameters.
+    - `from`: `DATA`, 20 bytes, (optional) — The address from which the call is simulated. If omitted, the simulation assumes the call is made from an empty address (0x000...).
+    - `gas`: `QUANTITY`, (optional) — The maximum amount of gas allowed for the simulation. If omitted, a default value is used.
+    - `gasPrice`: `QUANTITY`, (optional) — The price of gas (in RVM-specific units) for the simulation. 
+    - `value`: `QUANTITY`, (optional) — The amount of tokens (e.g., Ether) to send along with the call. For non-payable functions, this should be 0.
 3. **txNumberOrHash**: `QUANTITY | TAG` — Specifies the block number or hash to use for simulating the call. Accepts either a block number (`QUANTITY`) or a tag (`"latest"`, `"earliest"`, `"pending"`).
 4. **overrides** (optional): `OBJECT` — A map of addresses to account states, allowing you to override specific states during the simulation.
 
