@@ -14,7 +14,7 @@ This page provides an overview of Reactive Network's (RNK) RPC methods, which en
 
 Returns the details of a transaction for the specified ReactVM ID and transaction hash.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 Bytes — The ReactVM ID associated with the transaction.
 2. **txHash**: `DATA`, 32 Bytes — The hash of the transaction to retrieve.
@@ -28,7 +28,7 @@ Returns the details of a transaction for the specified ReactVM ID and transactio
 ]
 ```
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rkt.ink' \
@@ -44,7 +44,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 }'
 ```
 
-### Response
+#### Response
 
 ```json
 {
@@ -76,7 +76,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 Returns the details of a transaction based on its sequence number within the specified ReactVM.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 Bytes — The ReactVM ID associated with the transaction.
 2. **txNumber**: `QUANTITY` — The sequence number of the transaction to retrieve.
@@ -90,7 +90,7 @@ Returns the details of a transaction based on its sequence number within the spe
 ]
 ```
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rkt.ink' \
@@ -106,7 +106,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 }'
 ```
 
-### Response
+#### Response
 
 ```json
 {
@@ -138,7 +138,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 Returns logs for a transaction based on its sequence number within the specified ReactVM.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 Bytes — The ReactVM ID for which transaction logs are being queried.
 2. **txNumber**: `QUANTITY` — The transaction number for which logs are requested.
@@ -152,7 +152,7 @@ Returns logs for a transaction based on its sequence number within the specified
 ]
 ```
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rkt.ink' \
@@ -168,7 +168,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 }'
 ```
 
-### Response
+#### Response
 
 ```json
 {
@@ -194,7 +194,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 Returns callback transactions associated with a specified ReactVM transaction.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 Bytes — The ReactVM ID for which callback transactions are being queried.
 2. **rvmTx**: `DATA`, 32 Bytes — The transaction hash for which callback transactions are requested.
@@ -208,7 +208,7 @@ Returns callback transactions associated with a specified ReactVM transaction.
 ]
 ```
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rkt.ink' \
@@ -224,7 +224,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 }'
 ```
 
-### Response
+#### Response
 
 ```json
 {
@@ -246,7 +246,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 Returns the latest transaction number for the specified ReactVM.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 Bytes — The ReactVM ID for which the latest transaction number is requested.
 
@@ -258,7 +258,7 @@ Returns the latest transaction number for the specified ReactVM.
 ]
 ```
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rkt.ink' \
@@ -273,7 +273,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 }'
 ```
 
-### Response
+#### Response
 
 ```json
 {
@@ -287,7 +287,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 Returns a range of transactions starting from a specified transaction number within the ReactVM.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 Bytes — The ReactVM ID for which transactions are being retrieved.
 2. **from**: `QUANTITY` — The starting transaction number.
@@ -303,7 +303,7 @@ Returns a range of transactions starting from a specified transaction number wit
 ]
 ```
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rkt.ink' \
@@ -320,7 +320,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 }'
 ```
 
-### Response
+#### Response
 
 ```json
 {
@@ -373,7 +373,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 Returns the RVM ID mapped to the specified Reactive Network contract address.
 
-### Parameters
+#### Parameters
 
 1. **reactNetworkContrAddr**: `DATA`, 20 Bytes — The address of the Reactive Network contract for which the RVM ID is being requested.
 
@@ -385,7 +385,7 @@ Returns the RVM ID mapped to the specified Reactive Network contract address.
 ]
 ```
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rkt.ink' \
@@ -400,7 +400,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 }'
 ```
 
-### Response
+#### Response
 
 ```json
 {
@@ -416,11 +416,11 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 Returns and compiles statistics about RVM transactions and origin chain data.
 
-### Parameters
+#### Parameters
 
 This method does not require any input parameters.
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rkt.ink' \
@@ -433,7 +433,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 }'
 ```
 
-### Response
+#### Response
 
 ```json
 {
@@ -463,11 +463,11 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 Returns information about all RVMs, including the number of transactions processed and the count of associated contracts.
 
-### Parameters
+#### Parameters
 
 This method does not require any input parameters.
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rkt.ink' \
@@ -480,7 +480,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 }'
 ```
 
-### Response
+#### Response
 
 ```json
 {
@@ -535,7 +535,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 Returns detailed information about a specific RVM, including its transaction count and the number of associated contracts.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 Bytes — The unique identifier of the RVM for which information is requested.
 
@@ -545,7 +545,7 @@ Returns detailed information about a specific RVM, including its transaction cou
 "0xfe5a45db052489cbc16d882404bcfa4f6223a55e"
 ```
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rkt.ink' \
@@ -558,7 +558,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 }'
 ```
 
-### Response
+#### Response
 
 ```json
 {
@@ -576,7 +576,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 Returns a list of subscribers for a specified RVM by checking the filters associated with it.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 Bytes — The unique identifier of the RVM for which subscriber information is requested.
 
@@ -586,7 +586,7 @@ Returns a list of subscribers for a specified RVM by checking the filters associ
 "0xc1d48a9173212567bd358e40c50bfe131a9fabf1"
 ```
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rkt.ink' \
@@ -599,7 +599,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 }'
 ```
 
-### Response
+#### Response
 
 ```json
 {
@@ -627,7 +627,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 Returns the smart contract code at a specific transaction state for a given RVM and contract address.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 bytes — The unique identifier of the RVM.
 2. **contract** `DATA`, 20 bytes — The address of the smart contract.
@@ -643,7 +643,7 @@ Returns the smart contract code at a specific transaction state for a given RVM 
 ]
 ```
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rkt.ink' \
@@ -660,7 +660,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 }'
 ```
 
-### Response
+#### Response
 
 ```json
 {
@@ -674,7 +674,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 Returns the value stored at a specific key in the storage of a contract for a given RVM at a specified block number or hash.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 bytes — The unique identifier of the RVM.
 2. **address**: `DATA`, 20 bytes — The address of the contract from which to retrieve the storage value.
@@ -692,7 +692,7 @@ Returns the value stored at a specific key in the storage of a contract for a gi
 ]
 ```
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rkt.ink' \
@@ -710,7 +710,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 }'
 ```
 
-### Response
+#### Response
 
 ```json
 {
@@ -724,7 +724,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 Simulates a contract method call without an actual transaction, using the blockchain state at a specific transaction or block.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 bytes — The unique identifier of the RVM.
 2. **args**: `OBJECT` — The transaction arguments, including the contract method and parameters. Should include:
@@ -749,7 +749,7 @@ Simulates a contract method call without an actual transaction, using the blockc
 ]
 ```
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rkt.ink' \
@@ -769,7 +769,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 }'
 ```
 
-### Response
+#### Response
 
 ```json
 {
