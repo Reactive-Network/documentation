@@ -735,7 +735,6 @@ Simulates a contract method call without an actual transaction, using the blockc
     - `gasPrice`: `QUANTITY`, (optional) — The price of gas (in RVM-specific units) for the simulation. 
     - `value`: `QUANTITY`, (optional) — The amount of tokens (e.g., Ether) to send along with the call. For non-payable functions, this should be 0.
 3. **txNumberOrHash**: `QUANTITY | TAG` — Specifies the block number or hash to use for simulating the call. Accepts either a block number (`QUANTITY`) or a tag (`"latest"`, `"earliest"`, `"pending"`).
-4. **overrides** (optional): `OBJECT` — A map of addresses to account states, allowing you to override specific states during the simulation.
 
 **Example Parameters:**
 
