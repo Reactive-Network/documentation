@@ -129,7 +129,7 @@ const config = {
       prism: {
         theme: prismLight,
         darkTheme: prismDark,
-        additionalLanguages: ["solidity"],
+        additionalLanguages: ["solidity", "bash", "json"],
       },
       mermaid: {
         theme: {
