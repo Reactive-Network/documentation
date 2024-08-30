@@ -9,7 +9,7 @@ slug: react-vm
 
 ## Overview
 
-In the previous lessons, we discussed one of the basic concepts of Reactive Smart Contracts (RSCs) — Inversion of Control, and how events and callbacks work in RSCs. In this one, we will focus on another crucial property of RSCs: the fact they exist in two instances with separate states in the Reactive Network and ReactVM. Understanding this idea is necessary for successful Reactive Smart Contract development.
+In the previous lessons, we discuss one of the basic concepts of Reactive Smart Contracts (RSCs) — Inversion of Control, and how events and callbacks work in RSCs. In this one, we will focus on another crucial property of RSCs: the fact they exist in two instances with separate states in the Reactive Network and ReactVM. Understanding this idea is necessary for successful Reactive Smart Contract development.
 
 By the end of this lesson, you will learn to:
 
@@ -143,4 +143,15 @@ We will consider other examples of `react()` functions for different use cases c
 
 ## Conclusion
 
-In this lesson, we’ve explored how Reactive Smart Contracts (RSCs) operate within two distinct environments: the Reactive Network and a separate ReactVM. We’ve examined smart contract code to understand how to manage this dual state through separate sets of variables and method modifiers. We’ve also discussed the types of transactions our RSCs are designed to handle. This understanding marks a crucial step forward in our journey toward writing our first Reactive Smart Contract.
+In this lesson, we've explored how Reactive Smart Contracts (RSCs) function within two distinct environments: the Reactive Network and the ReactVM. Understanding the dual-state nature of RSCs is crucial for their effective development. Key takeaways include:
+
+- **Dual-State Environments:** RSCs exist in two instances, each with separate states but the same code — one in the Reactive Network and one in the ReactVM. This setup allows for parallel processing and high performance.
+
+- **Identifying Execution Context:** The environment in which the contract is executing is identified using a boolean variable (`vm`). This allows for precise control over which code and state are accessed, ensuring the correct execution flow.
+
+- **Managing Separate States:** RSCs maintain separate sets of variables for the Reactive Network and ReactVM, which are used according to the environment in which the contract is executed. This helps in maintaining clarity and avoiding conflicts between the two states.
+
+- **Transaction Types:** The Reactive Network handles transactions initiated by users or triggered by events on the origin chain, while the ReactVM processes events and executes the `react()` function, defining the reaction logic and initiating cross-chain callbacks.
+
+Explore more practical applications in our [use cases](../use-cases/index.md) and join our [Telegram](https://t.me/reactivedevs) group for additional guidance.
+
