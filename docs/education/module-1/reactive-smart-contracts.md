@@ -9,7 +9,7 @@ slug: reactive-smart-contracts
 
 ## Overview
 
-In the [introduction article](../introduction/reactive-smart-contracts.md), we discussed the basics of Reactive Smart Contracts (RSCs), what they are, and why we need them. Let us dive a little deeper into the technical concepts of RSCs, as well as provide examples to illustrate those concepts.
+In the [introduction article](../introduction/reactive-smart-contracts.md), we discuss the basics of Reactive Smart Contracts (RSCs), what they are, and why we need them. Let's dive deeper into the technical concepts of RSCs with some examples to illustrate those concepts.
 
 By the end of this lesson, you will learn to:
 
@@ -60,7 +60,7 @@ In such a setup, an RSC would monitor the swaps on the specified UniSwap pool, c
 
 However, we can take the previous example even further by implementing an actual arbitrage using RSCs. Our Reactive Smart Contract will be monitoring several different pools for price discrepancies and capitalize on them. Both one-chain and cross-chain approaches are possible. In the first case, we can use flash loans. In the second case, we will need to have liquidities on several chains, but we will have access to more arbitraging opportunities.
 
-The beauty of this solution is that it will be decentralized, unlike the traditional approach with bots. This allows for many improvements that we are yet to explore — hopefully, together with you, so please join our Telegram group.
+The beauty of this solution is that it will be decentralized, unlike the traditional approach with bots. This allows for many improvements that we are yet to explore — hopefully, together with you.
 
 ### Pools Rebalancing
 
@@ -70,4 +70,16 @@ That way, we can potentially build liquidity pools that would automatically reba
 
 ## Conclusion
 
-These are just a few possible use cases of Reactive Smart Contracts. We’ll be covering them, and many more, in this Reactive Course. This way we will be able to fully explore the RSC tech together. More than that, we will be in close touch with you, the developers, to come up with more use cases and techniques together. So stay tuned and join our Telegram group.
+After reading this lesson, you should have a solid understanding of the foundational concepts and potential applications of Reactive Smart Contracts (RSCs). Key takeaways include:
+
+- **Reactive vs. Traditional Smart Contracts:** Unlike traditional smart contracts, RSCs autonomously monitor blockchain events and execute actions without user intervention, providing a more dynamic and responsive system.
+
+- **Inversion of Control:** RSCs invert the traditional execution model by allowing the contract itself to decide when to execute based on predefined events, eliminating the need for external triggers like bots or users.
+
+- **Decentralized Automation:** RSCs enable fully decentralized operations, automating processes like data collection, DEX trading, and liquidity management without centralized intermediaries.
+
+- **Cross-Chain Interactions:** RSCs can interact with multiple blockchains and sources, enabling sophisticated use cases like cross-chain arbitrage and multi-oracle data aggregation.
+
+- **Practical Applications:** RSCs have diverse applications, including collecting data from oracles, implementing UniSwap stop orders, executing DEX arbitrage, and automatically rebalancing pools across exchanges.
+
+Explore more practical applications in our [use cases](../use-cases/index.md) and join our [Telegram](https://t.me/reactivedevs) group to contribute to the evolving world of Reactive Smart Contracts.
