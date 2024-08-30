@@ -84,7 +84,7 @@ This contract demonstrates fetching the latest ETH/USD price using Chainlink's d
 
 However, as you may have observed, the smart contract can only request data through the getLatestPrice() function when it's explicitly called. To ensure your contract's data remains current, you should periodically invoke the function that queries the oracle. This challenge isn't insurmountable; one could simply update the price each time someone interacts with the contract, basing this interaction on the most recent price data. Yet this approach falls short of enabling your system to respond to price changes — or other oracle-generated events — in real time.
 
-In the Ethereum ecosystem, while one smart contract can indeed call another, such calls must initially be triggered by an Externally Owned Account (EOA) address. An EOA is an Ethereum address controlled directly by the private key's owner, unlike smart contract addresses, which are governed by contract code. Consequently, each transaction is initiated and signed by a specific EOA, restricting the capacity for smart contracts to operate in real time. This limitation underscores the distinctive advantage of Reactive Smart Contracts.ty for smart contracts to operate in real-time. This limitation underscores the distinctive advantage of Reactive Smart Contracts.
+In the Ethereum ecosystem, while one smart contract can indeed call another, such calls must initially be triggered by an Externally Owned Account (EOA) address. An EOA is an Ethereum address controlled directly by the private key's owner, unlike smart contract addresses, which are governed by contract code. Consequently, each transaction is initiated and signed by a specific EOA, restricting the capacity for smart contracts to operate in real time. This limitation underscores the distinctive advantage of Reactive Smart Contracts.
 
 ## Why We Need Reactive Smart Contracts
 
@@ -94,4 +94,14 @@ This brings us to the significance of oracles in our discussion: by integrating 
 
 ## Conclusion
 
-In the landscape of Reactive Smart Contracts (RSCs), oracles play a crucial role. By enabling RSCs to access, react to, and integrate real-world data, oracles expand the possibilities for automated, decentralized applications. Whether it's adjusting financial protocols based on market conditions, executing insurance contracts after verifiable events, or enabling online betting, the integration of oracles into RSCs ensures that blockchain applications remain relevant, responsive, and truly revolutionary.
+In this article, we’ve talked about the role of oracles within the context of Reactive Smart Contracts (RSCs), highlighting their significance in bridging the gap between on-chain and off-chain data. Key takeaways include:
+
+- **Oracle Functionality:** Oracles are essential for importing real-world data onto the blockchain, enabling smart contracts to interact with external information such as price feeds, weather reports, and more.
+
+- **Addressing the Oracle Problem:** The oracle problem is mitigated through decentralized oracle networks that ensure data integrity and minimize trust issues. Multisig protocols and reputable providers like Chainlink and Band Protocol enhance security and reliability.
+
+- **Practical Applications:** Oracles facilitate various use cases, including decentralized finance (DeFi), insurance, and online betting, by providing real-time data to smart contracts and enabling automated, trustless interactions.
+
+- **Integration with Reactive Smart Contracts:** The synergy between oracles and RSCs allows for dynamic, real-time responses to off-chain events. This integration leverages the strengths of both technologies to enhance the functionality and reach of blockchain applications.
+
+For practical applications and further insights, explore our [use cases](../use-cases/index.md) and join our [Telegram](https://t.me/reactivedevs) group to engage with the community.
