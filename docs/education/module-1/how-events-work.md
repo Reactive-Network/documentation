@@ -140,8 +140,14 @@ emit Callback(chain_id, stop_order, CALLBACK_GAS_LIMIT, payload);
 
 ## Conclusion
 
-In this lesson, we’ve explored the fundamental mechanisms of events and callbacks in Ethereum and how they are utilized within Reactive Smart Contracts. Events serve as a powerful tool for recording and responding to on-chain activities, facilitating communication between smart contracts and external systems. We've also examined how Reactive Smart Contracts can handle these events through the `react()` method, processing incoming data in a secure and isolated environment.
+In this lesson, we've explored the fundamentals of events and callbacks in Ethereum and their application in Reactive Smart Contracts. Key takeaways include:
 
-Furthermore, we introduced callbacks, which allow Reactive Smart Contracts to initiate cross-chain transactions, expanding the possibilities for decentralized applications beyond a single blockchain. By mastering these concepts, you are now equipped to develop Reactive Smart Contracts that not only interact with the Ethereum blockchain but also extend their reach across multiple networks.
+- **Understanding Events:** Events allow smart contracts to log information and interact with external applications, providing a powerful way to respond to on-chain activities without directly altering the blockchain state.
 
-The concepts from this lesson are illustrated in the [Basic Demo Smart Contract](../use-cases/use-case-1.md) use case, feel free to try it yourself.
+- **Reactive Smart Contracts and the `react()` Method:** RSCs use the `react()` method to autonomously process incoming events based on specified criteria, enabling real-time, decentralized, and responsive contract behavior.
+
+- **Callbacks for Cross-Chain Transactions:** RSCs can initiate actions on different blockchains using callbacks, broadening their functionality beyond single-chain constraints and facilitating more complex decentralized applications.
+
+- **Secure and Controlled Execution:** The ReactVM environment ensures that RSCs operate securely by restricting interactions to contracts deployed by the same deployer, maintaining a controlled execution space.
+
+The concepts from this lesson are shown in the [Basic Demo Smart Contract](../use-cases/use-case-1.md) use case. Feel free to explore it and join our [Telegram](https://t.me/reactivedevs) group for additional guidance.
