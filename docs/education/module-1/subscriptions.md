@@ -264,4 +264,14 @@ That’s how Reactive Smart Contracts can handle real-time subscription and unsu
 
 ## Conclusion
 
-In this article, we’ve explored the use of subscriptions in Reactive Smart Contracts, focusing on their implementation and management. We've also examined how to configure subscriptions, handle subscription events, and manage unsubscriptions, both in static and dynamic contexts. Understanding these concepts is crucial for building advanced and responsive Reactive Smart Contracts.
+In this article, we’ve explored the use of subscriptions in Reactive Smart Contracts, a fundamental feature that enables automatic responses to events from other contracts. Key takeaways include:
+
+- **Subscription Setup:** Subscriptions are established using the `subscribe` method from the Reactive Network’s system contract. This can be done statically in the constructor or managed dynamically as needed.
+
+- **Subscription Criteria:** Proper configuration is essential for effective subscriptions. Wildcards and specific values are used to define the scope of events to which a contract subscribes. Avoid prohibited subscription patterns to ensure efficient operation.
+
+- **Dynamic Management:** Subscriptions can be dynamically adjusted based on incoming events, with the `react()` method playing a central role in managing these operations. This approach ensures that RSCs can respond in real-time to changes in the network.
+
+- **Handling Events:** Contracts must handle events carefully by preparing appropriate payloads for subscription, unsubscription, and approval actions. This ensures accurate and timely updates across the network.
+
+For practical applications and further insights, explore our [use cases](../use-cases/index.md) and join our [Telegram](https://t.me/reactivedevs) group to engage with the community.
