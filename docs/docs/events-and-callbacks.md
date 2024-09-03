@@ -1,6 +1,6 @@
 ---
 title: Events & Callbacks
-sidebar_position: 5
+sidebar_position: 6
 description: Explore how EVM events and callbacks operate within the Reactive Network.
 slug: /events-&-callbacks
 hide_title: true
@@ -76,4 +76,21 @@ emit Callback(chain_id, stop_order, CALLBACK_GAS_LIMIT, payload);
 
 - **Callback Emission**: The Callback event is emitted with the destination chain ID, target contract, gas limit, and the constructed payload.
 
+### Callback Payments
+
+Contracts must pay for callbacks either via pre-existing balances or immediate payments upon callback receipt to avoid blacklisting, which blocks future callbacks and transactions. Blacklisted contracts can be whitelisted by covering their debt using the `requestPayment` method.
+
+#### Prepayment Options
+
+- **Direct Transfers**: Proxies can accept direct prepayments.
+- **Third-Party Payments**: The `depositTo` method allows others to add funds on behalf of a contract.
+
+#### Immediate Payment
+
+Contracts can handle immediate payments by implementing the `pay()` method or inheriting from `AbstractCallback` or `AbstractReactive`.
+
+[More on Callback Payments →](./system-contract.md#callback-payments)
+
 [More on Callbacks →](../education/module-1/how-events-work#callbacks-to-destination-chains)
+
+
