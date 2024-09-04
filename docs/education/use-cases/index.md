@@ -17,7 +17,7 @@ The [Deploying Reactive Smart Contracts with Remix](remix-ide-demo.md) article i
 
 The [Uniswap V2 Stop Order Demo](use-case-3.md) is a demo of a simple reactive smart contract that implements a stop order upon a Uniswap V2 liquidity pool. Study its setup and try deploying and testing it yourself.
 
-If you have an idea for another use case, feel free to submit and turn it into a bounty, using our[Unicornization](https://reactive.network/unicornization) program.
+If you have an idea for another use case, feel free to submit and turn it into a bounty, using our [Unicornization](https://reactive.network/unicornization) or [Hackathon](https://reactive.network/hackathon) program.
 
 ## GitHub Repository
 
