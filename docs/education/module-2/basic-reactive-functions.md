@@ -9,8 +9,7 @@ slug: basic-reactive-functions
 
 ## Overview
 
-In this lesson, we’ll go through the Reactive Smart Contract (RSC) specifically designed for the Uniswap V2 platform, aimed
-at executing stop orders based on predefined conditions. By the end of this lesson, you’ll know:
+In this lesson, we’ll go through the Reactive Smart Contract (RSC) specifically designed for the Uniswap V2 platform, aimed at executing stop orders based on predefined conditions. By the end of this lesson, you’ll know:
 
 * That RSCs are pretty similar to Ethereum smart contracts and thus easy to understand.
 * What each part of the stop-order reactive smart contract means.
@@ -18,16 +17,13 @@ at executing stop orders based on predefined conditions. By the end of this less
 
 ## Contract
 
-The contract `UniswapDemoStopOrderReactive.sol` is set up to monitor liquidity pool events on Uniswap V2, namely tracking the
-`Sync` events to determine when the conditions for a stop order are met. When these conditions are triggered, it executes a
-callback transaction on the Ethereum blockchain to perform the stop order.
+The contract `UniswapDemoStopOrderReactive.sol` is set up to monitor liquidity pool events on Uniswap V2, namely tracking the `Sync` events to determine when the conditions for a stop order are met. When these conditions are triggered, it executes a callback transaction on the Ethereum blockchain to perform the stop order.
 
 ## Key Components
 
 ### Event Declarations
 
-Event Declarations: Events like `Callback`, `Subscribed`, `AboveThreshold`, `CallbackSent`, and `Done` are used for logging
-and tracking the contract's operations on the blockchain.
+Event Declarations: Events like `Callback`, `Subscribed`, `AboveThreshold`, `CallbackSent`, and `Done` are used for logging and tracking the contract's operations on the blockchain.
 
 ```solidity
 // SPDX-License-Identifier: GPL-2.0-or-later
@@ -74,10 +70,7 @@ bytes payload
 
 ### Contract Variables
 
-`UNISWAP_V2_SYNC_TOPIC_0` and `STOP_ORDER_STOP_TOPIC_0` are constants representing the topics for Uniswap's `Sync` events
-and the contract's `Stop` events, respectively. `CALLBACK_GAS_LIMIT` is the gas limit set for the callback transaction.
-Variables like `triggered`, `done`, `pair`, `stop_order`, `client`, `token0`, `coefficient`, and `threshold` store the state
-and configuration of the stop order.
+`UNISWAP_V2_SYNC_TOPIC_0` and `STOP_ORDER_STOP_TOPIC_0` are constants representing the topics for Uniswap's `Sync` events and the contract's `Stop` events, respectively. `CALLBACK_GAS_LIMIT` is the gas limit set for the callback transaction. Variables like `triggered`, `done`, `pair`, `stop_order`, `client`, `token0`, `coefficient`, and `threshold` store the state and configuration of the stop order.
 
 ```solidity
     uint256 private constant UNISWAP_V2_SYNC_TOPIC_0 = 0x1c411e9a96e071241c2f21f7726b17ae89e3cab4c78be50e062b03a9fffbbad1;
@@ -106,8 +99,7 @@ and configuration of the stop order.
 
 ### Constructor
 
-The constructor sets up the initial state of the contract and subscribes to the necessary events from the Uniswap V2 pair
-`_pair` and the stop-order contract `_stop_order` using the `SubscriptionService.sol`.
+The constructor sets up the initial state of the contract and subscribes to the necessary events from the Uniswap V2 pair `_pair` and the stop-order contract `_stop_order` using the `SubscriptionService.sol`.
 
 ```solidity
     constructor(
@@ -149,11 +141,8 @@ The constructor sets up the initial state of the contract and subscribes to the 
 
 ### react() Function
 
-The `react()` function is the core of the contract's logic. It is triggered by events on the Ethereum smart contract it is
-subscribed to. The function processes these events to check if the conditions for executing the stop order are met.
-If the event is from the stop-order contract and matches the predefined topics and addresses, the contract concludes its operation
-(`done` = `true`). If the event is a `Sync` event from the Uniswap pair, the contract checks if the current reserves meet the stop-order
-condition (`below_threshold` function). If so, it triggers the callback transaction on Ethereum to execute the stop order.
+The `react()` function is the core of the contract's logic. It is triggered by events on the Ethereum smart contract it is subscribed to. The function processes these events to check if the conditions for executing the stop order are met. If the event is from the stop-order contract and matches the predefined topics and addresses, the contract concludes its operation
+(`done` = `true`). If the event is a `Sync` event from the Uniswap pair, the contract checks if the current reserves meet the stop-order condition (`below_threshold` function). If so, it triggers the callback transaction on Ethereum to execute the stop order.
 
 ```solidity
     // Methods specific to ReactVM instance of the contract.
@@ -204,8 +193,7 @@ condition (`below_threshold` function). If so, it triggers the callback transact
 
 ### below_threshold() Function
 
-The `below_threshold()` function determines whether the current token reserves in the Uniswap pool meet the threshold
-conditions for executing the stop order.
+The `below_threshold()` function determines whether the current token reserves in the Uniswap pool meet the threshold conditions for executing the stop order.
 
 ```solidity
     function below_threshold(Reserves memory sync) internal view returns (bool) {
@@ -219,29 +207,24 @@ conditions for executing the stop order.
 
 ## Execution Flow
 
-* Initialization: Upon deployment, the contract subscribes to the necessary events from the Uniswap V2 pair and the stop
-order callback contract.
+* Initialization: Upon deployment, the contract subscribes to the necessary events from the Uniswap V2 pair and the stop order callback contract.
 
-* Event Monitoring: The contract listens for Sync events from the Uniswap pair to monitor the pool's reserve changes and
-`Stop` events from the stop-order contract to track the execution of orders.
+* Event Monitoring: The contract listens for Sync events from the Uniswap pair to monitor the pool's reserve changes and`Stop` events from the stop-order contract to track the execution of orders.
 
-* Stop Order Activation: When the `Sync` event indicates that the pool's price hits the threshold, the contract initiates
-the stop order through the callback function, executing a trade on Uniswap V2.
+* Stop Order Activation: When the `Sync` event indicates that the pool's price hits the threshold, the contract initiates the stop order through the callback function, executing a trade on Uniswap V2.
 
-* Completion: After the stop order is executed, the contract captures the Stop event from the stop-order contract, marking
-the process as complete.
+* Completion: After the stop order is executed, the contract captures the Stop event from the stop-order contract, marking the process as complete.
 
-In essence, this Reactive Smart Contract leverages the event-driven capabilities of the ReactVM to autonomously monitor and
-respond to on-chain conditions, executing predefined trading strategies on Uniswap V2 efficiently and in a decentralized manner.
+In essence, this Reactive Smart Contract leverages the event-driven capabilities of the ReactVM to autonomously monitor and respond to on-chain conditions, executing predefined trading strategies on Uniswap V2 efficiently and in a decentralized manner.
 
 ## Conclusion
 
-RSCs share a strong resemblance with Ethereum smart contracts, making them relatively straightforward to comprehend for those
-familiar with Ethereum's smart contract architecture. We've dissected every component of the stop-order reactive smart contract,
-understanding the role and purpose of each part, from event handling to state management. We've delved into the execution
-process of this reactive smart contract, detailing how it listens for and reacts to specific Uniswap V2 pool events to
-autonomously execute stop orders based on predefined conditions, illustrating the dynamic and responsive nature of RSCs in
-the decentralized finance ecosystem.
+In this article, we’ve examined the implementation of a Reactive Smart Contract (RSC) for managing stop orders on the Uniswap V2 platform. Key takeaways include:
 
-This lesson explains the concepts used in the [P03 Uniswap Stop Order](../use-cases/use-case-3) use case, feel free to
-try it yourself.
+- **Similarity to Ethereum Smart Contracts:** RSCs are conceptually similar to Ethereum smart contracts, making them accessible for those familiar with Ethereum's architecture.
+
+- **Contract Components:** We reviewed the key elements of the stop-order reactive smart contract, including event declarations, contract variables, and the logic behind the `react()` and `below_threshold()` functions.
+
+- **Execution Flow:** The contract’s lifecycle involves subscribing to relevant events, monitoring Uniswap V2 pool reserves, triggering stop orders when conditions are met, and capturing completion events to finalize the process.
+
+For a deeper look into practical applications, explore the [Uniswap Stop Order](../use-cases/use-case-3) use case and consider experimenting with these concepts in your own projects. Join our [Telegram](https://t.me/reactivedevs) group to engage with the community.
