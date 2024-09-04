@@ -31,20 +31,21 @@ If the contract fails to pay (either through balance or direct payment), it is b
 
 Implement the `pay()` method within callback and reactive contracts or inherit from `AbstractCallback` or `AbstractReactive` to facilitate on-the-spot payments.
 
-### Gas Pricing
+### Callback Pricing
 
-The current pricing formula is a preliminary model intended for testing and subject to change. It is simplified with a placeholder value of 1 wei per gas unit but will evolve to integrate dynamic block base fees in future updates. The gas price is currently calculated using the following formula:
+The current pricing formula is a preliminary model intended for testing and subject to change. It is simplified with a placeholder value of 1 wei per gas unit but will evolve to integrate dynamic block base fees in future updates. The callback price $$p_{callback}$$ is computed using the following formula:
 
-```js
-adjusted_gas_price = (1 + tx.gasprice) * (gas_price_coefficient + (result ? 0 : 1)) * (extra_gas_fee + gas_init - gasleft());
-```
+$$
+p_{callback} = (p_{orig} + 1)(C + c_{fail})(g_{callback} + K)
+$$
 
-- `tx.gasprice`: The gas price of the current transaction.
-- `gas_price_coefficient`: A coefficient to adjust the gas price (suggested value: 2).
-- `result`: Indicates whether the callback was successful; it influences the coefficient.
-- `extra_gas_fee`: An additional fee added to the gas cost (suggested value: 100,000).
-- `gas_init`: Gas left at the start of callback execution.
-- `gasleft()`: Returns the remaining gas after callback execution.
+Where:
+
+- $$p_{orig}$$ is the base gas price for the callback, computed as the maximum of `tx.gasprice` and `block.basefee`;
+- $$C$$ is the destination network-dependent pricing coefficient;
+- $$c_{fail}$$ is 1 if the callback reverted, and 0 otherwise;
+- $$g_{callback}$$ is the total amount of gas spent on the callback;
+- $$K$$ is the destination network-dependent fixed gas surcharge.
 
 This formula is intended for the testnet stage and may be revised in future phases.
 

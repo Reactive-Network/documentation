@@ -1,6 +1,8 @@
 // import PrismLight from './src/utils/prismLight';
 import prismDark from "./src/utils/prismDark.ts";
 import prismLight from "./src/utils/prismLight.ts";
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -50,6 +52,8 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl: "https://github.com/Reactive-Network/documentation/edit/main/",
+          remarkPlugins: [remarkMath],
+          rehypePlugins: [rehypeKatex],
         },
         theme: {
           customCss: "./src/css/custom.css",
@@ -76,6 +80,12 @@ const config = {
       //   textColor: '#DEF5FF',
       //   isCloseable: false,
       // },
+      stylesheets: [
+        {
+          href: '/katex/katex.min.css',
+          type: 'text/css',
+        },
+      ],
       colorMode: {
         defaultMode: "dark",
         disableSwitch: false,
