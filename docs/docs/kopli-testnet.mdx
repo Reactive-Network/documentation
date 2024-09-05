@@ -55,20 +55,23 @@ Kopli Testnet is a proof-of-stake testnet, representing Reactive Network's pre-a
 * System Contract Address — 0x0000000000000000000000000000000000FFFFFF
 * Reactive Faucet Address on Sepolia — 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434
 * Callback Proxy Address on Sepolia — 0x33Bbb7D0a2F1029550B0e91f653c4055DC9F4Dd8
-* Callback Proxy Address on Reactive — the same as System Contract Address
+* Callback Proxy Address on Reactive — the same as the system contract address
 
 <button onClick={AddToWeb3Provider}>Connect to Kopli Testnet</button>
 
-## Callback Sender Address
+## Callback Proxy Address
 
-`CALLBACK_SENDER_ADDR` serves as a validity check for the EOA address, identified by the correct RVM ID (or deployer address), to ensure the callback originates from the correct source. This parameter can be omitted for a Uniswap stop order, as the contract executing the stop order already verifies its correctness. To skip this check, use the address `0x0000000000000000000000000000000000000000`.
+`CALLBACK_PROXY_ADDR` ensures the validity of a callback transaction by checking two key conditions:
 
-The `CALLBACK_SENDER_ADDR` variable has different values on the Sepolia Testnet and the Reactive Faucet because the Uniswap stop order sends callbacks to Sepolia, while the Reactive Faucet sends callbacks to the Reactive Network. The reactive node uses different addresses for these two networks, but the functional purpose of these addresses remains the same.
+1. **Reactive Network Signature**: Verifies that the callback is initiated by the Reactive Network by matching the sender address to `CALLBACK_PROXY_ADDR`.
 
-If an external caller initiates the function, they will either:
+2. **RVM ID Verification**: Confirms that the callback originates from the correct reactive contract by checking the RVM ID in the transaction payload.
 
-- Waste gas on a reverted transaction if the stop order conditions are not met, or
-- Waste gas on executing someone else's stop order without a personal benefit if the stop order conditions are fulfilled.
+In the [Uniswap Stop Order Demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/uniswap-v2-stop-order), the contract already verifies callbacks, so `CALLBACK_PROXY_ADDR` can be omitted by using `0x0000000000000000000000000000000000000000`.
+
+The `CALLBACK_PROXY_ADDR` differs between the Sepolia Testnet and the Reactive Faucet because callbacks are routed to different networks. For instance, Uniswap sends callbacks to Sepolia, whereas the Reactive Faucet sends callbacks to the Reactive Network. Despite this difference, the function of the `CALLBACK_PROXY_ADDR` remains the same across networks.
+
+If an external caller initiates the function, they will either waste gas on a reverted transaction or on fulfilling someone else's stop order without any benefit.
 
 ## Get Kopli Testnet REACT
 
