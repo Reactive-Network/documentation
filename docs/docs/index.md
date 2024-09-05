@@ -20,11 +20,15 @@ Reactive Smart Contracts receive event logs from various chains, executing Solid
 
 :::
 
+## Reactive Hackathon
+
+Check out the [Reactive Hackathon](https://reactive.network/hackathon?ref=blog.reactive.network). If you're fascinated with blockchain or developing, you're welcome to take part in the Hackathon and Booster Grants Program. The prize pool is $50,000, and it's an opportunity to work on and launch DApps using the Reactive Network.
+
 ## Get Kopli Testnet REACT
 
 Acquire Kopli REACT tokens by simply interacting with the Reactive faucet contract on Sepolia. Follow the link below for the details.
 
-[Get Kopli Testnet React →](./kopli-testnet#get-kopli-testnet-react)
+[Get Kopli Testnet React →](./kopli-testnet.mdx#get-kopli-testnet-react)
 
 ## Deploy Your First Reactive Smart Contract
 
