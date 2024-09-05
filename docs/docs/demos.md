@@ -18,7 +18,7 @@ The [Reactive Network Demo](https://github.com/Reactive-Network/reactive-smart-c
 
 ## Reactive Faucet App/Demo
 
-The [Reactive Faucet App/Demo](https://github.com/Reactive-Network/kopli-faucet) facilitates fund transfers between Layer 1 and the Reactive Network. This is the same faucet that operates on our testnet. This system involves three following smart contracts: the Origin chain contract [ReactiveFaucetL1.sol](https://github.com/Reactive-Network/kopli-faucet/blob/main/src/faucet/ReactiveFaucetL1.sol), the Destination chain contract [ReactiveFaucet.sol](https://github.com/Reactive-Network/kopli-faucet/blob/main/src/faucet/ReactiveFaucet.sol), and the Reactive contract [ReactiveFaucetListener.sol](https://github.com/Reactive-Network/kopli-faucet/blob/main/src/faucet/ReactiveFaucetListener.sol). It explores areas for refinement, such as enhanced security measures and gas efficiency optimizations, while providing detailed deployment instructions for setting up the Reactive Faucet system.
+The [Reactive Faucet App/Demo](https://github.com/Reactive-Network/kopli-faucet) facilitates fund transfers between any chain and the Reactive Network. This is the same faucet that operates on our testnet. It involves two smart contracts: [ReactiveFaucetL1.sol](https://github.com/Reactive-Network/kopli-faucet/blob/main/src/faucet/ReactiveFaucetL1.sol) and [ReactiveFaucet.sol](https://github.com/Reactive-Network/kopli-faucet/blob/main/src/faucet/ReactiveFaucet.sol).
 
 ## Uniswap V2 Stop Order Demo
 
