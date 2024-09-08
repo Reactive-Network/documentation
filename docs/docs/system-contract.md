@@ -27,6 +27,18 @@ If the contract fails to pay (either through balance or direct payment), it is b
 - **Direct Transfers**: Proxies, including the system contract, can accept direct transfers for prepayment.
 - **Third-Party Payments**: The `depositTo` method allows third parties to contribute funds on behalf of a contract.
 
+To fund the callback contract, run the following command:
+
+```bash
+cast send $CALLBACK_ADDR --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY --value 0.1ether
+```
+
+Alternatively, to deposit the funds into the callback proxy contract, run this command:
+
+```bash
+cast send --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY $CALLBACK_PROXY_ADDR "depositTo(address)" $CALLBACK_ADDR --value 0.1ether
+```
+
 ### On-the-spot Payment
 
 Implement the `pay()` method within callback and reactive contracts or inherit from `AbstractCallback` or `AbstractReactive` to facilitate on-the-spot payments.
