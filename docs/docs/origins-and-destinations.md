@@ -22,9 +22,9 @@ Origins and destinations are not necessarily identical. A Reactive Smart Contrac
 | Arbitrum One      | ✅      | TBA         |
 | Manta Network     | ✅      | TBA         |
 | BNB Smart Chain   | ✅      | TBA         |
+| Polygon PoS       | ✅      | TBA         |
+| Polygon zkEVM     | TBA    | TBA         |
 | Arbitrum Nova     | TBA    | TBA         |
 | opBNB             | TBA    | TBA         |
-| Polygon PoS       | TBA    | TBA         |
-| Polygon zkEVM     | TBA    | TBA         |
 | Solana            | TBA    | TBA         |
 | Sui               | TBA    | TBA         |
