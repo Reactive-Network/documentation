@@ -14,16 +14,17 @@ Reactive Network can read event streams and propagate transactions within variou
 
 Origins and destinations are not necessarily identical. A Reactive Smart Contract has the flexibility to specify multiple origins, and the system can have multiple destinations, including the conditional selection of the destination ecosystem.
 
-| Network          | Origin | Destination |
-|------------------|--------|-------------|
-| Ethereum Sepolia | ✅      | ✅           |
-| Ethereum         | ✅      | TBA         |
-| Avalanche        | TBA    | TBA         |
-| Arbitrum One     | TBA    | TBA         |
-| Arbitrum Nova    | TBA    | TBA         |
-| BNB Smart Chain  | ✅      | TBA         |
-| opBNB            | TBA    | TBA         |
-| Polygon PoS      | TBA    | TBA         |
-| Polygon zkEVM    | TBA    | TBA         |
-| Solana           | TBA    | TBA         |
-| Sui              | TBA    | TBA         |
+| Network           | Origin | Destination |
+|-------------------|--------|-------------|
+| Ethereum Sepolia  | ✅      | ✅           |
+| Ethereum Mainnet  | ✅      | TBA         |
+| Avalanche C-Chain | ✅      | TBA         |
+| Arbitrum One      | ✅      | TBA         |
+| Manta Network     | ✅      | TBA         |
+| BNB Smart Chain   | ✅      | TBA         |
+| Arbitrum Nova     | TBA    | TBA         |
+| opBNB             | TBA    | TBA         |
+| Polygon PoS       | TBA    | TBA         |
+| Polygon zkEVM     | TBA    | TBA         |
+| Solana            | TBA    | TBA         |
+| Sui               | TBA    | TBA         |
