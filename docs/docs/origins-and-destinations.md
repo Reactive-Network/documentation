@@ -25,3 +25,4 @@ Origins and destinations are not necessarily identical. A Reactive Smart Contrac
 | Polygon PoS       | ✅      | ➖           | `137`      | ➖                                            |
 | Polygon zkEVM     | ➖      | ➖           | `1101`     | ➖                                            |
 | opBNB             | ➖      | ➖           | `204`      | ➖                                            |
+| Kopli Testnet     | ✅      | ✅           | `5318008`  | `0x0000000000000000000000000000000000FFFFFF` |
