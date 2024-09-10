@@ -17,11 +17,11 @@ Origins and destinations are not necessarily identical. A Reactive Smart Contrac
 | Chain             | Origin | Destination | Chain ID   | Callback Proxy Address                       |
 |-------------------|--------|-------------|------------|----------------------------------------------| 
 | Ethereum Sepolia  | ✅      | ✅           | `11155111` | `0x33Bbb7D0a2F1029550B0e91f653c4055DC9F4Dd8` |
-| Ethereum Mainnet  | ✅      | ❌           | `1`        | ❌                                            |
+| Ethereum Mainnet  | ✅      | ➖           | `1`        | ➖                                            |
 | Avalanche C-Chain | ✅      | ✅           | `43114`    | `0x76DdEc79A96e5bf05565dA4016C6B027a87Dd8F0` |
-| Arbitrum One      | ✅      | ❌           | `42161`    | ❌                                            |
+| Arbitrum One      | ✅      | ➖           | `42161`    | ➖                                            |
 | Manta Network     | ✅      | ✅           | `169`      | `0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4` |
-| BNB Smart Chain   | ✅      | ❌           | `56`       | ❌                                            |
-| Polygon PoS       | ✅      | ❌           | `137`      | ❌                                            |
-| Polygon zkEVM     | TBA    | ❌           | `1101`     | ❌                                            |
-| opBNB             | TBA    | ❌           | `204`      | ❌                                            |
+| BNB Smart Chain   | ✅      | ➖           | `56`       | ➖                                            |
+| Polygon PoS       | ✅      | ➖           | `137`      | ➖                                            |
+| Polygon zkEVM     | ➖      | ➖           | `1101`     | ➖                                            |
+| opBNB             | ➖      | ➖           | `204`      | ➖                                            |
