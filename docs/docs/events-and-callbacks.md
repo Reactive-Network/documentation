@@ -10,11 +10,11 @@ hide_title: true
 
 ## Overview
 
-Reactive Smart Contracts in the Reactive Network operate within isolated environments known as ReactVMs. These contracts can process incoming events, create transactions on destination chains, and use callbacks to communicate between networks.
+In the Reactive Network, reactive contracts operate within isolated environments known as [ReactVMs](./reactvm.md). These contracts can process incoming events, create transactions on destination chains, and use callbacks to communicate between networks.
 
 ## Event Processing
 
-To handle incoming events, a Reactive Smart Contract must implement the `IReactive` interface. The primary method to be implemented is:
+To handle incoming events, a reactive contract must implement the [IReactive](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/IReactive.sol) interface. Below is the primary method to implement.
 
 ```solidity
 function react(
@@ -30,11 +30,7 @@ function react(
 ) external;
 ```
 
-- **Event Feeding**: The Reactive Network triggers this method whenever an event matches the contract’s subscriptions.
-
-- **EVM Capabilities**: Reactive Smart Contracts can use all EVM functionalities within the context of their private ReactVM.
-
-- **Execution Context**: Contracts are executed within a ReactVM linked to the deployer's address and can't interact with contracts deployed by others.
+The Reactive Network feeds events matching a contract's subscriptions by triggering this method. Reactive contracts can access all EVM capabilities but are limited to executing within a private ReactVM tied to the deployer's address, preventing interaction with contracts deployed by others.
 
 [More on Events →](../education/module-1/how-events-work)
 
@@ -62,13 +58,14 @@ Here’s how the Uniswap Stop Order Demo uses this feature:
 ```solidity
 bytes memory payload = abi.encodeWithSignature(
     "stop(address,address,address,bool,uint256,uint256)",
-    0,
+    address(0),
     pair,
     client,
     token0,
     coefficient,
     threshold
 );
+triggered = true;
 emit Callback(chain_id, stop_order, CALLBACK_GAS_LIMIT, payload);
 ```
 
@@ -76,21 +73,6 @@ emit Callback(chain_id, stop_order, CALLBACK_GAS_LIMIT, payload);
 
 - **Callback Emission**: The Callback event is emitted with the destination chain ID, target contract, gas limit, and the constructed payload.
 
-### Callback Payments
-
-Contracts must pay for callbacks either via pre-existing balances or immediate payments upon callback receipt to avoid blacklisting, which blocks future callbacks and transactions. Blacklisted contracts can be whitelisted by covering their debt using the `requestPayment` method.
-
-#### Prepayment Options
-
-- **Direct Transfers**: Proxies can accept direct prepayments.
-- **Third-Party Payments**: The `depositTo` method allows others to add funds on behalf of a contract.
-
-#### Immediate Payment
-
-Contracts can handle immediate payments by implementing the `pay()` method or inheriting from `AbstractCallback` or `AbstractReactive`.
-
 [More on Callback Payments →](./system-contract.md#callback-payments)
 
 [More on Callbacks →](../education/module-1/how-events-work#callbacks-to-destination-chains)
-
-
