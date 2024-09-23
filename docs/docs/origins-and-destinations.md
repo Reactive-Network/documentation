@@ -14,6 +14,11 @@ Reactive Network can read event streams and propagate transactions within variou
 
 Origins and destinations are not necessarily identical. A Reactive Smart Contract has the flexibility to specify multiple origins, and the system can have multiple destinations, including the conditional selection of the destination ecosystem.
 
+:::warning
+Currently, callbacks are supported only on the Ethereum Sepolia and Kopli Testnet. We strongly recommend using one of these as your destination chain.
+:::
+
+
 | Chain             | Origin | Destination | Chain ID   | Callback Proxy Address                       |
 |-------------------|--------|-------------|------------|----------------------------------------------| 
 | Ethereum Sepolia  | ✅      | ✅           | `11155111` | `0x33Bbb7D0a2F1029550B0e91f653c4055DC9F4Dd8` |
