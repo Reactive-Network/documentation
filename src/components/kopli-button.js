@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import '../css/custom.css';
+import React from 'react';
 
 const CHAIN_ID = '0x512578';
 
@@ -12,17 +13,17 @@ export const AddToWeb3Provider = async () => {
         if (e.code === 4902) {
             try {
                 await window.ethereum.request({
-                    method: "wallet_addEthereumChain",
+                    method: 'wallet_addEthereumChain',
                     params: [{
                         chainId: CHAIN_ID,
-                        rpcUrls: ["https://kopli-rpc.reactive.network/"],
-                        chainName: "Reactive Kopli",
+                        rpcUrls: ['https://kopli-rpc.reactive.network/'],
+                        chainName: 'Reactive Kopli',
                         nativeCurrency: {
-                            name: "REACT",
-                            symbol: "REACT",
+                            name: 'REACT',
+                            symbol: 'REACT',
                             decimals: 18
                         },
-                        blockExplorerUrls: ["https://kopli.reactscan.net/"]
+                        blockExplorerUrls: ['https://kopli.reactscan.net/']
                     }]
                 });
             } catch (e) {
@@ -33,30 +34,9 @@ export const AddToWeb3Provider = async () => {
 };
 
 const KopliButton = () => {
-    const [buttonColor, setButtonColor] = useState('var(--button-bg-color-light)');
-    const [hoverColor, setHoverColor] = useState('var(--button-hover-color-light)');
-
-    useEffect(() => {
-        const updateColors = () => {
-            const isDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            setButtonColor(isDarkTheme ? 'var(--button-bg-color-dark)' : 'var(--button-bg-color-light)');
-            setHoverColor(isDarkTheme ? 'var(--button-hover-color-dark)' : 'var(--button-hover-color-light)');
-        };
-
-        // Initial setting of colors
-        updateColors();
-
-        // Event listener for theme changes
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        mediaQuery.addEventListener('change', updateColors);
-
-        return () => {
-            mediaQuery.removeEventListener('change', updateColors);
-        };
-    }, []);
-
     return (
         <button
+            id="kopli-button"
             onClick={AddToWeb3Provider}
             style={{
                 width: '200px',
@@ -66,24 +46,26 @@ const KopliButton = () => {
                 textAlign: 'center',
                 padding: '0',
                 display: 'block',
-                backgroundColor: buttonColor,
-                color: '#fff',
+                color: 'var(--kopli-button-text)', /* Text color based on theme */
+                backgroundColor: 'var(--kopli-button-bg)', /* Background color based on theme */
                 border: 'none',
                 borderRadius: '12px',
                 cursor: 'pointer',
                 boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                transition: 'background-color 0.3s ease',
+                transition: 'background-color 0.3s ease, transform 0.2s ease',
             }}
-            onMouseEnter={(e) => {
-                e.target.style.backgroundColor = hoverColor; // Change to hover color
+            onMouseOver={(e) => {
+                e.target.style.backgroundColor = 'var(--kopli-button-hover-bg)'; /* Hover background color based on theme */
+                e.target.style.transform = 'scale(1.05)'; /* Add a hover scale effect */
             }}
-            onMouseLeave={(e) => {
-                e.target.style.backgroundColor = buttonColor; // Reset to original color
+            onMouseOut={(e) => {
+                e.target.style.backgroundColor = 'var(--kopli-button-bg)'; /* Revert background color */
+                e.target.style.transform = 'scale(1)'; /* Revert to original size */
             }}
         >
             Connect to Kopli Testnet
         </button>
     );
-};
+}
 
 export default KopliButton;
