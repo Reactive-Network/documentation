@@ -1,9 +1,19 @@
 import '../css/custom.css';
-import React from 'react';
 
 const CHAIN_ID = '0x512578';
 
+const checkWallet = () => {
+    if (typeof window.ethereum !== 'undefined') {
+        return true;
+    } else {
+        alert('MetaMask is not installed. Please visit https://metamask.io/ to install the wallet.');
+        return false;
+    }
+};
+
 export const AddToWeb3Provider = async () => {
+    if (!checkWallet()) return;
+
     try {
         await window.ethereum.request({
             method: 'wallet_switchEthereumChain',
@@ -21,10 +31,10 @@ export const AddToWeb3Provider = async () => {
                         nativeCurrency: {
                             name: 'REACT',
                             symbol: 'REACT',
-                            decimals: 18
+                            decimals: 18,
                         },
-                        blockExplorerUrls: ['https://kopli.reactscan.net/']
-                    }]
+                        blockExplorerUrls: ['https://kopli.reactscan.net/'],
+                    }],
                 });
             } catch (e) {
                 console.error('Failed to add Ethereum chain', e);
