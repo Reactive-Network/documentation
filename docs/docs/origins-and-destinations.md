@@ -10,9 +10,9 @@ hide_title: true
 
 # Overview
 
-The Reactive Network reads event streams and enables transactions across different ecosystems. An Origin acts as an event log provider, delivering events to Reactive Smart Contracts within the Reactive Network. A Destination is the ecosystem where the actual state transition (transaction) takes place.
+The Reactive Network reads event streams and enables transactions across different ecosystems. An Origin acts as an event log provider, delivering events to reactive contracts within the Reactive Network. A Destination is the ecosystem where the actual state transition (transaction) takes place.
 
-Origins and destinations do not have to be the same. Reactive Smart Contracts can be configured to work with multiple origins, and the system allows for multiple destinations, enabling conditional selection of which destination ecosystem will be used.
+Origins and destinations don't have to be the same. Reactive contracts can be configured to work with multiple origins, and the system allows for multiple destinations, enabling conditional selection of which destination ecosystem will be used.
 
 :::warning
 Currently, callbacks are supported only on the Ethereum Sepolia and Kopli Testnet. We strongly recommend using one of these as your destination chain.
