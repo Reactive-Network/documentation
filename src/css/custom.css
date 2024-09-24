@@ -69,6 +69,11 @@
     --ifm-blockquote-color: var(--ifm-color-primary);
 
     --ifm-navbar-height: 5rem;
+
+    --button-bg-color-light: #2756FC;
+    --button-hover-color-light: #1A4C92;
+    --button-bg-color-dark: #A287FF;
+    --button-hover-color-dark: #7B59E6
 }
 
 .pagination-nav__link {
