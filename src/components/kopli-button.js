@@ -1,9 +1,19 @@
 import '../css/custom.css';
-import React from 'react';
 
 const CHAIN_ID = '0x512578';
 
+const checkWallet = () => {
+    if (typeof window.ethereum !== 'undefined') {
+        return true;
+    } else {
+        alert('MetaMask is not installed. Please visit https://metamask.io/ to install the wallet.');
+        return false;
+    }
+};
+
 export const AddToWeb3Provider = async () => {
+    if (!checkWallet()) return;
+
     try {
         await window.ethereum.request({
             method: 'wallet_switchEthereumChain',
@@ -21,10 +31,10 @@ export const AddToWeb3Provider = async () => {
                         nativeCurrency: {
                             name: 'REACT',
                             symbol: 'REACT',
-                            decimals: 18
+                            decimals: 18,
                         },
-                        blockExplorerUrls: ['https://kopli.reactscan.net/']
-                    }]
+                        blockExplorerUrls: ['https://kopli.reactscan.net/'],
+                    }],
                 });
             } catch (e) {
                 console.error('Failed to add Ethereum chain', e);
@@ -46,8 +56,8 @@ const KopliButton = () => {
                 textAlign: 'center',
                 padding: '0',
                 display: 'block',
-                color: 'var(--kopli-button-text)', /* Text color based on theme */
-                backgroundColor: 'var(--kopli-button-bg)', /* Background color based on theme */
+                color: 'var(--kopli-button-text)',
+                backgroundColor: 'var(--kopli-button-bg)',
                 border: 'none',
                 borderRadius: '12px',
                 cursor: 'pointer',
@@ -55,12 +65,12 @@ const KopliButton = () => {
                 transition: 'background-color 0.3s ease, transform 0.2s ease',
             }}
             onMouseOver={(e) => {
-                e.target.style.backgroundColor = 'var(--kopli-button-hover-bg)'; /* Hover background color based on theme */
-                e.target.style.transform = 'scale(1.05)'; /* Add a hover scale effect */
+                e.target.style.backgroundColor = 'var(--kopli-button-hover-bg)';
+                e.target.style.transform = 'scale(1.05)';
             }}
             onMouseOut={(e) => {
-                e.target.style.backgroundColor = 'var(--kopli-button-bg)'; /* Revert background color */
-                e.target.style.transform = 'scale(1)'; /* Revert to original size */
+                e.target.style.backgroundColor = 'var(--kopli-button-bg)';
+                e.target.style.transform = 'scale(1)';
             }}
         >
             Connect to Kopli Testnet
