@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-export const AddToWeb3Provider = async () => {
-    const chainId = '0x512578';
+const CHAIN_ID = '0x512578';
 
+export const AddToWeb3Provider = async () => {
     try {
         await window.ethereum.request({
             method: 'wallet_switchEthereumChain',
-            params: [{ chainId: chainId }],
+            params: [{ chainId: CHAIN_ID }],
         });
     } catch (e) {
         if (e.code === 4902) {
@@ -14,7 +14,7 @@ export const AddToWeb3Provider = async () => {
                 await window.ethereum.request({
                     method: "wallet_addEthereumChain",
                     params: [{
-                        chainId: "0x512578",
+                        chainId: CHAIN_ID,
                         rpcUrls: ["https://kopli-rpc.reactive.network/"],
                         chainName: "Reactive Kopli",
                         nativeCurrency: {
@@ -26,36 +26,32 @@ export const AddToWeb3Provider = async () => {
                     }]
                 });
             } catch (e) {
+                console.error('Failed to add Ethereum chain', e);
             }
         }
     }
 };
 
 const KopliButton = () => {
-    const [buttonColor, setButtonColor] = useState('#2756FC'); // Default to light theme color
-    const [hoverColor, setHoverColor] = useState('#1A4C92'); // Default hover color for light theme
+    const [buttonColor, setButtonColor] = useState('var(--button-bg-color-light)');
+    const [hoverColor, setHoverColor] = useState('var(--button-hover-color-light)');
 
     useEffect(() => {
-        const handleThemeChange = (e) => {
-            if (e.matches) {
-                console.log("Dark theme detected");
-                setButtonColor('#CBB5FF'); // Dark theme button color
-                setHoverColor('#A287FF'); // Dark theme hover color
-            } else {
-                console.log("Light theme detected");
-                setButtonColor('#2756FC'); // Light theme button color
-                setHoverColor('#1A4C92'); // Light theme hover color
-            }
+        const updateColors = () => {
+            const isDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            setButtonColor(isDarkTheme ? 'var(--button-bg-color-dark)' : 'var(--button-bg-color-light)');
+            setHoverColor(isDarkTheme ? 'var(--button-hover-color-dark)' : 'var(--button-hover-color-light)');
         };
 
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        setButtonColor(mediaQuery.matches ? '#CBB5FF' : '#2756FC'); // Initial color based on theme
-        setHoverColor(mediaQuery.matches ? '#A287FF' : '#1A4C92'); // Initial hover color based on theme
+        // Initial setting of colors
+        updateColors();
 
-        mediaQuery.addEventListener('change', handleThemeChange);
+        // Event listener for theme changes
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        mediaQuery.addEventListener('change', updateColors);
 
         return () => {
-            mediaQuery.removeEventListener('change', handleThemeChange);
+            mediaQuery.removeEventListener('change', updateColors);
         };
     }, []);
 
