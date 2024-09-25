@@ -66,10 +66,7 @@ Reactive Transactions will share the same payment mechanism as RNK's callback pa
 
 ### ISystemContract
 
-Combines `IPayable` and `ISubscriptionService`, providing both payment handling and event subscription capabilities. Methods include:
-
-- **Payment functionality** inherited from `IPayable` to manage debts and payments.
-- **Event subscription functionality** inherited from `ISubscriptionService` to manage subscriptions and notifications for reactive contracts.
+Combines `IPayable` and `ISubscriptionService`, providing both payment handling and event subscription capabilities. Payment functionality inherited from `IPayable` to manage debts and payments. Event subscription functionality inherited from `ISubscriptionService` to manage subscriptions and notifications for reactive contracts.
 
 ### ISubscriptionService
 
@@ -143,7 +140,7 @@ Provides an event subscription system for reactive contracts and allows contract
 - `unsubscribe` – Removes an active subscription based on matching criteria.
 - `ping` – Verifies whether the contract is running in a specific reactive context.
 
-## Most Common Errors Across Contracts
+## Most Common Errors 
 
 **Unauthorized Access**: Modifier-related errors (e.g., `onlyOwner`, `rvmIdOnly`, `sysConOnly`) prevent unauthorized users from accessing specific contract functions. Reverts with 'Unauthorized' or 'Authorized X only' if the caller does not meet required conditions.
 
