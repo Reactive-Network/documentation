@@ -47,9 +47,11 @@ event Callback(
 );
 ```
 
-- **Transaction Creation**: When the Reactive Network detects this event in the transaction trace, it submits a new transaction to the specified destination network, using the `chain_id`.
+When the Reactive Network detects this event in the transaction trace, it submits a new transaction to the specified destination network, using the `chain_id`.
 
-- **Authorization**: The Reactive Network automatically replaces the first 160 bits of the call arguments in the `payload` with the ReactVM ID (equivalent to the contract deployer's address). As a result, the first argument in your callback will always be the ReactVM address (of type `address`), regardless of the variable name you use in your Solidity code. This ensures that the transaction is authorized and tied to the correct contract within the network.
+:::info[Authorization]
+The Reactive Network automatically replaces the first 160 bits of the call arguments in the `payload` with the ReactVM ID (equivalent to the contract deployer's address). As a result, the first argument in your callback will always be the ReactVM address (of type `address`), regardless of the variable name you use in your Solidity code. This ensures that the transaction is authorized and tied to the correct contract within the network.
+:::
 
 ### Example: Uniswap Stop Order Demo
 
@@ -69,9 +71,7 @@ triggered = true;
 emit Callback(chain_id, stop_order, CALLBACK_GAS_LIMIT, payload);
 ```
 
-- **Payload Construction**: The payload encodes the function signature and parameters needed for the stop order.
-
-- **Callback Emission**: The Callback event is emitted with the destination chain ID, target contract, gas limit, and the constructed payload.
+The payload encodes the function signature and parameters needed for the stop order. The `Callback` event is emitted with the destination chain ID, target contract, gas limit, and the constructed payload.
 
 [More on Callback Payments →](./system-contract.md#callback-payments)
 
