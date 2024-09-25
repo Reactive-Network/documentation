@@ -10,42 +10,39 @@ hide_title: true
 
 ## Overview
 
-The system contract is a core contract responsible for managing subscriptions and acting as a callback proxy within the Reactive Network (RNK). It is embedded into the genesis block, meaning it contains only code with no mutable state.
+The system contract is a core part of the Reactive Network (RNK), responsible for managing subscriptions and acting as a callback proxy. Integrated into the genesis block, it operates with immutable code, handling essential network functions without a mutable state. Extending `CallbackProxy` and `AbstractSubscriptionService`, the system contract also manages payments and whitelisting and blacklisting of contracts.
 
-## Callback Proxy
-
-Callback Proxy operates as a standalone contract on destination chains and as an integrated component within the System Contract on the Reactive Network. Its primary role is to manage the authorization of callback senders and to handle the processing of callbacks.
+The callback proxy operates independently on destination chains and as an integrated component within the system contract on RNK. It primarily authorizes callback senders, processes callbacks, and manages contract balances and debt with methods like `withdraw()`, `addCallbackSenders()`, `callback()`, along with internal functions for deposit and charge management.
 
 ## Callback Payments
 
-The system is designed to ensure that callback execution is closely tied to payment. Contracts must either have sufficient funds in their balance or pay immediately upon receiving a callback to avoid being blacklisted.
-
-If the contract fails to pay (either through balance or direct payment), it is blacklisted. This means that future callbacks and reactive transactions to this contract will be blocked. The blacklisted contract or another contract can cover the debt by making a payment using the `requestPayment` method in the system contract. Once the debt is covered, the contract is automatically whitelisted, and all its callback and transaction functionalities are restored.
+Callback execution is tied to payment, ensuring contracts either have sufficient balance or pay immediately upon receiving a callback. Failure to pay results in the contract being blacklisted, blocking future callbacks and transactions. Debt can be cleared using the `requestPayment` method, which restores the contract’s functionalities.
 
 ### Prepayment
 
-- **Direct Transfers**: Proxies, including the system contract, can accept direct transfers for prepayment.
-- **Third-Party Payments**: The `depositTo` method allows third parties to contribute funds on behalf of a contract.
+**Direct Transfers**: The system contract and proxies accept direct transfers for prepayment.
 
-To fund the callback contract, run the following command:
+**Third-Party Payments**: Third parties can fund contracts using the `depositTo` method.
+
+To fund the callback contract:
 
 ```bash
 cast send $CALLBACK_ADDR --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY --value 0.1ether
 ```
 
-Alternatively, to deposit the funds into the callback proxy contract, run this command:
+To deposit funds into the callback proxy:
 
 ```bash
 cast send --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY $CALLBACK_PROXY_ADDR "depositTo(address)" $CALLBACK_ADDR --value 0.1ether
 ```
 
-### On-the-spot Payment
-
-Implement the `pay()` method within callback and reactive contracts or inherit from `AbstractCallback` or `AbstractReactive` to facilitate on-the-spot payments.
+:::tip[On-The-Spot Payment]
+Implement the `pay()` method or inherit from `AbstractCallback` or `AbstractReactive` for on-the-spot payments.
+:::
 
 ### Callback Pricing
 
-The current pricing formula is a preliminary model intended for testing and subject to change. It is simplified with a placeholder value of 1 wei per gas unit but will evolve to integrate dynamic block base fees in future updates. The callback price $$p_{callback}$$ is computed using the following formula:
+The current pricing formula, subject to change, is simplified for testing. It is set at 1 wei per gas unit but will later incorporate dynamic block base fees. The callback price $$p_{callback}$$ is calculated as follows:
 
 $$
 p_{callback} = (p_{orig} + 1)(C + c_{fail})(g_{callback} + K)
@@ -53,77 +50,117 @@ $$
 
 Where:
 
-- $$p_{orig}$$ is the base gas price for the callback, computed as the maximum of `tx.gasprice` and `block.basefee`;
-- $$C$$ is the destination network-dependent pricing coefficient;
-- $$c_{fail}$$ is 1 if the callback reverted, and 0 otherwise;
-- $$g_{callback}$$ is the total amount of gas spent on the callback;
-- $$K$$ is the destination network-dependent fixed gas surcharge.
+- $$p_{orig}$$ is the base gas price, considering `tx.gasprice` and `block.basefee`.
+- $$C$$ is a pricing coefficient for the destination network.
+- $$c_{fail}$$ is 1 if the callback reverted; otherwise, 0.
+- $$g_{callback}$$ is the gas used for the callback.
+- $$K$$ is a fixed gas surcharge for the destination network.
 
-This formula is intended for the testnet stage and may be revised in future phases.
+This formula is intended for the testnet stage and may evolve.
 
-## Reactive Transaction Payments
+:::info[Reactive Transaction Payments]
+Reactive Transactions will share the same payment mechanism as RNK's callback payments, with a common balance. Separate contracts may be used for reactive and callback functionalities. This feature is not yet implemented, as it is not critical for the hackathon phase.
+:::
 
-Paying for Reactive Transactions will use the same mechanism as RNK's callback payments, sharing a common balance. However, separate contracts can be used for reactive and callback functionalities if needed. Not yet implemented, as it is not critical for the hackathon phase.
-
-## Contracts
+## Interfaces & Abstract Contracts
 
 ### ISystemContract
 
-Defines the interface that the system contract implements, combining the functionality of `IPayable` and `ISubscriptionService`. Includes methods for debt management (`IPayable`) and event subscription management (`ISubscriptionService`).
+Combines `IPayable` and `ISubscriptionService`, providing both payment handling and event subscription capabilities. Methods include:
+
+- **Payment functionality** inherited from `IPayable` to manage debts and payments.
+- **Event subscription functionality** inherited from `ISubscriptionService` to manage subscriptions and notifications for reactive contracts.
 
 ### ISubscriptionService
 
-Manages event subscriptions for reactive contracts, allowing them to receive notifications for specific events. Includes the following methods:
+Allows reactive contracts to subscribe to and receive notifications for events that match specified criteria across chains. Methods include:
 
-- `subscribe()`: Allows a reactive contract to subscribe to events based on specific criteria (chain ID, contract, topics).
-- `unsubscribe()`: Removes subscriptions based on the provided criteria.
-  
+- `ping` – Determines whether the contract operates in the Reactive Network or ReactVM context.
+- `subscribe` – Subscribes the contract to monitor events based on specified criteria such as chain ID, contract address, and event topics.
+- `unsubscribe` – Removes the contract's active event subscriptions, which can be resource-intensive.
+
 ### IReactive
 
-Defines the interface for reactive contracts that interact with the system contract. Includes the following methods:
+Defines the structure for reactive contracts, which receive notifications for events matching subscription criteria. Methods include:
 
-- `react()`: The entry point for handling new event notifications.
-- Defines the `Callback` event for callbacks from the system contract.
+- `react` – Handles incoming event notifications based on chain ID, contract address, topics, and event data.
+- `receive` – Allows the contract to receive payments.
   
 ### IPayer
 
-Provides a basic interface for contracts that can handle payments. Includes the following method:
+Defines the payment functionality for contracts, ensuring that only authorized entities can initiate payments. Methods include:
 
-- `pay()`: A function that reactive contracts must implement to pay debts when charged.
+- `pay` – Facilitates payment of a specified amount, with a requirement to verify the sender.
 
 ### IPayable
 
-Defines methods for debt management in contracts. Includes the following method:
+Defines basic payment functionality for contracts, including debt checking and receiving payments. Methods include:
 
-- `debt()`: Allows querying the outstanding debt of a contract. 
+- `receive` – Enables the contract to receive payments directly to cover debts.
+- `debt` – Allows reactive contracts to query their outstanding debt.
 
-## Abstract Contracts
-
-These base contracts are designed to reduce boilerplate by incorporating common functionality. They are not necessarily production-grade and may undergo changes.
+:::info[Abstract Contracts]
+Abstract contracts reduce boilerplate by incorporating common functionalities. They may change before production deployment.
+:::
 
 ### AbstractReactive
 
-Serves as a base contract for reactive contracts, providing standard modifiers and functions that ensure proper interaction with the Reactive Network. Includes the following key features:
+Handles the distinction between the Reactive Network and ReactVM environments, enforcing conditions based on the environment and integrating with system contracts. Methods include:
 
-- **Modifiers**: Includes modifiers like `onlyReactive` and `onlySystem` to check that certain functions can only be called within the Reactive Network or by the system contract.
-- **System Address Handling**: Ensures the correct address of the system contract is used for secure operations.
+- `rnOnly` – Restricts access to reactive network environments.
+- `vmOnly` – Placeholder modifier for VM-specific access.
+- `sysConOnly` – Ensures that only system contracts can invoke certain functions.
+- `detectVm` – Detects whether the contract is running in a VM or Reactive Network context.
 
 ### AbstractPayer
 
-It implements the logic required for managing payments and debts within the callback system. Includes the following key features:
+Manages payment operations for contracts, ensuring that only authorized senders can trigger payments. Methods include:
 
-- **Payment Handling**: Provides foundational payment and debt management logic that other contracts, like `CallbackProxy`, can extend.
-- **Debt Management**: Includes functions to manage the outstanding debts of reactive contracts, ensuring they are charged appropriately.
+- `pay` – Facilitates payment to the sender if authorized.
+- `coverDebt` – Pays off any outstanding debt to the vendor.
+- `_pay` – Handles internal payment logic and ensures sufficient balance for transactions.
 
 ### AbstractPausableReactive
 
-Extends `AbstractReactive` to add functionality that allows reactive contracts to be paused, which is particularly useful for managing subscriptions or other time-sensitive operations. Includes the following key features:
+Manages pausable event subscriptions for reactive contracts, allowing the owner to pause and resume event monitoring. Methods include:
 
-- **Pausing Mechanism**: Adds functions to pause and unpause contract operations, which can be critical in emergency situations or when maintenance is required.
+- `pause` – Unsubscribes from all active event subscriptions and pauses the contract.
+- `resume` – Resubscribes to all paused event subscriptions and resumes contract functionality.
+- `onlyOwner` – Restricts access to functions only to the contract owner.
   
 ### AbstractCallback
 
-Inherits from `AbstractPayer` and provides the base logic for processing callbacks within the Reactive Network. Includes the following key features:
+An abstract base for managing callback-related functions with restricted access to a designated RVM ID. Methods include:
 
-- **Callback Management**: Implements standard functionality for handling callbacks, including checks for the Reactive Virtual Machine (RVM) ID and ensuring that callbacks are processed securely.
-- **Extensibility**: This abstract contract is designed to be extended by other contracts that need to handle callbacks in a standardized manner.
+- `rvmIdOnly` – Ensures that only authorized RVM IDs can interact with specific functions.
+- `constructor` – Sets the callback sender and initializes the RVM ID.
+
+### AbstractSubscriptionService
+
+Provides an event subscription system for reactive contracts and allows contracts to subscribe to events based on criteria such as chain ID, contract address, and topics. Methods include:
+
+- `subscribe` – Registers a contract to receive notifications for events matching the provided criteria.
+- `unsubscribe` – Removes an active subscription based on matching criteria.
+- `ping` – Verifies whether the contract is running in a specific reactive context.
+
+## Most Common Errors Across Contracts
+
+**Unauthorized Access**: Modifier-related errors (e.g., `onlyOwner`, `rvmIdOnly`, `sysConOnly`) prevent unauthorized users from accessing specific contract functions. Reverts with 'Unauthorized' or 'Authorized X only' if the caller does not meet required conditions.
+
+**Incorrect Address or Contract Binding**: Misconfigured addresses like `service`, `vendor`, or `rvm_id` can cause contract failures, as external interactions depend on these addresses being correct.
+
+**Uninitialized Variables**: If addresses like `rvm_id` or `vendor` are uninitialized, contracts can restrict access or fail during external calls. Uninitialized variables can also cause authorization failures.
+
+**Transfer/Payment Failures**: Errors like 'Insufficient funds' or 'Transfer failed' occur if the contract doesn’t have enough funds in the balance or if `.call` to external contracts fails.
+
+**Already Paused or Not Paused State**: Functions like `pause` or `resume` in pausable contracts may revert if the contract is already in the required state, either paused or unpaused, leading to redundant or unnecessary actions.
+
+**Unsuccessful External Calls**: Calls to external contracts like `subscribe`, `unsubscribe`, or `pay` can silently fail due to reentrancy, gas issues, or misconfigured target contracts.
+
+**Expensive Gas Operations**: Operations involving loops, recursion, or multiple subscriptions (e.g., in `unsubscribe` or `findSubscribersRecursively`) may result in high gas costs or out-of-gas errors.
+
+**Duplicate or Invalid Subscriptions**: Contracts that handle subscriptions may fail to check for duplicates or invalid entries (e.g., all `REACTIVE_IGNORE`), leading to inefficiencies or unexpected behavior.
+
+**Debt and Payment Issues**: Insufficient payment or improper debt calculation can block further contract operations like resuming subscriptions, processing payments, or avoiding callback failures.
+
+**Modifier Conflicts or Context Errors**: Modifiers like `rnOnly`, `vmOnly`, or `sysConOnly` can cause errors if called in the wrong context, particularly in systems involving reactive virtual machines or system contracts.
