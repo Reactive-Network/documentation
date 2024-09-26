@@ -18,19 +18,13 @@ The callback proxy operates independently on destination chains and as an integr
 
 Callback execution is tied to payment, ensuring contracts either have sufficient balance or pay immediately upon receiving a callback. Failure to pay results in the contract being blacklisted, blocking future callbacks and transactions. Debt can be cleared using the `requestPayment` method, which restores the contract’s functionalities.
 
-### Prepayment
-
-**Direct Transfers**: The system contract and proxies accept direct transfers for prepayment.
-
-**Third-Party Payments**: Third parties can fund contracts using the `depositTo` method.
-
-To fund the callback contract:
+**Direct Transfers**: You can transfer funds directly to your callback contract. To fund the callback contract:
 
 ```bash
 cast send $CALLBACK_ADDR --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY --value 0.1ether
 ```
 
-To deposit funds into the callback proxy:
+**Third-Party Payments**: Third parties can fund contracts using the `depositTo` method. To deposit funds into the callback proxy:
 
 ```bash
 cast send --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY $CALLBACK_PROXY_ADDR "depositTo(address)" $CALLBACK_ADDR --value 0.1ether
