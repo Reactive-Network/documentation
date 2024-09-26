@@ -18,22 +18,22 @@ The callback proxy operates independently on destination chains and as an integr
 
 Callback execution is tied to payment, ensuring contracts either have sufficient balance or pay immediately upon receiving a callback. Failure to pay results in the contract being blacklisted, blocking future callbacks and transactions. Debt can be cleared using the `requestPayment` method, which restores the contract’s functionalities.
 
-### Prepayment
-
-**Direct Transfers**: The system contract and proxies accept direct transfers for prepayment.
-
-**Third-Party Payments**: Third parties can fund contracts using the `depositTo` method.
-
-To fund the callback contract:
+**Direct Transfers**: To transfer funds directly to your callback contract, use the following command. This sends 0.1 ether to the contract address on the destination chain:
 
 ```bash
-cast send $CALLBACK_ADDR --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY --value 0.1ether
+cast send $CALLBACK_ADDR --rpc-url $DESTINATION_CHAIN_RPC --private-key $DESTINATION_CHAIN_PRIVATE_KEY --value 0.1ether
 ```
 
-To deposit funds into the callback proxy:
+**Depositing Funds to Callback Proxy**: You can deposit funds to a contract using the `depositTo` method. This command sends 0.1 ether to the callback proxy, specifying the callback contract address as the recipient:
 
 ```bash
-cast send --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY $CALLBACK_PROXY_ADDR "depositTo(address)" $CALLBACK_ADDR --value 0.1ether
+cast send --rpc-url $DESTINATION_CHAIN_RPC --private-key $DESTINATION_CHAIN_PRIVATE_KEY $CALLBACK_PROXY_ADDR "depositTo(address)" $CALLBACK_ADDR --value 0.1ether
+```
+
+**Checking Reactive Contract Balance**: To check the balance of a reactive contract on the Reactive Network, use the following command:
+
+```bash
+cast balance --rpc-url $REACTIVE_RPC $REACTIVE_CONTRACT_ADDR
 ```
 
 :::tip[On-The-Spot Payment]
