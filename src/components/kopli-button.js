@@ -2,14 +2,22 @@ import '../css/custom.css';
 
 const CHAIN_ID = '0x512578';
 
-const checkWallet = () => {
+const checkWallet = async () => {
     if (typeof window.ethereum !== 'undefined') {
+        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+
+        if (chainId === CHAIN_ID) {
+            alert('Already connected to the Kopli Testnet.');
+        }
         return true;
     } else {
-        alert('MetaMask is not installed. Please visit https://metamask.io/ to install the wallet.');
+        if (window.confirm('MetaMask is not installed. Would you like to visit MetaMask website to install it?')) {
+            window.open('https://metamask.io/', '_blank');
+        }
         return false;
     }
 };
+
 
 export const AddToWeb3Provider = async () => {
     if (!checkWallet()) return;
