@@ -43,36 +43,36 @@ The following diagram illustrates a process involving the interaction between an
 
 ![Reactive Network Lifecycle](./img/global-processing-flow.png)
 
-Here’s a step-by-step description of the process:
+### Step-by-step Description
 
-- **New Block in Origin Chain**: The process starts when a new block is created on the Origin Chain. This block contains multiple transactions.
+**New Block in Origin Chain**: The process starts when a new block is created on the Origin Chain. This block contains multiple transactions.
 
-- **Catch Block in Reactive Network**: The Reactive Network catches the newly created block from the Origin Chain.
+**Catch Block in Reactive Network**: The Reactive Network catches the newly created block from the Origin Chain.
 
-- **Iterate Transactions**: The system iterates through all the transactions in the newly caught block.
+**Iterate Transactions**: The system iterates through all the transactions in the newly caught block.
 
-- **Extract Transaction Logs**: Transaction logs are extracted from each transaction.
+**Extract Transaction Logs**: Transaction logs are extracted from each transaction.
 
-- **Find Transactions at System SC**: The system identifies specific transactions that need to be processed by the System Smart Contract (System SC).
+**Find Transactions at System SC**: The system identifies specific transactions that need to be processed by the System Smart Contract (System SC).
 
-- **Prepare Transaction and Publish to RVM**: The identified transactions are prepared and published to the ReactVM for further processing.
+**Prepare Transaction and Publish to RVM**: The identified transactions are prepared and published to the ReactVM for further processing.
 
-- **ReactVM Processing**:
+**ReactVM Processing**:
 
-    - **ReactVM Exists?**: The system checks if a ReactVM already exists.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **ReactVM Exists?**: The system checks if a ReactVM already exists.
 
-    - **No**: If no ReactVM exists, the system sets up a new ReactVM.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **No**: If no ReactVM exists, the system sets up a new ReactVM.
 
-    - **Run ReactVM**: The ReactVM is run to process the transaction.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Run ReactVM**: The ReactVM is run to process the transaction.
 
-    - **Execute Transaction**: The transaction is executed within the ReactVM.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Execute Transaction**: The transaction is executed within the ReactVM.
 
-    - **Stop ReactVM**: After executing the transaction, the ReactVM is stopped.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Stop ReactVM**: After executing the transaction, the ReactVM is stopped.
 
-- **Transaction Receipt**: After the ReactVM completes processing the transaction, a transaction receipt is generated.
+**Transaction Receipt**: After the ReactVM completes processing the transaction, a transaction receipt is generated.
 
-- **Prepare Transaction for Destination Chain**: Based on the transaction receipt, a new transaction is prepared for the Destination Chain.
+**Prepare Transaction for Destination Chain**: Based on the transaction receipt, a new transaction is prepared for the Destination Chain.
 
-- **Transaction at Mem. Pool in Destination Chain**: The prepared transaction is placed in the memory pool of the Destination Chain, ready to be included in a new block on that chain.
+**Transaction at Mem. Pool in Destination Chain**: The prepared transaction is placed in the memory pool of the Destination Chain, ready to be included in a new block on that chain.
 
 [More on ReactVM →](../education/module-1/react-vm.md)
