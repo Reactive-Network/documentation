@@ -62,6 +62,14 @@ This formula is intended for the testnet stage and may evolve.
 Reactive Transactions will share the same payment mechanism as RNK's callback payments, with a common balance. Separate contracts may be used for reactive and callback functionalities. This feature is not yet implemented, as it is not critical for the hackathon phase.
 :::
 
+### Gas / Tokenomics
+
+1. Gas usage and gas limits are tracked for all system transactions.
+2. On the Reactive Network (RNK), users are charged based on the formula: Gas Used × Gas Price = Total REACT Charge. This amount is deducted from the user's REACT token balance.
+3. Currently, RVM transactions don't incur gas charges (subject to change).
+4. Certain transactions may involve a `value` field, such as contract deployment or fund transfers. In these cases, the specified value (in REACT) is deducted from the user's balance.
+5. RVM tokenomics is still under development; for now, all transactions are free of gas charges.
+
 ## Interfaces & Abstract Contracts
 
 ### [ISystemContract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/ISystemContract.sol)
