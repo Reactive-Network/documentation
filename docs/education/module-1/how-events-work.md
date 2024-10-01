@@ -9,24 +9,24 @@ slug: how-events-work
 
 ## Overview
 
-In the Ethereum blockchain, events enable smart contracts to communicate with the external world by logging specific information when certain conditions are met. This allows decentralized applications (dApps) to trigger and respond to occurrences without constantly polling the blockchain. Events are indexed by the EVM, making them easily searchable, which is particularly useful for monitoring blockchain activities like transfers, contract updates, and price changes from oracles.
+In Ethereum, events enable smart contracts to communicate with the external world by logging specific information when certain conditions are met. This allows decentralized applications (dApps) to trigger and respond to occurrences without constantly polling the blockchain. Events are indexed by the EVM, making them easily searchable, which is particularly useful for monitoring blockchain activities like transfers, contract updates, and price changes from oracles.
 
-This lesson focuses on the critical role of events and callbacks in smart contracts. By learning how to emit, process, and listen to events, developers can create dynamic dApps that respond to blockchain changes in real-time. We will also explore how Reactive Smart Contracts use the `react()` method to handle events and initiate cross-chain transactions through callbacks, enabling improved functionality within the Reactive Network.
+This lesson focuses on the role of events and callbacks in smart contracts. By learning how to emit, process, and listen to events, developers can create dynamic dApps that respond to blockchain changes in real-time. We will also explore how Reactive Smart Contracts use the `react()` method to handle events and initiate cross-chain transactions through callbacks, enabling improved functionality within the Reactive Network.
 
 By the end of this lesson, you will learn to:
 
 * Define and emit events in an Ethereum smart contract.
 * Listen for and process events using decentralized applications.
 * Implement event processing in Reactive Smart Contracts.
-*  callbacks to trigger actions on destination chains.
+* Send callbacks to trigger actions on destination chains.
 
-## How Do EVM Events Work?
+## How EVM Events Work
 
-When a smart contract emits an event, the event data is stored in the transaction's logs. These logs are attached to the blocks of the blockchain but do not affect the blockchain state directly. Instead, they offer a way to record and retrieve information, based on the event's parameters.
+When a smart contract emits an event, the event data is stored in the transaction's logs. These logs are attached to the blocks of the blockchain but don't directly affect the blockchain state. Instead, they provide a way to record and retrieve information based on the event's parameters.
 
-Developers define events in smart contracts using the event keyword, followed by the event name and the data types of the information they want to log. To emit an event, the smart contract uses the `emit` keyword followed by the event name and the data to be logged.
+Developers define events in smart contracts using the `event` keyword, followed by the event name and the data types of the information they want to log. To emit an event, the smart contract uses the `emit` keyword, followed by the event name and the data to be logged.
 
-External applications, like dApps or backend services, can listen for these events. By specifying the event signature and, optionally, filtering parameters, these applications can subscribe to real-time updates whenever the event is emitted. This mechanism is pivotal for creating responsive and interactive blockchain applications.
+External applications, such as dApps or backend services, can listen for these events. By specifying the event signature and, optionally, filtering parameters, these applications can subscribe to real-time updates whenever the event is emitted. This mechanism is pivotal for creating responsive and interactive blockchain applications.
 
 ## Example: Chainlink Price Oracle Integration
 
@@ -50,11 +50,11 @@ When the smart contract receives a new price update from Chainlink's oracle, it 
 emit PriceUpdated("ETH", newEthPrice);
 ```
 
-In this line, `newEthPrice` is the updated price of Ethereum fetched from Chainlink whose oracle is updated periodically.
+In this line, `newEthPrice` is the updated price of Ethereum fetched from Chainlink, whose oracle is updated periodically.
 
 ### Listening for the Price Update
 
-A dApp or an investor's portfolio management tool can listen for the `PriceUpdated` event to trigger specific actions, like rebalancing a portfolio or issuing a loan. We will use a Reactive Smart Contract to catch these events, see the next lessons.
+A dApp or an investor's portfolio management tool can listen for the `PriceUpdated` event to trigger specific actions such as rebalancing a portfolio or issuing a loan. We will use a Reactive Smart Contract to catch these events in later lessons.
 
 ## Event Processing in Reactive Smart Contracts
 
@@ -74,14 +74,14 @@ function react(
 ) external;
 ```
 
-The function has the following parameters:
+The function parameters are:
 
 - `chain_id`: A `uint256` representing the origin chain ID as per `EIP155`.
 - `_contract`: The address of the contract on the origin chain emitting the event.
 - `topic_0`, `topic_1`, `topic_2`, `topic_3`: `uint256` values representing the topics of the event.
 - `data`: The event data encoded as a byte array.
 - `block_number`: The block number in the origin chain where the event log is recorded.
-- op_code: A `uint256` representing the opcode associated with the event.
+- `op_code`: A `uint256` representing the opcode associated with the event.
 
 The Reactive Network continuously monitors event logs and matches them against the subscription criteria defined in reactive contracts. When an event that meets the criteria is detected, the network triggers the `react()` method, passing in relevant details.
 
@@ -93,7 +93,7 @@ Reactive Smart Contracts can initiate transactions on destination chains by emit
 
 ### Emitting Callback Events
 
-To request actions on destination chains, the user must trigger the `Callback` event in the Reactive Contract. Once triggered, this event is emitted by the smart contract and provides critical information that the Reactive Network needs to create and submit the transaction.
+To request actions on destination chains, the user must trigger a `Callback` event in the Reactive Contract. Once triggered, this event is emitted by the smart contract and provides critical information that the Reactive Network needs to create and submit the transaction.
 
 The `Callback` event includes the following parameters:
 
