@@ -15,7 +15,7 @@ Reactive Smart Contracts (RSCs) represent a paradigm shift in how we interact wi
 
 ## Why Reactive Smart Contracts
 
-In the realm of Ethereum, smart contracts have revolutionized how we conceive of executing trustless agreements. Traditionally, these contracts spring into action only upon a user-initiated transaction. This presents inherent limitations. For one, smart contracts can't autonomously initiate actions or respond to blockchain events without an external prompt — be it from a user or an automated script (like a trading bot). This requires the holding of private keys, introducing a centralized point of control.
+In the Ethereum world, smart contracts have revolutionized how we conceive of executing trustless agreements. Traditionally, these contracts spring into action only upon a user-initiated transaction. This presents inherent limitations. For one, smart contracts can't autonomously initiate actions or respond to blockchain events without an external prompt — either from a user or an automated script like a trading bot. This requires holding private keys and introducing a centralized point of control.
 
 Reactive Smart Contracts (RSCs) emerge as a solution to this constraint. RSCs are designed to autonomously react to events in the Ethereum Virtual Machine (EVM) and trigger subsequent actions across the blockchain ecosystem. This capability for the implementation of complex logic that can source information from multiple chains and enact changes or transactions across various platforms without a central oversight.
 
@@ -33,9 +33,9 @@ Reactive Smart Contracts (RSCs) emerge as a solution to this constraint. RSCs ar
 
 ## About This Course
 
-To equip developers with the skills and knowledge to harness the potential of RSCs, we've crafted a comprehensive course that includes detailed documentation and hands-on tutorials. Our objective is not just to impart technical knowledge but to foster a collaborative environment where developers can explore the full spectrum of possibilities that RSCs offer.
+To equip developers with the skills to harness RSCs, we've created a comprehensive course with detailed documentation and hands-on tutorials. Our goal is to foster a collaborative space where developers can explore the full potential of RSCs.
 
-The course materials encompass lectures, code examples hosted on GitHub, and video demonstrations, providing a multi-faceted learning experience. Whether you're keen on delving into the theoretical underpinnings of Reactive technology or eager to jump straight into practical [use cases](../use-cases/index.md), this course is designed to cater to your learning preferences.
+The course offers lectures, GitHub code examples, and video demonstrations for a multi-faceted learning experience. Whether you're interested in theory or practical [use cases](../use-cases/index.md), this course adapts to your needs.
 
 Throughout the course, we will examine various applications of RSCs, including:
 
