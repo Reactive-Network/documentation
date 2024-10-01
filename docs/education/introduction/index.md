@@ -10,15 +10,10 @@ hide_title: true
 
 ## Overview
 
-To harness the power of Reactive Smart Contracts (RSCs), we have developed an educational course featuring detailed lectures, code snippets on GitHub, and video demonstrations. Our goal is to provide both theoretical knowledge and practical challenges, creating a community where developers can fully explore RSCs. This course covers key topics such as:
-
-* Executing Uniswap stop orders with RSCs
-* Syncing NFT ownership across multiple blockchain platforms
-* Auto-harvesting staking rewards from various pools and chains
-
+To better understand the concept of Reactive Smart Contracts (RSCs), we have developed an educational course featuring detailed lectures, code snippets on [GitHub](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos), and video workshops on [YouTube](https://www.youtube.com/@0xReactive/streams). Our goal is to provide both theoretical knowledge and practical challenges, creating a community where developers can fully explore RSCs.
 ## Where to Begin 
 
-The Introduction chapter provides an overview of Reactive Smart Contracts, highlighting their ability to autonomously respond to events on EVM-compatible chains. It also outlines the technical and knowledge prerequisites necessary for mastering these concepts.
+The Introduction chapter provides an overview of Reactive Smart Contracts, highlighting their ability to autonomously react to events on EVM-compatible chains. It also outlines the technical and knowledge prerequisites necessary for mastering these concepts.
 
 [Introduction to Reactive Smart Contracts →](./reactive-smart-contracts.md)
 
@@ -26,7 +21,7 @@ The Introduction chapter provides an overview of Reactive Smart Contracts, highl
 
 ## Module One
 
-[Module 1](../module-1/index.md) is dedicated to the basics of Reactive Smart Contracts, events and callbacks, the ReactVM and Reactive Network, along with the function of oracles in integrating off-chain data.
+[Module 1](../module-1/index.md) is dedicated to the basics of Reactive Smart Contracts, events and callbacks, the ReactVM and Reactive Network environments, subscriptions, and the function of oracles in integrating off-chain data.
 
 [Reactive Smart Contracts →](../module-1/reactive-smart-contracts.md)
 
@@ -58,6 +53,6 @@ The [Use Cases](../use-cases/index.md) section explains scenarios where Reactive
 
 ## Glossary
 
-The Glossary provides concise definitions of key terms related to blockchain technology, decentralized finance, and smart contracts, including specific Reactive to prevent potential confusion.
+The Glossary provides concise definitions of key terms related to blockchain technology, decentralized finance, and smart contracts, including specific Reactive terms to prevent potential confusion.
 
 [Glossary →](../glossary.md)
