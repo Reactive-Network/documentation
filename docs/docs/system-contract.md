@@ -30,7 +30,7 @@ cast send $CALLBACK_ADDR --rpc-url $DESTINATION_CHAIN_RPC --private-key $DESTINA
 cast send --rpc-url $DESTINATION_CHAIN_RPC --private-key $DESTINATION_CHAIN_PRIVATE_KEY $CALLBACK_PROXY_ADDR "depositTo(address)" $CALLBACK_ADDR --value 0.1ether
 ```
 
-**Checking Reactive Contract Balance**: To check the balance of a reactive contract on the Reactive Network, use the following command:
+**Checking Reactive Contract Balance**: To check the balance of a contract on the Reactive Network, use the following command:
 
 ```bash
 cast balance --rpc-url $REACTIVE_RPC $REACTIVE_CONTRACT_ADDR
@@ -38,6 +38,18 @@ cast balance --rpc-url $REACTIVE_RPC $REACTIVE_CONTRACT_ADDR
 
 :::tip[On-The-Spot Payment]
 Implement the `pay()` method or inherit from `AbstractCallback` or `AbstractReactive` for on-the-spot payments.
+:::
+
+### Covering Debts
+
+You might catch the `Callback target currently in debt` error. To cover a debt, the user has two options:
+
+**Call the coverDebts() Method:** If the contract has the `coverDebts()` method implemented, the user should call this method to initiate the debt closure process.
+
+**Use the Callback Proxy's depositTo() Method:** The user can close the debt manually by using the `depositTo()` method described in [Callback Payments](./system-contract.md#callback-payments).
+
+:::info[]
+The funds to cover the debt might be held in the user's contract account instead of the callback proxy's account. When the contract transfers these funds to the proxy, it triggers the `receive()` function, closing the debt.
 :::
 
 ### Callback Pricing
