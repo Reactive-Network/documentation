@@ -16,40 +16,50 @@ The [Callback Proxy](https://github.com/Reactive-Network/system-smart-contracts/
 
 ## Callback Payments
 
-Callback execution is tied to payment, ensuring contracts either have sufficient balance or pay immediately upon receiving a callback. Failure to pay results in the contract being blacklisted, blocking future callbacks and transactions. Debt can be cleared using the `requestPayment` method, which restores the contract’s functionalities.
+Callback execution is tied to payment, ensuring contracts either have sufficient balance or pay immediately upon receiving a callback. Failure to pay results in the contract being blacklisted, blocking future callbacks and transactions.
 
-**Direct Transfers**: To transfer funds directly to your callback contract, use the following command. This sends 0.1 ether to the contract address on the destination chain:
+### Direct Transfers
+
+To transfer funds directly to your callback contract, use the following command. This sends 0.1 ether to the callback contract on the destination chain:
 
 ```bash
 cast send $CALLBACK_ADDR --rpc-url $DESTINATION_CHAIN_RPC --private-key $DESTINATION_CHAIN_PRIVATE_KEY --value 0.1ether
 ```
 
-**Depositing Funds to Callback Proxy**: You can deposit funds to a contract using the `depositTo` method. This command sends 0.1 ether to the callback proxy, specifying the callback contract address as the recipient:
+After that, run the `coverDebts` method, which checks if the contract has debts and sufficient funds to pay them. If both conditions are met, the contract will automatically settle its debts using its own funds.
+
+```bash
+cast send --rpc-url $DESTINATION_CHAIN_RPC --private-key $DESTINATION_CHAIN_PRIVATE_KEY $CALLBACK_ADDR "coverDebt()"
+```
+
+### Depositing Funds to Callback Proxy
+
+Alternatively, you can use the `depositTo` method to transfer funds to the callback contract via `Callback Proxy`, with the transaction fee paid by the EOA address whose private key signs the transaction. The following request sends 0.1 ether to the callback contract on the destination chain.
 
 ```bash
 cast send --rpc-url $DESTINATION_CHAIN_RPC --private-key $DESTINATION_CHAIN_PRIVATE_KEY $CALLBACK_PROXY_ADDR "depositTo(address)" $CALLBACK_ADDR --value 0.1ether
 ```
 
-**Checking Reactive Contract Balance**: To check the balance of a contract on the Reactive Network, use the following command:
+:::tip[On-The-Spot Payment]
+Implement the `pay()` method or inherit from `AbstractPayer` for on-the-spot payments. `Callback Proxy` triggers `pay()` when a callback puts the contract in debt. The standard implementation verifies the proxy as the caller, ensures sufficient funds are available, and then settles the debt.
+:::
+
+### Checking Balance and Debt
+
+To check the balance of a contract on the Reactive Network, use the following command:
 
 ```bash
 cast balance --rpc-url $REACTIVE_RPC $REACTIVE_CONTRACT_ADDR
 ```
 
-:::tip[On-The-Spot Payment]
-Implement the `pay()` method or inherit from `AbstractCallback` or `AbstractReactive` for on-the-spot payments.
-:::
+To check the debt status of a specific contract on the destination chain, run this command:
 
-### Covering Debts
+```bash
+cast call --trace --rpc-url $DESTINATION_CHAIN_RPC --private-key $DESTINATION_CHAIN_PRIVATE_KEY $CALLBACK_PROXY_ADDR "debts(address)" $CONTRACT_ADDR
+```
 
-You might catch the `Callback target currently in debt` error. To cover a debt, the user has two options:
-
-**Call the coverDebts() Method:** If the contract has the `coverDebts()` method implemented, the user should call this method to initiate the debt closure process.
-
-**Use the Callback Proxy's depositTo() Method:** The user can close the debt manually by using the `depositTo()` method described in [Callback Payments](./system-contract.md#callback-payments).
-
-:::info[]
-The funds to cover the debt might be held in the user's contract account instead of the callback proxy's account. When the contract transfers these funds to the proxy, it triggers the `receive()` function, closing the debt.
+:::info[On Debt Settlement]
+You might catch the `Callback target currently in debt` error. Remember that the funds to cover the debt might be held in the user's callback contract account instead of `Callback Proxy`. When the callback contract transfers these funds to the proxy, it triggers the `receive()` function, closing the debt.
 :::
 
 ### Callback Pricing
