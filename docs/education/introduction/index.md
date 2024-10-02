@@ -11,6 +11,7 @@ hide_title: true
 ## Overview
 
 To better understand the concept of Reactive Smart Contracts (RSCs), we have developed an educational course featuring detailed lectures, code snippets on [GitHub](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos), and video workshops on [YouTube](https://www.youtube.com/@0xReactive/streams). Our goal is to provide both theoretical knowledge and practical challenges, creating a community where developers can fully explore RSCs.
+
 ## Where to Begin 
 
 The Introduction chapter provides an overview of Reactive Smart Contracts, highlighting their ability to autonomously react to events on EVM-compatible chains. It also outlines the technical and knowledge prerequisites necessary for mastering these concepts.
