@@ -67,7 +67,6 @@ bytes memory payload = abi.encodeWithSignature(
     coefficient,
     threshold
 );
-triggered = true;
 emit Callback(chain_id, stop_order, CALLBACK_GAS_LIMIT, payload);
 ```
 

@@ -31,9 +31,10 @@ The Reactive Network's state is determined by the collective states of individua
 The Reactive Network operates within a dual-state environment that supports parallel transaction execution. While the EVM processes commands sequentially in a single-threaded manner, ReactVMs can operate independently and in parallel across different cores or threads. This architecture facilitates the management of various operations, including fund flows and token management, with each contract copy having its own state and execution context.
 
 Each [Reactive Smart Contract](./reactive-smart-contracts.md) has two instances with different states, both initialized in the constructor:
- 
-- **ReactVM State**: Updates when an event occurs.
-- **Reactive Network State**: Updates when you manually call its functions.
+
+&nbsp;&nbsp;&nbsp;&nbsp; **ReactVM State**: Updates when an event occurs.
+
+&nbsp;&nbsp;&nbsp;&nbsp; **Reactive Network State**: Updates when you manually call its functions.
 
 For example, in a governance contract, vote counts are maintained in the ReactVM state, whereas operational commands like `pause()` are part of the Reactive Network state. The primary logic resides within the ReactVM state.
 
