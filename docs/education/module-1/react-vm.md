@@ -9,11 +9,11 @@ slug: react-vm
 
 ## Overview
 
-In the previous lessons, we discuss one of the basic concepts of Reactive Smart Contracts (RSCs) — Inversion of Control, and how events and callbacks work in RSCs. In this one, we will focus on another crucial property of RSCs: the fact they exist in two instances with separate states in the Reactive Network and ReactVM. Understanding this idea is necessary for successful Reactive Smart Contract development.
+In [Reactive Smart Contracts](./reactive-smart-contracts.md), we discuss one of the basic concepts of reactive contracts (RSCs) — Inversion of Control, and how events and callbacks work in RSCs. This article focuses on another crucial property of RSCs: the fact they exist in two instances with separate states in the Reactive Network and ReactVM. Understanding this idea is necessary for successful reactive contract development.
 
 By the end of this lesson, you will learn to:
 
-* Distinguish both environments where a Reactive Smart Contract is executed.
+* Distinguish both environments where a reactive contract is executed.
 * Identify the current environment.
 * Manage data with two separate states.
 * Understand the types of transactions RSCs operate with.
@@ -24,7 +24,7 @@ Each Reactive Smart Contract has two instances — one on the Reactive Network a
 
 ![Reactive Network | React Vm ](./img/reactvm.jpg)
 
-The Reactive Network operates as a typical EVM blockchain with the addition of system contracts that allow subscribing to and unsubscribing from the origin chain events that we are monitoring, such as Ethereum, BNB, Polygon, or Optimism. Each deployer address has a dedicated ReactVM.
+The Reactive Network operates as a typical EVM blockchain with the addition of system contracts that allow subscribing to and unsubscribing from origin chain events on Ethereum, BNB, Polygon, or Optimism. Each deployer address has a dedicated ReactVM.
 
 ReactVM is a restricted virtual machine designed to process events in isolation. Contracts deployed from one address are executed in one ReactVM. They can interact with each other but not with other contracts on the Reactive Network.
 
@@ -49,7 +49,7 @@ The `vm` variable is initialized in the constructor after attempting to call the
 ```solidity
 bytes memory payload = abi.encodeWithSignature(
     "subscribe(uint256,address,uint256,uint256,uint256,uint256)",
-    SEPOLIA_CHAIN_ID,
+    CHAIN_ID,
     _contract,
     topic_0,
     REACTIVE_IGNORE,
@@ -62,7 +62,7 @@ if (!subscription_result) {
 }
 ```
 
-We need to ensure that each method/function is executed only in the environment it is supposed to. We do this through modifiers that check the `vm` variable initiated in the constructor.
+We need to ensure that each function is executed only in the environment it is supposed to. We do this through modifiers that check the `vm` variable initiated in the constructor.
 
 ```solidity
 modifier rnOnly() {
@@ -106,11 +106,11 @@ The variables used for managing event subscriptions pertain to the Reactive Netw
 
 ## Transaction Execution
 
-Let us consider the types of transactions that are executed in the Reactive Network and ReactVM for a specific Reactive Smart Contract.
+Let's consider the types of transactions that are executed in the Reactive Network and ReactVM for a specific Reactive Smart Contract.
 
 ### Reactive Network Transactions
 
-There are two ways to initiate a transaction on the Reactive Network: directly by a user or triggered by an event on the origin chain
+There are two ways to initiate a transaction on the Reactive Network: directly by a user or triggered by an event on the origin chain.
 
 Users can directly initiate transactions on the Reactive Network by invoking methods specific to the RSC instance dedicated to the Reactive Network. These methods interact with the state of the Reactive Network and enable various functionalities. For example, a user might initiate a transaction by calling the `pause()` function to suspend event reception and response temporarily.
 

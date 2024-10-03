@@ -144,7 +144,7 @@ In this lesson, we've explored the fundamentals of events and callbacks in Ether
 
 - **Understanding Events:** Events allow smart contracts to log information and interact with external applications, providing a powerful way to respond to on-chain activities without directly altering the blockchain state.
 
-- **Reactive Smart Contracts and the `react()` Method:** RSCs use the `react()` method to autonomously process incoming events based on specified criteria, enabling real-time, decentralized, and responsive contract behavior.
+- **Reactive Smart Contracts and the react() Method:** RSCs use the `react()` method to autonomously process incoming events based on specified criteria, enabling real-time, decentralized, and responsive contract behavior.
 
 - **Callbacks for Cross-Chain Transactions:** RSCs can initiate actions on different blockchains using callbacks, broadening their functionality beyond single-chain constraints and facilitating more complex decentralized applications.
 
