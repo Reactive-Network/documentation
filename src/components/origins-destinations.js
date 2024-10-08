@@ -34,7 +34,7 @@ const ChainTable = () => {
                 <tr>
                     <td><a href="https://avascan.info/">Avalanche C-Chain</a></td>
                     <td>✅</td>
-                    <td>⌛</td>
+                    <td>✅</td>
                     <td>43114</td>
                     <td>0x76DdEc79A96e5bf05565dA4016C6B027a87Dd8F0</td>
                     <td>https://api.avax.network/ext/bc/C/rpc</td>
@@ -42,15 +42,15 @@ const ChainTable = () => {
                 <tr>
                     <td><a href="https://arbiscan.io/">Arbitrum One</a></td>
                     <td>✅</td>
-                    <td>⌛</td>
+                    <td>➖</td>
                     <td>42161</td>
-                    <td>⌛</td>
+                    <td>➖</td>
                     <td>https://arb1.arbitrum.io/rpc</td>
                 </tr>
                 <tr>
                     <td><a href="https://pacific-explorer.manta.network/">Manta Pacific</a></td>
                     <td>✅</td>
-                    <td>⌛</td>
+                    <td>✅</td>
                     <td>169</td>
                     <td>0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4</td>
                     <td>https://pacific-rpc.manta.network/http</td>
