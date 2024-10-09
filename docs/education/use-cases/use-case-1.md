@@ -1,43 +1,26 @@
 ---
-title: "Use Case: Basic Demo Smart Contract"
+title: "Use Case: Reactive Network Demo"
 sidebar_position: 1
 description: Learn to build and deploy a Basic Reactive Smart Contract. Understand low-latency log monitoring and cross-chain calls using Ethereum testnets. Ideal for mastering Reactive Network fundamentals.
 slug: use-case-1
 ---
 
-# Use Case: Basic Demo Smart Contract
+# Use Case: Reactive Network Demo
 
 ## Overview
 
-In this lesson, we’ll discuss how to build and deploy the first Reactive Smart Contract and what it does. As we’ve discussed previously, a Reactive Smart Contract tracks on an EVM chain (Ethereum, BSC, Polygon, etc.), processes the received data with the implemented logic, and then does after-effects back on the same or different chain. In this particular case, it does:
+This article focuses on building and deploying a reactive contract, using the basic [Reactive Network Demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/basic) that provides:
 
-* Low-latency monitoring of logs emitted by arbitrary contracts in the Network (Sepolia testnet in this
-  case).
-
-* Calls from Reactive Network to arbitrary contracts.
-
-There are three main contracts involved in this scenario:
-
-* Origin chain contract
-* Reactive contract
-* Destination chain contract
+* Low-latency monitoring of logs emitted by contracts on the origin chain (Sepolia testnet).
+* Executing calls from the Reactive Network to contracts on the destination chain, also on Sepolia.
 
 ![Basic Demo Smart Contract](./img/use-case-1.png)
 
-## Origin Chain Contract
+## Contracts
 
-This contract, or set of contracts, presumably emits logs of some interest to the Reactive Network user. In financial applications, this could be a DEX, such as a Uniswap pool, that emits data on trades and/or exchange rates. Typically, the contract is controlled by a third party, otherwise, mediation by Reactive Network would be unnecessary.
+* **Origin Chain Contract**: [BasicDemoL1Contract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoL1Contract.sol) receives Ether and returns it to the sender, emitting a `Received` event with transaction details.
 
-In our demo, this contract is implemented in `BasicDemoL1Contract.sol`. It's a basic contract that accepts
-native transfers, emits their log records, and returns the funds to the sender.
-
-## Reactive Contract
-
-Reactive Smart Contracts (RSCs) implement the logic of event monitoring and initiating calls back to L1 chain(s). RSCs are fully fledged EVM contracts that can maintain state persistence, statically or dynamically subscribe/unsubscribe to multiple different event origins, and perform callbacks by emitting specialized log records specifying the parameters of a transaction to be submitted to the destination chain.
-
-Reactive contracts are executed in a private subnet (ReactVM) tied to a specific deployer address. This limitation restricts their ability to interact with other reactive contracts but greatly improves Reactive Network’s ability to scale.
-
-In our demo, the reactive contract implemented in `BasicDemoReactiveContract.sol` subscribes to events emitted by`BasicDemoL1Contract.sol` upon deployment. Whenever the observed contract reports receiving more than 0.1 ether in a single transfer, the reactive contract initiates an L1 callback by emitting a log record with the requested transaction parameters and payload.
+* **Reactive Contract**: [BasicDemoReactiveContract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoReactiveContract.sol) subscribes to events on Sepolia, emits logs, and triggers callbacks when conditions are met, such as `topic_3` being at least 0.1 Ether. It manages event subscriptions and tracks processed events.
 
 ```solidity
 function react(
@@ -59,77 +42,82 @@ function react(
 }
 ```
 
-In a more practical application, this contract could be monitoring an exchange rate of a given token pair, issuing a buy or sell order once the rate crosses the specified threshold, thus implementing simple stop orders.
-
-## Destination Chain Contract
-
-The `BasicDemoL1Callback.sol` contract should implement the part of the user's business logic. Note that while this could be under the user's direct control, it could also be a third-party contract.
-
-In our demo, the callback contract responds to the invocation of its `callback()` method simply by emitting yet another log record.
-
-Note that in real-world applications, the callback contract must somehow verify the validity of the call, by checking the message sender, and/or verifying the current rate when executing a stop order.
+* **Destination Chain Contract**: [BasicDemoL1Callback](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoL1Callback.sol) logs callback details upon receiving a call, capturing the origin, sender, and reactive sender addresses. It could also be a third-party contract.
 
 ## Further Considerations
 
-The reactive contract in this demo does not use the complete spectrum of capabilities already available in the Reactive Network, notably:
+The demo highlights just a subset of Reactive Network's features. Potential improvements include:
 
-* Subscription to multiple event origins: Apart from the obvious usefulness of this capability, reactive contracts are expected to subscribe to logs of their own callback contracts to ensure state consistency across networks.
-
-* Dynamic subscriptions and unsubscriptions.
-
-* Persistent state: The demo contract does not maintain any meaningful state, reacting to every event in isolation.
-
-* Arbitrary callbacks: Reactive contracts may generate arbitrary transaction payloads, while the demo contracts simply call a predetermined method of a fixed contract without any argument.
+- **Enhanced Event Subscriptions**: Subscribing to multiple event origins, including callback logs, to maintain consistency.
+- **Dynamic Subscriptions**: Allowing real-time adjustments to subscriptions based on conditions.
+- **State Management**: Introducing persistent state handling for more complex, context-aware reactions.
+- **Flexible Callbacks**: Supporting arbitrary transaction payloads to increase adaptability.
 
 ## Deployment & Testing
 
-To deploy testnet contracts to Sepolia, follow these steps, making sure you substitute the appropriate keys, addresses, and endpoints where necessary. You will need the following environment variables configured appropriately to follow this script:
+To deploy the contracts to Sepolia, [clone](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main) the project and follow these steps. Replace the relevant keys, addresses, and endpoints as needed. Make sure the following environment variables are correctly configured before proceeding:
 
-* `SEPOLIA_RPC`
-* `SEPOLIA_PRIVATE_KEY`
-* `REACTIVE_RPC`
-* `REACTIVE_PRIVATE_KEY`
-* `SYSTEM_CONTRACT_ADDR`
+* `SEPOLIA_RPC` — https://rpc2.sepolia.org
+* `SEPOLIA_PRIVATE_KEY` — Ethereuem Sepolia private key
+* `REACTIVE_RPC` — https://kopli-rpc.rkt.ink
+* `REACTIVE_PRIVATE_KEY` — Kopli Testnet private key
+* `KOPLI_CALLBACK_PROXY_ADDR` — 0x0000000000000000000000000000000000FFFFFF
+* `SEPOLIA_CALLBACK_PROXY_ADDR` — 0x33Bbb7D0a2F1029550B0e91f653c4055DC9F4Dd8
 
 ### Step 1
 
-Deploy the `BasicDemoL1Contract` (origin chain contract), which emits events for the Reactive Network, using the recommended Sepolia RPC URL: `https://rpc2.sepolia.org`.
+Deploy the `BasicDemoL1Contract` (origin chain contract) and assign the `Deployed to` address from the response to `ORIGIN_ADDR`.
 
-```
+```bash
 forge create --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY src/demos/basic/BasicDemoL1Contract.sol:BasicDemoL1Contract
 ```
 
-Assign the deployment address to the environment variable `ORIGIN_ADDR`.
-
 ### Step 2
 
-Deploy the `BasicDemoL1Callback` (destination chain contract), which handles callbacks by emitting the `CallbackReceived` event and logs the transaction origin, the caller, and a specified sender address whenever the callback function is called.
+Deploy the `BasicDemoL1Callback` (destination chain contract) and assign the `Deployed to` address from the response to `CALLBACK_ADDR`.
 
-```
+```bash
 forge create --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY src/demos/basic/BasicDemoL1Callback.sol:BasicDemoL1Callback
 ```
 
-Assign the deployment address to the environment variable `CALLBACK_ADDR`.
+#### Callback Payment
 
+To ensure a successful callback, the callback contract must have an ETH balance. Find more details [here](https://dev.reactive.network/system-contract#callback-payments). To fund the contract, run the following command:
+
+```bash
+cast send $CALLBACK_ADDR --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY --value 0.1ether
+```
+
+To cover the debt of the callback contact, run this command:
+
+```bash
+cast send --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY $CALLBACK_ADDR "coverDebt()"
+```
+
+Alternatively, you can deposit funds into the [Callback Proxy](https://dev.reactive.network/origins-and-destinations) contract on Sepolia, using the command below. The EOA address whose private key signs the transaction pays the fee.
+
+```bash
+cast send --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY $SEPOLIA_CALLBACK_PROXY_ADDR "depositTo(address)" $CALLBACK_ADDR --value 0.1ether
+```
 
 ### Step 3
 
 Deploy the `BasicDemoReactiveContract` (reactive contract), configuring it to listen to `ORIGIN_ADDR` and to send callbacks to `CALLBACK_ADDR`. The `Received` event on the origin chain contract has a topic 0 value of `0x8cabf31d2b1b11ba52dbb302817a3c9c83e4b2a5194d35121ab1354d69f6a4cb`, which we are monitoring.
 
-```
-forge create --rpc-url $REACTIVE_RPC --private-key $REACTIVE_PRIVATE_KEY src/demos/basic/BasicDemoReactiveContract.sol:BasicDemoReactiveContract --constructor-args $SYSTEM_CONTRACT_ADDR $ORIGIN_ADDR 0x8cabf31d2b1b11ba52dbb302817a3c9c83e4b2a5194d35121ab1354d69f6a4cb $CALLBACK_ADDR
+```bash
+forge create --rpc-url $REACTIVE_RPC --private-key $REACTIVE_PRIVATE_KEY src/demos/basic/BasicDemoReactiveContract.sol:BasicDemoReactiveContract --constructor-args $KOPLI_CALLBACK_PROXY_ADDR $ORIGIN_ADDR 0x8cabf31d2b1b11ba52dbb302817a3c9c83e4b2a5194d35121ab1354d69f6a4cb $CALLBACK_ADDR
 ```
 
 ### Step 4
 
-Test the whole setup by sending some SepETH to `ORIGIN_ADDR`:
+Test the whole setup by sending some ether to `ORIGIN_ADDR`:
 
-```
-cast send $ORIGIN_ADDR --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY --value 0.11ether
+```bash
+cast send $ORIGIN_ADDR --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY --value 0.1ether
 ```
 
-This should eventually result in a callback transaction to `CALLBACK_ADDR` being initiated by the Reactive Network.
+Ensure that the value sent is greater than or equal to 0.1 ether, as this is the minimum required value to trigger the process, which should eventually result in a callback transaction to `CALLBACK_ADDR` being initiated by the Reactive Network.
 
 ## Conclusion
 
-In this lesson, we’ve discussed how Reactive Smart Contracts work and deployed a simple system with a Reactive Smart Contract. We’ve taken a look at how it works, emitting the event, tracking it, and doing the post-actions on our destination Ethereum Smart Contract with an RSC. Though this example does not implement any useful logic, it demonstrates how the tech stack works and prepares us for real use cases.
+In this article, we explored how reactive contracts operate and deployed a simple system using one. We examined the process step by step, including event emission, tracking, and performing post-actions on the destination Ethereum contract through the reactive one. While this example doesn't include practical logic, it demonstrates the technology's functionality and sets the stage for real-world applications.
