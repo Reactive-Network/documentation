@@ -13,7 +13,7 @@ The Use Cases section primarily focuses on analyzing scenarios where Reactive Sm
 
 The [Basic Demo Smart Contract](use-case-1.md) is a basic use case of the Reactive Network with low-latency monitoring of logs emitted by arbitrary contracts on any chain (Sepolia testnet in this case) and enabling calls from the Reactive Network to these arbitrary chain contracts.
 
-The [Deploying Reactive Smart Contracts with Remix](remix-ide-demo.md) article is a guide walking you through deploying Reactive Smart Contracts using the Remix Development Environment.
+The [Deploying Reactive Smart Contracts with Remix](remix-ide-demo.md) article is a guide for deploying a Reactive Smart Contract using the Remix Development Environment.
 
 The [Uniswap V2 Stop Order Demo](use-case-3.md) is a demo of a simple reactive smart contract that implements a stop order upon a Uniswap V2 liquidity pool. Study its setup and try deploying and testing it yourself.
 
@@ -25,13 +25,13 @@ Visit our [GitHub repository](https://github.com/Reactive-Network/reactive-smart
 
 ## Get Kopli Testnet REACT
 
-Acquire Kopli REACT tokens by simply interacting with the Reactive faucet contract on Sepolia. Follow the link below for the details.
+To receive REACT, send SepETH to the Reactive faucet on Ethereum Sepolia (`0x9b9BB25f1A81078C544C829c5EB7822d747Cf434`). An equivalent amount will be sent to your address.
 
-[More information on Kopli Testnet →](/kopli-testnet)
+[More information on Kopli Testnet →](../../docs/kopli-testnet.mdx)
 
 ## Environment Setup
 
-To set up the foundry environment, run:
+To set up `foundry` environment, run:
 
 ```
 curl -L https://foundry.paradigm.xyz | bash
@@ -53,46 +53,30 @@ To compile artifacts:
 forge compile
 ```
 
-To run the test suite:
+## Environment variable configuration for running demos
 
-```
-forge test -vv
-```
-
-To inspect the call tree:
-
-```
-forge test -vvvv
-```
-
-## Environment Variable Configuration
-
-The following environment variables are used in the instructions for running the demos and should be configured beforehand.
+The following environment variables are used in the instructions for running the demos, and should be configured beforehand.
 
 `SEPOLIA_RPC`
 
-RPC address for Sepolia testnet, `https://rpc2.sepolia.org` unless you want to use your own.
+Ethereum Sepolia RPC address — `https://rpc2.sepolia.org`.
 
 `SEPOLIA_PRIVATE_KEY`
 
-Private key to your Sepolia wallet.
+Ethereum Sepolia private key.
 
 `REACTIVE_RPC`
 
-RPC address for Reactive testnet, which should be set to `https://kopli-rpc.reactive.network/`.
+Kopli Testnet RPC address — `https://kopli-rpc.rkt.ink`.
 
 `REACTIVE_PRIVATE_KEY`
 
-The private key to your Reactive wallet.
-
-`DEPLOYER_ADDR`
-
-The address of your Reactive wallet.
+Kopli Testnet private key.
 
 `SYSTEM_CONTRACT_ADDR`
 
-System contract address for Reactive testnet, which should be set to `0x0000000000000000000000000000000000FFFFFF`.
+For the system contract address on Kopli testnet, refer to the [docs](../../docs/kopli-testnet.mdx#kopli-testnet-information).
 
-`CALLBACK_SENDER_ADDR`
+`CALLBACK_PROXY_ADDR`
 
-Refer to the documentation for addresses used by Reactive testnet for callbacks on supported networks.
+For the callback proxy address, refer to the [docs](../../docs/origins-and-destinations.mdx#chains).

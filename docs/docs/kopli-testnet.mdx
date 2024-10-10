@@ -24,23 +24,17 @@ Kopli Testnet is a proof-of-stake testnet, representing Reactive Network's pre-a
 * System Contract Address — 0x0000000000000000000000000000000000FFFFFF
 * Reactive Faucet Address on Ethereum Sepolia — 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434
 
-Callback proxy addresses can be found in [Origins & Destinations](./origins-and-destinations.mdx)
-
 <KopliButton />
 
 ## Callback Proxy Address
 
 `CALLBACK_PROXY_ADDR` ensures the validity of a callback transaction by checking two key conditions:
 
-1. **Reactive Network Signature**: Verifies that the callback is initiated by the Reactive Network by matching the sender address to `CALLBACK_PROXY_ADDR`.
+- **Reactive Network Signature**: Verifies that the callback is initiated by the Reactive Network by matching the sender address to `CALLBACK_PROXY_ADDR`.
 
-2. **RVM ID Verification**: Confirms that the callback originates from the correct reactive contract by checking the RVM ID in the transaction payload.
+- **RVM ID Verification**: Confirms that the callback originates from the correct reactive contract by checking the RVM ID in the transaction payload.
 
-In the [Uniswap Stop Order Demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/uniswap-v2-stop-order), the contract already verifies callbacks, so `CALLBACK_PROXY_ADDR` can be omitted by using `0x0000000000000000000000000000000000000000`.
-
-The `CALLBACK_PROXY_ADDR` differs between the Sepolia Testnet and the Reactive Faucet because callbacks are routed to different networks. For instance, Uniswap sends callbacks to Sepolia, whereas the Reactive Faucet sends callbacks to the Reactive Network. Despite this difference, the function of the `CALLBACK_PROXY_ADDR` remains the same across networks.
-
-If an external caller initiates the function, they will either waste gas on a reverted transaction or on fulfilling someone else's stop order without any benefit.
+Callback proxy addresses can be found in [Origins & Destinations](./origins-and-destinations.mdx#chains)
 
 ## Get Kopli Testnet REACT
 
