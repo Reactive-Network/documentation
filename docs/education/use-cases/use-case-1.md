@@ -55,7 +55,7 @@ The demo highlights just a subset of Reactive Network's features. Potential impr
 
 ## Deployment & Testing
 
-To deploy the contracts to Sepolia, [clone](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main) the project and follow these steps. Replace the relevant keys, addresses, and endpoints as needed. Make sure the following environment variables are correctly configured before proceeding:
+To deploy the contracts to Ethereum Sepolia, [clone](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main) the project and follow these steps. Replace the relevant keys, addresses, and endpoints as needed. Make sure the following environment variables are correctly configured before proceeding:
 
 * `SEPOLIA_RPC` — https://rpc2.sepolia.org
 * `SEPOLIA_PRIVATE_KEY` — Ethereum Sepolia private key
@@ -63,6 +63,8 @@ To deploy the contracts to Sepolia, [clone](https://github.com/Reactive-Network/
 * `REACTIVE_PRIVATE_KEY` — Kopli Testnet private key
 * `KOPLI_CALLBACK_PROXY_ADDR` — 0x0000000000000000000000000000000000FFFFFF
 * `SEPOLIA_CALLBACK_PROXY_ADDR` — 0x33Bbb7D0a2F1029550B0e91f653c4055DC9F4Dd8
+
+**Note**: To receive REACT, send SepETH to the Reactive faucet on Ethereum Sepolia (`0x9b9BB25f1A81078C544C829c5EB7822d747Cf434`). An equivalent amount will be sent to your address.
 
 ### Step 1
 
