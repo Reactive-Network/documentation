@@ -27,7 +27,7 @@ Visit our [GitHub repository](https://github.com/Reactive-Network/reactive-smart
 
 To receive REACT, send SepETH to the Reactive faucet on Ethereum Sepolia (`0x9b9BB25f1A81078C544C829c5EB7822d747Cf434`). An equivalent amount will be sent to your address.
 
-[More information on Kopli Testnet →](/kopli-testnet)
+[More information on Kopli Testnet →](../../docs/kopli-testnet.mdx)
 
 ## Environment Setup
 
