@@ -75,8 +75,8 @@ Kopli Testnet private key.
 
 `SYSTEM_CONTRACT_ADDR`
 
-For the system contract address on Kopli testnet, refer to the [docs](../../docs/kopli-testnet.mdx#kopli-testnet-information).
+System contract address on [Kopli Testnet](../../docs/kopli-testnet.mdx#kopli-testnet-information).
 
 `CALLBACK_PROXY_ADDR`
 
-For the callback proxy address, refer to the [docs](../../docs/origins-and-destinations.mdx#chains).
+For callback proxy addresses, refer to [Origins & Destinations](../../docs/origins-and-destinations.mdx#chains).
