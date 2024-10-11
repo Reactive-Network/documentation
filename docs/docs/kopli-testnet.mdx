@@ -38,10 +38,10 @@ Callback proxy addresses can be found in [Origins & Destinations](./origins-and-
 
 ## Get Kopli Testnet REACT
 
-The first method is ideal for cases where the address initiating the transfer is also the recipient. Users can acquire REACT tokens on the Reactive Network (RN) by interacting with the Reactive faucet contract. Transfer SepETH directly to the faucet contract on the Sepolia Network. Upon completion, an equivalent number of REACT tokens will be transferred to the sender's address on the Reactive Network. This transfer is subject to a predefined limit (0.1 ETH by default) and assumes the faucet has available funds. The process can be executed using MetaMask or any other wallet.
+To receive REACT tokens, send SepETH to the Reactive faucet contract on Ethereum Sepolia (`0x9b9BB25f1A81078C544C829c5EB7822d747Cf434`). An equivalent amount of REACT will be sent to your address, up to a 0.1 ETH limit, assuming the faucet has funds. You can use MetaMask or any compatible wallet for the transfer.
 
-Alternatively, users can call the payable method `request(address)` on the Reactive Faucet Contract on Sepolia to transfer REACT tokens directly to a specified RN address. In that case, users must provide the corresponding amount of SepETH when invoking this method. This approach is suitable for situations where the address initiating the transfer is not necessarily the recipient on the Reactive Network, allowing for flexible token transfers across different addresses.
+Alternatively, users can call the `request(address)` method on the Reactive faucet contract on Sepolia (`0x9b9BB25f1A81078C544C829c5EB7822d747Cf434`) to transfer REACT tokens to any specified address on Kopli Testnet. This requires sending the appropriate SepETH amount.
 
 ```bash
-cast send $REACTIVE_FAUCET_L1_ADDR "request(address)" $REACTIVE_TARGET_ADDR --value $WEI_AMOUNT --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY
+cast send 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434 --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY "request(address)" $KOPLI_TESTNET_ADDR --value $0.1ether
 ```

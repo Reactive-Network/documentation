@@ -33,7 +33,7 @@ To receive REACT, send SepETH to the Reactive faucet on Ethereum Sepolia (`0x9b9
 
 To set up `foundry` environment, run:
 
-```
+```bash
 curl -L https://foundry.paradigm.xyz | bash
 source ~/.bashrc
 foundryup
@@ -41,7 +41,7 @@ foundryup
 
 Install dependencies:
 
-```
+```bash
 forge install
 ```
 
@@ -49,7 +49,7 @@ forge install
 
 To compile artifacts:
 
-```
+```bash
 forge compile
 ```
 
@@ -75,8 +75,8 @@ Kopli Testnet private key.
 
 `SYSTEM_CONTRACT_ADDR`
 
-For the system contract address on Kopli testnet, refer to the [docs](../../docs/kopli-testnet.mdx#kopli-testnet-information).
+System contract address on [Kopli Testnet](../../docs/kopli-testnet.mdx#kopli-testnet-information).
 
 `CALLBACK_PROXY_ADDR`
 
-For the callback proxy address, refer to the [docs](../../docs/origins-and-destinations.mdx#chains).
+For callback proxy addresses, refer to [Origins & Destinations](../../docs/origins-and-destinations.mdx#chains).
