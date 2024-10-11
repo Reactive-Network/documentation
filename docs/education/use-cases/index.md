@@ -33,7 +33,7 @@ To receive REACT, send SepETH to the Reactive faucet on Ethereum Sepolia (`0x9b9
 
 To set up `foundry` environment, run:
 
-```
+```bash
 curl -L https://foundry.paradigm.xyz | bash
 source ~/.bashrc
 foundryup
@@ -41,7 +41,7 @@ foundryup
 
 Install dependencies:
 
-```
+```bash
 forge install
 ```
 
@@ -49,7 +49,7 @@ forge install
 
 To compile artifacts:
 
-```
+```bash
 forge compile
 ```
 
