@@ -19,7 +19,7 @@ The [Uniswap V2 Stop Order Demo](use-case-3.md) is a demo of a simple reactive s
 
 The [Approval Magic Demo](use-case-2.md) extends reactive and subscription-based concepts to implement an approval-based token exchange across multiple chains.
 
-If you have an idea for another use case, feel free to submit and turn it into a bounty, using our [Unicornization](https://reactive.network/unicornization) or [Hackathon](https://reactive.network/hackathon) program.
+If you have an idea for another use case, feel free to submit and turn it into a bounty, using our [Unicornization](https://reactive.network/unicornization) program.
 
 ## GitHub Repository
 
