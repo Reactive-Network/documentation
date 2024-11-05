@@ -198,7 +198,7 @@ Deploying these smart contracts in a live environment involves addressing key co
 
 ## Deployment & Testing
 
-To deploy the contracts to Ethereum Sepolia and Kopli Testnet, follow these steps. Replace the relevant keys, addresses, and endpoints as needed. Make sure the following environment variables are correctly configured before proceeding:
+To deploy the contracts to Ethereum Sepolia, [clone](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main) the project and follow these steps. Replace the relevant keys, addresses, and endpoints as needed. Make sure the following environment variables are correctly configured before proceeding:
 
 * `SEPOLIA_RPC` — https://rpc2.sepolia.org
 * `SEPOLIA_PRIVATE_KEY` — Ethereum Sepolia private key
