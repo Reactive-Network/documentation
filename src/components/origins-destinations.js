@@ -21,7 +21,7 @@ const ChainTable = () => {
                     <td>✅</td>
                     <td>11155111</td>
                     <td>0x33Bbb7D0a2F1029550B0e91f653c4055DC9F4Dd8</td>
-                    <td>https://rpc.sepolia.org</td>
+                    <td>https://ethereum-sepolia-rpc.publicnode.com/</td>
                 </tr>
                 <tr>
                     <td><a href="https://etherscan.io/">Ethereum Mainnet</a></td>
