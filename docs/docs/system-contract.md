@@ -94,6 +94,8 @@ Reactive Transactions will share the same payment mechanism as RNK's callback pa
 
 ## Abstract Contracts & Interfaces
 
+Go to [Reactive Library](https://github.com/Reactive-Network/reactive-lib) to clone the project and install abstract contracts and interfaces necessary for reactive functionality.
+
 :::info[Abstract Contracts]
 Abstract contracts reduce boilerplate by incorporating common functionalities. They may change before production deployment.
 :::
