@@ -21,7 +21,7 @@ const ChainTable = () => {
                     <td>✅</td>
                     <td>11155111</td>
                     <td>0x33Bbb7D0a2F1029550B0e91f653c4055DC9F4Dd8</td>
-                    <td>https://ethereum-sepolia-rpc.publicnode.com/</td>
+                    <td><a href="https://chainlist.org/chain/11155111">Find on Chainlist</a></td>
                 </tr>
                 <tr>
                     <td><a href="https://etherscan.io/">Ethereum Mainnet</a></td>
@@ -29,7 +29,7 @@ const ChainTable = () => {
                     <td>➖</td>
                     <td>1</td>
                     <td>➖</td>
-                    <td>https://ethereum-rpc.publicnode.com</td>
+                    <td><a href="https://chainlist.org/chain/1">Find on Chainlist</a></td>
                 </tr>
                 <tr>
                     <td><a href="https://avascan.info/">Avalanche C-Chain</a></td>
@@ -37,7 +37,7 @@ const ChainTable = () => {
                     <td>✅</td>
                     <td>43114</td>
                     <td>0x76DdEc79A96e5bf05565dA4016C6B027a87Dd8F0</td>
-                    <td>https://api.avax.network/ext/bc/C/rpc</td>
+                    <td><a href="https://chainlist.org/chain/43114">Find on Chainlist</a></td>
                 </tr>
                 <tr>
                     <td><a href="https://arbiscan.io/">Arbitrum One</a></td>
@@ -45,7 +45,7 @@ const ChainTable = () => {
                     <td>➖</td>
                     <td>42161</td>
                     <td>➖</td>
-                    <td>https://arb1.arbitrum.io/rpc</td>
+                    <td><a href="https://chainlist.org/chain/42161">Find on Chainlist</a></td>
                 </tr>
                 <tr>
                     <td><a href="https://pacific-explorer.manta.network/">Manta Pacific</a></td>
@@ -53,7 +53,7 @@ const ChainTable = () => {
                     <td>✅</td>
                     <td>169</td>
                     <td>0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4</td>
-                    <td>https://pacific-rpc.manta.network/http</td>
+                    <td><a href="https://chainlist.org/chain/169">Find on Chainlist</a></td>
                 </tr>
                 <tr>
                     <td><a href="https://bscscan.com/">Binance Smart Chain</a></td>
@@ -61,7 +61,7 @@ const ChainTable = () => {
                     <td>➖</td>
                     <td>56</td>
                     <td>➖</td>
-                    <td>https://bsc.drpc.org</td>
+                    <td><a href="https://chainlist.org/chain/56">Find on Chainlist</a></td>
                 </tr>
                 <tr>
                     <td><a href="https://polygonscan.com/">Polygon PoS</a></td>
@@ -69,7 +69,7 @@ const ChainTable = () => {
                     <td>➖</td>
                     <td>137</td>
                     <td>➖</td>
-                    <td>https://polygon.drpc.org/</td>
+                    <td><a href="https://chainlist.org/chain/137">Find on Chainlist</a></td>
                 </tr>
                 <tr>
                     <td><a href="https://zkevm.polygonscan.com/">Polygon zkEVM</a></td>
@@ -77,7 +77,7 @@ const ChainTable = () => {
                     <td>➖</td>
                     <td>1101</td>
                     <td>➖</td>
-                    <td>https://zkevm-rpc.com</td>
+                    <td><a href="https://chainlist.org/chain/1101">Find on Chainlist</a></td>
                 </tr>
                 <tr>
                     <td><a href="https://opbnbscan.com/">opBNB Mainnet</a></td>
@@ -85,7 +85,7 @@ const ChainTable = () => {
                     <td>➖</td>
                     <td>204</td>
                     <td>➖</td>
-                    <td>https://opbnb-rpc.publicnode.com</td>
+                    <td><a href="https://chainlist.org/chain/204">Find on Chainlist</a></td>
                 </tr>
                 <tr>
                     <td><a href="https://kopli.reactscan.net">Kopli Testnet</a></td>
