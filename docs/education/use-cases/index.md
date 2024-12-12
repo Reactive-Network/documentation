@@ -25,8 +25,8 @@ If you have an idea for another use case, feel free to submit and turn it into a
 
 Visit the [Reactive Smart Contract Demos](https://github.com/Reactive-Network/reactive-smart-contract-demos) repository on GitHub to clone the project and start exploring!
 
-## Get Kopli Testnet REACT
+## Get REACT tokens
 
-To receive REACT, send SepETH to the Reactive faucet on Ethereum Sepolia (`0x9b9BB25f1A81078C544C829c5EB7822d747Cf434`). An equivalent amount will be sent to your address.
+To receive REACT tokens, send SepETH to the Reactive faucet at `0x9b9BB25f1A81078C544C829c5EB7822d747Cf434`. An equivalent amount of REACT will be sent to your address.
 
-[More on Kopli Testnet →](../../docs/kopli-testnet.mdx)
+[More on Reactive Kopli →](../../docs/kopli-testnet.mdx)
