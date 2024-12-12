@@ -1,5 +1,5 @@
 ---
-title: Kopli Testnet
+title: Reactive Kopli
 sidebar_position: 8
 description: Explore Kopli Testnet, a proof-of-stake testnet managed by PARSIQ for testing purposes. Join the pre-alpha stage of Reactive Network and contribute to its development.
 slug: /kopli-testnet
@@ -12,17 +12,17 @@ import KopliButton from '../../src/components/kopli-button';
 
 ## Overview
 
-Kopli Testnet is a proof-of-stake testnet, representing Reactive Network's pre-alpha / Proof-of-Concept era. This Testnet, neither trustless nor decentralized, is fully managed by Reactive Team. It is designed only for testing purposes. Further decentralization is assured and scheduled for implementation in later stages.
+Reactive Kopli is a proof-of-stake testnet, representing Reactive Network's pre-alpha / Proof-of-Concept era. This testnet, neither trustless nor decentralized, is fully managed by Reactive team. It is designed only for testing purposes. Further decentralization is assured and scheduled for implementation in later stages.
 
-## Kopli Testnet Information
+## Reactive Kopli Information
 
-* Network Name — Kopli Testnet
+* Network Name — Reactive Kopli
 * RPC URL — https://kopli-rpc.rkt.ink
 * Chain ID — 5318008
 * Currency Symbol — REACT
 * Block Explorer URL — https://kopli.reactscan.net
-* System Contract Address — 0x0000000000000000000000000000000000FFFFFF
-* Reactive Faucet Address on Ethereum Sepolia — 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434
+* System Contract — 0x0000000000000000000000000000000000FFFFFF
+* Reactive Faucet on Ethereum Sepolia — 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434
 
 <KopliButton />
 
@@ -36,12 +36,12 @@ Kopli Testnet is a proof-of-stake testnet, representing Reactive Network's pre-a
 
 Callback proxy addresses can be found in [Origins & Destinations](./origins-and-destinations.mdx#chains)
 
-## Get Kopli Testnet REACT
+## Get REACT tokens
 
 To receive REACT tokens, send SepETH to the Reactive faucet contract on Ethereum Sepolia (`0x9b9BB25f1A81078C544C829c5EB7822d747Cf434`). An equivalent amount of REACT will be sent to your address, up to a 0.1 ETH limit, assuming the faucet has funds. You can use MetaMask or any compatible wallet for the transfer.
 
 Alternatively, users can call the `request(address)` method on the Reactive faucet contract on Sepolia (`0x9b9BB25f1A81078C544C829c5EB7822d747Cf434`) to transfer REACT tokens to any specified address on Kopli Testnet. This requires sending the appropriate SepETH amount.
 
 ```bash
-cast send 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434 --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY "request(address)" $KOPLI_TESTNET_ADDR --value $0.1ether
+cast send 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434 --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY "request(address)" $REACTIVE_KOPLI_ADDR --value $0.1ether
 ```

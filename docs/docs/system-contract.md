@@ -94,32 +94,34 @@ Reactive Transactions will share the same payment mechanism as RNK's callback pa
 
 ## Abstract Contracts & Interfaces
 
+Go to [Reactive Library](https://github.com/Reactive-Network/reactive-lib) to clone the project and install abstract contracts and interfaces necessary for reactive functionality.
+
 :::info[Abstract Contracts]
 Abstract contracts reduce boilerplate by incorporating common functionalities. They may change before production deployment.
 :::
 
-### [AbstractCallback](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/AbstractCallback.sol)
+### [AbstractCallback](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractCallback.sol)
 
 An abstract base for managing callback-related functions with restricted access to a designated RVM ID.
 
 - `constructor()` – Sets the callback sender and initializes the RVM ID.
 - `rvmIdOnly` modifier – Ensures that only authorized RVM IDs can interact with specific functions.
 
-### [AbstractPausableReactive](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/AbstractPausableReactive.sol)
+### [AbstractPausableReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractPausableReactive.sol)
 
 Manages pausable event subscriptions for reactive contracts, allowing the owner to pause and resume event monitoring.
 
 - `pause()` – Unsubscribes from all active event subscriptions and pauses the contract.
 - `resume()` – Resubscribes to all paused event subscriptions and resumes contract functionality.
 
-### [AbstractPayer](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/AbstractPayer.sol)
+### [AbstractPayer](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractPayer.sol)
 
 Manages payment operations for contracts.
 
 - `pay()` – Facilitates payment to the sender if authorized.
 - `coverDebt()` – Pays off any outstanding debt to the vendor.
 
-### [AbstractReactive](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/AbstractReactive.sol)
+### [AbstractReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractReactive.sol)
 
 Handles the distinction between the Reactive Network, ReactVM, and System Contract contexts.
 
@@ -135,27 +137,27 @@ Provides an event subscription system for reactive contracts and allows contract
 - `subscribe()` – Registers a contract to receive notifications for events matching the provided criteria.
 - `unsubscribe()` – Removes an active subscription based on matching criteria.
 
-### [IPayable](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/IPayable.sol)
+### [IPayable](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IPayable.sol)
 
 Defines basic payment functionality for contracts, including debt checking and receiving payments.
 
 - `receive()` – Enables the contract to receive payments directly to cover debts.
 - `debt()` – Allows reactive contracts to query their outstanding debt.
 
-### [IPayer](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/IPayer.sol)
+### [IPayer](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IPayer.sol)
 
 Defines the payment functionality for contracts.
 
 - `pay()` – Facilitates payment of a specified amount, with a requirement to verify the sender.
 
-### [IReactive](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/IReactive.sol)
+### [IReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol)
 
 Defines the structure for reactive contracts, which receive notifications for events matching subscription criteria.
 
 - `react()` – Handles incoming event notifications based on chain ID, contract address, topics, and event data.
 - `receive()` – Allows the contract to receive payments.
 
-### [ISubscriptionService](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/ISubscriptionService.sol)
+### [ISubscriptionService](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/ISubscriptionService.sol)
 
 Allows reactive contracts to subscribe to and receive notifications for events that match specified criteria across chains.
 
@@ -163,7 +165,7 @@ Allows reactive contracts to subscribe to and receive notifications for events t
 - `subscribe()` – Subscribes the contract to monitor events based on specified criteria such as chain ID, contract address, and event topics.
 - `unsubscribe()` – Removes the contract's active event subscriptions, which can be resource-intensive.
 
-### [ISystemContract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/ISystemContract.sol)
+### [ISystemContract](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/ISystemContract.sol)
 
 Combines `IPayable` and `ISubscriptionService`, providing both payment handling and event subscription capabilities. Payment functionality inherited from `IPayable` to manage debts and payments. Event subscription functionality inherited from `ISubscriptionService` to manage subscriptions and notifications for reactive contracts.
 
