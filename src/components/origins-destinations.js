@@ -56,6 +56,14 @@ const ChainTable = () => {
                     <td><a href="https://chainlist.org/chain/169">Find on Chainlist</a></td>
                 </tr>
                 <tr>
+                    <td><a href="https://basescan.org/">Base Chain</a></td>
+                    <td>✅</td>
+                    <td>✅</td>
+                    <td>8453</td>
+                    <td>0x4730c58FDA9d78f60c987039aEaB7d261aAd942E</td>
+                    <td><a href="https://chainlist.org/chain/8453">Find on Chainlist</a></td>
+                </tr>
+                <tr>
                     <td><a href="https://bscscan.com/">Binance Smart Chain</a></td>
                     <td>✅</td>
                     <td>➖</td>
