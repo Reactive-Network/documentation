@@ -157,7 +157,7 @@ contract ApprovalListener is AbstractReactive {
 **Constants**:
 - `REACTIVE_CHAIN_ID`: Represents the ID of the Reactive network.
 - `SEPOLIA_CHAIN_ID`: Represents the Sepolia test network.
-- `SUBSCRIBE_TOPIC_0`, UNSUBSCRIBE_TOPIC_0, APPROVAL_TOPIC_0: Topics used to identify the different types of actions (subscription, unsubscription, and approval) in the Reactive Network.
+- `SUBSCRIBE_TOPIC_0`, `UNSUBSCRIBE_TOPIC_0`, `APPROVAL_TOPIC_0`: Topics used to identify the different types of actions (subscription, unsubscription, and approval) in the Reactive Network.
 - `CALLBACK_GAS_LIMIT`: The maximum gas allowed for callback operations.
 
 **State Variables**:
