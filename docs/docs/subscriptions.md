@@ -16,27 +16,28 @@ This section explains how to configure and manage subscriptions in a reactive co
 
 In a reactive contract, subscriptions are established by invoking the `subscribe()` method of the Reactive Network's [system contract](./system-contract.md). This method is typically called in the contract's `constructor()` or dynamically via a callback (see [Dynamic Subscriptions](./subscriptions.md#dynamic-subscriptions)).
 
-Since deployments occur both on the Reactive Network and in the deployer's private ReactVM, where the system contract is not present, the reactive contract must handle potential reverts.
+Since deployments occur both on the Reactive Network and in the deployer's private ReactVM, where the system contract is not present, the reactive contract must handle potential reverts. [IReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol), [AbstractReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractReactive.sol), and [ISystemContract](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/ISystemContract.sol) should be implemented.
 
 ```solidity
-bool private vm;
-
-constructor() {
-    SubscriptionService service = SubscriptionService(service_address);
-    bytes memory payload = abi.encodeWithSignature(
-        "subscribe(uint256,address,uint256,uint256,uint256,uint256)",
-        CHAIN_ID,
-        CONTRACT_ADDRESS,
-        TOPIC_0,
-        REACTIVE_IGNORE,
-        REACTIVE_IGNORE,
-        REACTIVE_IGNORE
-    );
-    (bool subscription_result,) = address(service).call(payload);
-    if (!subscription_result) {
-        vm = true;
+constructor(
+        address _service,
+        address _contract,
+        uint256 topic_0,
+        address callback
+    ) payable {
+        service = ISystemContract(payable(_service));
+        if (!vm) {
+            service.subscribe(
+                CHAIN_ID,
+                _contract,
+                topic_0,
+                REACTIVE_IGNORE,
+                REACTIVE_IGNORE,
+                REACTIVE_IGNORE
+            );
+        }
+        _callback = callback;
     }
-}
 ```
 
 The Reactive Network uses the subscription system to link various `uint256` fields to specific events. Subscribers can then filter events based on exact matches of these fields.
@@ -56,60 +57,60 @@ During the testnet phase, the Reactive Network provides filtering criteria based
 **All Events from a Specific Contract**: Subscribe to all events from `0x7E0987E5b3a30e3f2828572Bb659A548460a3003`.
 
 ```solidity
-subscribe(CHAIN_ID, 0x7E0987E5b3a30e3f2828572Bb659A548460a3003, REACTIVE_IGNORE, REACTIVE_IGNORE, REACTIVE_IGNORE, REACTIVE_IGNORE)
+service.subscribe(CHAIN_ID, 0x7E0987E5b3a30e3f2828572Bb659A548460a3003, REACTIVE_IGNORE, REACTIVE_IGNORE, REACTIVE_IGNORE, REACTIVE_IGNORE)
 ```
 
 **Specific Topic 0**: Subscribe to all Uniswap V2 Sync events.
 
 ```solidity
-subscribe(CHAIN_ID, 0, 0x1c411e9a96e071241c2f21f7726b17ae89e3cab4c78be50e062b03a9fffbbad1, REACTIVE_IGNORE, REACTIVE_IGNORE, REACTIVE_IGNORE)
+service.subscribe(CHAIN_ID, 0, 0x1c411e9a96e071241c2f21f7726b17ae89e3cab4c78be50e062b03a9fffbbad1, REACTIVE_IGNORE, REACTIVE_IGNORE, REACTIVE_IGNORE)
 ```
 
 **Specific Contract with Specific Topic 0**: Subscribe to events from `0x7E0987E5b3a30e3f2828572Bb659A548460a3003` with topic 0 `0x1c411e9a96e071241c2f21f7726b17ae89e3cab4c78be50e062b03a9fffbbad1`.
 
 ```solidity
-subscribe(CHAIN_ID, 0x7E0987E5b3a30e3f2828572Bb659A548460a3003, 0x1c411e9a96e071241c2f21f7726b17ae89e3cab4c78be50e062b03a9fffbbad1, REACTIVE_IGNORE, REACTIVE_IGNORE, REACTIVE_IGNORE)
+service.subscribe(CHAIN_ID, 0x7E0987E5b3a30e3f2828572Bb659A548460a3003, 0x1c411e9a96e071241c2f21f7726b17ae89e3cab4c78be50e062b03a9fffbbad1, REACTIVE_IGNORE, REACTIVE_IGNORE, REACTIVE_IGNORE)
 ```
 
 **Multiple Independent Subscriptions**: Call the `subscribe()` method multiple times in the constructor to create multiple independent subscriptions.
 
 ```solidity
-bool private vm;
+constructor(
+    address _service,
+    address _contract1,
+    address _contract2,
+    uint256 topic_0,
+    address callback
+) payable {
+    // Initialize the subscription service
+    SubscriptionService service = SubscriptionService(payable(_service));
 
-constructor() {
-    SubscriptionService service = SubscriptionService(service_address);
+    if (!vm) {
+        // First subscription
+        service.subscribe(
+            CHAIN_ID,
+            _contract1,
+            REACTIVE_IGNORE,
+            REACTIVE_IGNORE,
+            REACTIVE_IGNORE,
+            REACTIVE_IGNORE
+        );
 
-    // First subscription
-    bytes memory payload1 = abi.encodeWithSignature(
-        "subscribe(uint256,address,uint256,uint256,uint256,uint256)",
-        CHAIN_ID,
-        0x7E0987E5b3a30e3f2828572Bb659A548460a3003, // Contract address
-        REACTIVE_IGNORE,
-        REACTIVE_IGNORE,
-        REACTIVE_IGNORE,
-        REACTIVE_IGNORE
-    );
-    (bool subscription_result1,) = address(service).call(payload1);
-    if (!subscription_result1) {
-        vm = true;
+        // Second subscription
+        service.subscribe(
+            CHAIN_ID,
+            address(0),
+            topic_0,
+            REACTIVE_IGNORE,
+            REACTIVE_IGNORE,
+            REACTIVE_IGNORE
+        );
+
+        // Add more subscriptions here as needed
     }
 
-    // Second subscription
-    bytes memory payload2 = abi.encodeWithSignature(
-        "subscribe(uint256,address,uint256,uint256,uint256,uint256)",
-        CHAIN_ID,
-        0,
-        0x1c411e9a96e071241c2f21f7726b17ae89e3cab4c78be50e062b03a9fffbbad1, // Topic 0
-        REACTIVE_IGNORE,
-        REACTIVE_IGNORE,
-        REACTIVE_IGNORE
-    );
-    (bool subscription_result2,) = address(service).call(payload2);
-    if (!subscription_result2) {
-        vm = true;
-    }
-
-    // Add more subscriptions if needed
+    // Assign the callback
+    _callback = callback;
 }
 ```
 
@@ -125,50 +126,182 @@ constructor() {
 
 ## Dynamic Subscriptions
 
-Subscriptions in the Reactive Network are managed through a system contract, which is accessible only from the network. Events are sent to the ReactVM's contract copy, which has no direct access to the system contract. Therefore, dynamic subscriptions and unsubscriptions based on incoming events must be handled via callbacks.
+Subscriptions in the Reactive Network are managed through the system contract, which is accessible only from the network. Events are sent to the ReactVM's contract copy, which has no direct access to the system contract. Therefore, dynamic subscriptions and unsubscriptions based on incoming events must be handled via callbacks.
 
 The `react()` method from the [reactive contract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/approval-magic/ApprovalListener.sol) of the [Approval Magic demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/approval-magic) processes incoming events and checks if `topic_0` indicates a `subscribe` or `unsubscribe` event. If so, it generates a callback to the Reactive Network to manage the subscription.
 
+### Initialization
+
+Initialize the contract by declaring constants and variables that will be used throughout the contract:
 
 ```solidity
-function react(
-    uint256 /* chain_id */,
-    address _contract,
-    uint256 topic_0,
-    uint256 topic_1,
-    uint256 topic_2,
-    uint256 /* topic_3 */,
-    bytes calldata data,
-    uint256 /* block_number */,
-    uint256 /* op_code */
-) external vmOnly {
-    if (topic_0 == SUBSCRIBE_TOPIC_0) {
-        bytes memory payload = abi.encodeWithSignature(
-            "subscribe(address,address)",
+pragma solidity >=0.8.0;
+
+import '../../../lib/reactive-lib/src/interfaces/ISubscriptionService.sol';
+import '../../../lib/reactive-lib/src/abstract-base/AbstractReactive.sol';
+import './ApprovalService.sol';
+
+contract ApprovalListener is AbstractReactive {
+    uint256 private constant REACTIVE_CHAIN_ID = 0x512578;
+    uint256 private constant SEPOLIA_CHAIN_ID = 11155111;
+    uint256 private constant SUBSCRIBE_TOPIC_0 = 0x1aec2cf998e5b9daa15739cf56ce9bb0f29355de099191a2118402e5ac0805c8;
+    uint256 private constant UNSUBSCRIBE_TOPIC_0 = 0xeed050308c603899d7397c26bdccda0810c3ccc6e9730a8a10c452b522f8edf4;
+    uint256 private constant APPROVAL_TOPIC_0 = 0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925;
+    uint64 private constant CALLBACK_GAS_LIMIT = 1000000;
+
+    address private owner;
+    ApprovalService private approval_service;
+```
+
+
+**Constants**:
+- `REACTIVE_CHAIN_ID`: Represents the ID of the Reactive network.
+- `SEPOLIA_CHAIN_ID`: Represents the Sepolia test network.
+- `SUBSCRIBE_TOPIC_0`, UNSUBSCRIBE_TOPIC_0, APPROVAL_TOPIC_0: Topics used to identify the different types of actions (subscription, unsubscription, and approval) in the Reactive Network.
+- `CALLBACK_GAS_LIMIT`: The maximum gas allowed for callback operations.
+
+**State Variables**:
+- `owner`: The address of the contract owner, typically the one who deployed the contract.
+- `approval_service`: An instance of the ApprovalService contract, used to manage subscription-related operations.
+
+### Constructor
+
+The constructor sets up the contract's initial state, including registering for the relevant subscription and unsubscription events.
+
+```solidity
+    constructor(
+        ApprovalService service_
+    ) payable {
+        owner = msg.sender;
+        approval_service = service_;
+
+        if (!vm) {
+            service.subscribe(
+                SEPOLIA_CHAIN_ID,
+                address(approval_service),
+                SUBSCRIBE_TOPIC_0,
+                REACTIVE_IGNORE,
+                REACTIVE_IGNORE,
+                REACTIVE_IGNORE
+            );
+            service.subscribe(
+                SEPOLIA_CHAIN_ID,
+                address(approval_service),
+                UNSUBSCRIBE_TOPIC_0,
+                REACTIVE_IGNORE,
+                REACTIVE_IGNORE,
+                REACTIVE_IGNORE
+            );
+
+        }
+    }
+```
+
+**Constructor Parameters**:
+- `service_`: The address of the `ApprovalService` contract to interact with for subscription management.
+
+**Initialization**:
+- `owner` is set to the address that deploys the contract.
+- `approval_service` is set to the provided `ApprovalService` contract instance.
+- If the environment is not `vm` instance, the constructor subscribes to the relevant topics (subscription and unsubscription) by calling `service.subscribe` for both `SUBSCRIBE_TOPIC_0` and `UNSUBSCRIBE_TOPIC_0`.
+
+### Authorization
+
+This modifier restricts the execution of certain functions to only authorized callers (the service contract and the owner).
+
+```solidity
+modifier callbackOnly(address evm_id) {
+        require(msg.sender == address(service), 'Callback only');
+        require(evm_id == owner, 'Wrong EVM ID');
+        _;
+    }
+```
+
+**Conditions**:
+- The `msg.sender` must be the service contract.
+- The `evm_id` passed to the function must match the owner address.
+
+**Functionality**: This ensures that only the service contract or the owner can trigger certain actions, preventing unauthorized access.
+
+### Subscribing & Unsubscribing
+
+These functions allow the contract to subscribe or unsubscribe a subscriber address to/from the `APPROVAL_TOPIC_0` in the Reactive Network.
+
+```solidity
+    // Methods specific to reactive network contract instance
+    function subscribe(address rvm_id, address subscriber) external rnOnly callbackOnly(rvm_id) {
+        service.subscribe(
+            SEPOLIA_CHAIN_ID,
             address(0),
-            address(uint160(topic_1))
+            APPROVAL_TOPIC_0,
+            REACTIVE_IGNORE,
+            uint256(uint160(subscriber)),
+            REACTIVE_IGNORE
         );
-        emit Callback(REACTIVE_CHAIN_ID, address(this), CALLBACK_GAS_LIMIT, payload);
-    } else if (topic_0 == UNSUBSCRIBE_TOPIC_0) {
-        bytes memory payload = abi.encodeWithSignature(
-            "unsubscribe(address,address)",
+    }
+
+    function unsubscribe(address rvm_id, address subscriber) external rnOnly callbackOnly(rvm_id) {
+        service.unsubscribe(
+            SEPOLIA_CHAIN_ID,
             address(0),
-            address(uint160(topic_1))
+            APPROVAL_TOPIC_0,
+            REACTIVE_IGNORE,
+            uint256(uint160(subscriber)),
+            REACTIVE_IGNORE
         );
-        emit Callback(REACTIVE_CHAIN_ID, address(this), CALLBACK_GAS_LIMIT, payload);
-    } else {
-        (uint256 amount) = abi.decode(data, (uint256));
-        bytes memory payload = abi.encodeWithSignature(
-            "onApproval(address,address,address,address,uint256)",
-            address(0),
-            address(uint160(topic_2)),
-            address(uint160(topic_1)),
-            _contract,
-            amount
-        );
-        emit Callback(SEPOLIA_CHAIN_ID, address(approval_service), CALLBACK_GAS_LIMIT, payload);
+    }
+```
+
+**Parameters**:
+- `rvm_id`: The ID of the reactive virtual machine (RVM).
+- `subscriber`: The address that will be subscribed or unsubscribed.
+
+**Operations**:
+- `subscribe`: Registers a subscriber to the `APPROVAL_TOPIC_0`.
+- `unsubscribe`: Removes a subscriber from the `APPROVAL_TOPIC_0`.
+
+### react() & Logic
+
+The function processes incoming log records from the ReactVM and executes different actions based on the topic in the log.
+
+```solidity
+// Methods specific to ReactVM contract instance
+    function react(LogRecord calldata log) external vmOnly {
+        if (log.topic_0 == SUBSCRIBE_TOPIC_0) {
+            bytes memory payload = abi.encodeWithSignature(
+                "subscribe(address,address)",
+                address(0),
+                address(uint160(log.topic_1))
+            );
+            emit Callback(REACTIVE_CHAIN_ID, address(this), CALLBACK_GAS_LIMIT, payload);
+        } else if (log.topic_0 == UNSUBSCRIBE_TOPIC_0) {
+            bytes memory payload = abi.encodeWithSignature(
+                "unsubscribe(address,address)",
+                address(0),
+                address(uint160(log.topic_1))
+            );
+            emit Callback(REACTIVE_CHAIN_ID, address(this), CALLBACK_GAS_LIMIT, payload);
+        } else {
+            (uint256 amount) = abi.decode(log.data, (uint256));
+            bytes memory payload = abi.encodeWithSignature(
+                "onApproval(address,address,address,address,uint256)",
+                address(0),
+                address(uint160(log.topic_2)),
+                address(uint160(log.topic_1)),
+                log._contract,
+                amount
+            );
+            emit Callback(SEPOLIA_CHAIN_ID, address(approval_service), CALLBACK_GAS_LIMIT, payload);
+        }
     }
 }
 ```
+
+**Log Processing**:
+- Subscribe Logic: If the log's `topic_0` matches the `SUBSCRIBE_TOPIC_0`, the function encodes a payload for the `subscribe()` method and emits a callback.
+- Unsubscribe Logic: If the log's `topic_0` matches the `UNSUBSCRIBE_TOPIC_0`, the function encodes a payload for the `unsubscribe()` method and emits a callback.
+- Approval Logic: For any other log, it decodes the approval amount and creates a payload for the `onApproval` method, then emits a callback to the `approval_service` on Sepolia.
+
+**Callback Emission**: The function uses the emit `Callback` statement to send the appropriate payload and trigger the corresponding action on the Reactive chain.
 
 [More on Subscriptions →](../education/module-1/subscriptions.md)
