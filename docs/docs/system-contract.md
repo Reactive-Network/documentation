@@ -23,21 +23,29 @@ Callback execution is tied to payment, ensuring contracts either have sufficient
 To transfer funds directly to your callback contract, use the following command. This sends 0.1 ether to the callback contract on the destination chain:
 
 ```bash
-cast send $CALLBACK_ADDR --rpc-url $DESTINATION_CHAIN_RPC --private-key $DESTINATION_CHAIN_PRIVATE_KEY --value 0.1ether
+cast send $CALLBACK_ADDR --rpc-url $DESTINATION_RPC --private-key $DESTINATION_PRIVATE_KEY --value 0.1ether
 ```
 
-After that, run the `coverDebts` method, which checks if the contract has debts and sufficient funds to pay them. If both conditions are met, the contract will automatically settle its debts using its own funds.
+Funding your reactive contract is necessary, too. Ensure the contract's status is `active` on [Reactive Scan](https://kopli.reactscan.net/). A direct payment can be done like so:
 
 ```bash
-cast send --rpc-url $DESTINATION_CHAIN_RPC --private-key $DESTINATION_CHAIN_PRIVATE_KEY $CALLBACK_ADDR "coverDebt()"
+cast send $REACTIVE_CONTRACT_ADDR --rpc-url $REACTIVE_RPC --private-key $REACTIVE_PRIVATE_KEY --value 0.1ether
+```
+
+### Covering Debt
+
+Should your contract ever be in debt, run the `coverDebts()` method. It verifies whether the contract has any debt and sufficient funds to pay it off. If both conditions are met, the contract will automatically settle its debt using its own funds.
+
+```bash
+cast send --rpc-url $DESTINATION_RPC --private-key $DESTINATION_PRIVATE_KEY $CALLBACK_ADDR "coverDebt()"
 ```
 
 ### Depositing Funds to Callback Proxy
 
-Alternatively, you can use the `depositTo` method to transfer funds to the callback contract via `Callback Proxy`, with the transaction fee paid by the EOA address whose private key signs the transaction. The following request sends 0.1 ether to the callback contract on the destination chain.
+You can use the `depositTo()` method to transfer funds to the callback contract via `Callback Proxy`, with the transaction fee paid by the EOA address whose private key signs the transaction. The following request sends 0.1 ether to the callback contract on the destination chain:
 
 ```bash
-cast send --rpc-url $DESTINATION_CHAIN_RPC --private-key $DESTINATION_CHAIN_PRIVATE_KEY $CALLBACK_PROXY_ADDR "depositTo(address)" $CALLBACK_ADDR --value 0.1ether
+cast send --rpc-url $DESTINATION_RPC --private-key $DESTINATION_PRIVATE_KEY $CALLBACK_PROXY_ADDR "depositTo(address)" $CALLBACK_ADDR --value 0.1ether
 ```
 
 :::tip[On-The-Spot Payment]
@@ -55,7 +63,7 @@ cast balance --rpc-url $REACTIVE_RPC $REACTIVE_CONTRACT_ADDR
 To check the debt status of a specific contract on the destination chain, run this command:
 
 ```bash
-cast call --trace --rpc-url $DESTINATION_CHAIN_RPC --private-key $DESTINATION_CHAIN_PRIVATE_KEY $CALLBACK_PROXY_ADDR "debts(address)" $CONTRACT_ADDR
+cast call --trace --rpc-url $DESTINATION_RPC --private-key $DESTINATION_PRIVATE_KEY $CALLBACK_PROXY_ADDR "debts(address)" $CONTRACT_ADDR
 ```
 
 :::info[On Debt Settlement]
@@ -67,16 +75,15 @@ You might catch the `Callback target currently in debt` error. Remember that the
 The current pricing formula, subject to change, is simplified for testing. It is set at 1 wei per gas unit but will later incorporate dynamic block base fees. The callback price $$p_{callback}$$ is calculated as follows:
 
 $$
-p_{callback} = (p_{orig} + 1)(C + c_{fail})(g_{callback} + K)
+p_{callback} = p_{orig} ⋅ C ⋅ (g_{callback} + K)
 $$
 
 Where:
 
-- $$p_{orig}$$ is the base gas price, considering `tx.gasprice` and `block.basefee`.
-- $$C$$ is a pricing coefficient for the destination network.
-- $$c_{fail}$$ is 1 if the callback reverted; otherwise, 0.
-- $$g_{callback}$$ is the gas used for the callback.
-- $$K$$ is a fixed gas surcharge for the destination network.
+- $$p_{orig}$$: The base gas price, determined by `tx.gasprice` and `block.basefee`.
+- $$C$$: A pricing coefficient specific to the destination network.
+- $$g_{callback}$$: The gas used for the callback.
+- $$K$$: A fixed gas surcharge for the destination network.
 
 This formula is intended for the testnet stage and may evolve.
 
