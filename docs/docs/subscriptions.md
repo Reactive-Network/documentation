@@ -52,7 +52,7 @@ The Reactive Network uses the subscription system to link various `uint256` fiel
 The Reactive Network provides filtering criteria based on the originating contract's chain ID, address, and all four topics. These criteria may evolve in the future.
 :::
 
-### Using REACTIVE_IGNORE and address(0)
+### Using REACTIVE_IGNORE and 0
 
 `REACTIVE_IGNORE` is an arbitrary predefined value (`0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad`) that allows you to subscribe to any topic.
 
