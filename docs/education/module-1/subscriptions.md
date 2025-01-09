@@ -152,7 +152,7 @@ constructor(
 
 When configuring subscriptions in reactive contracts, you should adhere to the following rules:
 
-- Wildcard Usage: Use `address(0)` to indicate filtering by any contract address. Use `REACTIVE_IGNORE` for topics to filter by any topic.
+- Wildcard Usage: Use `address(0)` to indicate filtering by any contract address, `uint256(0)` to indicate any chain ID, and `REACTIVE_IGNORE` for topics to filter by any topic.
 
 - Concrete Values: At least one criterion must be a specific value to ensure meaningful subscriptions.
 

@@ -54,7 +54,9 @@ The Reactive Network provides filtering criteria based on the originating contra
 
 ### Using REACTIVE_IGNORE and address(0)
 
-`REACTIVE_IGNORE` is an arbitrary predefined value (`0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad`) that allows you to subscribe to any topic. `address(0)` can be used for contract address to match any value. Ensure at least one criterion is specific to create a meaningful subscription.
+`REACTIVE_IGNORE` is an arbitrary predefined value (`0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad`) that allows you to subscribe to any topic.
+
+`address(0)` can be used for contract address and `uint256(0)` for chain ID to match any value. Ensure at least one criterion is specific to create a meaningful subscription.
 
 ### Subscription Examples
 
