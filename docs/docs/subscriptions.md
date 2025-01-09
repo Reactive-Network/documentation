@@ -16,9 +16,15 @@ This section explains how to configure and manage subscriptions in a reactive co
 
 In a reactive contract, subscriptions are established by invoking the `subscribe()` method of the Reactive Network's [system contract](./system-contract.md). This method is typically called in the contract's `constructor()` or dynamically via a callback (see [Dynamic Subscriptions](./subscriptions.md#dynamic-subscriptions)).
 
-Since deployments occur both on the Reactive Network and in the deployer's private ReactVM, where the system contract is not present, the reactive contract must handle potential reverts. [IReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol), [AbstractReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractReactive.sol), and [ISystemContract](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/ISystemContract.sol) should be implemented.
+Since deployments occur both on the Reactive Network and in the deployer's private ReactVM, where the system contract is not present, the reactive contract must handle potential reverts. [IReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol), [AbstractReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractReactive.sol), and [ISystemContract](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/ISystemContract.sol) should be implemented. Here's an example of subscription in the constructor, taken from the [Basic Demo reactive contract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoReactiveContract.sol).
 
 ```solidity
+// State specific to reactive network instance of the contract
+address private _callback;
+
+// State specific to ReactVM instance of the contract
+uint256 public counter;
+
 constructor(
         address _service,
         address _contract,
@@ -43,14 +49,12 @@ constructor(
 The Reactive Network uses the subscription system to link various `uint256` fields to specific events. Subscribers can then filter events based on exact matches of these fields.
 
 :::info[Filtering Criteria]
-During the testnet phase, the Reactive Network provides filtering criteria based on the originating contract's chain ID, address, and all four topics. These criteria may evolve in the future.
+The Reactive Network provides filtering criteria based on the originating contract's chain ID, address, and all four topics. These criteria may evolve in the future.
 :::
 
-### Using REACTIVE_IGNORE and 0
+### Using REACTIVE_IGNORE and address(0)
 
-`REACTIVE_IGNORE` is an arbitrary predefined value (`0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad`) that allows you to subscribe to any topic.
-
-`0` can be used for chain ID or contract address to match any value. Ensure at least one criterion is specific to create a meaningful subscription.
+`REACTIVE_IGNORE` is an arbitrary predefined value (`0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad`) that allows you to subscribe to any topic. `address(0)` can be used for contract address to match any value. Ensure at least one criterion is specific to create a meaningful subscription.
 
 ### Subscription Examples
 
@@ -130,99 +134,6 @@ Subscriptions in the Reactive Network are managed through the system contract, w
 
 The `react()` method from the [reactive contract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/approval-magic/ApprovalListener.sol) of the [Approval Magic demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/approval-magic) processes incoming events and checks if `topic_0` indicates a `subscribe` or `unsubscribe` event. If so, it generates a callback to the Reactive Network to manage the subscription.
 
-### Initialization
-
-Initialize the contract by declaring constants and variables that will be used throughout the contract:
-
-```solidity
-pragma solidity >=0.8.0;
-
-import '../../../lib/reactive-lib/src/interfaces/ISubscriptionService.sol';
-import '../../../lib/reactive-lib/src/abstract-base/AbstractReactive.sol';
-import './ApprovalService.sol';
-
-contract ApprovalListener is AbstractReactive {
-    uint256 private constant REACTIVE_CHAIN_ID = 0x512578;
-    uint256 private constant SEPOLIA_CHAIN_ID = 11155111;
-    uint256 private constant SUBSCRIBE_TOPIC_0 = 0x1aec2cf998e5b9daa15739cf56ce9bb0f29355de099191a2118402e5ac0805c8;
-    uint256 private constant UNSUBSCRIBE_TOPIC_0 = 0xeed050308c603899d7397c26bdccda0810c3ccc6e9730a8a10c452b522f8edf4;
-    uint256 private constant APPROVAL_TOPIC_0 = 0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925;
-    uint64 private constant CALLBACK_GAS_LIMIT = 1000000;
-
-    address private owner;
-    ApprovalService private approval_service;
-```
-
-
-**Constants**:
-- `REACTIVE_CHAIN_ID`: Represents the ID of the Reactive network.
-- `SEPOLIA_CHAIN_ID`: Represents the Sepolia test network.
-- `SUBSCRIBE_TOPIC_0`, `UNSUBSCRIBE_TOPIC_0`, `APPROVAL_TOPIC_0`: Topics used to identify the different types of actions (subscription, unsubscription, and approval) in the Reactive Network.
-- `CALLBACK_GAS_LIMIT`: The maximum gas allowed for callback operations.
-
-**State Variables**:
-- `owner`: The address of the contract owner, typically the one who deployed the contract.
-- `approval_service`: An instance of the ApprovalService contract, used to manage subscription-related operations.
-
-### Constructor
-
-The constructor sets up the contract's initial state, including registering for the relevant subscription and unsubscription events.
-
-```solidity
-    constructor(
-        ApprovalService service_
-    ) payable {
-        owner = msg.sender;
-        approval_service = service_;
-
-        if (!vm) {
-            service.subscribe(
-                SEPOLIA_CHAIN_ID,
-                address(approval_service),
-                SUBSCRIBE_TOPIC_0,
-                REACTIVE_IGNORE,
-                REACTIVE_IGNORE,
-                REACTIVE_IGNORE
-            );
-            service.subscribe(
-                SEPOLIA_CHAIN_ID,
-                address(approval_service),
-                UNSUBSCRIBE_TOPIC_0,
-                REACTIVE_IGNORE,
-                REACTIVE_IGNORE,
-                REACTIVE_IGNORE
-            );
-
-        }
-    }
-```
-
-**Constructor Parameters**:
-- `service_`: The address of the `ApprovalService` contract to interact with for subscription management.
-
-**Initialization**:
-- `owner` is set to the address that deploys the contract.
-- `approval_service` is set to the provided `ApprovalService` contract instance.
-- If the environment is not `vm` instance, the constructor subscribes to the relevant topics (subscription and unsubscription) by calling `service.subscribe` for both `SUBSCRIBE_TOPIC_0` and `UNSUBSCRIBE_TOPIC_0`.
-
-### Authorization
-
-This modifier restricts the execution of certain functions to only authorized callers (the service contract and the owner).
-
-```solidity
-modifier callbackOnly(address evm_id) {
-        require(msg.sender == address(service), 'Callback only');
-        require(evm_id == owner, 'Wrong EVM ID');
-        _;
-    }
-```
-
-**Conditions**:
-- The `msg.sender` must be the service contract.
-- The `evm_id` passed to the function must match the owner address.
-
-**Functionality**: This ensures that only the service contract or the owner can trigger certain actions, preventing unauthorized access.
-
 ### Subscribing & Unsubscribing
 
 These functions allow the contract to subscribe or unsubscribe a subscriber address to/from the `APPROVAL_TOPIC_0` in the Reactive Network.
@@ -260,7 +171,7 @@ These functions allow the contract to subscribe or unsubscribe a subscriber addr
 - `subscribe`: Registers a subscriber to the `APPROVAL_TOPIC_0`.
 - `unsubscribe`: Removes a subscriber from the `APPROVAL_TOPIC_0`.
 
-### react() & Logic
+### react Function & Logic
 
 The function processes incoming log records from the ReactVM and executes different actions based on the topic in the log.
 
