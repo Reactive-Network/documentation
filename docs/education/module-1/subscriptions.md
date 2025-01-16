@@ -247,7 +247,6 @@ Initialize the contract by declaring constants and variables that will be used t
 ```solidity
 pragma solidity >=0.8.0;
 
-import '../../../lib/reactive-lib/src/interfaces/ISubscriptionService.sol';
 import '../../../lib/reactive-lib/src/abstract-base/AbstractReactive.sol';
 import './ApprovalService.sol';
 
