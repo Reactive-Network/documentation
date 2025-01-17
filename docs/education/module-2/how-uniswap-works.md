@@ -121,7 +121,7 @@ The `Sync` event is emitted whenever the reserves of a Uniswap V2 pool are updat
 
 Event Structure Example:
 
-```
+```solidity
 event Sync(uint112 reserve0, uint112 reserve1);
 ```
 
