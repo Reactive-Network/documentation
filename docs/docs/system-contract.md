@@ -85,96 +85,13 @@ Where:
 - $$g_{callback}$$: The gas used for the callback.
 - $$K$$: A fixed gas surcharge for the destination network.
 
-This formula is intended for the testnet stage and may evolve.
-
 :::info[Reactive Transaction Payments]
-Reactive Transactions will share the same payment mechanism as RNK's callback payments, with a common balance. Separate contracts may be used for reactive and callback functionalities. This feature is not yet implemented, as it is not critical for the hackathon phase.
+Reactive Transactions share the same payment mechanism as RNK's callback payments, with a common balance. Separate contracts may be used for reactive and callback functionalities.
 :::
 
 ### Gas / Tokenomics
 
-1. Gas usage and gas limits are tracked for all system transactions.
-2. On the Reactive Network (RNK), users are charged based on the formula: Gas Used × Gas Price = Total REACT Charge. This amount is deducted from the user's REACT token balance.
-3. Currently, RVM transactions don't incur gas charges (subject to change).
-4. Certain transactions may involve a `value` field, such as contract deployment or fund transfers. In these cases, the specified value (in REACT) is deducted from the user's balance.
-5. RVM tokenomics is still under development; for now, all transactions are free of gas charges.
-
-## Abstract Contracts & Interfaces
-
-Go to [Reactive Library](https://github.com/Reactive-Network/reactive-lib) to clone the project and install abstract contracts and interfaces necessary for reactive functionality.
-
-:::info[Abstract Contracts]
-Abstract contracts reduce boilerplate by incorporating common functionalities. They may change before production deployment.
-:::
-
-### [AbstractCallback](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractCallback.sol)
-
-An abstract base for managing callback-related functions with restricted access to a designated RVM ID.
-
-- `constructor()` – Sets the callback sender and initializes the RVM ID.
-- `rvmIdOnly` modifier – Ensures that only authorized RVM IDs can interact with specific functions.
-
-### [AbstractPausableReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractPausableReactive.sol)
-
-Manages pausable event subscriptions for reactive contracts, allowing the owner to pause and resume event monitoring.
-
-- `pause()` – Unsubscribes from all active event subscriptions and pauses the contract.
-- `resume()` – Resubscribes to all paused event subscriptions and resumes contract functionality.
-
-### [AbstractPayer](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractPayer.sol)
-
-Manages payment operations for contracts.
-
-- `pay()` – Facilitates payment to the sender if authorized.
-- `coverDebt()` – Pays off any outstanding debt to the vendor.
-
-### [AbstractReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractReactive.sol)
-
-Handles the distinction between the Reactive Network, ReactVM, and System Contract contexts.
-
-- `rnOnly` modifier – Ensures the `vm` variable is `false`; if `vm` is `true`, it reverts with 'Reactive Network only'.
-- `vmOnly` modifier – Restricts access to functions for ReactVM instances based on the `vm` variable.
-- `sysConOnly` modifier – Validates that `msg.sender` matches the `service` contract's address; if not, it reverts with `System contract only'.
-
-### [AbstractSubscriptionService](https://github.com/Reactive-Network/system-smart-contracts/blob/main/src/AbstractSubscriptionService.sol)
-
-Provides an event subscription system for reactive contracts and allows contracts to subscribe to events based on criteria such as chain ID, contract address, and topics.
-
-- `ping()` – Determines whether the contract is in the RN or RVM context (subject to change).
-- `subscribe()` – Registers a contract to receive notifications for events matching the provided criteria.
-- `unsubscribe()` – Removes an active subscription based on matching criteria.
-
-### [IPayable](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IPayable.sol)
-
-Defines basic payment functionality for contracts, including debt checking and receiving payments.
-
-- `receive()` – Enables the contract to receive payments directly to cover debts.
-- `debt()` – Allows reactive contracts to query their outstanding debt.
-
-### [IPayer](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IPayer.sol)
-
-Defines the payment functionality for contracts.
-
-- `pay()` – Facilitates payment of a specified amount, with a requirement to verify the sender.
-
-### [IReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol)
-
-Defines the structure for reactive contracts, which receive notifications for events matching subscription criteria.
-
-- `react()` – Handles incoming event notifications based on chain ID, contract address, topics, and event data.
-- `receive()` – Allows the contract to receive payments.
-
-### [ISubscriptionService](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/ISubscriptionService.sol)
-
-Allows reactive contracts to subscribe to and receive notifications for events that match specified criteria across chains.
-
-- `ping()` – Determines whether the contract operates in the Reactive Network or ReactVM context.
-- `subscribe()` – Subscribes the contract to monitor events based on specified criteria such as chain ID, contract address, and event topics.
-- `unsubscribe()` – Removes the contract's active event subscriptions, which can be resource-intensive.
-
-### [ISystemContract](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/ISystemContract.sol)
-
-Combines `IPayable` and `ISubscriptionService`, providing both payment handling and event subscription capabilities. Payment functionality inherited from `IPayable` to manage debts and payments. Event subscription functionality inherited from `ISubscriptionService` to manage subscriptions and notifications for reactive contracts.
+Gas usage and gas limits are tracked for all reactive transactions. On the Reactive Network (RNK), users are charged based on the formula: Gas Used × Gas Price = Total REACT Charge. This amount is deducted from the user's REACT token balance. Certain transactions may involve a `value` field, such as contract deployment or fund transfers. In these cases, the specified value (in REACT) is deducted from the user's balance.
 
 ## Most Common Errors 
 
