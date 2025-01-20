@@ -60,10 +60,16 @@ To check the balance of a contract on the Reactive Network, use the following co
 cast balance --rpc-url $REACTIVE_RPC $REACTIVE_CONTRACT_ADDR
 ```
 
-To check the debt status of a specific contract on the destination chain, run this command:
+To check a contract's debt on the destination chain, run this command:
 
 ```bash
 cast call --trace --rpc-url $DESTINATION_RPC --private-key $DESTINATION_PRIVATE_KEY $CALLBACK_PROXY_ADDR "debts(address)" $CONTRACT_ADDR
+```
+
+To check a contract's debt on the Reactive Network, run the following command:
+
+```bash
+cast call --rpc-url $REACTIVE_RPC --private-key $REACTIVE_PRIVATE_KEY $SYSTEM_CONTRACT_ADDR "debt(address)" $CONTRACT_ADDR
 ```
 
 :::info[On Debt Settlement]
