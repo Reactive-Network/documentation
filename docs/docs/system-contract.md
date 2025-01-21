@@ -57,14 +57,14 @@ cast send --rpc-url $DESTINATION_RPC --private-key $DESTINATION_PRIVATE_KEY $CAL
 
 ### Depositing Funds to Callback Proxy
 
-You can use the `depositTo()` method to transfer funds to the callback contract via `Callback Proxy`, with the transaction fee paid by the EOA address whose private key signs the transaction. The following request sends 0.1 ether to the callback contract on the destination chain:
+The `depositTo()` method allows you to transfer funds to a callback contract through the `Callback Proxy`. The transaction fee is paid by the EOA address whose private key signs the transaction. Since the interaction occurs directly between the user's EOA and the system contract (or callback proxy), the user contract remains unaware of the transaction. The following request sends 0.1 ether to the callback contract on the destination chain:
 
 ```bash
 cast send --rpc-url $DESTINATION_RPC --private-key $DESTINATION_PRIVATE_KEY $CALLBACK_PROXY_ADDR "depositTo(address)" $CALLBACK_ADDR --value 0.1ether
 ```
 
 :::tip[On-The-Spot Payment]
-Implement the `pay()` method or inherit from `AbstractPayer` for on-the-spot payments. `Callback Proxy` triggers `pay()` when a callback puts the contract in debt. The standard implementation verifies the proxy as the caller, ensures sufficient funds are available, and then settles the debt.
+Implement the `pay()` method or inherit from `AbstractPayer` for on-the-spot payments. `Callback Proxy` triggers the `pay()` method when a callback puts the contract in debt. The standard implementation verifies the caller is the proxy, checks for sufficient funds, and then settles the debt.
 :::
 
 ### Checking Balance and Debt
@@ -93,7 +93,7 @@ You might catch the `Callback target currently in debt` error. Remember that the
 
 ### Callback Pricing
 
-The current pricing formula is set at 1 wei per gas unit but will later incorporate dynamic block base fees. The callback price $$p_{callback}$$ is calculated as follows:
+The current pricing formula incorporates dynamic block base fees. The callback price $$p_{callback}$$ is calculated as follows:
 
 $$
 p_{callback} = p_{orig} ⋅ C ⋅ (g_{callback} + K)
