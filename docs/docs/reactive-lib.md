@@ -17,6 +17,42 @@ forge install Reactive-Network/reactive-lib
 ```
 
 ## [Abstract Contracts](https://github.com/Reactive-Network/reactive-lib/tree/main/src/abstract-base)
+ 
+In `AbstractCallback`, the constructor accepts the Callback Proxy address (`_callback_sender`), which is assigned to a variable called `vendor`.
+
+```solidity
+constructor(address _callback_sender) {
+        rvm_id = msg.sender;
+        vendor = IPayable(payable(_callback_sender));
+    }
+```
+
+This `vendor` variable is of type `IPayable` and is used within `AbstractPayer` to interact with the payable functionality. 
+
+```solidity
+function coverDebt() external {
+        uint256 amount = vendor.debt(address(this));
+        _pay(payable(vendor), amount);
+    }
+```
+
+In `AbstractReactive`, `vendor` is automatically assigned the address of the system contract (`SERVICE_ADDR`), as it is predefined.
+
+```solidity
+abstract contract AbstractReactive is IReactive, AbstractPayer {
+    uint256 internal constant REACTIVE_IGNORE = 0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad;
+    ISystemContract internal constant SERVICE_ADDR = ISystemContract(payable(0x0000000000000000000000000000000000fffFfF));
+    
+    bool internal vm;
+
+    ISystemContract internal service;
+
+    constructor() {
+        vendor = service = SERVICE_ADDR;
+        addAuthorizedSender(address(SERVICE_ADDR));
+        detectVm();
+    }
+```
 
 ### [AbstractCallback](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractCallback.sol)
 
