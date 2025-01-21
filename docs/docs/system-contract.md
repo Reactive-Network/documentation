@@ -10,9 +10,24 @@ hide_title: true
 
 ## Overview
 
-The [System Contract](https://github.com/Reactive-Network/system-smart-contracts/blob/main/src/SystemContract.sol) is responsible for managing subscriptions on the Reactive Network (RNK), acting as a callback proxy contract. Integrated into the genesis block, it operates with immutable code, handling essential network functions without a mutable state. Extending `CallbackProxy` and `AbstractSubscriptionService`, the system contract also manages payments, whitelisting and blacklisting of contracts.
+The Reactive Network’s key operations are managed by three core contracts:
 
-The [Callback Proxy](https://github.com/Reactive-Network/system-smart-contracts/blob/main/src/CallbackProxy.sol) operates independently on destination chains and as an integrated part within the system contract on RNK. It primarily authorizes callback senders, processes callbacks, and manages contract balances and debt with methods like `withdraw()`, `addCallbackSenders()`, `callback()`, along with internal functions for deposit and charge management.
+[System Contract](https://github.com/Reactive-Network/system-smart-contracts/blob/main/src/SystemContract.sol) oversees:
+- Payments: Handles service payments for reactive contracts.
+- Access Control: Manages contract whitelisting/blacklisting.
+- Cron Events: Triggers periodic block interval actions.
+
+[Callback Proxy](https://github.com/Reactive-Network/system-smart-contracts/blob/main/src/CallbackProxy.sol) ensures interactions with:
+- Callback Management: Restricted to authorized senders.
+- Payment & Reserves: Manages deposits, reserves, and debts.
+- Gas Adjustment & Kickbacks: Calculates gas prices and rewards originators.
+- Access Control: Tracks authorized contracts, emitting whitelist/blacklist updates.
+
+[AbstractSubscriptionService](https://github.com/Reactive-Network/system-smart-contracts/blob/main/src/AbstractSubscriptionService.sol) manages event subscriptions with:
+- Flexible Criteria: Subscribes/unsubscribes based on chain ID, address, or topics.
+- Recursive Tracking: Supports complex criteria structures.
+- Wildcard Support: Uses `REACTIVE_IGNORE` for broader matches.
+- Event Emissions: Tracks subscription updates, including deployer events.
 
 ## Callback Payments
 
@@ -29,12 +44,12 @@ cast send $CALLBACK_ADDR --rpc-url $DESTINATION_RPC --private-key $DESTINATION_P
 Funding your reactive contract is necessary, too. Ensure the contract's status is `active` on [Reactive Scan](https://kopli.reactscan.net/). A direct payment can be done like so:
 
 ```bash
-cast send $REACTIVE_CONTRACT_ADDR --rpc-url $REACTIVE_RPC --private-key $REACTIVE_PRIVATE_KEY --value 0.1ether
+cast send $CONTRACT_ADDR --rpc-url $REACTIVE_RPC --private-key $REACTIVE_PRIVATE_KEY --value 0.1ether
 ```
 
 ### Covering Debt
 
-Should your contract ever be in debt, run the `coverDebts()` method. It verifies whether the contract has any debt and sufficient funds to pay it off. If both conditions are met, the contract will automatically settle its debt using its own funds.
+Should your contract ever be in debt (`inactive`), run the `coverDebt()` method. It verifies whether the contract has any debt and sufficient funds to pay it off. If both conditions are met, the contract will automatically settle its debt using its own funds.
 
 ```bash
 cast send --rpc-url $DESTINATION_RPC --private-key $DESTINATION_PRIVATE_KEY $CALLBACK_ADDR "coverDebt()"
@@ -57,7 +72,7 @@ Implement the `pay()` method or inherit from `AbstractPayer` for on-the-spot pay
 To check the balance of a contract on the Reactive Network, use the following command:
 
 ```bash
-cast balance --rpc-url $REACTIVE_RPC $REACTIVE_CONTRACT_ADDR
+cast balance --rpc-url $REACTIVE_RPC $CONTRACT_ADDR
 ```
 
 To check a contract's debt on the destination chain, run this command:
@@ -78,7 +93,7 @@ You might catch the `Callback target currently in debt` error. Remember that the
 
 ### Callback Pricing
 
-The current pricing formula, subject to change, is simplified for testing. It is set at 1 wei per gas unit but will later incorporate dynamic block base fees. The callback price $$p_{callback}$$ is calculated as follows:
+The current pricing formula is set at 1 wei per gas unit but will later incorporate dynamic block base fees. The callback price $$p_{callback}$$ is calculated as follows:
 
 $$
 p_{callback} = p_{orig} ⋅ C ⋅ (g_{callback} + K)
@@ -94,10 +109,6 @@ Where:
 :::info[Reactive Transaction Payments]
 Reactive Transactions share the same payment mechanism as RNK's callback payments, with a common balance. Separate contracts may be used for reactive and callback functionalities.
 :::
-
-### Gas / Tokenomics
-
-Gas usage and gas limits are tracked for all reactive transactions. On the Reactive Network (RNK), users are charged based on the formula: Gas Used × Gas Price = Total REACT Charge. This amount is deducted from the user's REACT token balance. Certain transactions may involve a `value` field, such as contract deployment or fund transfers. In these cases, the specified value (in REACT) is deducted from the user's balance.
 
 ## Most Common Errors 
 
