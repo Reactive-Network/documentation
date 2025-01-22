@@ -166,10 +166,12 @@ These functions allow the contract to subscribe or unsubscribe a subscriber addr
 ```
 
 **Parameters**:
+
 - `rvm_id`: The ID of the reactive virtual machine (RVM).
 - `subscriber`: The address that will be subscribed or unsubscribed.
 
 **Operations**:
+
 - `subscribe`: Registers a subscriber to the `APPROVAL_TOPIC_0`.
 - `unsubscribe`: Removes a subscriber from the `APPROVAL_TOPIC_0`.
 
@@ -211,10 +213,11 @@ The function processes incoming log records from the ReactVM and executes differ
 ```
 
 **Log Processing**:
+
 - Subscribe Logic: If the log's `topic_0` matches the `SUBSCRIBE_TOPIC_0`, the function encodes a payload for the `subscribe()` method and emits a callback.
 - Unsubscribe Logic: If the log's `topic_0` matches the `UNSUBSCRIBE_TOPIC_0`, the function encodes a payload for the `unsubscribe()` method and emits a callback.
 - Approval Logic: For any other log, it decodes the approval amount and creates a payload for the `onApproval` method, then emits a callback to the `approval_service` on Sepolia.
 
-**Callback Emission**: The function uses the emit `Callback` statement to send the appropriate payload and trigger the corresponding action on the Reactive chain.
+**Callback Emission**: The function uses the `emit Callback` statement to send the appropriate payload and trigger the corresponding action on the Reactive chain.
 
 [More on Subscriptions →](../education/module-1/subscriptions.md)
