@@ -16,6 +16,14 @@ The Reactive Network reads event streams and enables transactions across differe
 
 Origins and destinations don't have to be the same. Reactive contracts can be configured to work with multiple origins, and the system allows for multiple destinations, enabling conditional selection of which destination ecosystem will be used.
 
+## Callback Proxy Address
+
+`CALLBACK_PROXY_ADDR` ensures the validity of a callback transaction by checking two key conditions:
+
+- **Reactive Network Signature**: Verifies that the callback is initiated by the Reactive Network by matching the sender address to `CALLBACK_PROXY_ADDR`.
+
+- **RVM ID Verification**: Confirms that the callback originates from the correct reactive contract by checking the RVM ID in the transaction payload.
+
 ## Chains
 
 :::info[Callbacks]
