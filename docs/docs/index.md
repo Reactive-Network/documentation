@@ -10,36 +10,43 @@ hide_title: true
 
 ## Overview
 
-Reactive Network is a fully EVM-compatible execution layer that allows developers to create the next wave of dApps using Reactive Smart Contracts. These contracts differ from traditional ones by using Inversion-of-Control for the transaction lifecycle, driven by data flows across blockchain ecosystems rather than user input.
+The Reactive Network is an EVM-compatible execution layer that allows developers to create dApps using reactive contracts. These contracts differ from traditional smart contracts by using inversion-of-control for the transaction lifecycle, driven by data flows across blockchains rather than user input.
 
-Reactive Smart Contracts receive event logs from various chains, executing Solidity logic based on these events instead of user transactions. They can independently determine the need to transmit data to the destination chain, enabling conditional state changes. Reactive Network offers fast and cost-effective computation through a proprietary parallelized EVM implementation.
+Reactive contracts receive event logs from various chains, executing Solidity logic based on these events instead of user transactions. They can independently determine the need to transmit data to destination chains, enabling conditional state changes. The Reactive Network offers fast and cost-effective computation through a proprietary parallelized EVM implementation.
 
-:::note
+## Step 1 — Reactive Basics
 
-**Reactive Network** is currently undergoing intensive development. All statements in this documentation hold true as of the time of writing; however, given the dynamic nature of our development process, rapid changes may occur without any prior notice.
+[Origins & Destinations →](./origins-and-destinations.mdx) Check on Reactive's origins and destinations, along with their Callback Proxy addresses.
 
-:::
+[Reactive Contracts →](./reactive-smart-contracts.md) Understand the core concept of reactive contracts.
 
-## Get REACT Tokens
+[ReactVM →](./reactvm.md) Learn about ReactVM and its purpose.
 
-Acquire REACT tokens by simply interacting with the Reactive faucet contract on Ethereum Sepolia. Follow the link below for details.
+[System Contract →](./system-contract.md) Explore the System Contract's features, including callback payments, pricing, and useful commands.
 
-[Get REACT Tokens →](./kopli-testnet.mdx#get-kopli-testnet-react)
+## Step 2 — Reactive Essentials
 
-## Deploy Your First Reactive Contract
+[Reactive Library →](./reactive-lib.md) Implement abstract contracts and interfaces in your project.
 
-Read through a guide covering the deployment of a reactive contract, from setting up the environment and configuring variables to detailed insights on development and testing.
+[Events & Callbacks →](./events-and-callbacks.md) Read up on how to work with events and callbacks in reactive contracts. 
 
-[Reactive Use Cases →](../education/use-cases/index.md)
+[Subscriptions →](./subscriptions.md) Set up and manage subscriptions.
 
-## Reactive Demos 
+[Reactive Kopli Testnet →](./kopli-testnet.mdx) Connect to Reactive Kopli Testnet and get REACT tokens.
 
-Study practical demonstrations of the Reactive Network's capabilities, including monitoring logs from L1 contracts, facilitating fund transfers, implementing stop orders for Uniswap V2, and capturing historical exchange rates. The demos highlight the interaction between various smart contracts and explore areas for optimization, such as security and gas efficiency.
+[RNK RPC Methods →](./rnk-rpc-methods.md) Key RPC methods for the Reactive Network's Geth version.
 
-[Reactive Demos →](./demos.md)
+## Step 3 — Reactive Building
 
-## Reactive Education
+[Reactive Demos →](./demos.md) Hands-on demonstrations for the Reactive Network. 
 
-Look into our educational materials with detailed lectures, GitHub code snippets, and video demonstrations, focusing on both theoretical knowledge and practical challenges like executing Uniswap stop orders, syncing NFT ownership across multiple chains, and auto-harvesting staking rewards.
+[Reactive Demos on GitHub →](https://github.com/Reactive-Network/reactive-smart-contract-demos) Clone the GitHub project and start building.
 
-[Educational Materials →](../education/introduction/index.md)
+## Extra
+
+[Reactive Education →](../education/introduction/index.md) Begin a Reactive Tech education course.
+
+[FAQ →](./faq.md) Find answers to common questions.
+
+[Contacts →](../contacts/index.md) Reach out via socials for technical or trading inquiries.
+
