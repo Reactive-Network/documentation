@@ -192,57 +192,98 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 }
 ```
 
-## rnk_getCallbackTransaction
+[//]: # (## rnk_getCallbackTransaction)
 
-Returns callback transactions associated with a specified ReactVM transaction.
+[//]: # ()
+[//]: # (Returns callback transactions associated with a specified ReactVM transaction.)
 
-#### Parameters
+[//]: # ()
+[//]: # (#### Parameters)
 
-1. **rvmId**: `DATA`, 20 Bytes — The ReactVM ID for which callback transactions are being queried.
-2. **rvmTx**: `DATA`, 32 Bytes — The transaction hash for which callback transactions are requested.
+[//]: # ()
+[//]: # (1. **rvmId**: `DATA`, 20 Bytes — The ReactVM ID for which callback transactions are being queried.)
 
-**Example Parameters:**
+[//]: # (2. **rvmTx**: `DATA`, 32 Bytes — The transaction hash for which callback transactions are requested.)
 
-```json
-[
-  "0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a",
-  "0x1f7bd4c7cbbab3614468516da5e082e62bd8f36443f4532344414e098967bf10"
-]
-```
+[//]: # ()
+[//]: # (**Example Parameters:**)
 
-#### cURL
+[//]: # ()
+[//]: # (```json)
 
-```bash
-curl --location 'https://kopli-rpc.rkt.ink' \
---header 'Content-Type: application/json' \
---data '{
-  "jsonrpc": "2.0",
-  "method": "rnk_getCallbackTransaction",
-  "params": [
-    "0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a",
-    "0x1f7bd4c7cbbab3614468516da5e082e62bd8f36443f4532344414e098967bf10"
-  ],
-  "id": 1
-}'
-```
+[//]: # ([)
 
-#### Response
+[//]: # (  "0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a",)
 
-```json
-{
-   "jsonrpc": "2.0",
-   "id": 1,
-   "result": [
-      {
-         "chainId": 5318008,
-         "txHash": "0x23f20c4269248ceb62660ec46798f0aac43ed4929c8f33928db84f0ec3da906d",
-         "logIndex": 0,
-         "gasLimit": 1000000,
-         "rnkBlockNumber": 7543
-      }
-   ]
-}
-```
+[//]: # (  "0x1f7bd4c7cbbab3614468516da5e082e62bd8f36443f4532344414e098967bf10")
+
+[//]: # (])
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (#### cURL)
+
+[//]: # ()
+[//]: # (```bash)
+
+[//]: # (curl --location 'https://kopli-rpc.rkt.ink' \)
+
+[//]: # (--header 'Content-Type: application/json' \)
+
+[//]: # (--data '{)
+
+[//]: # (  "jsonrpc": "2.0",)
+
+[//]: # (  "method": "rnk_getCallbackTransaction",)
+
+[//]: # (  "params": [)
+
+[//]: # (    "0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a",)
+
+[//]: # (    "0x1f7bd4c7cbbab3614468516da5e082e62bd8f36443f4532344414e098967bf10")
+
+[//]: # (  ],)
+
+[//]: # (  "id": 1)
+
+[//]: # (}')
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (#### Response)
+
+[//]: # ()
+[//]: # (```json)
+
+[//]: # ({)
+
+[//]: # (   "jsonrpc": "2.0",)
+
+[//]: # (   "id": 1,)
+
+[//]: # (   "result": [)
+
+[//]: # (      {)
+
+[//]: # (         "chainId": 5318008,)
+
+[//]: # (         "txHash": "0x23f20c4269248ceb62660ec46798f0aac43ed4929c8f33928db84f0ec3da906d",)
+
+[//]: # (         "logIndex": 0,)
+
+[//]: # (         "gasLimit": 1000000,)
+
+[//]: # (         "rnkBlockNumber": 7543)
+
+[//]: # (      })
+
+[//]: # (   ])
+
+[//]: # (})
+
+[//]: # (```)
 
 ## rnk_getHeadNumber
 
