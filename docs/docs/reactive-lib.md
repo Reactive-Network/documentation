@@ -280,3 +280,27 @@ import './ISubscriptionService.sol';
 interface ISystemContract is IPayable, ISubscriptionService {
 }
 ```
+
+## System Contract
+
+The Reactive Network’s key operations are managed by three core contracts:
+
+[System Contract](https://github.com/Reactive-Network/system-smart-contracts/blob/main/src/SystemContract.sol) oversees:
+
+- Payments: Handles service payments for reactive contracts.
+- Access Control: Manages contract whitelisting/blacklisting.
+- Cron Events: Triggers periodic block interval actions.
+
+[Callback Proxy](https://github.com/Reactive-Network/system-smart-contracts/blob/main/src/CallbackProxy.sol) ensures interactions with:
+
+- Callback Management: Restricted to authorized senders.
+- Payment & Reserves: Manages deposits, reserves, and debts.
+- Gas Adjustment & Kickbacks: Calculates gas prices and rewards originators.
+- Access Control: Tracks authorized contracts, emitting whitelist/blacklist updates.
+
+[AbstractSubscriptionService](https://github.com/Reactive-Network/system-smart-contracts/blob/main/src/AbstractSubscriptionService.sol) manages event subscriptions with:
+
+- Flexible Criteria: Subscribes/unsubscribes based on chain ID, address, or topics.
+- Recursive Tracking: Supports complex criteria structures.
+- Wildcard Support: Uses `REACTIVE_IGNORE` for broader matches.
+- Event Emissions: Tracks subscription updates, including deployer events.

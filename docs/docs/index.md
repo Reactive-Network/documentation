@@ -22,7 +22,7 @@ Reactive contracts receive event logs from various chains, executing Solidity lo
 
 [ReactVM →](./reactvm.md) Learn about ReactVM and its purpose.
 
-[System Contract →](./system-contract.md) Explore the System Contract's features, including callback payments, pricing, and useful commands.
+[Economy →](./economy) Explore the Reactive Network's economy and callback payment mechanism.
 
 ## Step 2 — Reactive Essentials
 

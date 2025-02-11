@@ -116,6 +116,6 @@ emit Callback(chain_id, stop_order, CALLBACK_GAS_LIMIT, payload);
 
 The payload encodes the function signature and parameters needed for the stop order. The `Callback` event is emitted with the destination chain ID, target contract, gas limit, and the constructed payload.
 
-[More on Callback Payments →](./system-contract.md#callback-payments)
+[More on Callback Payments →](./economy#callback-payments)
 
 [More on Callbacks →](../education/module-1/how-events-work#callbacks-to-destination-chains)
