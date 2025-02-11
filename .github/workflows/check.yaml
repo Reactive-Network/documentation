@@ -6,7 +6,7 @@ on:
 jobs:
   docker-build:
     name: Build project
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: "read"
       id-token: "write"
