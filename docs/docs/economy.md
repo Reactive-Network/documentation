@@ -55,6 +55,21 @@ cast send --rpc-url $REACTIVE_RPC --private-key $REACTIVE_PRIVATE_KEY $SYSTEM_CO
 On the Reactive Network, the system contract and callback proxy share the same address: `0x0000000000000000000000000000000000FFFFFF`.
 :::
 
+## Callback Pricing
+
+Callback pricing dynamically adjusts based on block base fees. The cost, $$p_{callback}$$, is calculated as follows:
+
+$$
+p_{callback} = p_{base} ⋅ C ⋅ (g_{callback} + K)
+$$
+
+Where:
+
+- $$p_{base}$$: Base gas price, determined by `tx.gasprice` and `block.basefee`.
+- $$C$$: Pricing coefficient specific to the destination network.
+- $$g_{callback}$$: Gas consumed during callback execution.
+- $$K$$: Fixed gas surcharge for the destination network.
+
 ## Callback Payment
 
 Callbacks require the same payment mechanism as reactive transactions. If a contract fails to pay, it is blocklisted, preventing future callbacks and transactions.
@@ -88,18 +103,3 @@ cast send --rpc-url $DESTINATION_RPC --private-key $DESTINATION_PRIVATE_KEY $CAL
 :::tip[On-The-Spot Payment]
 Implementing the `pay()` method or inheriting from `AbstractPayer` enables automatic settlement. The callback proxy triggers `pay()` when a callback results in contract debt. The standard implementation verifies the caller is the proxy, checks for sufficient funds, and then settles the debt.
 :::
-
-## Callback Pricing
-
-Callback pricing dynamically adjusts based on block base fees. The cost, $$p_{callback}$$, is calculated as follows:
-
-$$
-p_{callback} = p_{base} ⋅ C ⋅ (g_{callback} + K)
-$$
-
-Where:
-
-- $$p_{base}$$: Base gas price, determined by `tx.gasprice` and `block.basefee`.
-- $$C$$: Pricing coefficient specific to the destination network.
-- $$g_{callback}$$: Gas consumed during callback execution.
-- $$K$$: Fixed gas surcharge for the destination network.
