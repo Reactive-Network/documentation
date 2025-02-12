@@ -14,6 +14,17 @@ This section covers RVM transaction payments, including direct transfers and sys
 
 ## RVM Transactions
 
+The Reactive Transaction Fee is determined by the formula:
+
+$$
+fee = header.BaseFee ⋅ rvmTx.gasUsed
+$$
+
+Where:
+
+- `header.BaseFee`: Base fee per unit of gas in the block header, ensuring alignment with the network's current pricing conditions.
+- `rvmTx.gasUsed`: Actual gas consumed by the reactive transaction during execution.
+
 ### Direct Transfers
 
 All RVM transactions must be paid in REACT by transferring funds to a specific reactive contract. A direct payment can be made as follows:
@@ -48,6 +59,10 @@ On the Reactive Network, the system contract and callback proxy share the same a
 
 Callbacks require the same payment mechanism as reactive transactions. If a contract fails to pay, it is blocklisted, preventing future callbacks and transactions.
 
+:::warning[Callback Gas Limit]
+The Reactive Network enforces a minimum callback gas limit of 100,000 gas. Callback requests below this threshold are ignored to prevent underfunded transactions and ensure successful execution.
+:::
+
 ### Direct Transfers
 
 To directly fund your callback contract:
@@ -79,12 +94,12 @@ Implementing the `pay()` method or inheriting from `AbstractPayer` enables autom
 Callback pricing dynamically adjusts based on block base fees. The cost, $$p_{callback}$$, is calculated as follows:
 
 $$
-p_{callback} = p_{origin} ⋅ C ⋅ (g_{callback} + K)
+p_{callback} = p_{base} ⋅ C ⋅ (g_{callback} + K)
 $$
 
 Where:
 
-- $$p_{origin}$$: Base gas price, determined by `tx.gasprice` and `block.basefee`.
+- $$p_{base}$$: Base gas price, determined by `tx.gasprice` and `block.basefee`.
 - $$C$$: Pricing coefficient specific to the destination network.
 - $$g_{callback}$$: Gas consumed during callback execution.
 - $$K$$: Fixed gas surcharge for the destination network.
