@@ -75,7 +75,7 @@ Where:
 Callbacks require the same payment mechanism as reactive transactions. If a contract fails to pay, it is blocklisted, preventing future callbacks and transactions.
 
 :::warning[Callback Gas Limit]
-The Reactive Network enforces a minimum callback gas limit of 100,000 gas. Callback requests below this threshold are ignored to prevent underfunded transactions and ensure successful execution.
+The Reactive Network enforces a minimum callback gas limit of 100,000 gas. Callback requests below this threshold are ignored, as this minimum ensures sufficient gas for internal audits and computations required to process the callback.
 :::
 
 ### Direct Transfers
@@ -103,3 +103,29 @@ cast send --rpc-url $DESTINATION_RPC --private-key $DESTINATION_PRIVATE_KEY $CAL
 :::tip[On-The-Spot Payment]
 Implementing the `pay()` method or inheriting from `AbstractPayer` enables automatic settlement. The callback proxy triggers `pay()` when a callback results in contract debt. The standard implementation verifies the caller is the proxy, checks for sufficient funds, and then settles the debt.
 :::
+
+## Reactive Balance
+
+### Contract Balance
+
+To retrieve the current balance of the specified contract in REACT, run the following command:
+
+```bash
+cast balance $CONTRACT_ADDR --rpc-url $REACTIVE_RPC
+```
+
+### Contract Debt
+
+To query the debt of the specified contract as recorded by the system contract, run the following command:
+
+```bash
+cast call $SYSTEM_CONTRACT_ADDR "debts(address)" $CONTRACT_ADDR --rpc-url $REACTIVE_RPC
+```
+
+### Contract Reserves
+
+To retrieve the reserve amount (decimal) of the specified contract held by the system contract, run the following command:
+
+```bash
+cast call $SYSTEM_CONTRACT_ADDR "reserves(address)" $CONTRACT_ADDR --rpc-url $REACTIVE_RPC | xargs printf "%d\n"
+```
