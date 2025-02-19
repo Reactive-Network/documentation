@@ -44,6 +44,8 @@ Reactive contracts receive event logs from various chains, executing Solidity lo
 
 ## Extra
 
+[Reactscan →](./reactscan.md) Learn to navigate the Reactive block explorer.
+
 [Reactive Education →](../education/introduction/index.md) Begin a Reactive Tech education course.
 
 [FAQ →](./faq.md) Find answers to common questions.
