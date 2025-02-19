@@ -12,13 +12,13 @@ hide_title: true
 
 Reactscan is a tool that provides developers with an overview of the Reactive Network, including addresses, contracts, and transaction details.
 
-Reactive Scan (Mainnet): TBA
+[Reactive Scan (Mainnet) →](https://reactscan-staging.prq-infra.net/)
 
-Kopli Scan (Testnet): https://kopli.reactscan.net/
+[Kopli Scan (Testnet) →](https://kopli.reactscan.net/)
 
 ## My RVM Address
 
-Your contracts and reactive transactions are located under your RVM address, which matches the deployment address.
+Your contracts and reactive transactions are located in your RVM address section, which should match the deployment address.
 
 [Learn more about ReactVM →](./reactvm.md)
 
@@ -43,7 +43,7 @@ Clicking the **[watch]** button on your RVM page moves your RVM address to the t
 
 ## RVM Page for Developers
 
-On your RVM page, you can access a detailed view of the contracts you've deployed and the transactions you've initiated. Additionally, your balance in **REACT** is displayed for quick reference.
+On your RVM page, you can access a detailed view of the contracts you've deployed and the transactions you've initiated. Additionally, your balance in REACT is displayed for quick reference.
 
 ![Img 4](./reactscan-img/4.jpg)
 
@@ -57,7 +57,7 @@ The **Main Transactions** page provides an overview of all transactions, organiz
 
 ![Img 5](./reactscan-img/5.jpg)
 
-### Contracts
+### Contract
 
 The **Contract** page provides a detailed view of all transactions related to a specific contract. Contract subscriptions can be viewed on this page, too.
 
@@ -65,29 +65,27 @@ The **Contract** page provides a detailed view of all transactions related to a 
 Your REACT balance is also visible on your RVM page for easy reference.
 :::
 
-The page displays the current **status** of your contract, either `Active` or `Inactive`. If your contract is inactive, you can follow the instructions on the [Debt Coverage](./economy.md#direct-transfers) page to activate it.
+The page displays the current **contract status**, either `Active` or `Inactive`. If your contract is inactive, you can follow the instructions on the [Debt Coverage](./economy.md#direct-transfers) page to activate it.
 
 ![Img 6](./reactscan-img/6.jpg)
 
 Similar to the **Main Transactions** page in your RVM, the contract page features a transaction table with the same columns: **Numb, Hash, Status, Time, Origin, Interacted With, Type,** and **Callbacks.** Here’s a breakdown of key columns:
 
-- **Type** - it takes 2 values: DEPLOY, a transaction for your Contract deploy. REACT, a transaction reacting to the origin transaction
+- **Type**: indicates the nature of the transaction. It can take two values - **DEPLOY** (transaction where a contract was deployed) and **REACT** (a transaction that reacts to an originating transaction).
 
-- **Callback -**  if the transaction did not generate any Callback - it will simply show N/A. However, if it did, it would show an exact number of callbacks. You can open the transaction (by clicking the number of transaction hash) and view them.
+- **Callbacks**: If a transaction generates callbacks, this column displays the exact number of callbacks triggered. For transactions with no callbacks, it simply shows **N/A**. You can click the transaction hash to open its details and view all associated callbacks.
 
-- **Interacted with** - you can quickly view what contract this transaction interacted with. Most of the time it will be the same as you contract.
-
-![Img 6](./reactscan-img/5.jpg)
+- **Interacted With**: the contract initiating the transaction.
 
 ### Subscriptions
 
 Next to the transactions section, you can view the **subscriptions** associated with the contract. The subscription details include the following fields:
 
-- **Subscription Status**: Active (The subscription is actively monitoring events on the origin chain) or Inactive (The subscription has stopped monitoring events).
+- **Subscription Status**: **Active** (the subscription is actively monitoring events on the origin chain) or **Inactive** (the subscription has stopped monitoring events).
 
 - **Chain**: Specifies the origin chain where the subscription is monitoring events.
 
-- **Criteria**: Origin Contract, topic_0, topic_1, topic_2, topic_3
+- **Criteria**: **Origin Contract**, **topic_0**, **topic_1**, **topic_2**, and **topic_3**.
 
 ![Img 7](./reactscan-img/7.jpg)
 
@@ -105,9 +103,9 @@ At the top left, the **RVM address** is shown and can be copied. Below that, you
 
 The **Transaction Overview** section includes:
 
-* **Interacted With** – The contract address involved in the transaction.
-* **Transaction Hash, Transaction Type, and Status** – Self-explanatory.
-* **From** – The EOA associated with the RVM address.
+* **Interacted With**: The contract address involved in the transaction.
+* **Transaction Hash, Transaction Type, and Status**: Self-explanatory.
+* **From**: The EOA associated with the RVM address.
 
 ![Img 10](./reactscan-img/10.jpg)
 
@@ -115,8 +113,8 @@ Next, the **Gas Overview** displays gas consumption details.
 
 If the transaction involves cross-chain activity (beyond contract deployment), two additional sections appear:
 
-* **Destination Transaction** – Includes a clickable hash linking to the relevant chain.
-* **Origin Transaction** – Shows the corresponding hash from the originating chain.
+* **Destination Transaction:** Includes a clickable hash linking to the relevant chain.
+* **Origin Transaction:** Shows the corresponding hash from the originating chain.
 
 ![Img 11](./reactscan-img/11.jpg)
 
