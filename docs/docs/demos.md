@@ -1,6 +1,6 @@
 ---
 title: Demos
-sidebar_position: 10
+sidebar_position: 11
 description: Discover the Reactive Network's capabilities through practical demos. From basic log monitoring to advanced Uniswap V2 stop order implementation, discover versatile real-world applications and refinements.
 slug: /demos
 hide_title: true
@@ -15,10 +15,6 @@ This section is dedicated to practical demonstrations explaining the capabilitie
 ## Reactive Network Demo
 
 The [Reactive Network Demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/basic) serves as an introduction, illustrating the Reactive Network's functionality in monitoring logs emitted by contracts in the L1 Network and initiating calls back to L1 contracts. It outlines the interaction between three smart contracts: the Origin chain contract [BasicDemoL1Contract.sol](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoL1Contract.sol), the Destination chain contract [BasicDemoL1Callback.sol](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoL1Callback.sol), and the Reactive contract [BasicDemoReactiveContract.sol](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoReactiveContract.sol).
-
-## Reactive Faucet App/Demo
-
-The [Reactive Faucet App/Demo](https://github.com/Reactive-Network/kopli-faucet) facilitates fund transfers between any chain and the Reactive Network. This is the same faucet that operates on our testnet. It involves two smart contracts: [ReactiveFaucetL1.sol](https://github.com/Reactive-Network/kopli-faucet/blob/main/src/faucet/ReactiveFaucetL1.sol) and [ReactiveFaucet.sol](https://github.com/Reactive-Network/kopli-faucet/blob/main/src/faucet/ReactiveFaucet.sol).
 
 ## Uniswap V2 Stop Order Demo
 
@@ -39,3 +35,7 @@ The [ERC-20 Turnovers Demo](https://github.com/Reactive-Network/reactive-smart-c
 ## ERC-721 Ownership Demo
 
 The [ERC-721 Ownership Demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/erc721-ownership) tracks and reports the ownership of ERC-721 tokens. It details two smart contracts: the Origin chain contract [NftOwnershipL1.sol](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/erc721-ownership/NftOwnershipL1.sol), and the Reactive contract [NftOwnershipReactive.sol](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/erc721-ownership/NftOwnershipReactive.sol), which work together to record and report token ownership changes. The purpose of this demo is to monitor token ownership changes on all ERC-721 contracts and provide this information upon request.
+
+## Reactive Faucet App/Demo
+
+The [Reactive Faucet App/Demo](https://github.com/Reactive-Network/kopli-faucet) facilitates fund transfers between any chain and the Reactive Network. This is the same faucet that operates on our testnet. It involves two smart contracts: [ReactiveFaucetL1.sol](https://github.com/Reactive-Network/kopli-faucet/blob/main/src/faucet/ReactiveFaucetL1.sol) and [ReactiveFaucet.sol](https://github.com/Reactive-Network/kopli-faucet/blob/main/src/faucet/ReactiveFaucet.sol).

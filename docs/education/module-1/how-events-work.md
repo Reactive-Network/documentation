@@ -58,38 +58,66 @@ A dApp or an investor's portfolio management tool can listen for the `PriceUpdat
 
 ## Event Processing in Reactive Smart Contracts
 
-Reactive Smart Contracts must implement the [`IReactive`](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/IReactive.sol) interface to handle incoming events. This requires defining the `react()` method with the following signature:
+Reactive smart contracts must implement the [`IReactive`](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol) interface to handle incoming events.
 
 ```solidity
-function react(
-    uint256 chain_id,
-    address _contract,
-    uint256 topic_0,
-    uint256 topic_1,
-    uint256 topic_2,
-    uint256 topic_3,
-    bytes calldata data,
-    uint256 block_number,
-    uint256 op_code
-) external;
+pragma solidity >=0.8.0;
+
+import './IPayer.sol';
+
+interface IReactive is IPayer {
+    struct LogRecord {
+        uint256 chain_id;
+        address _contract;
+        uint256 topic_0;
+        uint256 topic_1;
+        uint256 topic_2;
+        uint256 topic_3;
+        bytes data;
+        uint256 block_number;
+        uint256 op_code;
+        uint256 block_hash;
+        uint256 tx_hash;
+        uint256 log_index;
+    }
+
+    event Callback(
+        uint256 indexed chain_id,
+        address indexed _contract,
+        uint64 indexed gas_limit,
+        bytes payload
+    );
+    
+    function react(LogRecord calldata log) external;
+}
 ```
 
-The function parameters are:
+**LogRecord Structure**: A structured data type, `LogRecord`, is defined to contain detailed information about an event log:
+- `chain_id`: ID of the blockchain where the event originated.
+- `_contract`: Address of the contract that emitted the event.
+- `topic_0` to `topic_3`: Indexed topics of the log.
+- `data`: Non-indexed data from the event log.
+- `block_number`: Block number where the event occurred.
+- `op_code`: Potentially denotes an operation code.
+- `block_hash`, `tx_hash`, and `log_index`: Additional identifiers to trace the event's origin and context.
 
-- `chain_id`: A `uint256` representing the origin chain ID as per `EIP155`.
-- `_contract`: The address of the contract on the origin chain emitting the event.
-- `topic_0`, `topic_1`, `topic_2`, `topic_3`: `uint256` values representing the topics of the event.
-- `data`: The event data encoded as a byte array.
-- `block_number`: The block number in the origin chain where the event log is recorded.
-- `op_code`: A `uint256` representing the opcode associated with the event.
+**Callback Event**: An event to notify subscribers of specific occurrences:
+- `chain_id`: Blockchain ID of the event.
+- `_contract`: Address of the emitting contract.
+- `gas_limit`: Maximum gas allocated for the callback.
+- `payload`: Encoded data accompanying the callback.
+
+**react Function**: A key function that handles incoming event notifications.
+- Takes a `LogRecord` as input, enabling reactive contracts to process event logs dynamically.
+- Marked as `external`, allowing it to be called only from outside the contract.
 
 The Reactive Network continuously monitors event logs and matches them against the subscription criteria defined in reactive contracts. When an event that meets the criteria is detected, the network triggers the `react()` method, passing in relevant details.
 
-Reactive Smart Contracts can access all standard EVM functionalities. However, they run within a private ReactVM, which restricts them to interacting with contracts deployed by the same deployer. This isolation ensures that reactive contracts maintain a controlled and secure environment while processing events from the Reactive Network.
+Reactive contracts can access all standard EVM functionalities. However, they run within a private ReactVM, which restricts them to interacting with contracts deployed by the same deployer. This isolation ensures that reactive contracts maintain a controlled and secure environment while processing events from the Reactive Network.
 
 ## Callbacks to Destination Chains
 
-Reactive Smart Contracts can initiate transactions on destination chains by emitting log records in a specific format. These records are picked up by the Reactive Network, which then carries out the desired transactions on the relevant chain.
+Reactive contracts can initiate transactions on destination chains by emitting log records in a specific format. These records are picked up by the Reactive Network, which then carries out the desired transactions on the relevant chain.
 
 ### Emitting Callback Events
 

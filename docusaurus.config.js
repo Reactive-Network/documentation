@@ -203,13 +203,13 @@ const config = {
               to: "/kopli-testnet"
             },
             {
+              from: "/system-contract",
+              to: "/economy"
+            },
+            {
               from: "/docs/getting-started",
               to: "/"
             },
-            // {
-            //   from: "/docs/architecture",
-            //   to: "/architecture"
-            // },
             {
               from: "/docs/architecture/reactive-smart-contracts",
               to: "/reactive-smart-contracts"

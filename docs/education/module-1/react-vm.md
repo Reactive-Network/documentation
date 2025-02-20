@@ -38,31 +38,28 @@ For each RSC deployed, there are two instances of it with separate states but th
 
 ### Identifying the Execution Context
 
-The execution context within these dual environments is determined using a boolean variable, typically named `vm`. This variable helps the contract identify its current operating environment:
+The execution context determines whether the contract is running on the Reactive Network or within a ReactVM instance. This distinction is crucial for controlling which functions can be called in which environment. Implement [AbstractReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractReactive.sol) in your project to get all the necessary functionality. 
 
-* `vm = false` indicates execution within the Reactive Network.
+#### How Detection Works
 
-* `vm = true` indicates execution within the ReactVM.
-
-The `vm` variable is initialized in the constructor after attempting to call the system contract. System contracts are only deployed in the Reactive Network, whereas the ReactVM does not have a separate instance of them. If the call is unsuccessful, indicating that we are operating within a separate ReactVM instance rather than within the Reactive Network, the `vm` variable is set to `true`; otherwise, it remains `false`.
+Instead of attempting to invoke the system contract in the constructor, the new code uses the function `detectVm()` to inspect the code size at the system contract’s address. The `0x0000000000000000000000000000000000fffFfF` address only has deployed code on the Reactive Network. If there is code at this address, we conclude that we are on the Reactive Network; if not, we are within a ReactVM instance.
 
 ```solidity
-bytes memory payload = abi.encodeWithSignature(
-    "subscribe(uint256,address,uint256,uint256,uint256,uint256)",
-    CHAIN_ID,
-    _contract,
-    topic_0,
-    REACTIVE_IGNORE,
-    REACTIVE_IGNORE,
-    REACTIVE_IGNORE
-);
-(bool subscription_result,) = address(service).call(payload);
-if (!subscription_result) {
-    vm = true;
+function detectVm() internal {
+    uint256 size;
+    // solhint-disable-next-line no-inline-assembly
+    assembly { size := extcodesize(0x0000000000000000000000000000000000fffFfF) }
+    vm = size == 0;
 }
 ```
 
-We need to ensure that each function is executed only in the environment it is supposed to. We do this through modifiers that check the `vm` variable initiated in the constructor.
+**Assembly Check**: An inline assembly snippet checks the size of the contract code at the system contract’s address.
+
+**Setting the vm Flag**: If `size == 0`, there is no code at that address. This indicates that we are running within a ReactVM instance, so `vm` is set to `true`. Otherwise, if `size > 0`, it indicates the presence of the system contract, confirming that we are on the Reactive Network, so `vm` remains `false`.
+
+#### Enforcing Execution Context
+
+We use modifiers to ensure that each function can only be called in its intended environment.
 
 ```solidity
 modifier rnOnly() {
@@ -76,68 +73,220 @@ modifier vmOnly() {
 }
 ```
 
+**rnOnly()**: requires that `vm == false`, meaning the function can only run when the contract is deployed to the Reactive Network.
+
+**vmOnly()**: requires that `vm == true`, meaning the function can only run within a ReactVM instance.
+
 ### Managing Dual Variable Sets for Each State
 
-To adapt to these two operational states, RSCs should manage two sets of variables:
+In Reactive architecture, each deployed contract can run in two operational states:
 
-* Variables for the Reactive Network: used for interactions with system smart contracts, along with subscribing to and receiving events.
+**Reactive Network State**
 
-* Variables for the ReactVM: used within the ReactVM to execute the reaction logic based on the received events.
+- Interacts directly with system contracts.
+- Subscribes to events using `service.subscribe(...)`.
+- Uses variables and methods required to register and manage event subscriptions.
 
-We recommend the aforementioned separation of variables to ensure that operations relevant to each environment are executed properly without any interference. You can follow our notation for your development. However, you could also try implementing more advanced techniques such as using one variable in two instances of an RSC differently. `vm` is a prime example of a variable that holds distinct values across various RSC instances. Similarly, you could optimize gas usage by repurposing variables for different functions across different instances.
+**ReactVM State**
 
-In the examples presented in this course, we consistently specify in the comments which state corresponds to each variable. Let’s briefly examine our Uniswap stop order example. Here’s how we separate the variables within it:
+- Contains the business logic to react to subscribed events.
+- Uses variables and methods that execute upon receiving an event.
 
-```solidity
-// State specific to reactive network contract instance
+To accommodate these states, two conceptual sets of variables are maintained — one set in the base (network-facing) contract context and another set in the ReactVM context. In this new example, the "Reactive Network" variables are inherited from our `AbstractReactive` contract, while the ReactVM variables are declared within a reactive contract itself.
 
-address private owner;
-bool private paused;
-ISubscriptionService private service;
+### Reactive Network Variables
 
+If a reactive contract inherits from `AbstractReactive`, the following variables and methods are available behind the scenes:
 
-// State specific to ReactVM contract instance
+- `service` (`ISubscriptionService`) for subscribing to events.
+- `vm` (bool) that indicates whether the execution is happening on the ReactVM or in the Reactive Network context.
+- Additional inherited utility methods (e.g., `service.subscribe(...)`).
 
-address private origin;
-mapping(address => Tick[]) private reserves;
-```
-
-The variables used for managing event subscriptions pertain to the Reactive Network contract instance, where system contracts exist. Conversely, the variables employed in the logic executed after events are specific to the ReactVM contract instance.
-
-## Transaction Execution
-
-Let's consider the types of transactions that are executed in the Reactive Network and ReactVM for a specific Reactive Smart Contract.
-
-### Reactive Network Transactions
-
-There are two ways to initiate a transaction on the Reactive Network: directly by a user or triggered by an event on the origin chain.
-
-Users can directly initiate transactions on the Reactive Network by invoking methods specific to the RSC instance dedicated to the Reactive Network. These methods interact with the state of the Reactive Network and enable various functionalities. For example, a user might initiate a transaction by calling the `pause()` function to suspend event reception and response temporarily.
+In the constructor of the [Uniswap Stop Order reactive contract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/uniswap-v2-stop-order/UniswapDemoStopOrderReactive.sol), you can notice that `if (!vm)` checks if we are running in the Reactive Network state. If so, the contract registers to receive events from `pair` and `stop_order`. Once subscribed, those events will later trigger our `react()` logic only when we are in the ReactVM state.
 
 ```solidity
-// Methods specific to reactive network contract instance
+// State specific to ReactVM instance of the contract.
 
-function pause() external rnOnly onlyOwner {
-    require(!paused, 'Already paused');
-    service.unsubscribe(
-        SEPOLIA_CHAIN_ID,
-        ORIGIN,
-        PAYMENT_REQUEST_TOPIC_0,
-        REACTIVE_IGNORE,
-        REACTIVE_IGNORE,
-        REACTIVE_IGNORE
-    );
-    paused = true;
+bool private triggered;
+bool private done;
+address private pair;
+address private stop_order;
+address private client;
+bool private token0;
+uint256 private coefficient;
+uint256 private threshold;
+
+constructor(
+    address _pair,
+    address _stop_order,
+    address _client,
+    bool _token0,
+    uint256 _coefficient,
+    uint256 _threshold
+) payable {
+    triggered = false;
+    done = false;
+    pair = _pair;
+    stop_order = _stop_order;
+    client = _client;
+    token0 = _token0;
+    coefficient = _coefficient;
+    threshold = _threshold;
+
+    if (!vm) {
+        service.subscribe(
+            SEPOLIA_CHAIN_ID,
+            pair,
+            UNISWAP_V2_SYNC_TOPIC_0,
+            REACTIVE_IGNORE,
+            REACTIVE_IGNORE,
+            REACTIVE_IGNORE
+        );
+        service.subscribe(
+            SEPOLIA_CHAIN_ID,
+            stop_order,
+            STOP_ORDER_STOP_TOPIC_0,
+            REACTIVE_IGNORE,
+            REACTIVE_IGNORE,
+            REACTIVE_IGNORE
+        );
+    }
 }
 ```
 
-In the Reactive Network, transactions also occur when an event of interest is emitted on the origin chain. In such cases, the system contract dispatches the event to all active subscribers, which are separate ReactVMs.
+### ReactVM Variables
+
+Within the [Uniswap Stop Order reactive contract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/uniswap-v2-stop-order/UniswapDemoStopOrderReactive.sol), the following variables and methods are used specifically after events are received:
+
+```solidity
+bool private triggered;
+bool private done;
+address private pair;
+address private stop_order;
+address private client;
+bool private token0;
+uint256 private coefficient;
+uint256 private threshold;
+```
+
+These variables handle the logic in the `react()` function:
+
+```solidity
+// Methods specific to ReactVM instance of the contract.
+function react(LogRecord calldata log) external vmOnly {
+    assert(!done);
+
+    if (log._contract == stop_order) {
+        if (
+            triggered &&
+            log.topic_0 == STOP_ORDER_STOP_TOPIC_0 &&
+            log.topic_1 == uint256(uint160(pair)) &&
+            log.topic_2 == uint256(uint160(client))
+        ) {
+            done = true;
+            emit Done();
+        }
+    } else {
+        Reserves memory sync = abi.decode(log.data, ( Reserves ));
+        if (below_threshold(sync) && !triggered) {
+            emit CallbackSent();
+            bytes memory payload = abi.encodeWithSignature(
+                "stop(address,address,address,bool,uint256,uint256)",
+                address(0),
+                pair,
+                client,
+                token0,
+                coefficient,
+                threshold
+            );
+            triggered = true;
+            emit Callback(log.chain_id, stop_order, CALLBACK_GAS_LIMIT, payload);
+        }
+    }
+}
+```
+
+- `triggered` prevents multiple callbacks once the threshold condition is satisfied.
+- `done` signals that the final stop has occurred.
+- `pair`, `stop_order`, and `client` reference external contracts and user data.
+- `token0`, `coefficient`, and `threshold` define the math around when to trigger a stop.
+
+The actual logic (checking liquidity reserves and emitting callbacks) is local to ReactVM. Since `react()` is labeled `vmOnly`, it is invoked by the underlying system **only** in the ReactVM context upon matching event logs.
+
+## Transaction Execution
+
+When working with a Reactive Smart Contract (RSC), there are two primary environments where transactions occur: the Reactive Network and the ReactVM. Each environment has different rules for initiating and processing transactions, as detailed below. The code is taken from [AbstractPausableReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractPausableReactive.sol).
+
+### Reactive Network Transactions
+
+Transactions on the Reactive Network can be initiated in two ways: directly by a user or triggered by an event on the origin chain.
+
+#### User-Initiated Transactions
+
+Users can invoke methods on the Reactive Network’s instance of an RSC to perform administrative functions or update contract state. For instance, pausing event subscriptions is done by calling the `pause()` function:
+
+```solidity
+function pause() external rnOnly onlyOwner {
+        require(!paused, 'Already paused');
+        Subscription[] memory subscriptions = getPausableSubscriptions();
+        for (uint256 ix = 0; ix != subscriptions.length; ++ix) {
+            service.unsubscribe(
+                subscriptions[ix].chain_id,
+                subscriptions[ix]._contract,
+                subscriptions[ix].topic_0,
+                subscriptions[ix].topic_1,
+                subscriptions[ix].topic_2,
+                subscriptions[ix].topic_3
+            );
+        }
+        paused = true;
+}
+```
+
+- `rnOnly` ensures that only the Reactive Network can call this function.
+- `onlyOwner` limits the call to the contract owner.
+- `service.unsubscribe()` removes the contract from listening to specific events (defined by `chain_id`, `topic_0`, etc.).
+
+This `pause()` function prevents the RSC from reacting to events by unsubscribing from them, effectively stopping further event-driven transactions until it is resumed.
+
+The corresponding `resume()` function re-subscribes to those same events so that the RSC can continue responding when new events are emitted:
+
+```solidity
+function resume() external rnOnly onlyOwner {
+    require(paused, 'Not paused');
+    Subscription[] memory subscriptions = getPausableSubscriptions();
+    for (uint256 ix = 0; ix != subscriptions.length; ++ix) {
+        service.subscribe(
+            subscriptions[ix].chain_id,
+            subscriptions[ix]._contract,
+            subscriptions[ix].topic_0,
+            subscriptions[ix].topic_1,
+            subscriptions[ix].topic_2,
+            subscriptions[ix].topic_3
+        );
+    }
+    paused = false;
+}
+```
+
+#### Event-Triggered Transactions
+
+Even if a user does not directly initiate a transaction, the Reactive Network monitors events on the origin chain. When an event of interest is emitted, the Reactive Network dispatches it to all active subscribers, typically specialized ReactVM instances. This dispatch triggers further action or state changes in the subscribers.
 
 ### ReactVM Transactions
 
-In the ReactVM, transactions can't be initiated directly by users. Instead, they are triggered when an event of interest occurs on an origin chain, at which point the system contract dispatches the event to the corresponding ReactVM for execution.
+Within the ReactVM, transactions can't be called directly by users. Instead, they are triggered automatically when the Reactive Network forwards relevant events from the origin chain:
 
-When an RSC in the ReactVM receives an event, it triggers the `react()` function. This part of the code outlines the actual logic of how we react to events: how we update the state and which callbacks to destination chains we emit. It's important to note that a callback to a destination chain initiates the resulting transaction on that destination chain.
+- Event emitted on origin chain
+- Reactive Network dispatches event
+- ReactVM receives and processes Event
+
+When an RSC running in the ReactVM receives an event, it typically calls its core reaction function `react()` to handle the event. The `react()` function contains the business logic for:
+
+- Updating internal state based on the received event.
+- Emitting callbacks to destination chains, which can then trigger transactions on those chains.
+
+Thus, any callback or subsequent transaction to another chain is automatically initiated by the `ReactVM` in response to the received event, rather than manually triggered by a user.
 
 We will consider other examples of `react()` functions for different use cases closely in our next lessons.
 

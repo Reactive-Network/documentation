@@ -18,31 +18,31 @@ This article focuses on building and deploying a reactive contract, using the ba
 
 ## Contracts
 
-* **Origin Chain Contract**: [BasicDemoL1Contract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoL1Contract.sol) receives Ether and returns it to the sender, emitting a `Received` event with transaction details.
+**Origin Chain Contract**: [BasicDemoL1Contract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoL1Contract.sol) receives Ether and returns it to the sender, emitting a `Received` event with transaction details.
 
-* **Reactive Contract**: [BasicDemoReactiveContract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoReactiveContract.sol) subscribes to events on Sepolia, emits logs, and triggers callbacks when conditions are met, such as `topic_3` being at least 0.1 Ether. It manages event subscriptions and tracks processed events.
+**Reactive Contract**: [BasicDemoReactiveContract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoReactiveContract.sol) demonstrates a reactive subscription model on Ethereum Sepolia. It listens for logs from a specified contract and emits an `Event` for each incoming log while incrementing a local `counter`. If the incoming log’s `topic_3` value is at least `0.01 Ether`, it emits a `Callback` event containing a payload to invoke a `callback` function externally.
 
 ```solidity
-function react(
-    uint256 chain_id,
-    address _contract,
-    uint256 topic_0,
-    uint256 topic_1,
-    uint256 topic_2,
-    uint256 topic_3,
-    bytes calldata data,
-    uint256 /* block_number */,
-    uint256 /* op_code */
-) external vmOnly {
-    emit Event(chain_id, _contract, topic_0, topic_1, topic_2, topic_3, data, ++counter);
-    if (topic_3 >= 0.1 ether) {
+function react(LogRecord calldata log) external vmOnly {
+    emit Event(
+        log.chain_id,
+        log._contract,
+        log.topic_0,
+        log.topic_1,
+        log.topic_2,
+        log.topic_3,
+        log.data,
+        ++counter
+    );
+
+    if (log.topic_3 >= 0.01 ether) {
         bytes memory payload = abi.encodeWithSignature("callback(address)", address(0));
-        emit Callback(chain_id, _callback, GAS_LIMIT, payload);
+        emit Callback(log.chain_id, _callback, GAS_LIMIT, payload);
     }
 }
 ```
 
-* **Destination Chain Contract**: [BasicDemoL1Callback](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoL1Callback.sol) logs callback details upon receiving a call, capturing the origin, sender, and reactive sender addresses. It could also be a third-party contract.
+**Destination Chain Contract**: [BasicDemoL1Callback](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoL1Callback.sol) logs callback details upon receiving a call, capturing the origin, sender, and reactive sender addresses. It could also be a third-party contract.
 
 ## Further Considerations
 

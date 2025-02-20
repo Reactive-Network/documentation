@@ -17,37 +17,28 @@ In this lesson, we’ll go through the Reactive Smart Contract (RSC) specificall
 
 ## Contract
 
-The contract `UniswapDemoStopOrderReactive.sol` is set up to monitor liquidity pool events on Uniswap V2, namely tracking the `Sync` events to determine when the conditions for a stop order are met. When these conditions are triggered, it executes a callback transaction on the Ethereum blockchain to perform the stop order.
+The [UniswapDemoStopOrderReactive](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/uniswap-v2-stop-order/UniswapDemoStopOrderReactive.sol) contract is set up to monitor liquidity pool events on Uniswap V2, namely tracking the `Sync` events to determine when the conditions for a stop order are met. When these conditions are triggered, it executes a callback transaction on the Ethereum blockchain to perform the stop order.
 
 ## Key Components
 
 ### Event Declarations
 
-Event Declarations: Events like `Callback`, `Subscribed`, `AboveThreshold`, `CallbackSent`, and `Done` are used for logging and tracking the contract's operations on the blockchain.
+Event Declarations: Events like `Subscribed`, `VM`, `AboveThreshold`, `CallbackSent`, and `Done` are used for logging and tracking the contract's operations on the blockchain.
 
 ```solidity
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 pragma solidity >=0.8.0;
 
-import '../../IReactive.sol';
-import '../../SubscriptionService.sol';
+import '../../../lib/reactive-lib/src/interfaces/IReactive.sol';
+import '../../../lib/reactive-lib/src/abstract-base/AbstractReactive.sol';
 
-struct Reserves {
-uint112 reserve0;
-uint112 reserve1;
-}
+    struct Reserves {
+        uint112 reserve0;
+        uint112 reserve1;
+    }
 
-// Reactive: 0x0c189A26E0AD06f8E12179280d9e8fB0EE1648C2
-
-contract UniswapDemoStopOrderReactive {
-event Callback(
-uint256 indexed chain_id,
-address indexed _contract,
-uint64 indexed gas_limit,
-bytes payload
-);
-
+contract UniswapDemoStopOrderReactive is IReactive, AbstractReactive {
     event Subscribed(
         address indexed service_address,
         address indexed _contract,
@@ -55,7 +46,6 @@ bytes payload
     );
 
     event VM();
-
     event AboveThreshold(
         uint112 indexed reserve0,
         uint112 indexed reserve1,
@@ -64,7 +54,6 @@ bytes payload
     );
 
     event CallbackSent();
-
     event Done();
 ```
 
@@ -73,18 +62,13 @@ bytes payload
 `UNISWAP_V2_SYNC_TOPIC_0` and `STOP_ORDER_STOP_TOPIC_0` are constants representing the topics for Uniswap's `Sync` events and the contract's `Stop` events, respectively. `CALLBACK_GAS_LIMIT` is the gas limit set for the callback transaction. Variables like `triggered`, `done`, `pair`, `stop_order`, `client`, `token0`, `coefficient`, and `threshold` store the state and configuration of the stop order.
 
 ```solidity
+    uint256 private constant SEPOLIA_CHAIN_ID = 11155111;
     uint256 private constant UNISWAP_V2_SYNC_TOPIC_0 = 0x1c411e9a96e071241c2f21f7726b17ae89e3cab4c78be50e062b03a9fffbbad1;
     uint256 private constant STOP_ORDER_STOP_TOPIC_0 = 0x9996f0dd09556ca972123b22cf9f75c3765bc699a1336a85286c7cb8b9889c6b;
-
     uint64 private constant CALLBACK_GAS_LIMIT = 1000000;
 
-    /**
-     * Indicates whether this is the instance of the contract deployed to ReactVM.
-     */
-    bool private vm;
-
     // State specific to ReactVM instance of the contract.
-
+    
     bool private triggered;
     bool private done;
     address private pair;
@@ -99,85 +83,79 @@ bytes payload
 
 ### Constructor
 
-The constructor sets up the initial state of the contract and subscribes to the necessary events from the Uniswap V2 pair `_pair` and the stop-order contract `_stop_order` using the `SubscriptionService.sol`.
+The constructor initializes the contract by storing references to the Uniswap V2 pair (`_pair`), the stop-order contract (`_stop_order`), and the client (`_client`). It also records a boolean flag (`_token0`), which indicates whether this contract is managing `token0` or `token1`, and sets the `coefficient` and `threshold` parameters that handle its behavior.
+
+After these values are stored, the contract subscribes to the Uniswap V2 pair and stop-order contract events, but only if it is not operating in a reactVM instance. Subscribing to these events ensures the contract will be notified of any relevant updates, specifically `UNISWAP_V2_SYNC_TOPIC_0` from the Uniswap pair and `STOP_ORDER_STOP_TOPIC_0` from the stop-order contract.
 
 ```solidity
     constructor(
-        address service_address,
         address _pair,
         address _stop_order,
         address _client,
         bool _token0,
         uint256 _coefficient,
         uint256 _threshold
-    ) {
+    ) payable {
         triggered = false;
         done = false;
-        SubscriptionService service = SubscriptionService(service_address);
         pair = _pair;
-        bytes memory payload = abi.encodeWithSignature("subscribe(address,uint256)", pair, UNISWAP_V2_SYNC_TOPIC_0);
-        (bool subscription_result,) = address(service).call(payload);
-        if (!subscription_result) {
-            vm = true;
-            emit VM();
-        } else {
-            emit Subscribed(service_address, pair, UNISWAP_V2_SYNC_TOPIC_0);
-        }
         stop_order = _stop_order;
-        bytes memory payload_2 = abi.encodeWithSignature("subscribe(address,uint256)", stop_order, STOP_ORDER_STOP_TOPIC_0);
-        (bool subscription_result_2,) = address(service).call(payload_2);
-        if (!subscription_result_2) {
-            vm = true;
-            emit VM();
-        } else {
-            emit Subscribed(service_address, stop_order, STOP_ORDER_STOP_TOPIC_0);
-        }
         client = _client;
         token0 = _token0;
         coefficient = _coefficient;
         threshold = _threshold;
+
+        if (!vm) {
+            service.subscribe(
+                SEPOLIA_CHAIN_ID,
+                pair,
+                UNISWAP_V2_SYNC_TOPIC_0,
+                REACTIVE_IGNORE,
+                REACTIVE_IGNORE,
+                REACTIVE_IGNORE
+            );
+            service.subscribe(
+                SEPOLIA_CHAIN_ID,
+                stop_order,
+                STOP_ORDER_STOP_TOPIC_0,
+                REACTIVE_IGNORE,
+                REACTIVE_IGNORE,
+                REACTIVE_IGNORE
+            );
+        }
     }
 ```
 
 ### react() Function
 
-The `react()` function is the core of the contract's logic. It is triggered by events on the Ethereum smart contract it is subscribed to. The function processes these events to check if the conditions for executing the stop order are met. If the event is from the stop-order contract and matches the predefined topics and addresses, the contract concludes its operation
-(`done` = `true`). If the event is a `Sync` event from the Uniswap pair, the contract checks if the current reserves meet the stop-order condition (`below_threshold` function). If so, it triggers the callback transaction on Ethereum to execute the stop order.
+The `react()` function processes incoming blockchain events and determines if actions need to be triggered based on the event type:
+
+**Stop-Order Events**: If the event originates from the stop-order contract, the function verifies that the event matches the expected topics and addresses (`pair` and `client`). Once confirmed and if the stop order has already been triggered (`triggered = true`), the contract marks the operation as completed (`done = true`) and emits the `Done` event.
+
+**Uniswap Pair Sync Events**: For events originating from the Uniswap pair contract (specifically `Sync` events), the function decodes the reserves data to check if the conditions for triggering the stop-order are met. This check is performed using the `below_threshold` function, which calculates whether the reserve ratio falls below the defined threshold. If the condition is satisfied, the contract emits a `CallbackSent` event, prepares the callback payload, sets `triggered = true`, and emits a `Callback` event to execute the stop order.
 
 ```solidity
     // Methods specific to ReactVM instance of the contract.
-
-    function react(
-        uint256 chain_id,
-        address _contract,
-        uint256 topic_0,
-        uint256 topic_1,
-        uint256 topic_2,
-        uint256 /* topic_3 */,
-        bytes calldata data
-    ) external {
-        // TODO: Support for multiple dynamic orders? Not viable until we have dynamic subscriptions.
-        // TODO: fix the assertions after debugging.
-        //require(vm, 'ReactVM only');
+    function react(LogRecord calldata log) external vmOnly {
         assert(!done);
-        if (_contract == stop_order) {
-            // TODO: Practically speaking, it's broken, because we also need to check the transfer direction.
-            //       For the purposes of the demo, I'm just going to ignore that complication.
+
+        if (log._contract == stop_order) {
             if (
                 triggered &&
-                topic_0 == STOP_ORDER_STOP_TOPIC_0 &&
-                topic_1 == uint256(uint160(pair)) &&
-                topic_2 == uint256(uint160(client))
+                log.topic_0 == STOP_ORDER_STOP_TOPIC_0 &&
+                log.topic_1 == uint256(uint160(pair)) &&
+                log.topic_2 == uint256(uint160(client))
             ) {
                 done = true;
                 emit Done();
             }
         } else {
-            Reserves memory sync = abi.decode(data, ( Reserves ));
+            Reserves memory sync = abi.decode(log.data, ( Reserves ));
             if (below_threshold(sync) && !triggered) {
                 emit CallbackSent();
                 bytes memory payload = abi.encodeWithSignature(
-                    "stop(address,address,bool,uint256,uint256)",
+                    "stop(address,address,address,bool,uint256,uint256)",
+                    address(0),
                     pair,
                     client,
                     token0,
@@ -185,7 +163,7 @@ The `react()` function is the core of the contract's logic. It is triggered by e
                     threshold
                 );
                 triggered = true;
-                emit Callback(chain_id, stop_order, CALLBACK_GAS_LIMIT, payload);
+                emit Callback(log.chain_id, stop_order, CALLBACK_GAS_LIMIT, payload);
             }
         }
     }
@@ -193,7 +171,9 @@ The `react()` function is the core of the contract's logic. It is triggered by e
 
 ### below_threshold() Function
 
-The `below_threshold()` function determines whether the current token reserves in the Uniswap pool meet the threshold conditions for executing the stop order.
+The `below_threshold()` function checks whether the current reserves in the Uniswap pool satisfy the conditions for executing a stop order. It compares the reserve ratio to a predefined threshold based on the selected token (either `token0` or `token1`).
+
+If `token0` is selected, the function checks if the ratio of `reserve1` to `reserve0`, multiplied by a coefficient, is less than or equal to the threshold. If `token0` is not selected, the function checks if the ratio of `reserve0` to `reserve1`, multiplied by the coefficient, is less than or equal to the threshold.
 
 ```solidity
     function below_threshold(Reserves memory sync) internal view returns (bool) {
@@ -207,15 +187,14 @@ The `below_threshold()` function determines whether the current token reserves i
 
 ## Execution Flow
 
-* Initialization: Upon deployment, the contract subscribes to the necessary events from the Uniswap V2 pair and the stop order callback contract.
+**Initialization**: Upon deployment, the contract subscribes to the necessary events from the Uniswap V2 pair and the stop order callback contract.
 
-* Event Monitoring: The contract listens for Sync events from the Uniswap pair to monitor the pool's reserve changes and`Stop` events from the stop-order contract to track the execution of orders.
+**Event Monitoring**: The contract listens for Sync events from the Uniswap pair to monitor the pool's reserve changes and`Stop` events from the stop-order contract to track the execution of orders.
 
-* Stop Order Activation: When the `Sync` event indicates that the pool's price hits the threshold, the contract initiates the stop order through the callback function, executing a trade on Uniswap V2.
+**Stop Order Activation**: When the `Sync` event indicates that the pool's price hits the threshold, the contract initiates the stop order through the callback function, executing a trade on Uniswap V2.
 
-* Completion: After the stop order is executed, the contract captures the Stop event from the stop-order contract, marking the process as complete.
+**Completion**: After the stop order is executed, the contract captures the Stop event from the stop-order contract, marking the process as complete.
 
-In essence, this Reactive Smart Contract leverages the event-driven capabilities of the ReactVM to autonomously monitor and respond to on-chain conditions, executing predefined trading strategies on Uniswap V2 efficiently and in a decentralized manner.
 
 ## Conclusion
 
