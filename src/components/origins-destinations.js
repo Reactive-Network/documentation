@@ -101,7 +101,7 @@ const ChainTable = () => {
                     <td>✅</td>
                     <td>5318008</td>
                     <td>0x0000000000000000000000000000000000FFFFFF</td>
-                    <td>https://kopli-rpc.rkt.ink</td>
+                    <td>https://kopli-rpc.rnk.dev/</td>
                 </tr>
                 </tbody>
             </table>
