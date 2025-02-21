@@ -12,7 +12,7 @@ hide_title: true
 
 Reactscan is a tool that provides developers with an overview of the Reactive Network, including addresses, contracts, and transaction details.
 
-[Reactive Scan (Mainnet) →](https://reactscan-staging.prq-infra.net/)
+Reactive Scan (Mainnet) →(TBA)
 
 [Kopli Scan (Testnet) →](https://kopli.reactscan.net/)
 
