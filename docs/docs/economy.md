@@ -16,7 +16,7 @@ This section covers RVM transaction payments, including direct transfers and sys
 
 RVM transactions have no gas price or any monetary value. Payments occur post-factum in a later block (ideally the next one, but not guaranteed). The fee appears only then, determined by the base fee of that block. Reactscan can't directly link this fee to specific RVM transactions.
 
-An RVM transaction happens in block *n*, while accounting occurs in block *n+1* (or later) using that block’s base fee. However, it’s impossible to trace which specific RVM transaction was accounted for, as the block aggregates all transactions without distinction. Payments are consolidated and lack meta-information.
+An RVM transaction happens in block *n*, while accounting occurs in block *n+1* (or later) using that block’s base fee. However, it’s impossible to trace which specific RVM transaction was accounted for, as the block aggregates all transactions without distinction.
 
 The Reactive Transaction Fee is determined by the formula:
 
