@@ -48,6 +48,9 @@ jobs:
         name: Get short ref
         run: echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+
       - id: docker-push-tagged
         name: Tag Docker image and push to Google Artifact Registry
         uses: docker/build-push-action@v6
