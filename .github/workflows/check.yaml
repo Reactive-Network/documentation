@@ -7,9 +7,12 @@ jobs:
   docker-build:
     name: Build project
     runs-on: self-hosted
+    # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
     permissions:
-      contents: "read"
-      id-token: "write"
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
   
     steps:
       - id: checkout
