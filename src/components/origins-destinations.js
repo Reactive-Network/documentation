@@ -71,14 +71,6 @@ const MainnetChainTable = () => {
                     <td>0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4</td>
                     <td><a href="https://chainlist.org/chain/169">Find on Chainlist</a></td>
                 </tr>
-                <tr>
-                    <td><a href="https://opbnbscan.com/">opBNB Mainnet</a></td>
-                    <td>➖</td>
-                    <td>➖</td>
-                    <td>204</td>
-                    <td>➖</td>
-                    <td><a href="https://chainlist.org/chain/204">Find on Chainlist</a></td>
-                </tr>
                 </tbody>
             </table>
         </div>
