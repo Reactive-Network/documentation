@@ -1,7 +1,6 @@
 name: Check build
 on:
   pull_request:
-    types: [opened, reopened, edited, synchronize]
 
 jobs:
   docker-build:
@@ -17,7 +16,7 @@ jobs:
     steps:
       - id: checkout
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Buildx
         uses: docker/setup-buildx-action@v3
