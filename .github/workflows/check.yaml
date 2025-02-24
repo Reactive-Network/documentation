@@ -1,11 +1,11 @@
 name: Check build
 on:
   pull_request:
-
+    types: [opened, reopened, edited, synchronize]
 jobs:
   docker-build:
     name: Build project
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
     permissions:
       contents: read
