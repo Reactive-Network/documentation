@@ -6,7 +6,8 @@ slug: /origins-and-destinations
 hide_title: true
 ---
 
-import ChainTable from '../../src/components/origins-destinations';
+import MainnetChainTable from '../../src/components/origins-destinations';
+import TestnetChainTable from '../../src/components/origins-destinations';
 
 ![Origins & Destinations Image](./img/origins-and-destinations.jpg)
 
@@ -24,14 +25,16 @@ Origins and destinations don't have to be the same. Reactive contracts can be co
 
 - **RVM ID Verification**: Confirms that the callback originates from the correct reactive contract by checking the RVM ID in the transaction payload.
 
-## Chains
+## Reactive Mainnet Chains
 
 :::info[Callbacks]
 Not all origin chains are compatible as destination chains. Please refer to the table below before implementing callbacks.
 :::
 
-<ChainTable />
+<MainnetChainTable />
 
+## Reactive Kopli Testnet Chains
 
+<TestnetChainTable />
 
 [//]: # (emojis for status ✅ ➖ ⌛)
