@@ -16,18 +16,26 @@ This section covers RVM transaction payments, including direct transfers and sys
 
 RVM transactions have no gas price or any monetary value. Payments occur post-factum in a later block (ideally the next one, but not guaranteed). The fee appears only then, determined by the base fee of that block. Reactscan can't directly link this fee to specific RVM transactions.
 
-An RVM transaction happens in block *n*, while accounting occurs in block *n+1* (or later) using that block’s base fee. However, it’s impossible to trace which specific RVM transaction was accounted for, as the block aggregates all transactions without distinction.
+:::info[Max Gas Limit]
+The maximum gas limit for RVM transactions is 900,000 units.
+:::
+
+An RVM transaction happens in block *n*, while accounting occurs in block *n+1* (or later) using that block’s base fee. However, it’s impossible to trace which specific RVM transaction was accounted for, as the block aggregates all transactions without distinction. 
 
 The Reactive Transaction Fee is determined by the formula:
 
 $$
-fee = header.BaseFee ⋅ rvmTx.gasUsed
+fee = BaseFee ⋅ GasUsed
 $$
 
 Where:
 
-- `header.BaseFee`: Base fee per unit of gas in the block header, ensuring alignment with the network's current pricing conditions.
-- `rvmTx.gasUsed`: Actual gas consumed by the reactive transaction during execution.
+- `BaseFee`: Base fee per unit of gas in the block header, ensuring alignment with the network's current pricing conditions.
+- `GasUsed`: Actual gas consumed by the reactive transaction during execution.
+
+:::info[Reactive Network Transactions]
+RNK transactions operate the same way as standard EVM transactions.
+:::
 
 ### Direct Transfers
 
