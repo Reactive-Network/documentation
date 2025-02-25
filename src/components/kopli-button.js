@@ -1,6 +1,6 @@
 import '../css/custom.css';
 
-const CHAIN_ID = '0x510790';
+const CHAIN_ID = '0x511098';
 
 const checkWallet = async () => {
     if (typeof window.ethereum !== 'undefined') {
