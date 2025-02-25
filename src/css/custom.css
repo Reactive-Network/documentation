@@ -240,7 +240,7 @@ html[data-theme="dark"] {
 .table {
     width: 100%;
     border-collapse: separate;
-    font-size: 0.859rem;
+    font-size: 0.873rem;
     border-spacing: 0;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -263,12 +263,18 @@ td {
     color: var(--ifm-color-content);
 }
 
-tr {
-    border: 1px solid transparent;
+td:nth-child(5) {
+    overflow-wrap: anywhere;
+    font-family: monospace;
+    text-align: left;
 }
 
-tr:hover {
-    background-color: rgba(100, 149, 237, 0.2);
+td:first-child {
+    min-width: 165px;
+}
+
+tr {
+    border: 1px solid transparent;
 }
 
 tbody tr:hover {
@@ -285,7 +291,9 @@ a:hover {
 }
 
 @media (max-width: 768px) {
-    th, td {
+    td:nth-child(1),  /* Chain Name */
+    td:nth-child(5),  /* Callback Proxy Address */
+    td:nth-child(6) { /* Recommended RPC URL */
         white-space: nowrap;
     }
 }
