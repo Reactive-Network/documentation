@@ -1,6 +1,6 @@
 import '../css/custom.css';
 
-const CHAIN_ID = '0x512578';
+const CHAIN_ID = '0x510790';
 
 const checkWallet = async () => {
     if (typeof window.ethereum !== 'undefined') {
@@ -34,7 +34,7 @@ export const AddToWeb3Provider = async () => {
                     method: 'wallet_addEthereumChain',
                     params: [{
                         chainId: CHAIN_ID,
-                        rpcUrls: ['https://kopli-rpc.reactive.network/'],
+                        rpcUrls: ['https://kopli-rpc.rnk.dev/'],
                         chainName: 'Reactive Kopli',
                         nativeCurrency: {
                             name: 'REACT',
