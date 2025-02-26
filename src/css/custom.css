@@ -10,6 +10,7 @@
 
 :root {
     --ifm-color-content: #1d1d1f;
+    --ifm-color-white: #ffffff;
     --ifm-color-content-inverse: var(--ifm-color-white);
     --ifm-color-primary: #2756fc;
     --ifm-color-primary-dark: #0849e4;
@@ -36,6 +37,10 @@
     --ifm-color-gray-800: #1d1d1f;
     --ifm-color-gray-900: #161617;
     --ifm-color-gray-950: #101010;
+
+    --ifm-color-emphasis-100: #e8e8ed;
+    --ifm-color-emphasis-200: #d2d2d7;
+    --ifm-color-emphasis-500: #6e6e73;
 
     --ifm-color-primary-contrast-background: rgb(16, 36, 69);
     --ifm-color-primary-contrast-foreground: rgb(235, 242, 252);
@@ -73,6 +78,9 @@
     --kopli-button-bg: #2756fc;
     --kopli-button-hover-bg: #1A4C92;
     --kopli-button-text: #ffffff;
+    --mainnet-button-bg: #2756fc;
+    --mainnet-button-hover-bg: #1A4C92;
+    --mainnet-button-text: #ffffff;
 }
 
 .pagination-nav__link {
@@ -158,6 +166,9 @@ html[data-theme="dark"] {
     --kopli-button-bg: #7B59E6;
     --kopli-button-hover-bg: #5F44B5;
     --kopli-button-text: #ffffff;
+    --mainnet-button-bg: #7B59E6;
+    --mainnet-button-hover-bg: #5F44B5;
+    --mainnet-button-text: #ffffff;
 }
 
 .footer--dark {
