@@ -7,8 +7,7 @@ const checkWallet = async () => {
         const chainId = await window.ethereum.request({ method: 'eth_chainId' });
 
         if (chainId === CHAIN_ID) {
-            alert('Already connected to Reactive Mainnet.');
-            return false;
+            alert('Already connected to Kopli Testnet.');
         }
         return true;
     } else {
@@ -21,8 +20,7 @@ const checkWallet = async () => {
 
 
 export const AddToWeb3Provider = async () => {
-    const shouldProceed = await checkWallet();
-    if (!shouldProceed) return;
+    if (!checkWallet()) return;
 
     try {
         await window.ethereum.request({
