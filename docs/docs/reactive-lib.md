@@ -1,6 +1,6 @@
 ---
 title: Reactive Library
-sidebar_position: 6
+sidebar_position: 7
 description: Explore the core functionality of Reactive library – abstract contracts and interfaces
 slug: /reactive-library
 hide_title: true
