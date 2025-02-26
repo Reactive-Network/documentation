@@ -26,13 +26,13 @@ Reactive contracts receive event logs from various chains, executing Solidity lo
 
 ## Step 2 — Reactive Essentials
 
+[Reactive Mainnet & Kopli Testnet →](./reactive-mainnet.mdx) Connect to Reactive Mainnet or Kopli Testnet.
+
 [Reactive Library →](./reactive-lib.md) Implement abstract contracts and interfaces in your project.
 
 [Events & Callbacks →](./events-and-callbacks.md) Read up on how to work with events and callbacks in reactive contracts. 
 
 [Subscriptions →](./subscriptions.md) Set up and manage subscriptions.
-
-[Reactive Mainnet & Kopli Testnet →](./reactive-mainnet.mdx) Connect to Reactive Mainnet or Kopli Testnet; get testing REACT.
 
 [RNK RPC Methods →](./rnk-rpc-methods.md) Key RPC methods for the Reactive Network's Geth version.
 
