@@ -28,7 +28,7 @@ const TestnetChainTable = () => {
                     <td>✅</td>
                     <td>✅</td>
                     <td>5318008</td>
-                    <td>0x0000000000000000000000000000000000FFFFFF</td>
+                    <td>0x0000000000000000000000000000000000fffFfF</td>
                     <td>https://kopli-rpc.rnk.dev/</td>
                 </tr>
                 </tbody>

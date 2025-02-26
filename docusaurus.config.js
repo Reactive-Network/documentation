@@ -200,7 +200,7 @@ const config = {
             },
             {
               from: "/docs/kopli-testnet",
-              to: "/kopli-testnet"
+              to: "/reactive-mainnet"
             },
             {
               from: "/system-contract",
@@ -237,7 +237,11 @@ const config = {
             {
               from: "/compendium",
               to: "/"
-            }
+            },
+            {
+              from: "/kopli-testnet",
+              to: "/reactive-mainnet"
+            },
           ]
         }
       ]

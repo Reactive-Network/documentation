@@ -32,7 +32,7 @@ Reactive contracts receive event logs from various chains, executing Solidity lo
 
 [Subscriptions →](./subscriptions.md) Set up and manage subscriptions.
 
-[Reactive Kopli Testnet →](./kopli-testnet.mdx) Connect to Reactive Kopli Testnet and get REACT tokens.
+[Reactive Mainnet & Kopli Testnet →](./reactive-mainnet.mdx) Connect to Reactive Mainnet or Kopli Testnet; get testing REACT.
 
 [RNK RPC Methods →](./rnk-rpc-methods.md) Key RPC methods for the Reactive Network's Geth version.
 
