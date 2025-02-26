@@ -1,13 +1,14 @@
 import '../css/custom.css';
 
-const CHAIN_ID = '0x512578';
+const CHAIN_ID = '0x63D';
 
 const checkWallet = async () => {
     if (typeof window.ethereum !== 'undefined') {
         const chainId = await window.ethereum.request({ method: 'eth_chainId' });
 
         if (chainId === CHAIN_ID) {
-            alert('Already connected to Kopli Testnet.');
+            alert('Already connected to Reactive Mainnet.');
+            return false;
         }
         return true;
     } else {
@@ -20,7 +21,8 @@ const checkWallet = async () => {
 
 
 export const AddToWeb3Provider = async () => {
-    if (!checkWallet()) return;
+    const shouldProceed = await checkWallet();
+    if (!shouldProceed) return;
 
     try {
         await window.ethereum.request({
@@ -34,14 +36,14 @@ export const AddToWeb3Provider = async () => {
                     method: 'wallet_addEthereumChain',
                     params: [{
                         chainId: CHAIN_ID,
-                        rpcUrls: ['https://kopli-rpc.rnk.dev/'],
-                        chainName: 'Reactive Kopli',
+                        rpcUrls: ['https://mainnet-rpc.rnk.dev/'],
+                        chainName: 'Reactive Mainnet',
                         nativeCurrency: {
                             name: 'REACT',
                             symbol: 'REACT',
                             decimals: 18,
                         },
-                        blockExplorerUrls: ['https://kopli.reactscan.net/'],
+                        blockExplorerUrls: ['https://reactscan.net/'],
                     }],
                 });
             } catch (e) {
@@ -51,10 +53,10 @@ export const AddToWeb3Provider = async () => {
     }
 };
 
-const KopliButton = () => {
+const MainnetButton = () => {
     return (
         <button
-            id="kopli-button"
+            id="mainnet-button"
             onClick={AddToWeb3Provider}
             style={{
                 width: '200px',
@@ -64,8 +66,8 @@ const KopliButton = () => {
                 textAlign: 'center',
                 padding: '0',
                 display: 'block',
-                color: 'var(--kopli-button-text)',
-                backgroundColor: 'var(--kopli-button-bg)',
+                color: 'var(--mainnet-button-text)',
+                backgroundColor: 'var(--mainnet-button-bg)',
                 border: 'none',
                 borderRadius: '12px',
                 cursor: 'pointer',
@@ -73,17 +75,17 @@ const KopliButton = () => {
                 transition: 'background-color 0.3s ease, transform 0.2s ease',
             }}
             onMouseOver={(e) => {
-                e.target.style.backgroundColor = 'var(--kopli-button-hover-bg)';
+                e.target.style.backgroundColor = 'var(--mainnet-button-hover-bg)';
                 e.target.style.transform = 'scale(1.05)';
             }}
             onMouseOut={(e) => {
-                e.target.style.backgroundColor = 'var(--kopli-button-bg)';
+                e.target.style.backgroundColor = 'var(--mainnet-button-bg)';
                 e.target.style.transform = 'scale(1)';
             }}
         >
-            Connect to Kopli Testnet
+            Connect to Mainnet
         </button>
     );
 }
 
-export default KopliButton;
+export default MainnetButton;
