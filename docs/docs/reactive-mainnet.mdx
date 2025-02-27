@@ -15,23 +15,19 @@ import KopliButton from "../../src/components/kopli-button";
 
 Reactive Mainnet is a proof-of-stake blockchain for the Reactive Network. Kopli Testnet serves as a testing environment, allowing developers to test and refine features before deploying them on the mainnet.
 
-[//]: # (## Reactive Mainnet)
+:::info[System Contract]
+Reactive Mainnet and Kopli Testnet use the same system contract address: `0x0000000000000000000000000000000000fffFfF`
+:::
 
-[//]: # ()
-[//]: # (* Network Name — Reactive Mainnet)
+## Reactive Mainnet
 
-[//]: # (* RPC URL — https://mainnet-rpc.rnk.dev/)
+* Network Name — Reactive Mainnet
+* RPC URL — https://mainnet-rpc.rnk.dev/
+* Chain ID — 1597
+* Currency Symbol — REACT
+* Block Explorer URL — https://reactscan.net/
 
-[//]: # (* Chain ID — 1597)
-
-[//]: # (* Currency Symbol — REACT)
-
-[//]: # (* Block Explorer URL — https://reactscan.net/)
-
-[//]: # (* System Contract — 0x0000000000000000000000000000000000fffFfF)
-
-[//]: # ()
-[//]: # (<MainnetButton />)
+<MainnetButton />
 
 ## Kopli Testnet
 
@@ -40,15 +36,12 @@ Reactive Mainnet is a proof-of-stake blockchain for the Reactive Network. Kopli 
 * Chain ID — 5318008
 * Currency Symbol — REACT
 * Block Explorer URL — https://kopli.reactscan.net
-* System Contract — 0x0000000000000000000000000000000000fffFfF
 
 <KopliButton />
 
 ### Get REACT tokens
 
-* Reactive Faucet on Ethereum Sepolia — 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434
-
-To receive REACT, send SepETH to the Reactive faucet contract on Ethereum Sepolia (`0x9b9BB25f1A81078C544C829c5EB7822d747Cf434`). An equivalent amount of REACT will be sent to your address, up to a 0.1 ETH limit, assuming the faucet has funds. You can use MetaMask or any compatible wallet for the transfer.
+To receive testing REACT, send SepETH to the Reactive faucet contract on Ethereum Sepolia: `0x9b9BB25f1A81078C544C829c5EB7822d747Cf434`. An equivalent amount of REACT will be sent to your address, up to a 0.1 ETH limit, assuming the faucet has funds. You can use MetaMask or any compatible wallet for the transfer.
 
 Alternatively, call the `request(address)` method on the Reactive faucet contract:
 
