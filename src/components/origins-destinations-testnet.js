@@ -20,7 +20,7 @@ const TestnetChainTable = () => {
                     <td>✅</td>
                     <td>✅</td>
                     <td>11155111</td>
-                    <td>0x33Bbb7D0a2F1029550B0e91f653c4055DC9F4Dd8</td>
+                    <td>0xc9f36411C9897e7F959D99ffca2a0Ba7ee0D7bDA</td>
                     <td><a href="https://chainlist.org/chain/11155111">Find on Chainlist</a></td>
                 </tr>
                 <tr>
