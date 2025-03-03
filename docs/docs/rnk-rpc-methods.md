@@ -340,9 +340,9 @@ Returns a range of transactions starting from a specified transaction number wit
 
 ```json
 [
-   "0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a",
-   "0x2",
-   "0x1"
+  “0x7E0b34315a8886c28A79e351BD3C43924CaE0CE8",
+  “0x0”,
+  “0xA”
 ]
 ```
 
