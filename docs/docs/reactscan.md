@@ -12,7 +12,7 @@ hide_title: true
 
 Reactscan is a tool that provides developers with an overview of the Reactive Network, including addresses, contracts, and transaction details.
 
-Reactive Scan (Mainnet) →(TBA)
+[Reactive Scan (Mainnet) →](https://reactscan.net/)
 
 [Kopli Scan (Testnet) →](https://kopli.reactscan.net/)
 
@@ -31,9 +31,7 @@ Your contracts and reactive transactions are located in your RVM address section
 
 3. Alternatively, use the search bar at the top of the page to locate your RVM address by entering it directly into the search field.
 
-[//]: # (4. For direct access, you can open your RVM page by entering the following URL into your browser:  )
-
-[//]: # (   **https://reactscan-staging.prq-infra.net/rvm/ADDRESS**. Replace `ADDRESS` with your unique RVM address.)
+4. For direct access, you can open your RVM page by entering the following URL into your browser: **https://reactscan.net/rvm/ADDRESS**. Replace `ADDRESS` with your unique RVM address.
 
 :::info[Good to Know]
 Clicking the **[watch]** button on your RVM page moves your RVM address to the top of the list in the **Latest RVMs** section. This feature ensures quick and convenient access to your address directly from the main page. With your address pinned at the top, there's no need to manually search or enter it into the search bar — it will always be available.

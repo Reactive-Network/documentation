@@ -251,11 +251,20 @@ html[data-theme="dark"] {
 .table {
     width: 100%;
     border-collapse: separate;
-    font-size: 0.873rem;
+    font-size: 0.85rem;
     border-spacing: 0;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    table-layout: fixed;
 }
+
+/* Ensure consistent column width across tables */
+th:nth-child(1), td:nth-child(1) { width: 12%; text-align: center; }  /* Chain */
+th:nth-child(2), td:nth-child(2) { width: 8%; text-align: center;  }  /* Origin */
+th:nth-child(3), td:nth-child(3) { width: 5%; text-align: center;  }  /* Destination */
+th:nth-child(4), td:nth-child(4) { width: 10%; text-align: center; } /* Chain ID */
+th:nth-child(5), td:nth-child(5) { width: 39%; text-align: center; }  /* Callback Proxy Address */
+th:nth-child(6), td:nth-child(6) { width: 26%; text-align: center; }  /* Recommended RPC URL */
 
 th, td {
     padding: 12px;
@@ -274,14 +283,11 @@ td {
     color: var(--ifm-color-content);
 }
 
-td:nth-child(5) {
+td:nth-child(5),
+td:nth-child(6) {
     overflow-wrap: anywhere;
     font-family: monospace;
     text-align: left;
-}
-
-td:first-child {
-    min-width: 165px;
 }
 
 tr {
@@ -301,9 +307,10 @@ a:hover {
     text-decoration: underline;
 }
 
+/* Mobile adjustments */
 @media (max-width: 768px) {
-    td:nth-child(1),  /* Chain Name */
-    td:nth-child(5),  /* Callback Proxy Address */
+    td:nth-child(1), /* Chain Name */
+    td:nth-child(5), /* Callback Proxy Address */
     td:nth-child(6) { /* Recommended RPC URL */
         white-space: nowrap;
     }

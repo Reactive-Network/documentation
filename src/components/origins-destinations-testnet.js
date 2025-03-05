@@ -20,11 +20,43 @@ const TestnetChainTable = () => {
                     <td>✅</td>
                     <td>✅</td>
                     <td>11155111</td>
-                    <td>0x33Bbb7D0a2F1029550B0e91f653c4055DC9F4Dd8</td>
+                    <td>0xc9f36411C9897e7F959D99ffca2a0Ba7ee0D7bDA</td>
                     <td><a href="https://chainlist.org/chain/11155111">Find on Chainlist</a></td>
                 </tr>
                 <tr>
-                    <td><a href="https://kopli.reactscan.net">Kopli Testnet</a></td>
+                    <td><a href="https://testnet.bscscan.com/">Binance Smart Chain</a></td>
+                    <td>✅</td>
+                    <td>➖</td>
+                    <td>97</td>
+                    <td></td>
+                    <td><a href="https://chainlist.org/chain/97">Find on Chainlist</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://www.oklink.com/amoy">Polygon Amoy</a></td>
+                    <td>✅</td>
+                    <td>➖</td>
+                    <td>80002</td>
+                    <td></td>
+                    <td><a href="https://chainlist.org/chain/80002">Find on Chainlist</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://43113.testnet.routescan.io/">Avalanche Fuji</a></td>
+                    <td>✅</td>
+                    <td>➖</td>
+                    <td>43113</td>
+                    <td></td>
+                    <td><a href="https://chainlist.org/chain/43113">Find on Chainlist</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://sepolia.basescan.org/">Base Sepolia</a></td>
+                    <td>✅</td>
+                    <td>➖</td>
+                    <td>84532</td>
+                    <td></td>
+                    <td><a href="https://chainlist.org/chain/84532">Find on Chainlist</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://kopli.reactscan.net">Reactive Kopli</a></td>
                     <td>✅</td>
                     <td>✅</td>
                     <td>5318008</td>
