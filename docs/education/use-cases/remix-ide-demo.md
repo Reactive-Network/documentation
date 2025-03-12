@@ -5,7 +5,7 @@ description: Learn how to deploy a Basic Reactive Smart Contract using Remix IDE
 slug: remix-ide-demo
 ---
 
-import KopliButton from '../../../src/components/kopli-button';
+import KopliButton from "../../../src/components/kopli-button";
 
 # Deploying Reactive Smart Contracts with Remix
 
@@ -21,7 +21,7 @@ This guide will walk you through deploying Reactive Smart Contracts using the [R
 
 ## Acquire Testnet Funds
 
-You will need SepETH for Ethereum Sepolia and REACT tokens for Kopli Testnet. To receive REACT tokens, send SepETH to the Reactive faucet on Ethereum Sepolia (`0x9b9BB25f1A81078C544C829c5EB7822d747Cf434`). An equivalent amount of REACT will be sent to your address. To connect your MetaMask account to Kopli Testnet, use the button below:
+To receive testnet REACT, send SepETH to the Reactive faucet contract on Ethereum Sepolia: `0x9b9BB25f1A81078C544C829c5EB7822d747Cf434`. The factor is 1/10 (or 0.1), meaning you get 0.01 REACT for every 0.1 SepETH sent. To connect your MetaMask account to Kopli Testnet, use the button below:
 
 <KopliButton />
 
