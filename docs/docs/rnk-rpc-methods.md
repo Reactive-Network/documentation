@@ -58,8 +58,8 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
       "sessionId": 75190,
       "refChainId": 97,
       "refTx": "0x49e38eef0a40913cccc6ffa76041e2b57e63f1768a258581911b87b5018e2f68",
-      "refEventIndex": 0,
-      "data": "0x0d152c2c00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000061..."
+      "refEventIndex": 0, 
+      "data": "0x0d152c2c00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000061...",
       "rData": "0x"
    }
 }
@@ -396,15 +396,14 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
          "rvmId": "0xc1d48a9173212567bd358e40c50bfe131a9fabf1",
          "lastTxNumber": "0x18",
          "contracts": 4
-      },
+      }
    ]
 }
-
 ```
 
 ## rnk_getVm
 
-Returns detailed information about a specific RVM, including its transaction count and the number of associated contracts.
+Returns detailed information about a specific RVM, including the latest transaction number and the number of contracts deployed within it.
 
 ### Parameters
 
@@ -439,7 +438,7 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 
 ## rnk_getSubscribers
 
-Returns a list of subscribers for a specified RVM by checking the filters associated with it.
+Returns a list of contracts that have subscribed to events from a specified RVM, along with their filter topics.
 
 ### Parameters
 
@@ -479,21 +478,38 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
          "rvmContract": "0xc3e185561d2a8b04f0fcd104a562f460d6cc503c"
       },
       {
-         "uid": "0b6b4d8ff02c9fa72bd927d448203af4",
+         "uid": "da0ab6b64f5d5b8b76f116cfadbd62cb",
          "chainId": 11155111,
-         "contract": "0x784c6e5a15249ad692fe16864dcfad544bcf4936",
+         "contract": "0x03c47d6efd135e58896a072f6fc9f99d16ee2253",
          "topics": [
             "0x8cabf31d2b1b11ba52dbb302817a3c9c83e4b2a5194d35121ab1354d69f6a4cb",
             null,
             null,
             null
          ],
-         "rvmId": "0xa7d9aa89cbcd216900a04cdc
+         "rvmId": "0xa7d9aa89cbcd216900a04cdc13eb5789d643176a",
+         "rvmContract": "0x2afafd298b23b62760711756088f75b7409f5967"
+      },
+      {
+         "uid": "f4fdc7c595fabf5e4dec7174f27704fc",
+         "chainId": 97,
+         "contract": "0xab83ab046a383d495da2b832165ef5d8310554f8",
+         "topics": [
+            "0x8cabf31d2b1b11ba52dbb302817a3c9c83e4b2a5194d35121ab1354d69f6a4cb",
+            null,
+            null,
+            null
+         ],
+         "rvmId": "0xa7d9aa89cbcd216900a04cdc13eb5789d643176a",
+         "rvmContract": "0x5142840e8007ab6e0315ffb4921f60a4d9a0d31e"
+      }
+   ]
+}
 ```
 
 ## rnk_getCode
 
-Returns the smart contract code at a specific transaction state for a given RVM and contract address.
+Retrieves the bytecode of a deployed contract at a specific transaction or block state for a given RVM.
 
 ### Parameters
 
@@ -530,7 +546,7 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 
 ## rnk_getStorageAt
 
-Returns the value stored at a specific key in the storage of a contract for a given RVM at a specified block number or hash.
+Retrieves the storage value at a specified key for a contract on a given RVM at a specific transaction or block state.
 
 ### Parameters
 
@@ -569,7 +585,7 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 
 ## rnk_call
 
-Simulates a contract method call without an actual transaction, using the blockchain state at a specific transaction or block.
+Performs a read-only simulation of a smart contract function call on a given RVM, without creating a transaction.
 
 ### Parameters
 
