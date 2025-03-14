@@ -1,7 +1,7 @@
 ---
 title: RNK RPC Methods
 sidebar_position: 10
-description: Explore Reactive Network's Geth version RPC methods used for interaction with nodes and ReactVMs.
+description: Explore Reactive Network's Geth version RPC methods used for interaction with reactive nodes and ReactVMs.
 slug: /rnk-rpc-methods
 hide_title: true
 ---
@@ -10,18 +10,18 @@ hide_title: true
 
 ## Overview
 
-This page provides an overview of the RPC methods specific to the Reactive Network's Geth version, essential for interacting with nodes and ReactVMs within the Reactive Network (RNK). These methods enable transaction retrieval, log access, callback information, and more. Below, you will find a detailed description of each method, including its parameters, usage examples, and responses.
+This page provides an overview of the RPC methods specific to the Reactive Network's Geth version, essential for interacting with nodes and ReactVMs within the Reactive Network (RNK). These methods enable transaction retrieval, log access, callback information, etc. Below, you will find a detailed description of each method, including its parameters, cURLs, and responses.
 
 ## rnk_getTransactionByHash
 
 Returns the details of a transaction for the specified ReactVM ID and transaction hash.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 Bytes — The ReactVM ID associated with the transaction.
 2. **txHash**: `DATA`, 32 Bytes — The hash of the transaction to retrieve.
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rnk.dev/' \
@@ -37,7 +37,27 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 }'
 ```
 
-### Response
+#### Response
+
+Returns an object with the following fields:
+
+- **hash** (`string`): The transaction hash.
+- **number** (`string`): The transaction number (hex-encoded).
+- **time** (`uint64`): The timestamp of when the transaction occurred.
+- **root** (`string`): The Merkle root associated with the transaction.
+- **limit** (`uint32`): The maximum gas limit set for the transaction.
+- **used** (`uint32`): The gas used by the transaction.
+- **type** (`uint8`): The transaction type (0 for `Legacy`, 1 for `AccessList`, 2 for `DynamicFee`, 3 for `Blob`, 4 for `SetCode`).
+- **status** (`uint8`): The status of the transaction (1 for `Success`, 0 for `Failure`).
+- **from** (`string`): The transaction initiator.
+- **to** (`string`): The recipient address.
+- **createContract** (`bool`): Indicates whether a contract was created during this transaction.
+- **sessionId** (`uint64`): The block number where the transaction is located (hex-encoded).
+- **refChainId** (`uint32`): The origin chain ID.
+- **refTx** (`string`): The hash of the origin chain transaction that triggered this one.
+- **refEventIndex** (`uint32`): The origin chain event opcode (0 for `LOG0`, 1 for `LOG1`, 2 for `LOG2`, 3 for `LOG3`, 4 for `LOG4`).
+- **data** (`string`): The encoded transaction data in hexadecimal format.
+- **rData** (`string`): Additional response data in hexadecimal format (if any).
 
 ```json
 {
@@ -69,12 +89,12 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 
 Returns the details of a transaction based on its sequence number within the specified ReactVM.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 Bytes — The ReactVM ID associated with the transaction.
 2. **txNumber**: `HEX` — The sequence number of the transaction to retrieve.
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rnk.dev/' \
@@ -90,7 +110,27 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 }'
 ```
 
-### Response
+#### Response
+
+Returns an object with the following fields:
+
+- **hash** (`string`): The transaction hash.
+- **number** (`string`): The transaction number (hex-encoded).
+- **time** (`uint64`): The timestamp of when the transaction occurred.
+- **root** (`string`): The Merkle root associated with the transaction.
+- **limit** (`uint32`): The maximum gas limit set for the transaction.
+- **used** (`uint32`): The gas used by the transaction.
+- **type** (`uint8`): The transaction type (0 for `Legacy`, 1 for `AccessList`, 2 for `DynamicFee`, 3 for `Blob`, 4 for `SetCode`).
+- **status** (`uint8`): The status of the transaction (1 for `Success`, 0 for `Failure`).
+- **from** (`string`): The transaction initiator.
+- **to** (`string`): The recipient address.
+- **createContract** (`bool`): Indicates whether a contract was created during this transaction.
+- **sessionId** (`uint64`): The block number where the transaction is located (hex-encoded).
+- **refChainId** (`uint32`): The origin chain ID.
+- **refTx** (`string`): The hash of the origin chain transaction that triggered this one.
+- **refEventIndex** (`uint32`): The origin chain event opcode (0 for `LOG0`, 1 for `LOG1`, 2 for `LOG2`, 3 for `LOG3`, 4 for `LOG4`).
+- **data** (`string`): The encoded transaction data in hexadecimal format.
+- **rData** (`string`): Additional response data in hexadecimal format (if any).
 
 ```json
 {
@@ -122,12 +162,12 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 
 Returns logs for a transaction based on its sequence number within the specified ReactVM.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 Bytes — The ReactVM ID for which transaction logs are being queried.
 2. **txNumber**: `HEX` — The transaction number for which logs are requested.
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rnk.dev/' \
@@ -143,7 +183,18 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 }'
 ```
 
-### Response
+#### Response
+
+Returns an array of objects with the following fields:
+
+- **txHash** (`string`): The transaction hash.
+- **address** (`string`): The contract address that generated the transaction.
+- **topics** (`string[]`): An array of indexed event topics.
+   - **topics[0]**: The event signature hash.
+   - **topics[1]**: The first indexed parameter (if applicable).
+   - **topics[2]**: The second indexed parameter (if applicable).
+   - **topics[3]**: The third indexed parameter (if applicable).
+- **data** (`string`): The non-indexed event data in hexadecimal format.
 
 ```json
 {
@@ -169,11 +220,11 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 
 Returns the latest transaction number for the specified ReactVM.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 Bytes — The ReactVM ID for which the latest transaction number is requested.
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rnk.dev/' \
@@ -188,7 +239,11 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 }'
 ```
 
-### Response
+#### Response
+
+Returns an object with the following field:
+
+- **result** (`string`): the latest transaction number (hex-encoded).
 
 ```json
 {
@@ -202,13 +257,13 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 
 Returns a range of transactions starting from a specified transaction number within the ReactVM.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 Bytes — The ReactVM ID for which transactions are being retrieved.
 2. **from**: `HEX` — The starting transaction number.
 3. **limit**: `HEX` — The maximum number of transactions to retrieve.
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rnk.dev/' \
@@ -225,7 +280,27 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 }'
 ```
 
-### Response
+#### Response
+
+Returns an object with the following fields:
+
+- **hash** (`string`): The transaction hash.
+- **number** (`string`): The transaction number (hex-encoded).
+- **time** (`uint64`): The timestamp of when the transaction occurred.
+- **root** (`string`): The Merkle root associated with the transaction.
+- **limit** (`uint32`): The maximum gas limit set for the transaction.
+- **used** (`uint32`): The gas used by the transaction.
+- **type** (`uint8`): The transaction type (0 for `Legacy`, 1 for `AccessList`, 2 for `DynamicFee`, 3 for `Blob`, 4 for `SetCode`).
+- **status** (`uint8`): The status of the transaction (1 for `Success`, 0 for `Failure`).
+- **from** (`string`): The transaction initiator.
+- **to** (`string`): The recipient address.
+- **createContract** (`bool`): Indicates whether a contract was created during this transaction.
+- **sessionId** (`uint64`): The block number where the transaction is located (hex-encoded).
+- **refChainId** (`uint32`): The origin chain ID.
+- **refTx** (`string`): The hash of the origin chain transaction that triggered this one.
+- **refEventIndex** (`uint32`): The origin chain event opcode (0 for `LOG0`, 1 for `LOG1`, 2 for `LOG2`, 3 for `LOG3`, 4 for `LOG4`).
+- **data** (`string`): The encoded transaction data in hexadecimal format.
+- **rData** (`string`): Additional response data in hexadecimal format (if any).
 
 ```json
 {
@@ -257,13 +332,13 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 
 ## rnk_getRnkAddressMapping
 
-Returns the RVM ID mapped to the specified Reactive Network contract address.
+Returns the RVM ID mapped to the specified reactive contract address.
 
-### Parameters
+#### Parameters
 
 1. **reactNetworkContrAddr**: `DATA`, 20 Bytes — The address of the Reactive Network contract for which the RVM ID is being requested.
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rnk.dev/' \
@@ -278,7 +353,11 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 }'
 ```
 
-### Response
+#### Response
+
+Returns an object with the following field:
+
+- **rvmId** (`string`): The unique identifier of the RVM associated with the given contract.
 
 ```json
 {
@@ -294,11 +373,11 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 
 Returns and compiles statistics about origin chain data.
 
-### Parameters
+#### Parameters
 
 This method does not require any input parameters.
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rnk.dev/' \
@@ -311,7 +390,13 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 }'
 ```
 
-### Response
+#### Response
+
+Returns an object with the following fields:
+
+- **chainId** (`object`): The statistics for a specific origin chain.
+  - **txCount** (`uint64`): The total number of transactions processed from this origin chain.
+  - **eventCount** (`uint64`): The total number of events emitted from this origin chain.
 
 ```json
 {
@@ -348,11 +433,11 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 
 Returns information about all RVMs, including the number of transactions processed and the count of associated contracts.
 
-### Parameters
+#### Parameters
 
 This method does not require any input parameters.
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rnk.dev/' \
@@ -365,7 +450,13 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 }'
 ```
 
-### Response
+#### Response
+
+Returns a list of active RVMs with the following fields:
+
+- **rvmId** (`string`): The unique identifier of the RVM.
+- **lastTxNumber** (`string`): The last transaction number executed by this RVM (hex-encoded).
+- **contracts** (`uint32`): The number of contracts associated with this RVM.
 
 ```json
 {
@@ -405,11 +496,11 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 
 Returns detailed information about a specific RVM, including the latest transaction number and the number of contracts deployed within it.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 Bytes — The unique identifier of the RVM for which information is requested.
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rnk.dev/' \
@@ -422,7 +513,13 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 }'
 ```
 
-### Response
+#### Response
+
+Returns an object with the following fields:
+
+- **rvmId** (`string`): The unique identifier of the RVM.
+- **lastTxNumber** (`string`): The last transaction number executed by this RVM (hex-encoded).
+- **contracts** (`uint32`): The number of contracts created by this RVM.
 
 ```json
 {
@@ -440,11 +537,11 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 
 Returns a list of contracts that have subscribed to events from a specified RVM, along with their filter topics.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 Bytes — The unique identifier of the RVM for which subscriber information is requested.
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rnk.dev/' \
@@ -457,7 +554,16 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 }'
 ```
 
-### Response
+#### Response
+
+Returns a list of RVM-related contract events with the following fields:
+
+- **uid** (`string`): The unique identifierof the subscription.
+- **chainId** (`uint32`): The blockchain ID of the subscribed contract.
+- **contract** (`string`): The address of the subscribed contract on the origin chain.
+- **topics** (`array`): An array of event topics (some may be `null` if not indexed).
+- **rvmId** (`string`): The unique identifier of the RVM.
+- **rvmContract** (`string`): The address of the RVM contract handling this subscription.
 
 ```json
 {
@@ -511,13 +617,13 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 
 Retrieves the bytecode of a deployed contract at a specific transaction or block state for a given RVM.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 bytes — The unique identifier of the RVM.
 2. **contract** `DATA`, 20 bytes — The address of the smart contract.
 3. **txNumberOrHash** `HEX | TAG` — Specifies the state at which the contract code is retrieved. Accepts either a block number (`HEX`) or a tag (`"latest"`, `"earliest"`, `"pending"`).
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rnk.dev/' \
@@ -534,7 +640,11 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 }'
 ```
 
-### Response
+#### Response
+
+Returns the bytecode of a contract:
+
+- **bytecode** (`string`) — The contract bytecode in hexadecimal format. 
 
 ```json
 {
@@ -548,14 +658,14 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 
 Retrieves the storage value at a specified key for a contract on a given RVM at a specific transaction or block state.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 bytes — The unique identifier of the RVM.
 2. **address**: `DATA`, 20 bytes — The address of the contract from which to retrieve the storage value.
 3. **hexKey**: `DATA`, 32 bytes — The hexadecimal key for which the storage value is being queried.
 4. **txNumberOrHash**: `HEX | TAG` — Specifies the block number or hash at which the storage value is queried. Accepts either a block number (`HEX`) or a tag (`"latest"`, `"earliest"`, `"pending"`).
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rnk.dev/' \
@@ -573,7 +683,11 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 }'
 ```
 
-### Response
+#### Response
+
+Returns the storage value:
+
+**result** (`string`): A hexadecimal string representing the storage data.
 
 ```json
 {
@@ -587,7 +701,7 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 
 Performs a read-only simulation of a smart contract function call on a given RVM, without creating a transaction.
 
-### Parameters
+#### Parameters
 
 1. **rvmId**: `DATA`, 20 bytes — The unique identifier of the RVM.
 2. **args**: `OBJECT` — The transaction arguments, including the contract method and parameters. Should include:
@@ -599,7 +713,7 @@ Performs a read-only simulation of a smart contract function call on a given RVM
     - `value`: `HEX`, (optional) — The amount of tokens (e.g., Ether) to send along with the call. For non-payable functions, this should be 0.
 3. **txNumberOrHash**: `HEX | TAG` — Specifies the block number or hash to use for simulating the call. Accepts either a block number (`HEX`) or a tag (`"latest"`, `"earliest"`, `"pending"`).
 
-### cURL
+#### cURL
 
 ```bash
 curl --location 'https://kopli-rpc.rnk.dev/' \
@@ -619,12 +733,63 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
 }'
 ```
 
-### Response
+#### Response
+
+Returns the result of the simulated call:
+
+**result** (`string`): The simulated result of the contract call, returned as a hexadecimal string.
 
 ```json
 {
    "jsonrpc": "2.0",
    "id": 1,
    "result": "0x000000000000000000000000000000000000000000000000000000000000000e"
+}
+```
+
+## rnk_getBlockRvms
+
+Retrieves the history of RVMs for a given block number, specifically those RVMs that have generated an RVM transaction.
+
+#### Parameters
+
+1. **blockN**: `uint64` – The block number for which to retrieve the RVM history.
+
+#### cURL
+
+```bash
+curl --location 'https://kopli-rpc.rnk.dev/' \
+--header 'Content-Type: application/json' \
+--data '{
+  "jsonrpc": "2.0",
+  "method": "rnk_getBlockRvms",
+  "params": [
+    98120
+  ],
+  "id": 1
+}'
+```
+
+#### Response
+
+Returns an array of objects representing RVMs that were active in the given block. Each object contains:
+
+- **rvmId** (`string`): The unique identifier of each RVM.
+- **headTxNumber** (`string`): The transaction with the greatest number in the session (hex-encoded).
+- **prevRnkBlockId** (`uint64`): The previous block number in which the RVM session was active.
+- **txCount** (`uint32`): The total number of transactions in the current RVM session.
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": [
+    {
+      "rvmId": "0x4b4b30e2e7c6463b03cdffd6c42329d357205334",
+      "headTxNumber": "0x2b",
+      "prevRnkBlockId": 98098,
+      "txCount": 3
+    }
+  ]
 }
 ```
