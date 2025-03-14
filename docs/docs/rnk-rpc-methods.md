@@ -1,7 +1,7 @@
 ---
 title: RNK RPC Methods
 sidebar_position: 10
-description: Explore Reactive Network's Geth version RPC methods used for interaction with nodes and ReactVMs.
+description: Explore Reactive Network's Geth version RPC methods used for interaction with reactive nodes and ReactVMs.
 slug: /rnk-rpc-methods
 hide_title: true
 ---
@@ -10,7 +10,7 @@ hide_title: true
 
 ## Overview
 
-This page provides an overview of the RPC methods specific to the Reactive Network's Geth version, essential for interacting with nodes and ReactVMs within the Reactive Network (RNK). These methods enable transaction retrieval, log access, callback information, and more. Below, you will find a detailed description of each method, including its parameters, usage examples, and responses.
+This page provides an overview of the RPC methods specific to the Reactive Network's Geth version, essential for interacting with nodes and ReactVMs within the Reactive Network (RNK). These methods enable transaction retrieval, log access, callback information, etc. Below, you will find a detailed description of each method, including its parameters, cURLs, and responses.
 
 ## rnk_getTransactionByHash
 
@@ -21,26 +21,17 @@ Returns the details of a transaction for the specified ReactVM ID and transactio
 1. **rvmId**: `DATA`, 20 Bytes — The ReactVM ID associated with the transaction.
 2. **txHash**: `DATA`, 32 Bytes — The hash of the transaction to retrieve.
 
-**Example Parameters:**
-
-```json
-[
-  "0xc1d48a9173212567bd358e40c50bfe131a9fabf1",
-  "0x160f41dc30205679437b161ee1d0789c9c1235874896d47dd16dc8528f43f4dd"
-]
-```
-
 #### cURL
 
 ```bash
-curl --location 'https://kopli-rpc.rkt.ink' \
+curl --location 'https://kopli-rpc.rnk.dev/' \
 --header 'Content-Type: application/json' \
 --data '{
   "jsonrpc": "2.0",
   "method": "rnk_getTransactionByHash",
   "params": [
-    "0xc1d48a9173212567bd358e40c50bfe131a9fabf1",
-    "0x160f41dc30205679437b161ee1d0789c9c1235874896d47dd16dc8528f43f4dd"
+    "0xa7d9aa89cbcd216900a04cdc13eb5789d643176a",
+    "0x66d266cf051ed5070ca3b517c9001c3d6841b375cc75458daeed8bde47580632"
   ],
   "id": 1
 }'
@@ -48,29 +39,49 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 #### Response
 
+Returns an object with the following fields:
+
+- **hash** (`string`): The transaction hash.
+- **number** (`string`): The transaction number (hex-encoded).
+- **time** (`uint64`): The timestamp of when the transaction occurred.
+- **root** (`string`): The Merkle root associated with the transaction.
+- **limit** (`uint32`): The maximum gas limit set for the transaction.
+- **used** (`uint32`): The gas used by the transaction.
+- **type** (`uint8`): The transaction type (0 for `Legacy`, 1 for `AccessList`, 2 for `DynamicFee`, 3 for `Blob`, 4 for `SetCode`).
+- **status** (`uint8`): The status of the transaction (1 for `Success`, 0 for `Failure`).
+- **from** (`string`): The transaction initiator.
+- **to** (`string`): The recipient address.
+- **createContract** (`bool`): Indicates whether a contract was created during this transaction.
+- **sessionId** (`uint64`): The block number where the transaction is located (hex-encoded).
+- **refChainId** (`uint32`): The origin chain ID.
+- **refTx** (`string`): The hash of the origin chain transaction that triggered this one.
+- **refEventIndex** (`uint32`): The origin chain event opcode (0 for `LOG0`, 1 for `LOG1`, 2 for `LOG2`, 3 for `LOG3`, 4 for `LOG4`).
+- **data** (`string`): The encoded transaction data in hexadecimal format.
+- **rData** (`string`): Additional response data in hexadecimal format (if any).
+
 ```json
 {
-  "jsonrpc": "2.0",
-  "id": 1,
-  "result": {
-    "hash": "0x160f41dc30205679437b161ee1d0789c9c1235874896d47dd16dc8528f43f4dd",
-    "number": 597,
-    "time": 1723813244,
-    "root": "0xe1a53e5a4599240181a80822a579e8aafa1ade82267110e4a36b43ecdcbe428b",
-    "limit": 900000,
-    "used": 30389,
-    "type": 2,
-    "status": 1,
-    "from": "0xc1d48a9173212567bd358e40c50bfe131a9fabf1",
-    "to": "0x892d3389a0f2d3f364ef1cd1e97464178a3d5790",
-    "createContract": false,
-    "sessionId": 223278,
-    "refChainId": 11155111,
-    "refTx": "0xb019cbec2e613a18cae8808ff7d8a533bc239a5a8afaf450cdf1ee48dc20f60e",
-    "refEventIndex": 275,
-    "data": "0x4190e48f0000000000000000000000000000000000000000000000000000000000aa36a70000000000000000000000009b9bb25f1a81078c544c829c5eb7822d747cf4348e191feb68ec1876759612d037a111be48d8ec3db7f72e4e7d321c2c8008bd0d0000000000000000000000004ea6a685e0e7ac3f9f81d130b2119ef626ae9de8000000000000000000000000000000000000000000000000016345785d8a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000635aff00000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000000",
-    "rData": "0x"
-  }
+   "jsonrpc": "2.0",
+   "id": 1,
+   "result": {
+      "hash": "0x66d266cf051ed5070ca3b517c9001c3d6841b375cc75458daeed8bde47580632",
+      "number": "0x21",
+      "time": 1741788069,
+      "root": "0xbd0cb9c8b376ad00c0c83d5c16d87a0576e027dbee3bcc1e0b96b5c30dcd51aa",
+      "limit": 900000,
+      "used": 34987,
+      "type": 2,
+      "status": 1,
+      "from": "0xa7d9aa89cbcd216900a04cdc13eb5789d643176a",
+      "to": "0x5142840e8007ab6e0315ffb4921f60a4d9a0d31e",
+      "createContract": false,
+      "sessionId": 75190,
+      "refChainId": 97,
+      "refTx": "0x49e38eef0a40913cccc6ffa76041e2b57e63f1768a258581911b87b5018e2f68",
+      "refEventIndex": 0, 
+      "data": "0x0d152c2c00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000061...",
+      "rData": "0x"
+   }
 }
 ```
 
@@ -83,26 +94,17 @@ Returns the details of a transaction based on its sequence number within the spe
 1. **rvmId**: `DATA`, 20 Bytes — The ReactVM ID associated with the transaction.
 2. **txNumber**: `HEX` — The sequence number of the transaction to retrieve.
 
-**Example Parameters:**
-
-```json
-[
-   "0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a",
-   "0x3"
-]
-```
-
 #### cURL
 
 ```bash
-curl --location 'https://kopli-rpc.rkt.ink' \
+curl --location 'https://kopli-rpc.rnk.dev/' \
 --header 'Content-Type: application/json' \
 --data '{
   "jsonrpc": "2.0",
   "method": "rnk_getTransactionByNumber",
   "params": [
-    "0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a",
-    "0x3"
+    "0xa7d9aa89cbcd216900a04cdc13eb5789d643176a",
+    "0x22"
   ],
   "id": 1
 }'
@@ -110,27 +112,47 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 #### Response
 
+Returns an object with the following fields:
+
+- **hash** (`string`): The transaction hash.
+- **number** (`string`): The transaction number (hex-encoded).
+- **time** (`uint64`): The timestamp of when the transaction occurred.
+- **root** (`string`): The Merkle root associated with the transaction.
+- **limit** (`uint32`): The maximum gas limit set for the transaction.
+- **used** (`uint32`): The gas used by the transaction.
+- **type** (`uint8`): The transaction type (0 for `Legacy`, 1 for `AccessList`, 2 for `DynamicFee`, 3 for `Blob`, 4 for `SetCode`).
+- **status** (`uint8`): The status of the transaction (1 for `Success`, 0 for `Failure`).
+- **from** (`string`): The transaction initiator.
+- **to** (`string`): The recipient address.
+- **createContract** (`bool`): Indicates whether a contract was created during this transaction.
+- **sessionId** (`uint64`): The block number where the transaction is located (hex-encoded).
+- **refChainId** (`uint32`): The origin chain ID.
+- **refTx** (`string`): The hash of the origin chain transaction that triggered this one.
+- **refEventIndex** (`uint32`): The origin chain event opcode (0 for `LOG0`, 1 for `LOG1`, 2 for `LOG2`, 3 for `LOG3`, 4 for `LOG4`).
+- **data** (`string`): The encoded transaction data in hexadecimal format.
+- **rData** (`string`): Additional response data in hexadecimal format (if any).
+
 ```json
 {
    "jsonrpc": "2.0",
    "id": 1,
    "result": {
-      "hash": "0x1f7bd4c7cbbab3614468516da5e082e62bd8f36443f4532344414e098967bf10",
-      "number": "0x3",
-      "time": 1736302117,
-      "root": "0x47771edce088d9db7d2b92072c1b846e9c8944cbc6cd7e26c344db8e2c624356",
+      "hash": "0x1f1c254716b404ab2d6bde5c0a3df2a78248399306945b1e16d979ca4f4b1d30",
+      "number": "0x22",
+      "time": 1741868065,
+      "root": "0x9ce394e5167f6c000862c31d5710ecb57efec5436a17f5a6ee62e5ab69970fa7",
       "limit": 900000,
-      "used": 31387,
+      "used": 31374,
       "type": 2,
       "status": 1,
       "from": "0xa7d9aa89cbcd216900a04cdc13eb5789d643176a",
       "to": "0xc3e185561d2a8b04f0fcd104a562f460d6cc503c",
       "createContract": false,
-      "sessionId": 7543,
+      "sessionId": 86073,
       "refChainId": 11155111,
-      "refTx": "0x25bc4a4350da1a8dcdaa61b9151982911cede465e3d3e3afdd1ed10199effc1c",
-      "refEventIndex": 108,
-      "data": "0x0d152c2c00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000aa36a70000000000000000000000009b9bb25f1a81078c544c829c5eb7822d747cf4348e191feb68ec1876759612d037a111be48d8ec3db7f72e4e7d321c2c8008bd0d000000000000000000000000256eee316da03f0d662cc6a6a769a838c218c47a0000000000000000000000000000000000000000000000000156c8b6d46b34180000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000018000000000000000000000000000000000000000000000000000000000007194eb00000000000000000000000000000000000000000000000000000000000000030e1ed7fea578f8a1c814cd1f7540f6388e2ebe23e4febabe3899250ef2a5fa8425bc4a4350da1a8dcdaa61b9151982911cede465e3d3e3afdd1ed10199effc1c000000000000000000000000000000000000000000000000000000000000006c0000000000000000000000000000000000000000000000000000000000000000",
+      "refTx": "0x5639909cad5584430f92407683816faec940d80c6a67bb5b28aaee5bb804a026",
+      "refEventIndex": 331,
+      "data": "0x0d152c2c00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000aa36a7...",
       "rData": "0x"
    }
 }
@@ -145,26 +167,17 @@ Returns logs for a transaction based on its sequence number within the specified
 1. **rvmId**: `DATA`, 20 Bytes — The ReactVM ID for which transaction logs are being queried.
 2. **txNumber**: `HEX` — The transaction number for which logs are requested.
 
-**Example Parameters:**
-
-```json
-[
-  "0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a",
-  "0x3"
-]
-```
-
 #### cURL
 
 ```bash
-curl --location 'https://kopli-rpc.rkt.ink' \
+curl --location 'https://kopli-rpc.rnk.dev/' \
 --header 'Content-Type: application/json' \
 --data '{
   "jsonrpc": "2.0",
   "method": "rnk_getTransactionLogs",
   "params": [
     "0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a",
-    "0x3"
+    "0x22"
   ],
   "id": 1
 }'
@@ -172,13 +185,24 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 #### Response
 
+Returns an array of objects with the following fields:
+
+- **txHash** (`string`): The transaction hash.
+- **address** (`string`): The contract address that generated the transaction.
+- **topics** (`string[]`): An array of indexed event topics.
+   - **topics[0]**: The event signature hash.
+   - **topics[1]**: The first indexed parameter (if applicable).
+   - **topics[2]**: The second indexed parameter (if applicable).
+   - **topics[3]**: The third indexed parameter (if applicable).
+- **data** (`string`): The non-indexed event data in hexadecimal format.
+
 ```json
 {
    "jsonrpc": "2.0",
    "id": 1,
    "result": [
       {
-         "txHash": "0x1f7bd4c7cbbab3614468516da5e082e62bd8f36443f4532344414e098967bf10",
+         "txHash": "0x1f1c254716b404ab2d6bde5c0a3df2a78248399306945b1e16d979ca4f4b1d30",
          "address": "0xc3e185561d2a8b04f0fcd104a562f460d6cc503c",
          "topics": [
             "0x8dd725fa9d6cd150017ab9e60318d40616439424e2fade9c1c58854950917dfc",
@@ -186,104 +210,11 @@ curl --location 'https://kopli-rpc.rkt.ink' \
             "0x000000000000000000000000c3e185561d2a8b04f0fcd104a562f460d6cc503c",
             "0x00000000000000000000000000000000000000000000000000000000000f4240"
          ],
-         "data": "0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000064f8893f1c0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000256eee316da03f0d662cc6a6a769a838c218c47a000000000000000000000000000000000000000000000000002247457ba4520200000000000000000000000000000000000000000000000000000000"
+         "data": "0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000064f8893f1c00000000000000000000000000000000000000000000000000000000000000000000000000000000051f4fa5b031a7ba4e1243d4f7d10fe807b70326e000000000000000000000000000000000000000000000000002386f26fc1000000000000000000000000000000000000000000000000000000000000"
       }
    ]
 }
 ```
-
-[//]: # (## rnk_getCallbackTransaction)
-
-[//]: # ()
-[//]: # (Returns callback transactions associated with a specified ReactVM transaction.)
-
-[//]: # ()
-[//]: # (#### Parameters)
-
-[//]: # ()
-[//]: # (1. **rvmId**: `DATA`, 20 Bytes — The ReactVM ID for which callback transactions are being queried.)
-
-[//]: # (2. **rvmTx**: `DATA`, 32 Bytes — The transaction hash for which callback transactions are requested.)
-
-[//]: # ()
-[//]: # (**Example Parameters:**)
-
-[//]: # ()
-[//]: # (```json)
-
-[//]: # ([)
-
-[//]: # (  "0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a",)
-
-[//]: # (  "0x1f7bd4c7cbbab3614468516da5e082e62bd8f36443f4532344414e098967bf10")
-
-[//]: # (])
-
-[//]: # (```)
-
-[//]: # ()
-[//]: # (#### cURL)
-
-[//]: # ()
-[//]: # (```bash)
-
-[//]: # (curl --location 'https://kopli-rpc.rkt.ink' \)
-
-[//]: # (--header 'Content-Type: application/json' \)
-
-[//]: # (--data '{)
-
-[//]: # (  "jsonrpc": "2.0",)
-
-[//]: # (  "method": "rnk_getCallbackTransaction",)
-
-[//]: # (  "params": [)
-
-[//]: # (    "0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a",)
-
-[//]: # (    "0x1f7bd4c7cbbab3614468516da5e082e62bd8f36443f4532344414e098967bf10")
-
-[//]: # (  ],)
-
-[//]: # (  "id": 1)
-
-[//]: # (}')
-
-[//]: # (```)
-
-[//]: # ()
-[//]: # (#### Response)
-
-[//]: # ()
-[//]: # (```json)
-
-[//]: # ({)
-
-[//]: # (   "jsonrpc": "2.0",)
-
-[//]: # (   "id": 1,)
-
-[//]: # (   "result": [)
-
-[//]: # (      {)
-
-[//]: # (         "chainId": 5318008,)
-
-[//]: # (         "txHash": "0x23f20c4269248ceb62660ec46798f0aac43ed4929c8f33928db84f0ec3da906d",)
-
-[//]: # (         "logIndex": 0,)
-
-[//]: # (         "gasLimit": 1000000,)
-
-[//]: # (         "rnkBlockNumber": 7543)
-
-[//]: # (      })
-
-[//]: # (   ])
-
-[//]: # (})
-
-[//]: # (```)
 
 ## rnk_getHeadNumber
 
@@ -293,18 +224,10 @@ Returns the latest transaction number for the specified ReactVM.
 
 1. **rvmId**: `DATA`, 20 Bytes — The ReactVM ID for which the latest transaction number is requested.
 
-**Example Parameter:**
-
-```json
-[
-  "0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a"
-]
-```
-
 #### cURL
 
 ```bash
-curl --location 'https://kopli-rpc.rkt.ink' \
+curl --location 'https://kopli-rpc.rnk.dev/' \
 --header 'Content-Type: application/json' \
 --data '{
   "jsonrpc": "2.0",
@@ -318,11 +241,15 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 #### Response
 
+Returns an object with the following field:
+
+- **result** (`string`): the latest transaction number (hex-encoded).
+
 ```json
 {
    "jsonrpc": "2.0",
    "id": 1,
-   "result": "0x3"
+   "result": "0x22"
 }
 ```
 
@@ -336,27 +263,17 @@ Returns a range of transactions starting from a specified transaction number wit
 2. **from**: `HEX` — The starting transaction number.
 3. **limit**: `HEX` — The maximum number of transactions to retrieve.
 
-**Example Parameters:**
-
-```json
-[
-  “0x7E0b34315a8886c28A79e351BD3C43924CaE0CE8",
-  “0x0”,
-  “0xA”
-]
-```
-
 #### cURL
 
 ```bash
-curl --location 'https://kopli-rpc.rkt.ink' \
+curl --location 'https://kopli-rpc.rnk.dev/' \
 --header 'Content-Type: application/json' \
 --data '{
   "jsonrpc": "2.0",
   "method": "rnk_getTransactions",
   "params": [
     "0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a",
-    "0x2",
+    "0x22",
     "0x1"
   ],
   "id": 1
@@ -365,28 +282,48 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 #### Response
 
+Returns an object with the following fields:
+
+- **hash** (`string`): The transaction hash.
+- **number** (`string`): The transaction number (hex-encoded).
+- **time** (`uint64`): The timestamp of when the transaction occurred.
+- **root** (`string`): The Merkle root associated with the transaction.
+- **limit** (`uint32`): The maximum gas limit set for the transaction.
+- **used** (`uint32`): The gas used by the transaction.
+- **type** (`uint8`): The transaction type (0 for `Legacy`, 1 for `AccessList`, 2 for `DynamicFee`, 3 for `Blob`, 4 for `SetCode`).
+- **status** (`uint8`): The status of the transaction (1 for `Success`, 0 for `Failure`).
+- **from** (`string`): The transaction initiator.
+- **to** (`string`): The recipient address.
+- **createContract** (`bool`): Indicates whether a contract was created during this transaction.
+- **sessionId** (`uint64`): The block number where the transaction is located (hex-encoded).
+- **refChainId** (`uint32`): The origin chain ID.
+- **refTx** (`string`): The hash of the origin chain transaction that triggered this one.
+- **refEventIndex** (`uint32`): The origin chain event opcode (0 for `LOG0`, 1 for `LOG1`, 2 for `LOG2`, 3 for `LOG3`, 4 for `LOG4`).
+- **data** (`string`): The encoded transaction data in hexadecimal format.
+- **rData** (`string`): Additional response data in hexadecimal format (if any).
+
 ```json
 {
    "jsonrpc": "2.0",
    "id": 1,
    "result": [
       {
-         "hash": "0x5a1312b5a002c0e00afadf013119d813c520aa467f267caeccc9d764aab0c234",
-         "number": "0x2",
-         "time": 1736250121,
-         "root": "0x61e3657b65f0bb189cf6614bf228fb526b0fa0a1afa3e0f72cad5999dd304f88",
+         "hash": "0x1f1c254716b404ab2d6bde5c0a3df2a78248399306945b1e16d979ca4f4b1d30",
+         "number": "0x22",
+         "time": 1741868065,
+         "root": "0x9ce394e5167f6c000862c31d5710ecb57efec5436a17f5a6ee62e5ab69970fa7",
          "limit": 900000,
-         "used": 31339,
+         "used": 31374,
          "type": 2,
          "status": 1,
          "from": "0xa7d9aa89cbcd216900a04cdc13eb5789d643176a",
          "to": "0xc3e185561d2a8b04f0fcd104a562f460d6cc503c",
          "createContract": false,
-         "sessionId": 115,
+         "sessionId": 86073,
          "refChainId": 11155111,
-         "refTx": "0x6d2dbdac052dedf2e3ad748171b64b74dd973b1cefe32a7adf83461c9678049d",
-         "refEventIndex": 175,
-         "data": "0x0d152c2c00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000aa36a70000000000000000000000009b9bb25f1a81078c544c829c5eb7822d747cf4348e191feb68ec1876759612d037a111be48d8ec3db7f72e4e7d321c2c8008bd0d000000000000000000000000a7d9aa89cbcd216900a04cdc13eb5789d643176a000000000000000000000000000000000000000000000000002386f26fc1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000180000000000000000000000000000000000000000000000000000000000071854b0000000000000000000000000000000000000000000000000000000000000003aeef3f0a5d1caba6733d3a694f9c6e8e40b7e6e08193d56fd1dce30cee4142c76d2dbdac052dedf2e3ad748171b64b74dd973b1cefe32a7adf83461c9678049d00000000000000000000000000000000000000000000000000000000000000af0000000000000000000000000000000000000000000000000000000000000000",
+         "refTx": "0x5639909cad5584430f92407683816faec940d80c6a67bb5b28aaee5bb804a026",
+         "refEventIndex": 331,
+         "data": "0x0d152c2c000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000aa36a7...",
          "rData": "0x"
       }
    ]
@@ -395,36 +332,32 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 ## rnk_getRnkAddressMapping
 
-Returns the RVM ID mapped to the specified Reactive Network contract address.
+Returns the RVM ID mapped to the specified reactive contract address.
 
 #### Parameters
 
 1. **reactNetworkContrAddr**: `DATA`, 20 Bytes — The address of the Reactive Network contract for which the RVM ID is being requested.
 
-**Example Parameter:**
-
-```json
-[
-  "0xc3e185561D2a8b04F0Fcd104A562f460D6cC503c"
-]
-```
-
 #### cURL
 
 ```bash
-curl --location 'https://kopli-rpc.rkt.ink' \
+curl --location 'https://kopli-rpc.rnk.dev/' \
 --header 'Content-Type: application/json' \
 --data '{
   "jsonrpc": "2.0",
   "method": "rnk_getRnkAddressMapping",
   "params": [
-    "0xc3e185561D2a8b04F0Fcd104A562f460D6cC503c"
+    "0x5142840e8007AB6E0315ffB4921F60A4d9A0d31e"
   ],
   "id": 1
 }'
 ```
 
 #### Response
+
+Returns an object with the following field:
+
+- **rvmId** (`string`): The unique identifier of the RVM associated with the given contract.
 
 ```json
 {
@@ -438,7 +371,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 ## rnk_getStat
 
-Returns and compiles statistics about RVM transactions and origin chain data.
+Returns and compiles statistics about origin chain data.
 
 #### Parameters
 
@@ -447,7 +380,7 @@ This method does not require any input parameters.
 #### cURL
 
 ```bash
-curl --location 'https://kopli-rpc.rkt.ink' \
+curl --location 'https://kopli-rpc.rnk.dev/' \
 --header 'Content-Type: application/json' \
 --data '{
   "jsonrpc": "2.0",
@@ -459,42 +392,39 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 #### Response
 
+Returns an object with the following fields:
+
+- **chainId** (`object`): The statistics for a specific origin chain.
+  - **txCount** (`uint64`): The total number of transactions processed from this origin chain.
+  - **eventCount** (`uint64`): The total number of events emitted from this origin chain.
+
 ```json
 {
    "jsonrpc": "2.0",
    "id": 1,
    "result": {
       "origin": {
-         "1": {
-            "txCount": 3761609,
-            "eventCount": 9567726
-         },
          "11155111": {
-            "txCount": 2798738,
-            "eventCount": 5664570
+            "txCount": 13712172,
+            "eventCount": 37409934
          },
-         "137": {
-            "txCount": 10632828,
-            "eventCount": 73443701
+         "43113": {
+            "txCount": 746490,
+            "eventCount": 2588831
          },
-         "42161": {
-            "txCount": 7165497,
-            "eventCount": 22113610
+         "80002": {
+            "txCount": 415959,
+            "eventCount": 1969020
          },
-         "43114": {
-            "txCount": 1591310,
-            "eventCount": 4920126
+         "84532": {
+            "txCount": 18548119,
+            "eventCount": 82299789
          },
-         "56": {
-            "txCount": 15843188,
-            "eventCount": 46341049
-         },
-         "8453": {
-            "txCount": 33898584,
-            "eventCount": 66943860
+         "97": {
+            "txCount": 718315,
+            "eventCount": 1913910
          }
-      },
-      "rvmTxCount": 3
+      }
    }
 }
 ```
@@ -510,7 +440,7 @@ This method does not require any input parameters.
 #### cURL
 
 ```bash
-curl --location 'https://kopli-rpc.rkt.ink' \
+curl --location 'https://kopli-rpc.rnk.dev/' \
 --header 'Content-Type: application/json' \
 --data '{
   "jsonrpc": "2.0",
@@ -522,6 +452,12 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 #### Response
 
+Returns a list of active RVMs with the following fields:
+
+- **rvmId** (`string`): The unique identifier of the RVM.
+- **lastTxNumber** (`string`): The last transaction number executed by this RVM (hex-encoded).
+- **contracts** (`uint32`): The number of contracts associated with this RVM.
+
 ```json
 {
    "jsonrpc": "2.0",
@@ -529,8 +465,28 @@ curl --location 'https://kopli-rpc.rkt.ink' \
    "result": [
       {
          "rvmId": "0xa7d9aa89cbcd216900a04cdc13eb5789d643176a",
+         "lastTxNumber": "0x22",
+         "contracts": 6
+      },
+      {
+         "rvmId": "0x51fb60f8763957e43282eed433fdfeb2365b7ef3",
+         "lastTxNumber": "0x4",
+         "contracts": 4
+      },
+      {
+         "rvmId": "0x4b4b30e2e7c6463b03cdffd6c42329d357205334",
+         "lastTxNumber": "0x8",
+         "contracts": 5
+      },
+      {
+         "rvmId": "0xd06cf06d1cf132f5f0b974be13ad3bdcc633992c",
          "lastTxNumber": "0x3",
-         "contracts": 1
+         "contracts": 3
+      },
+      {
+         "rvmId": "0xc1d48a9173212567bd358e40c50bfe131a9fabf1",
+         "lastTxNumber": "0x18",
+         "contracts": 4
       }
    ]
 }
@@ -538,22 +494,16 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 ## rnk_getVm
 
-Returns detailed information about a specific RVM, including its transaction count and the number of associated contracts.
+Returns detailed information about a specific RVM, including the latest transaction number and the number of contracts deployed within it.
 
 #### Parameters
 
 1. **rvmId**: `DATA`, 20 Bytes — The unique identifier of the RVM for which information is requested.
 
-**Example Parameter:**
-
-```json
-"0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a"
-```
-
 #### cURL
 
 ```bash
-curl --location 'https://kopli-rpc.rkt.ink' \
+curl --location 'https://kopli-rpc.rnk.dev/' \
 --header 'Content-Type: application/json' \
 --data '{
   "jsonrpc": "2.0",
@@ -565,36 +515,36 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 #### Response
 
+Returns an object with the following fields:
+
+- **rvmId** (`string`): The unique identifier of the RVM.
+- **lastTxNumber** (`string`): The last transaction number executed by this RVM (hex-encoded).
+- **contracts** (`uint32`): The number of contracts created by this RVM.
+
 ```json
 {
    "jsonrpc": "2.0",
    "id": 1,
    "result": {
       "rvmId": "0xa7d9aa89cbcd216900a04cdc13eb5789d643176a",
-      "lastTxNumber": "0x3",
-      "contracts": 0
+      "lastTxNumber": "0x22",
+      "contracts": 6
    }
 }
 ```
 
 ## rnk_getSubscribers
 
-Returns a list of subscribers for a specified RVM by checking the filters associated with it.
+Returns a list of contracts that have subscribed to events from a specified RVM, along with their filter topics.
 
 #### Parameters
 
 1. **rvmId**: `DATA`, 20 Bytes — The unique identifier of the RVM for which subscriber information is requested.
 
-**Example Parameter:**
-
-```json
-"0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a"
-```
-
 #### cURL
 
 ```bash
-curl --location 'https://kopli-rpc.rkt.ink' \
+curl --location 'https://kopli-rpc.rnk.dev/' \
 --header 'Content-Type: application/json' \
 --data '{
   "jsonrpc": "2.0",
@@ -605,6 +555,15 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 ```
 
 #### Response
+
+Returns a list of RVM-related contract events with the following fields:
+
+- **uid** (`string`): The unique identifierof the subscription.
+- **chainId** (`uint32`): The blockchain ID of the subscribed contract.
+- **contract** (`string`): The address of the subscribed contract on the origin chain.
+- **topics** (`array`): An array of event topics (some may be `null` if not indexed).
+- **rvmId** (`string`): The unique identifier of the RVM.
+- **rvmContract** (`string`): The address of the RVM contract handling this subscription.
 
 ```json
 {
@@ -623,6 +582,32 @@ curl --location 'https://kopli-rpc.rkt.ink' \
          ],
          "rvmId": "0xa7d9aa89cbcd216900a04cdc13eb5789d643176a",
          "rvmContract": "0xc3e185561d2a8b04f0fcd104a562f460d6cc503c"
+      },
+      {
+         "uid": "da0ab6b64f5d5b8b76f116cfadbd62cb",
+         "chainId": 11155111,
+         "contract": "0x03c47d6efd135e58896a072f6fc9f99d16ee2253",
+         "topics": [
+            "0x8cabf31d2b1b11ba52dbb302817a3c9c83e4b2a5194d35121ab1354d69f6a4cb",
+            null,
+            null,
+            null
+         ],
+         "rvmId": "0xa7d9aa89cbcd216900a04cdc13eb5789d643176a",
+         "rvmContract": "0x2afafd298b23b62760711756088f75b7409f5967"
+      },
+      {
+         "uid": "f4fdc7c595fabf5e4dec7174f27704fc",
+         "chainId": 97,
+         "contract": "0xab83ab046a383d495da2b832165ef5d8310554f8",
+         "topics": [
+            "0x8cabf31d2b1b11ba52dbb302817a3c9c83e4b2a5194d35121ab1354d69f6a4cb",
+            null,
+            null,
+            null
+         ],
+         "rvmId": "0xa7d9aa89cbcd216900a04cdc13eb5789d643176a",
+         "rvmContract": "0x5142840e8007ab6e0315ffb4921f60a4d9a0d31e"
       }
    ]
 }
@@ -630,7 +615,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 ## rnk_getCode
 
-Returns the smart contract code at a specific transaction state for a given RVM and contract address.
+Retrieves the bytecode of a deployed contract at a specific transaction or block state for a given RVM.
 
 #### Parameters
 
@@ -638,28 +623,18 @@ Returns the smart contract code at a specific transaction state for a given RVM 
 2. **contract** `DATA`, 20 bytes — The address of the smart contract.
 3. **txNumberOrHash** `HEX | TAG` — Specifies the state at which the contract code is retrieved. Accepts either a block number (`HEX`) or a tag (`"latest"`, `"earliest"`, `"pending"`).
 
-**Example Parameters:**
-
-```json
-[
-   "0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a",
-   "0xc3e185561D2a8b04F0Fcd104A562f460D6cC503c",
-   "0x2"
-]
-```
-
 #### cURL
 
 ```bash
-curl --location 'https://kopli-rpc.rkt.ink' \
+curl --location 'https://kopli-rpc.rnk.dev/' \
 --header 'Content-Type: application/json' \
 --data '{
   "jsonrpc": "2.0",
   "method": "rnk_getCode",
   "params": [
     "0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a",
-    "0xc3e185561D2a8b04F0Fcd104A562f460D6cC503c",
-    "0x2"
+    "0x5142840e8007AB6E0315ffB4921F60A4d9A0d31e",
+    "0x21"
     ],
   "id": 1
 }'
@@ -667,17 +642,21 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 #### Response
 
+Returns the bytecode of a contract:
+
+- **bytecode** (`string`) — The contract bytecode in hexadecimal format. 
+
 ```json
 {
    "jsonrpc": "2.0",
    "id": 1,
-   "result": "0x60806040526004361061007f5760003560e01c80637a90b9901161004e5780637a90b9901461010a5780638456cb591461011f578063c290d69114610134578063f8893f1c1461015457600080fd5b8063046f7da21461008b5780630d152c2c146100a257806310062470146100c257806356b4997f146100ea57600080fd5b3661008657005b600080fd5b34801561009757600080fd5b506100a0610174565b005b3480156100ae57600080fd5b506100a06100bd366004610baf565b6103c0565b3480156100ce57600080fd5b506100d860065481565b60405190815260200160405180910390f35b3480156100f657600080fd5b506100a0610105366004610bf2565b6104aa565b34801561011657600080fd5b506100a06104d9565b34801561012b57600080fd5b506100a0610562565b34801561014057600080fd5b506100a061014f366004610bf2565b6107b4565b34801561016057600080fd5b506100a061016f366004610c20565b610816565b60025460ff16156101c45760405162461bcd60e51b81526020600482015260156024820152745265616374697665204e6574776f726b206f6e6c7960581b60448201526064015b60405180910390fd5b6003546001600160a01b031633146101ee5760405162461bcd60e51b81526004016101bb90610c61565b600354600160a01b900460ff166102345760405162461bcd60e51b815260206004820152600a602482015269139bdd081c185d5cd95960b21b60448201526064016101bb565b600061023e61099c565b905060005b815181146103af57600260019054906101000a90046001600160a01b03166001600160a01b0316635a6aced083838151811061028157610281610c87565b60200260200101516000015184848151811061029f5761029f610c87565b6020026020010151602001518585815181106102bd576102bd610c87565b6020026020010151604001518686815181106102db576102db610c87565b6020026020010151606001518787815181106102f9576102f9610c87565b60200260200101516080015188888151811061031757610317610c87565b602090810291909101015160a001516040516001600160e01b031960e089901b16815260048101969096526001600160a01b03909416602486015260448501929092526064840152608483015260a482015260c401600060405180830381600087803b15801561038657600080fd5b505af115801561039a573d6000803e3d6000fd5b50505050806103a890610c9d565b9050610243565b50506003805460ff60a01b19169055565b60025460ff166103fc5760405162461bcd60e51b8152602060048201526007602482015266564d206f6e6c7960c81b60448201526064016101bb565b6000806060830135610413600a6080860135610cc4565b6040516001600160a01b039384166024820152929091166044830152606482015260840160408051601f198184030181529181526020820180516001600160e01b0316633e224fc760e21b17905251909150620f424090309062512578907f8dd725fa9d6cd150017ab9e60318d40616439424e2fade9c1c58854950917dfc9061049e908690610d0a565b60405180910390a45050565b6003546001600160a01b031633146104d45760405162461bcd60e51b81526004016101bb90610c61565b600655565b600080546040516326db15bb60e21b81523060048201526001600160a01b0390911690639b6c56ec90602401602060405180830381865afa158015610522573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105469190610d3d565b60005490915061055f906001600160a01b031682610aaf565b50565b60025460ff16156105ad5760405162461bcd60e51b81526020600482015260156024820152745265616374697665204e6574776f726b206f6e6c7960581b60448201526064016101bb565b6003546001600160a01b031633146105d75760405162461bcd60e51b81526004016101bb90610c61565b600354600160a01b900460ff16156106225760405162461bcd60e51b815260206004820152600e60248201526d105b1c9958591e481c185d5cd95960921b60448201526064016101bb565b600061062c61099c565b905060005b8151811461079d57600260019054906101000a90046001600160a01b03166001600160a01b0316632f80733683838151811061066f5761066f610c87565b60200260200101516000015184848151811061068d5761068d610c87565b6020026020010151602001518585815181106106ab576106ab610c87565b6020026020010151604001518686815181106106c9576106c9610c87565b6020026020010151606001518787815181106106e7576106e7610c87565b60200260200101516080015188888151811061070557610705610c87565b602090810291909101015160a001516040516001600160e01b031960e089901b16815260048101969096526001600160a01b03909416602486015260448501929092526064840152608483015260a482015260c401600060405180830381600087803b15801561077457600080fd5b505af1158015610788573d6000803e3d6000fd5b505050508061079690610c9d565b9050610631565b50506003805460ff60a01b1916600160a01b179055565b3360009081526001602052604090205460ff1661080c5760405162461bcd60e51b8152602060048201526016602482015275417574686f72697a65642073656e646572206f6e6c7960501b60448201526064016101bb565b61055f3382610aaf565b600254839061010090046001600160a01b031633146108775760405162461bcd60e51b815260206004820181905260248201527f4e6f7420617574686f72697a6564202863616c6c6261636b2073656e6465722960448201526064016101bb565b6003546001600160a01b038281169116146108d45760405162461bcd60e51b815260206004820152601960248201527f4e6f7420617574686f72697a656420287265616374697665290000000000000060448201526064016101bb565b60065482111561091c5760405162461bcd60e51b815260206004820152601360248201527213585e081c185e5bdd5d08195e18d959591959606a1b60448201526064016101bb565b4782111561095f5760405162461bcd60e51b815260206004820152601060248201526f4e6f7420656e6f7567682066756e647360801b60448201526064016101bb565b6040516001600160a01b0384169083156108fc029084906000818181858888f19350505050158015610995573d6000803e3d6000fd5b5050505050565b60408051600180825281830190925260609160009190816020015b6109f96040518060c001604052806000815260200160006001600160a01b03168152602001600081526020016000815260200160008152602001600081525090565b8152602001906001900390816109b75750506040805160c08101825262aa36a781526005546001600160a01b031660208201527f8e191feb68ec1876759612d037a111be48d8ec3db7f72e4e7d321c2c8008bd0d918101919091527fa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad606082018190526080820181905260a08201528151919250908290600090610a9f57610a9f610c87565b6020908102919091010152919050565b80471015610af45760405162461bcd60e51b8152602060048201526012602482015271496e73756666696369656e742066756e647360701b60448201526064016101bb565b8015610bab57604080516000808252602082019092526001600160a01b038416908390604051610b249190610d56565b60006040518083038185875af1925050503d8060008114610b61576040519150601f19603f3d011682016040523d82523d6000602084013e610b66565b606091505b5050905080610ba95760405162461bcd60e51b815260206004820152600f60248201526e151c985b9cd9995c8819985a5b1959608a1b60448201526064016101bb565b505b5050565b600060208284031215610bc157600080fd5b813567ffffffffffffffff811115610bd857600080fd5b82016101808185031215610beb57600080fd5b9392505050565b600060208284031215610c0457600080fd5b5035919050565b6001600160a01b038116811461055f57600080fd5b600080600060608486031215610c3557600080fd5b8335610c4081610c0b565b92506020840135610c5081610c0b565b929592945050506040919091013590565b6020808252600c908201526b155b985d5d1a1bdc9a5e995960a21b604082015260600190565b634e487b7160e01b600052603260045260246000fd5b600060018201610cbd57634e487b7160e01b600052601160045260246000fd5b5060010190565b600082610ce157634e487b7160e01b600052601260045260246000fd5b500490565b60005b83811015610d01578181015183820152602001610ce9565b50506000910152565b6020815260008251806020840152610d29816040850160208701610ce6565b601f01601f19169190910160400192915050565b600060208284031215610d4f57600080fd5b5051919050565b60008251610d68818460208701610ce6565b919091019291505056fea2646970667358221220b22f3c3e8ee71d4e0f8f8c24f30958cb57c1aa1b58e448fe5af049a6f26ebf8b64736f6c634300081c0033"
+   "result": "0x60806040526004361061004e5760003560e01c80630ac7f5611461005a5780630d152c2c146100825780637a90b990146100a4578063b0750611146100b9578063c290d691146100cf57600080fd5b3661005557005b600080fd5b34801561006657600080fd5b5061007060035481565b60405190815260200160405180910390f35b34801561008e57600080fd5b506100a261009d3660046103b7565b6100ef565b005b3480156100b057600080fd5b506100a26101d3565b3480156100c557600080fd5b5061007060045481565b3480156100db57600080fd5b506100a26100ea3660046103fa565b610259565b60025460ff166101305760405162461bcd60e51b8152602060048201526007602482015266564d206f6e6c7960c81b60448201526064015b60405180910390fd5b662386f26fc100008160a00135106101d0576040516000602482018190529060440160408051601f198184030181529181526020820180516001600160e01b03166373027f6d60e01b1790526005546004549151929350620f4240926001600160a01b0390911691907f8dd725fa9d6cd150017ab9e60318d40616439424e2fade9c1c58854950917dfc906101c6908690610437565b60405180910390a4505b50565b600080546040516326db15bb60e21b81523060048201526001600160a01b0390911690639b6c56ec90602401602060405180830381865afa15801561021c573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610240919061046a565b6000549091506101d0906001600160a01b0316826102b7565b3360009081526001602052604090205460ff166102b15760405162461bcd60e51b8152602060048201526016602482015275417574686f72697a65642073656e646572206f6e6c7960501b6044820152606401610127565b6101d033825b804710156102fc5760405162461bcd60e51b8152602060048201526012602482015271496e73756666696369656e742066756e647360701b6044820152606401610127565b80156103b357604080516000808252602082019092526001600160a01b03841690839060405161032c9190610483565b60006040518083038185875af1925050503d8060008114610369576040519150601f19603f3d011682016040523d82523d6000602084013e61036e565b606091505b50509050806103b15760405162461bcd60e51b815260206004820152600f60248201526e151c985b9cd9995c8819985a5b1959608a1b6044820152606401610127565b505b5050565b6000602082840312156103c957600080fd5b813567ffffffffffffffff8111156103e057600080fd5b820161018081850312156103f357600080fd5b9392505050565b60006020828403121561040c57600080fd5b5035919050565b60005b8381101561042e578181015183820152602001610416565b50506000910152565b6020815260008251806020840152610456816040850160208701610413565b601f01601f19169190910160400192915050565b60006020828403121561047c57600080fd5b5051919050565b60008251610495818460208701610413565b919091019291505056fea2646970667358221220cc87404c7dcfdfc672eba57a3c905d2f39689820d2bf1b74666380f75fb293f264736f6c634300081c0033"
 }
 ```
 
 ## rnk_getStorageAt
 
-Returns the value stored at a specific key in the storage of a contract for a given RVM at a specified block number or hash.
+Retrieves the storage value at a specified key for a contract on a given RVM at a specific transaction or block state.
 
 #### Parameters
 
@@ -686,36 +665,29 @@ Returns the value stored at a specific key in the storage of a contract for a gi
 3. **hexKey**: `DATA`, 32 bytes — The hexadecimal key for which the storage value is being queried.
 4. **txNumberOrHash**: `HEX | TAG` — Specifies the block number or hash at which the storage value is queried. Accepts either a block number (`HEX`) or a tag (`"latest"`, `"earliest"`, `"pending"`).
 
-**Example Parameters:**
-
-```json
-[
-   "0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a",
-   "0xc3e185561D2a8b04F0Fcd104A562f460D6cC503c",
-   "0x0000000000000000000000000000000000000000000000000000000000000002",
-   "0x2"
-]
-```
-
 #### cURL
 
 ```bash
-curl --location 'https://kopli-rpc.rkt.ink' \
+curl --location 'https://kopli-rpc.rnk.dev/' \
 --header 'Content-Type: application/json' \
 --data '{
   "jsonrpc": "2.0",
   "method": "rnk_getStorageAt",
   "params": [
     "0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a",
-    "0xc3e185561D2a8b04F0Fcd104A562f460D6cC503c",
+    "0x5142840e8007AB6E0315ffB4921F60A4d9A0d31e",
     "0x0000000000000000000000000000000000000000000000000000000000000002",
-    "0x2"
+    "0x21"
   ],
   "id": 1
 }'
 ```
 
 #### Response
+
+Returns the storage value:
+
+**result** (`string`): A hexadecimal string representing the storage data.
 
 ```json
 {
@@ -727,7 +699,7 @@ curl --location 'https://kopli-rpc.rkt.ink' \
 
 ## rnk_call
 
-Simulates a contract method call without an actual transaction, using the blockchain state at a specific transaction or block.
+Performs a read-only simulation of a smart contract function call on a given RVM, without creating a transaction.
 
 #### Parameters
 
@@ -741,23 +713,10 @@ Simulates a contract method call without an actual transaction, using the blockc
     - `value`: `HEX`, (optional) — The amount of tokens (e.g., Ether) to send along with the call. For non-payable functions, this should be 0.
 3. **txNumberOrHash**: `HEX | TAG` — Specifies the block number or hash to use for simulating the call. Accepts either a block number (`HEX`) or a tag (`"latest"`, `"earliest"`, `"pending"`).
 
-**Example Parameters:**
-
-```json
-[
-  "0xa7d9aa89cbcd216900a04cdc13eb5789d643176a",
-  {
-    "to": "0xEE94fFc3127f0926bcE2Af5974bA9Ee426345FBB",
-    "data": "0x2e64cec1"
-  },
-  "latest"
-]
-```
-
 #### cURL
 
 ```bash
-curl --location 'http://141.94.141.219:38599/' \
+curl --location 'https://kopli-rpc.rnk.dev/' \
 --header 'Content-Type: application/json' \
 --data '{
   "jsonrpc": "2.0",
@@ -771,16 +730,66 @@ curl --location 'http://141.94.141.219:38599/' \
     "latest"
   ],
   "id": 1
-}
-'
+}'
 ```
 
 #### Response
+
+Returns the result of the simulated call:
+
+**result** (`string`): The simulated result of the contract call, returned as a hexadecimal string.
 
 ```json
 {
    "jsonrpc": "2.0",
    "id": 1,
    "result": "0x000000000000000000000000000000000000000000000000000000000000000e"
+}
+```
+
+## rnk_getBlockRvms
+
+Retrieves the history of RVMs for a given block number, specifically those RVMs that have generated an RVM transaction.
+
+#### Parameters
+
+1. **blockN**: `uint64` – The block number for which to retrieve the RVM history.
+
+#### cURL
+
+```bash
+curl --location 'https://kopli-rpc.rnk.dev/' \
+--header 'Content-Type: application/json' \
+--data '{
+  "jsonrpc": "2.0",
+  "method": "rnk_getBlockRvms",
+  "params": [
+    98120
+  ],
+  "id": 1
+}'
+```
+
+#### Response
+
+Returns an array of objects representing RVMs that were active in the given block. Each object contains:
+
+- **rvmId** (`string`): The unique identifier of each RVM.
+- **headTxNumber** (`string`): The transaction with the greatest number in the session (hex-encoded).
+- **prevRnkBlockId** (`uint64`): The previous block number in which the RVM session was active.
+- **txCount** (`uint32`): The total number of transactions in the current RVM session.
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": [
+    {
+      "rvmId": "0x4b4b30e2e7c6463b03cdffd6c42329d357205334",
+      "headTxNumber": "0x2b",
+      "prevRnkBlockId": 98098,
+      "txCount": 3
+    }
+  ]
 }
 ```
