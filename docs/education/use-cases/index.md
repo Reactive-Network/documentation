@@ -11,7 +11,7 @@ slug: /education/use-cases
 
 The Use Cases section primarily focuses on analyzing scenarios where Reactive Smart Contracts might be a game changer.
 
-The [Basic Demo Smart Contract](use-case-1.md) is a basic use case of the Reactive Network with low-latency monitoring of logs emitted by arbitrary contracts on any chain (Sepolia testnet in this case) and enabling calls from the Reactive Network to these arbitrary chain contracts.
+The [Basic Demo Smart Contract](use-case-1.md) is a basic use case of the Reactive Network enabling low-latency event monitoring, capturing logs from origin chain contracts, processing them, and triggering callbacks on the destination chain.
 
 The [Deploying Reactive Smart Contracts with Remix](remix-ide-demo.md) article is a guide for deploying a Reactive Smart Contract using the Remix Development Environment.
 
