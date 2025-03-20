@@ -13,7 +13,7 @@ The Use Cases section primarily focuses on analyzing scenarios where Reactive Sm
 
 The [Basic Demo Smart Contract](use-case-1.md) is a basic use case of the Reactive Network enabling low-latency event monitoring, capturing logs from origin chain contracts, processing them, and triggering callbacks on the destination chain.
 
-The [Deploying Reactive Smart Contracts with Remix](remix-ide-demo.md) article is a guide for deploying a Reactive Smart Contract using the Remix Development Environment.
+The [Deploying Reactive Smart Contracts with Remix](remix-ide-demo.mdx) article is a guide for deploying a Reactive Smart Contract using the Remix Development Environment.
 
 The [Uniswap V2 Stop Order Demo](use-case-3.md) is a demo of a simple reactive smart contract that implements a stop order upon a Uniswap V2 liquidity pool. Study its setup and try deploying and testing it yourself.
 

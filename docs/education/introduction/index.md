@@ -50,7 +50,7 @@ The [Use Cases](../use-cases/index.md) section explains scenarios where Reactive
 
 [Uniswap V2 Stop Order Demo →](../use-cases/use-case-3.md)
 
-[Deploying Reactive Smart Contracts with Remix →](../use-cases/remix-ide-demo.md)
+[Deploying Reactive Smart Contracts with Remix →](../use-cases/remix-ide-demo.mdx)
 
 ## Glossary
 
