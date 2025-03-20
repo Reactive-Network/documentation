@@ -6,26 +6,41 @@ slug: remix-ide-demo
 ---
 
 import KopliButton from "../../../src/components/kopli-button";
+import DownloadButton from "../../../src/components/download-zip";
 
 # Deploying Reactive Smart Contracts with Remix
 
 ## Overview
 
-This guide will walk you through deploying Reactive Smart Contracts using the [Remix Development Environment](https://remix.ethereum.org/). We will use the [Basic Demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/basic) that involves three smart contracts: the Origin chain contract [BasicDemoL1Contract.sol](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoL1Contract.sol), the Destination chain contract [BasicDemoL1Callback.sol](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoL1Callback.sol), and the Reactive contract [BasicDemoReactiveContract.sol](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoReactiveContract.sol).
+This guide will walk you through deploying the basic [Reactive Network Demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/basic) using the [Remix Development Environment](https://remix.ethereum.org/). The demo includes three contracts: the origin contract [BasicDemoL1Contract.sol](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoL1Contract.sol), the destination contract [BasicDemoL1Callback.sol](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoL1Callback.sol), and the reactive contract [BasicDemoReactiveContract.sol](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoReactiveContract.sol).
 
 ## Prerequisites
 
-* [Solidity](https://soliditylang.org/) 
-* [MetaMask](https://metamask.io/) 
-* [Remix](https://remix.ethereum.org/) 
+Before getting started, ensure you have a basic understanding of the following:
 
-## Acquire Testnet Funds
+- [Solidity](https://soliditylang.org/) – Smart contract programming language
+- [MetaMask](https://metamask.io/) – Web3 wallet for interacting with the blockchain
+- [Remix](https://remix.ethereum.org/) – Online Solidity IDE for smart contract development
 
-To receive testnet REACT, send SepETH to the Reactive faucet contract on Ethereum Sepolia: `0x9b9BB25f1A81078C544C829c5EB7822d747Cf434`. The factor is 1/10 (or 0.1), meaning you get 0.01 REACT for every 0.1 SepETH sent. To connect your MetaMask account to Kopli Testnet, use the button below:
+You'll also need three smart contracts, along with their abstract contracts and interfaces, to run the demo. Download all the necessary files using the button below:
+
+<DownloadButton />
+
+<hr />
+
+Additionally, you'll need **kREACT** (testnet REACT for Reactive Kopli) to complete the demo. To receive **kREACT**, send SepETH to the **Reactive faucet contract** on Ethereum Sepolia:
+
+```bash
+0x9b9BB25f1A81078C544C829c5EB7822d747Cf434
+```
+
+The exchange rate is **1/10 (0.1)**, meaning you'll receive **0.01 REACT** for every **0.1 SepETH** sent. To connect your MetaMask wallet to the **Reactive Kopli**, use the button below:
 
 <KopliButton />
 
-## Origin Chain Contract
+<hr />
+
+## Origin Contract
 
 1. Open [BasicDemoL1Contract.sol](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoL1Contract.sol) in [Remix](https://remix.ethereum.org/).
 
@@ -45,7 +60,7 @@ To receive testnet REACT, send SepETH to the Reactive faucet contract on Ethereu
 
 4. Check the transaction details using the contract address on [Sepolia Testnet Explorer](https://sepolia.etherscan.io/).
 
-## Destination Chain Contract
+## Destination Contract
 
 1. Open [BasicDemoL1Callback.sol](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoL1Callback.sol) in [Remix](https://remix.ethereum.org/). Properly import abstract contracts and interfaces: [AbstractCallback](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/AbstractCallback.sol), [AbstractPayer](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/AbstractPayer.sol), [IPayable](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/IPayable.sol), and [IPayer](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/IPayer.sol).
 
@@ -57,7 +72,7 @@ To receive testnet REACT, send SepETH to the Reactive faucet contract on Ethereu
 
 4.Copy the contract address that will appear in the **Deployed Contracts** list.
 
-## Reactive Smart Contract
+## Reactive Contract
 
 1. Open [BasicDemoReactiveContract.sol](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoReactiveContract.sol) in [Remix](https://remix.ethereum.org/). Properly import abstract contracts and interfaces: [AbstractReactive](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/AbstractReactive.sol), [IReactive](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/IReactive.sol), [ISystemContract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/ISystemContract.sol), [IPayer](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/IPayer.sol), [IPayable](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/IPayable.sol), [ISubscriptionService](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/ISubscriptionService.sol),
 
