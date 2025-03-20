@@ -22,7 +22,7 @@ Before getting started, ensure you have a basic understanding of the following:
 - [MetaMask](https://metamask.io/) – Web3 wallet for interacting with the blockchain
 - [Remix](https://remix.ethereum.org/) – Online Solidity IDE for smart contract development
 
-You'll also need three smart contracts, along with their abstract contracts and interfaces, to run the demo. Download all the necessary files using the button below:
+You'll also need three smart contracts, along with their abstract contracts and interfaces, to run the demo. All contracts should remain in the same folder. Download all the necessary files using the button below:
 
 <DownloadButton />
 
@@ -48,58 +48,78 @@ The exchange rate is **1/10 (0.1)**, meaning you'll receive **0.01 REACT** for e
 
 ![Origin](img/1.png)
 
-3. Deploy the Origin chain contract to Ethereum Sepolia.
+3. Deploy the contract on any [supported origin chain](../../docs/origins-and-destinations.mdx#testnet-chains).
 
-* Open MetaMask and select Ethereum Sepolia.
+* Open MetaMask and select the required chain.
 
 * In Remix, in the **Deploy & Run Transactions** tab, select "Injected Provider — MetaMask" as your environment.
 
-* Click the **Deploy** button. MetaMask will prompt you to confirm the transaction. Check the transaction details to ensure you are deploying the contract to Ethereum Sepolia.
+* Click the **Deploy** button. MetaMask will prompt you to confirm the transaction. Check the transaction details to ensure you are deploying the contract to the right chain.
 
-* After you confirm the transaction, the contract address will appear in the **Deployed Contracts** list. Copy this contract address.
+* After you confirm the transaction, the contract address will appear in the **Deployed Contracts** list. Copy this contract address. This will be the `_contract` address in the reactive contract.
 
-4. Check the transaction details using the contract address on [Sepolia Testnet Explorer](https://sepolia.etherscan.io/).
+![Origin](img/11.png)
+
+4. Check the transaction details using the contract address on the relevant block explorer.
 
 ## Destination Contract
 
-1. Open [BasicDemoL1Callback.sol](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoL1Callback.sol) in [Remix](https://remix.ethereum.org/). Properly import abstract contracts and interfaces: [AbstractCallback](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/AbstractCallback.sol), [AbstractPayer](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/AbstractPayer.sol), [IPayable](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/IPayable.sol), and [IPayer](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/IPayer.sol).
+1. Open [BasicDemoL1Callback.sol](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoL1Callback.sol) in [Remix](https://remix.ethereum.org/).
 
 2. Compile the contract.
 
 ![Destination](img/2.png)
 
-3. Deploy the Destination chain contract to Ethereum Sepolia the same way we do with the Origin chain contract.
+3. Deploy the contract on any [supported destination chain](../../docs/origins-and-destinations.mdx#testnet-chains).
 
-4.Copy the contract address that will appear in the **Deployed Contracts** list.
+* Open MetaMask and select the required chain.
+
+* In Remix, in the **Deploy & Run Transactions** tab, select "Injected Provider — MetaMask" as your environment.
+
+* Provide 0.01 Ether (or 10,000,000,000,000,000 Wei) as the transaction value and include `_callback_sender` — a [callback proxy address](../../docs/origins-and-destinations.mdx#testnet-chains) that is unique to each chain.
+
+* Click the **Deploy** button. MetaMask will prompt you to confirm the transaction. Check the transaction details to ensure you are deploying the contract to the right chain.
+
+* After you confirm the transaction, the contract address will appear in the **Deployed Contracts** list. Copy this contract address. This will be the `_callback` address in the reactive contract.
+
+![Destination](img/22.png)
+
+4. Check the transaction details using the contract address on the relevant block explorer.
 
 ## Reactive Contract
 
-1. Open [BasicDemoReactiveContract.sol](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoReactiveContract.sol) in [Remix](https://remix.ethereum.org/). Properly import abstract contracts and interfaces: [AbstractReactive](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/AbstractReactive.sol), [IReactive](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/IReactive.sol), [ISystemContract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/ISystemContract.sol), [IPayer](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/IPayer.sol), [IPayable](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/IPayable.sol), [ISubscriptionService](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/ISubscriptionService.sol),
+1. Open [BasicDemoReactiveContract.sol](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoReactiveContract.sol) in [Remix](https://remix.ethereum.org/).
 
 2. Compile the contract.
 
 ![Reactive](img/3.png)
 
-3. Deploy the reactive contract to Kopli Testnet.
+3. Deploy the contract to Reactive Kopli.
 
-* Open MetaMask and select Kopli Testnet.
+* Open MetaMask and select Reactive Kopli.
 
 * In Remix, in the **Deploy & Run Transactions** tab, select "Injected Provider — MetaMask" as your Environment.
 
 * In the **Deploy** section, fill out the following fields:
 
-    `service address`: Reactive callback proxy address `0x0000000000000000000000000000000000FFFFFF`.
+    `_service`: the Reactive network system contract address `0x0000000000000000000000000000000000fffFfF`.
+
+    `_originChainId`: the origin chain ID (see [Origins & Destinations](https://dev.reactive.network/origins-and-destinations#testnet-chains)).
+
+    `_destinationChainId`: the destination chain ID (see [Origins & Destinations](https://dev.reactive.network/origins-and-destinations#testnet-chains)).
     
-    `_contract`: Origin chain contract address.
+    `_contract`: the origin chain contract address.
     
     `topic_0`: The `Received` event on the origin chain contract `0x8cabf31d2b1b11ba52dbb302817a3c9c83e4b2a5194d35121ab1354d69f6a4cb`.
     
-    `callback`: Destination chain contract address.
+    `_callback`: the destination chain contract address.
 
-* Click the **transact** button. MetaMask will prompt you to confirm the transaction. Check the transaction details to ensure you are deploying the contract to the Kopli Testnet.
+* Click the **transact** button. MetaMask will prompt you to confirm the transaction. Check the transaction details to ensure you are deploying the contract to Reactive Kopli.
 
-* After you confirm the transaction, the contract address will appear in the **Deployed Contracts** list. Copy this contract address.
+* After you confirm the transaction, the contract address will appear in the **Deployed Contracts** list. Copy this contract address if needed.
+
+![Reactive](img/33.png)
 
 4. Once the reactive сontract is successfully deployed, check the transaction details using the contract address on [Reactive Scan](https://kopli.reactscan.net/).
 
-To receive a callback on the destination chain contract, you should send 0.1 SepETH to your Origin contract address via Metamask. Check the contract's events for a callback. 
+To receive a callback on the destination chain contract, you should send 0.01 ether to the origin chain contract via Metamask. To see the callback, check the destination contract's [events](https://sepolia.etherscan.io/address/0x26fF307f0f0Ea0C4B5Df410Efe22754324DACE08#events) on the relevant block explorer.
