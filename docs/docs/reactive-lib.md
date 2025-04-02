@@ -304,3 +304,65 @@ The Reactive Network’s key operations are managed by three core contracts:
 - Recursive Tracking: Supports complex criteria structures.
 - Wildcard Support: Uses `REACTIVE_IGNORE` for broader matches.
 - Event Emissions: Tracks subscription updates, including deployer events.
+
+### CRON Functionality
+
+The `SystemContract` includes a built-in cron-like mechanism that emits time-based events at predictable block intervals. These events provide a native scheduling layer for developers building automation workflows, on-chain triggers, or off-chain watchers.
+
+By emitting signals at various granularities — every block, every 10 blocks, and so on — the cron system offers a modular, gas-efficient alternative to deploying dedicated schedulers or time-checking logic within individual contracts. Trusted callback senders (e.g., validator roots or system relayers) can trigger the cron mechanism by calling one of two exposed functions:
+
+```solidity
+function cron() external conditionalInit callbackOnly
+function cron(uint256 number) external conditionalInit callbackOnly
+```
+
+These functions are protected by the `callbackOnly` modifier, meaning only trusted callback senders can invoke them. Both variants internally delegate to a shared logic function:
+
+```solidity 
+function _cron(uint256 number) internal {
+    emit Cron1(number);
+    if (number % 10 == 0) {
+        emit Cron10(number);
+        if (number % 100 == 0) {
+            emit Cron100(number);
+            if (number % 1000 == 0) {
+                emit Cron1000(number);
+                if (number % 10000 == 0) {
+                    emit Cron10000(number);
+                }
+            }
+        }
+    }
+}
+```
+
+:::info[Note]
+The second `cron(uint256 number)` variant allows external systems to simulate or "replay" a cron tick for a given block number or custom index — useful for testing, backfilling, or coordinating across chains.
+:::
+
+Each call to `cron()` emits one or more `Cron` events based on the divisibility of the provided block number. This forms a pyramid of timing signals, growing less frequent as the interval increases. Each event includes a single parameter: `number`, representing the current block number (or an arbitrary number passed in).
+
+| Event       | Interval            | Description                      |
+|-------------|---------------------|----------------------------------|
+| `Cron1`     | Every block         | Base signal, always emitted      |
+| `Cron10`    | Every 10 blocks     | For short-term cycles or retries |
+| `Cron100`   | Every 100 blocks    | For medium-frequency tasks       |
+| `Cron1000`  | Every 1000 blocks   | For more costly operations       |
+| `Cron10000` | Every 10,000 blocks | For heavy or rare routines       |
+
+To maintain the reliability and predictability of this mechanism, only **whitelisted validator root addresses** are permitted to trigger the cron functions. These trusted senders are explicitly configured during contract initialization:
+
+```solidity
+callback_senders[OWNER_ADDR] = true;
+callback_senders[VALIDATOR_ROOT_ADDR_1] = true;
+callback_senders[VALIDATOR_ROOT_ADDR_2] = true;
+callback_senders[VALIDATOR_ROOT_ADDR_3] = true;
+```
+
+This controlled access:
+
+- Prevents spamming or event overload.
+- Guarantees that ticks originate from reliable, consensus-aligned sources.
+- Keeps the cron cadence aligned with protocol rules and gas efficiency targets.
+
+Since `cron()` can only be called by trusted senders, and emits simple, non-modifying events, it's secure by design. It is read-only (no state changes beyond logging) and does not charge gas to third parties.
