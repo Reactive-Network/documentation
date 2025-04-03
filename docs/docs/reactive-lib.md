@@ -309,7 +309,7 @@ The Reactive Network’s key operations are managed by three core contracts:
 
 The `SystemContract` has a built-in cron mechanism that enables time-based automation by emitting events at fixed block intervals. Instead of running continuous on-chain checks, nodes listen for these predictable signals and create transactions to invoke the appropriate cron function when triggered. This native scheduling layer simplifies the creation of automated workflows, on-chain triggers, and off-chain watchers.
 
-To maintain the reliability and predictability of this mechanism, only authorized validator root addresses are permitted to trigger the cron functions.
+To maintain the reliability and predictability of this mechanism, only authorized validator root addresses are permitted to trigger the relevant functions.
 
 Each call to `cron()` emits one or more `Cron` events based on the divisibility of the provided block number. This forms a pyramid of timing signals, growing less frequent as the interval increases. Each event includes a single parameter: `number`, representing the current block number.
 
