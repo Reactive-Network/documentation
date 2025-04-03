@@ -6,6 +6,8 @@ slug: /reactive-library
 hide_title: true
 ---
 
+import CronTable from "../../src/components/cron-table";
+
 ![Reactive Library](./img/reactive-lib.jpg)
 
 ## Overview
@@ -313,10 +315,4 @@ To maintain the reliability and predictability of this mechanism, only authorize
 
 Each call to `cron()` emits one or more `Cron` events based on the divisibility of the provided block number. This forms a pyramid of timing signals, growing less frequent as the interval increases. Each event includes a single parameter: `number`, representing the current block number.
 
-| Event       | Interval            | Approx. Time     | Description                      |
-|-------------|---------------------|------------------|----------------------------------|
-| `Cron1`     | Every block         | ~7 seconds       | Base signal, always emitted      |
-| `Cron10`    | Every 10 blocks     | ~1 minute        | For short-term cycles or retries |
-| `Cron100`   | Every 100 blocks    | ~12 minutes      | For medium-frequency tasks       |
-| `Cron1000`  | Every 1000 blocks   | ~2 hours         | For more costly operations       |
-| `Cron10000` | Every 10,000 blocks | ~28 hours        | For heavy or rare routines       |
+<CronTable />
