@@ -42,13 +42,13 @@ RNK transactions operate the same way as standard EVM transactions.
 All RVM transactions must be paid in REACT by transferring funds to a specific reactive contract. A direct payment can be made as follows:
 
 ```bash
-cast send $CONTRACT_ADDR --rpc-url $REACTIVE_RPC --private-key $REACTIVE_PRIVATE_KEY --value 0.1ether
+cast send --legacy $CONTRACT_ADDR --rpc-url $REACTIVE_RPC --private-key $REACTIVE_PRIVATE_KEY --value 0.1ether
 ```
 
 After funding the contract, you must settle any outstanding debt using the `coverDebt()` method:
 
 ```bash
-cast send --rpc-url $REACTIVE_RPC --private-key $REACTIVE_PRIVATE_KEY $CONTRACT_ADDR "coverDebt()"
+cast send --legacy --rpc-url $REACTIVE_RPC --private-key $REACTIVE_PRIVATE_KEY $CONTRACT_ADDR "coverDebt()"
 ```
 
 :::info[Contract Status]
@@ -60,11 +60,11 @@ The contract's status is available on [Reactive Scan](https://kopli.reactscan.ne
 The `depositTo()` method allows funding through the system contract. The transaction fee is covered by the sender (EOA), and the system contract automatically settles any debt, eliminating the need to call coverDebt().
 
 ```bash
-cast send --rpc-url $REACTIVE_RPC --private-key $REACTIVE_PRIVATE_KEY $SYSTEM_CONTRACT_ADDR "depositTo(address)" $CONTRACT_ADDR --value 0.1ether
+cast send --legacy --rpc-url $REACTIVE_RPC --private-key $REACTIVE_PRIVATE_KEY $SYSTEM_CONTRACT_ADDR "depositTo(address)" $CONTRACT_ADDR --value 0.1ether
 ```
 
 :::info[System Contract]
-On the Reactive Network, the system contract and callback proxy share the same address: `0x0000000000000000000000000000000000FFFFFF`.
+On the Reactive Network, the system contract and callback proxy share the same address: `0x0000000000000000000000000000000000fffFfF`.
 :::
 
 ## Callback Pricing
@@ -123,7 +123,7 @@ Implementing the `pay()` method or inheriting from `AbstractPayer` enables autom
 To retrieve the current balance of the specified contract in REACT, run the following command:
 
 ```bash
-cast balance $CONTRACT_ADDR --rpc-url $REACTIVE_RPC
+cast balance --legacy $CONTRACT_ADDR --rpc-url $REACTIVE_RPC
 ```
 
 ### Contract Debt
@@ -131,7 +131,7 @@ cast balance $CONTRACT_ADDR --rpc-url $REACTIVE_RPC
 To query the debt of the specified contract as recorded by the system contract, run the following command:
 
 ```bash
-cast call $SYSTEM_CONTRACT_ADDR "debts(address)" $CONTRACT_ADDR --rpc-url $REACTIVE_RPC
+cast call --legacy $SYSTEM_CONTRACT_ADDR "debts(address)" $CONTRACT_ADDR --rpc-url $REACTIVE_RPC
 ```
 
 ### Contract Reserves
@@ -139,5 +139,5 @@ cast call $SYSTEM_CONTRACT_ADDR "debts(address)" $CONTRACT_ADDR --rpc-url $REACT
 To retrieve the reserve amount (decimal) of the specified contract held by the system contract, run the following command:
 
 ```bash
-cast call $SYSTEM_CONTRACT_ADDR "reserves(address)" $CONTRACT_ADDR --rpc-url $REACTIVE_RPC | xargs printf "%d\n"
+cast call --legacy $SYSTEM_CONTRACT_ADDR "reserves(address)" $CONTRACT_ADDR --rpc-url $REACTIVE_RPC | xargs printf "%d\n"
 ```
