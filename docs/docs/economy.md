@@ -123,7 +123,7 @@ Implementing the `pay()` method or inheriting from `AbstractPayer` enables autom
 To retrieve the current balance of the specified contract in REACT, run the following command:
 
 ```bash
-cast balance --legacy $CONTRACT_ADDR --rpc-url $REACTIVE_RPC
+cast balance $CONTRACT_ADDR --rpc-url $REACTIVE_RPC
 ```
 
 ### Contract Debt
