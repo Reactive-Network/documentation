@@ -53,7 +53,7 @@ ___
 You can also verify the contract during deployment by appending the relevant flags to `forge create`. The following command submits your contract source to Sourcify right after deployment:
 
 ```bash
-forge create --verifier sourcify --verifier-url https://sourcify.rnk.dev/ --chain-id $CHAIN_ID --private-key $PRIVATE_KEY $PATH
+forge create --verify --verifier sourcify --verifier-url https://sourcify.rnk.dev/ --chain-id $CHAIN_ID --private-key $PRIVATE_KEY $PATH
 ```
 
 **Replace:**
