@@ -32,14 +32,20 @@ In [ReactVM](./reactvm.md), RSCs can’t access external systems directly. They 
 
 ## Contract Verification
 
-Contracts can be verified either manually or automatically during deployment with the Sourcify endpoint. Sourcify is a decentralized verification service that stores and verifies source code for smart contracts. It allows anyone to match deployed bytecode with human-readable source code, making smart contracts auditable and transparent.
+Contracts can be verified either after or during deployment with the Sourcify endpoint. Sourcify is a decentralized verification service that stores and verifies source code for smart contracts. It allows anyone to match deployed bytecode with human-readable source code, making smart contracts auditable and transparent.
 
 **Reactive Sourcify Endpoint**: https://sourcify.rnk.dev/
 
-For manual verification, run the following command:
+### Post-Deployment Verification
+
+For contract verification after deployment, run the following command:
 
 ```bash
-forge verify-contract --verifier sourcify --verifier-url https://sourcify.rnk.dev/ --chain-id $CHAIN_ID $CONTRACT_ADDR $CONTRACT_NAME
+forge verify-contract \
+--verifier sourcify \
+--verifier-url https://sourcify.rnk.dev/ \
+--chain-id $CHAIN_ID \ 
+$CONTRACT_ADDR $CONTRACT_NAME
 ```
 
 **Replace:**
@@ -48,12 +54,18 @@ forge verify-contract --verifier sourcify --verifier-url https://sourcify.rnk.de
 - `$CONTRACT_ADDR` with your deployed contract’s address
 - `$CONTRACT_NAME` with the name of the contract (e.g., `MyContract`)
 
-___
+### Verify on Deployment
 
 You can also verify the contract during deployment by appending the relevant flags to `forge create`. The following command submits your contract source to Sourcify right after deployment:
 
 ```bash
-forge create --verify --verifier sourcify --verifier-url https://sourcify.rnk.dev/ --chain-id $CHAIN_ID --private-key $PRIVATE_KEY $PATH
+forge create \
+--verifier sourcify \
+--verifier-url https://sourcify.rnk.dev/ \
+--verify \
+--chain-id $CHAIN_ID \
+--private-key $PRIVATE_KEY \
+$PATH
 ```
 
 **Replace:**
