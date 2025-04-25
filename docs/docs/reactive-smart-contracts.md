@@ -12,22 +12,78 @@ hide_title: true
 
 Reactive smart contracts (RSCs) operate on a standard Ethereum Virtual Machine (EVM) and can be written in any EVM-compatible language, with Application Binary Interfaces (ABIs) particularly customized for Solidity. Their unique capabilities stem from reactive nodes and a specialized pre-deployed system contract.
 
-## Distinctive Features
+## Key Features
 
-RSCs autonomously monitor blockchains for specific events and execute predefined actions. This reactivity sets them apart from traditional smart contracts, which are passive and require direct transactions initiated by Externally Owned Accounts (EOAs). Another key feature is the Inversion of Control (IoC), where RSCs autonomously decide when to execute based on predefined events, contrasting with the direct control model of traditional smart contracts.
+Reactive Smart Contracts (RSCs) monitor blockchains for specific events and respond automatically, unlike traditional contracts that rely on EOAs to trigger actions. This reactivity and their use of Inversion of Control (IoC) — where contracts decide when to act — set them apart.
 
-RSCs first specify the blockchains, contracts, and events they will monitor. Upon detecting an event of interest, they execute predefined logic, update their state, and run transactions trustlessly within the Reactive Network.
+RSCs define which blockchains, contracts, and events to watch. When a relevant event occurs, they execute logic, update state, and perform trustless transactions within the Reactive Network.
 
-## Deployment Nuances
+### Deployment
 
-Reactive contracts are deployed simultaneously to the main reactive network and a private [ReactVM](./reactvm.md). The main network copy is accessible by EOAs and can interact with the system contract to manage subscriptions. The ReactVM copy processes incoming events from origin chain contracts but can't be interacted with by the EOA's copy.
+RSCs deploy to both the main Reactive Network and a private [ReactVM](./reactvm.md). The main copy interacts with EOAs and manages subscriptions via the system contract. The ReactVM copy handles event processing but is not accessible to EOAs.
 
-## State and Interaction
+### State and Separation
 
-These two contract copies don't share state and can't interact directly. Since both copies use the same bytecode, it is recommended to identify the deployment target in the constructor and guard methods accordingly. You can determine if the contract is being deployed to ReactVM by interacting with the system contract; calls will revert if it is not present in ReactVMs. Refer to [reactive demos](./demos.md) for examples.
+The two copies are isolated and don’t share state. Since they use the same bytecode, use constructor flags or checks to distinguish the environment. You can detect if a contract is on ReactVM by calling the system contract — calls will revert outside ReactVMs. See [examples](./demos.md) for details.
 
-## Capabilities within ReactVM
+### ReactVM Limitations
 
-Reactive contracts running in the [ReactVM](./reactvm.md) have limited capabilities for interaction with anything outside their VM. They can only passively receive log records from the reactive network and initiate calls to destination chain contracts.
+In [ReactVM](./reactvm.md), RSCs can’t access external systems directly. They receive logs from the Reactive Network and can call destination chain contracts but nothing else.
+
+## Contract Verification
+
+Contracts can be verified either manually or automatically during deployment with the Sourcify endpoint. Sourcify is a decentralized verification service that stores and verifies source code for smart contracts. It allows anyone to match deployed bytecode with human-readable source code, making smart contracts auditable and transparent.
+
+**Reactive Sourcify Endpoint**: https://sourcify.rnk.dev/
+
+For manual verification, run the following command:
+
+```bash
+forge verify-contract --verifier sourcify --verifier-url https://sourcify.rnk.dev/ --chain-id $CHAIN_ID $CONTRACT_ADDR $CONTRACT_NAME
+```
+
+**Replace:**
+
+- `$CHAIN_ID` with `1597` for Reactive Mainnet and `5318008` for Kopli Testnet
+- `$CONTRACT_ADDR` with your deployed contract’s address
+- `$CONTRACT_NAME` with the name of the contract (e.g., `MyContract`)
+
+___
+
+You can also verify the contract during deployment by appending the relevant flags to `forge create`. The following command submits your contract source to Sourcify right after deployment:
+
+```bash
+forge create --verifier sourcify --verifier-url https://sourcify.rnk.dev/ --chain-id $CHAIN_ID --private-key $PRIVATE_KEY $PATH
+```
+
+**Replace:**
+
+- `$CHAIN_ID` with `1597` for Reactive Mainnet and `5318008` for Kopli Testnet
+- `$PATH` with something like `src/MyContract.sol:MyContract`
+- `$PRIVATE_KEY` with your signer’s private key
+
+___
+
+**Reactive Block Explorers:** [Mainnet](https://reactscan.net/) and [Kopli Testnet](https://kopli.reactscan.net/).
+
+After verification, go to the relevant **Reactscan.** While in your RVM, navigate to **Contracts** and click the required contract address.
+
+![Image a](./img/verify-a.png)
+
+Open the “Contract” tab.
+
+![Image b](./img/verify-b.png)
+
+If successful, you’ll see the following:
+
+```json
+Contract Address: 0xc3e185561D2a8b04F0Fcd104A562f460D6cC503c
+Status: VERIFIED (EXACT MATCH)
+Compiler: 0.8.28
+```
+
+![Image c](./img/verify-c.png)
+
+The source code will be publicly viewable, with full syntax highlighting and structure, helping others understand and trust the contract logic.
 
 [More on Reactive Smart Contracts →](../education/module-1/reactive-smart-contracts.md)
