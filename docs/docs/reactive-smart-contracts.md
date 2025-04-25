@@ -83,11 +83,11 @@ forge create \
   --rpc-url $REACTIVE_RPC_URL \
   --private-key $REACTIVE_PRIVATE_KEY \
   --chain-id $REACTIVE_CHAIN_ID \
-  src/demos/.../MyContract.sol:MyContract \
   --value 0.01ether \
   --verify \
   --verifier sourcify \
   --verifier-url https://sourcify.rnk.dev/ \
+  src/.../MyContract.sol:MyContract \
   --constructor-args \
     $ARGUMENT_1 \
     $ARGUMENT_2 \
