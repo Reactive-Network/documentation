@@ -36,7 +36,7 @@ Contracts can be verified either after or during deployment with the Sourcify en
 
 **Reactive Sourcify Endpoint**: https://sourcify.rnk.dev/
 
-### Post-Deployment Verification
+### Verify After Deployment
 
 For contract verification after deployment, run the following command:
 
@@ -74,7 +74,7 @@ $PATH
 - `$PATH` with something like `src/MyContract.sol:MyContract`
 - `$PRIVATE_KEY` with your signer’s private key
 
-___
+### Verified Contracts on Reactscan
 
 **Reactive Block Explorers:** [Mainnet](https://reactscan.net/) and [Kopli Testnet](https://kopli.reactscan.net/).
 
