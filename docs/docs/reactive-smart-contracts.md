@@ -44,7 +44,7 @@ For contract verification after deployment, run the following command:
 forge verify-contract \
 --verifier sourcify \
 --verifier-url https://sourcify.rnk.dev/ \
---chain-id $CHAIN_ID \ 
+--chain-id $CHAIN_ID \
 $CONTRACT_ADDR $CONTRACT_NAME
 ```
 
@@ -73,6 +73,27 @@ $PATH
 - `$CHAIN_ID` with `1597` for Reactive Mainnet and `5318008` for Kopli Testnet
 - `$PATH` with something like `src/MyContract.sol:MyContract`
 - `$PRIVATE_KEY` with your signer’s private key
+
+An example of verifying on deployment could look like so: 
+
+```bash
+forge create \
+  --legacy \
+  --broadcast \
+  --rpc-url $REACTIVE_RPC_URL \
+  --private-key $REACTIVE_PRIVATE_KEY \
+  --chain-id $REACTIVE_CHAIN_ID \
+  --value 0.01ether \
+  --verify \
+  --verifier sourcify \
+  --verifier-url https://sourcify.rnk.dev/ \
+  src/.../MyContract.sol:MyContract \
+  --constructor-args \
+    $ARGUMENT_1 \
+    $ARGUMENT_2 \
+    $ARGUMENT_3 \
+    # ...add more as needed
+```
 
 ### Verified Contracts on Reactscan
 
