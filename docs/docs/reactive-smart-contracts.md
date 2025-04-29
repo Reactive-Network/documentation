@@ -95,6 +95,14 @@ forge create \
     # ...add more as needed
 ```
 
+:::warning[Broadcast Error]
+If you encounter the error described below, it means your Foundry version (or local setup) does not expect the `--broadcast flag` for `forge create`. Simply remove `--broadcast` from your command and re-run it.
+
+```go
+error: unexpected argument '--broadcast' found
+```
+:::
+
 ### Verified Contracts on Reactscan
 
 **Reactive Block Explorers:** [Mainnet](https://reactscan.net/) and [Kopli Testnet](https://kopli.reactscan.net/).
