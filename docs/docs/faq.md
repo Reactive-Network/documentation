@@ -20,7 +20,7 @@ Existing cross-chain relayers often need to be integrated into your infrastructu
 
 **What is the Reactive Network physically?**
 
-The Reactive Network is a fork of Geth, compatible with the Ethereum Virtual Machine, and operates on a Proof of Stake protocol using Prism. It generates blocks approximately every 3 seconds. A Reactive Network node subscribes to other ecosystems' nodes via WebSocket and monitors the `newheads` event. When triggered, the node obtains transaction receipts, searches for subscribers within the Reactive Network, and propagates event logs to their reactVMs. The state of the Reactive Network is determined by the collective states of reactVMs and their connections to external blockchains.
+The Reactive Network is a fork of Geth, compatible with the Ethereum Virtual Machine, and operates on a Proof of Stake protocol using Prism. It generates blocks approximately every 7 seconds. A Reactive Network node subscribes to other ecosystems' nodes via WebSocket and monitors the `newheads` event. When triggered, the node obtains transaction receipts, searches for subscribers within the Reactive Network, and propagates event logs to their reactVMs. The state of the Reactive Network is determined by the collective states of reactVMs and their connections to external blockchains.
 
 **How is the Reactive Network different from Geth?**
 
