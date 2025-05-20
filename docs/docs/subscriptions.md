@@ -16,45 +16,50 @@ This section explains how to configure and manage subscriptions in a reactive co
 
 In a reactive contract, subscriptions are established by invoking the `subscribe()` method of the Reactive Network's [system contract](./economy). This method is typically called in the contract's `constructor()` or dynamically via a callback (see [Dynamic Subscriptions](./subscriptions.md#dynamic-subscriptions)).
 
-Since deployments occur both on the Reactive Network and in the deployer's private ReactVM, where the system contract is not present, the reactive contract must handle potential reverts. [IReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol), [AbstractReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractReactive.sol), and [ISystemContract](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/ISystemContract.sol) should be implemented. Here's an example of subscription in the constructor, taken from the [Basic Demo reactive contract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoReactiveContract.sol).
+Since deployments occur both on the Reactive Network and in the deployer's private ReactVM, where the system contract is not present, the reactive contract must handle potential reverts. [IReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol), [AbstractReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractReactive.sol), and [ISystemContract](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/ISystemContract.sol) should be implemented. Here's a subscription example in the constructor, taken from the [Basic Demo reactive contract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoReactiveContract.sol).
 
 ```solidity
-// State specific to reactive network instance of the contract
-address private _callback;
+uint256 public originChainId;
+uint256 public destinationChainId;
+uint64 private constant GAS_LIMIT = 1000000;
 
-// State specific to ReactVM instance of the contract
-uint256 public counter;
+address private callback;
 
 constructor(
-        address _service,
-        address _contract,
-        uint256 topic_0,
-        address callback
-    ) payable {
-        service = ISystemContract(payable(_service));
-        if (!vm) {
-            service.subscribe(
-                CHAIN_ID,
-                _contract,
-                topic_0,
-                REACTIVE_IGNORE,
-                REACTIVE_IGNORE,
-                REACTIVE_IGNORE
-            );
-        }
-        _callback = callback;
+    address _service,
+    uint256 _originChainId,
+    uint256 _destinationChainId,
+    address _contract,
+    uint256 _topic_0,
+    address _callback
+) payable {
+    service = ISystemContract(payable(_service));
+    originChainId = _originChainId;
+    destinationChainId = _destinationChainId;
+    callback = _callback;
+
+    if (!vm) {
+        service.subscribe(
+            originChainId,
+            _contract,
+            _topic_0,
+            REACTIVE_IGNORE,
+            REACTIVE_IGNORE,
+            REACTIVE_IGNORE
+        );
     }
+}
 ```
 
 The Reactive Network uses the subscription system to link various `uint256` fields to specific events. Subscribers can then filter events based on exact matches of these fields.
 
 :::info[Filtering Criteria]
-The Reactive Network provides filtering criteria based on the originating contract's chain ID, address, and all four topics. These criteria may evolve in the future.
+The Reactive Network provides filtering criteria based on the originating contract's chain ID, address, and all four topics.
 :::
 
-### Using REACTIVE_IGNORE and 0
+### Using 'REACTIVE_IGNORE' and '0'
 
-`REACTIVE_IGNORE` is an arbitrary predefined value (`0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad`) that allows you to subscribe to any topic.
+`REACTIVE_IGNORE` is an arbitrary predefined value `0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad` that allows you to subscribe to any topic.
 
 `address(0)` can be used for contract address and `uint256(0)` for chain ID to match any value. Ensure at least one criterion is specific to create a meaningful subscription.
 
@@ -81,22 +86,33 @@ service.subscribe(CHAIN_ID, 0x7E0987E5b3a30e3f2828572Bb659A548460a3003, 0x1c411e
 **Multiple Independent Subscriptions**: Call the `subscribe()` method multiple times in the constructor to create multiple independent subscriptions.
 
 ```solidity
+uint256 public originChainId;
+uint256 public destinationChainId;
+uint64 private constant GAS_LIMIT = 1000000;
+
+address private callback;
+
 constructor(
     address _service,
+    uint256 _originChainId,
+    uint256 _destinationChainId,
     address _contract1,
+    uint256 _topic0,
     address _contract2,
-    uint256 topic_0,
-    address callback
+    uint256 _topic1,
+    address _callback
 ) payable {
-    // Initialize the subscription service
-    SubscriptionService service = SubscriptionService(payable(_service));
+    service = ISystemContract(payable(_service));
+    originChainId = _originChainId;
+    destinationChainId = _destinationChainId;
+    callback = _callback;
 
     if (!vm) {
         // First subscription
         service.subscribe(
-            CHAIN_ID,
+            originChainId,
             _contract1,
-            REACTIVE_IGNORE,
+            _topic0,
             REACTIVE_IGNORE,
             REACTIVE_IGNORE,
             REACTIVE_IGNORE
@@ -104,20 +120,42 @@ constructor(
 
         // Second subscription
         service.subscribe(
-            CHAIN_ID,
-            address(0),
-            topic_0,
+            originChainId,
+            _contract2,
             REACTIVE_IGNORE,
+            _topic1,
             REACTIVE_IGNORE,
             REACTIVE_IGNORE
         );
-
-        // Add more subscriptions here as needed
     }
-
-    // Assign the callback
-    _callback = callback;
 }
+```
+
+### Unsubscribing via System Contract
+
+There may be situations where a reactive contract needs to stop listening to a particular topic — such as for revoking automation, optimizing gas usage, or replacing an outdated listener. To do this, you need to invoke the `unsubscribeContract()` function on the system contract by executing the command given below.
+
+First, export the `REACTIVE_IGNORE` constant, which is used as a wildcard value when you want to ignore certain topic parameters:
+
+```bash
+export REACTIVE_IGNORE=0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad
+```
+
+If you're only interested in unsubscribing from a contract with a specific `topic0` and don't care about the values of `topic1`, `topic2`, or `topic3`, use `REACTIVE_IGNORE` in those positions:
+
+```bash
+cast send --legacy \
+  --rpc-url $REACTIVE_RPC \
+  --private-key $REACTIVE_PRIVATE_KEY \
+  $SYSTEM_CONTRACT_ADDR \
+  "unsubscribeContract(address,uint256,address,uint256,uint256,uint256,uint256)" \
+  $REACTIVE_CONTRACT_ADDR \
+  $ORIGIN_CHAIN_ID \
+  $ORIGIN_CONTRACT \
+  $TOPIC_0 \
+  $REACTIVE_IGNORE \
+  $REACTIVE_IGNORE \
+  $REACTIVE_IGNORE
 ```
 
 ### Prohibited Subscriptions

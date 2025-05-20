@@ -34,7 +34,7 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
     "0x66d266cf051ed5070ca3b517c9001c3d6841b375cc75458daeed8bde47580632"
   ],
   "id": 1
-}'
+}' | jq
 ```
 
 #### Response
@@ -82,7 +82,7 @@ Returns an object with the following fields:
       "data": "0x0d152c2c00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000061...",
       "rData": "0x"
    }
-}
+} | jq
 ```
 
 ## rnk_getTransactionByNumber
@@ -107,7 +107,7 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
     "0x22"
   ],
   "id": 1
-}'
+}' | jq
 ```
 
 #### Response
@@ -180,7 +180,7 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
     "0x22"
   ],
   "id": 1
-}'
+}' | jq
 ```
 
 #### Response
@@ -236,7 +236,7 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
     "0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a"
   ],
   "id": 1
-}'
+}' | jq
 ```
 
 #### Response
@@ -277,7 +277,7 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
     "0x1"
   ],
   "id": 1
-}'
+}' | jq
 ```
 
 #### Response
@@ -350,7 +350,7 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
     "0x5142840e8007AB6E0315ffB4921F60A4d9A0d31e"
   ],
   "id": 1
-}'
+}' | jq
 ```
 
 #### Response
@@ -387,7 +387,7 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
   "method": "rnk_getStat",
   "params": [],
   "id": 1
-}'
+}' | jq
 ```
 
 #### Response
@@ -447,7 +447,7 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
   "method": "rnk_getVms",
   "params": [],
   "id": 1
-}'
+}' | jq
 ```
 
 #### Response
@@ -510,7 +510,7 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
   "method": "rnk_getVm",
   "params": ["0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a"],
   "id": 1
-}'
+}' | jq
 ```
 
 #### Response
@@ -551,14 +551,14 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
   "method": "rnk_getSubscribers",
   "params": ["0xA7D9AA89cbcd216900a04Cdc13eB5789D643176a"],
   "id": 1
-}'
+}' | jq
 ```
 
 #### Response
 
 Returns a list of RVM-related contract events with the following fields:
 
-- **uid** (`string`): The unique identifierof the subscription.
+- **uid** (`string`): The unique identifier of the subscription.
 - **chainId** (`uint32`): The blockchain ID of the subscribed contract.
 - **contract** (`string`): The address of the subscribed contract on the origin chain.
 - **topics** (`array`): An array of event topics (some may be `null` if not indexed).
@@ -637,7 +637,7 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
     "0x21"
     ],
   "id": 1
-}'
+}' | jq
 ```
 
 #### Response
@@ -680,7 +680,7 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
     "0x21"
   ],
   "id": 1
-}'
+}' | jq
 ```
 
 #### Response
@@ -730,7 +730,7 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
     "latest"
   ],
   "id": 1
-}'
+}' | jq
 ```
 
 #### Response
@@ -767,7 +767,7 @@ curl --location 'https://kopli-rpc.rnk.dev/' \
     98120
   ],
   "id": 1
-}'
+}' | jq
 ```
 
 #### Response
@@ -789,6 +789,67 @@ Returns an array of objects representing RVMs that were active in the given bloc
       "headTxNumber": "0x2b",
       "prevRnkBlockId": 98098,
       "txCount": 3
+    }
+  ]
+}
+```
+
+## rnk_getFilters
+
+Returns all the active log filters registered on the Reactive Network, along with their configurations and target contracts.
+
+#### Parameters
+
+This method does not require any input parameters.
+
+#### cURL
+
+```bash
+curl --location 'https://kopli-rpc.rnk.dev/' \
+--header 'Content-Type: application/json' \
+--data '{
+  "jsonrpc": "2.0",
+  "method": "rnk_getFilters",
+  "params": [],
+  "id": 1
+}' | jq
+```
+
+#### Response
+
+Returns an array of filter objects. Each filter object contains the following fields:
+
+- **uid** (`string`): The unique identifier for the filter.
+- **chainId** (`uint32`): The chain ID on which the filter is active.
+- **contract** (`string`): The address of the contract the filter is listening to.
+- **topics** (`array[string | null]`): An array of up to 4 log topics (from `topic_0` to `topic_3`) used for event filtering. Unused topics are null.
+- **configs** (`array[object]`): An array of configuration objects for reactive contracts and their associated ReactVMs.
+- **contract** (`string`): The reactive contract address.
+- **rvmId** (`string`): The ReactVM ID where the reactive contract resides.
+- **active** (`bool`): Indicates whether the subscription/filter is active.
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": [
+    {
+      "uid": "bccf4f2811eda52c0100f77d92b1ca61",
+      "chainId": 11155111,
+      "contract": "0x916f3182e439538333393c3d3b5816c377ec72ec",
+      "topics": [
+        "0x8cabf31d2b1b11ba52dbb302817a3c9c83e4b2a5194d35121ab1354d69f6a4cb",
+        null,
+        null,
+        null
+      ],
+      "configs": [
+        {
+          "contract": "0x6a86b52b6a1fe4a45745ef9e424639d8ecf20e71",
+          "rvmId": "0xc1d48a9173212567bd358e40c50bfe131a9fabf1",
+          "active": true
+        }
+      ]
     }
   ]
 }
