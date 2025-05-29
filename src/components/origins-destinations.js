@@ -32,14 +32,6 @@ const MainnetChainTable = () => {
                     <td><a href="https://chainlist.org/chain/56">Find on Chainlist</a></td>
                 </tr>
                 <tr>
-                    <td><a href="https://polygonscan.com/">Polygon PoS</a></td>
-                    <td>✅</td>
-                    <td>✅</td>
-                    <td>137</td>
-                    <td>0x42458259d5c85fB2bf117f197f1Fef8C3b7dCBfe</td>
-                    <td><a href="https://chainlist.org/chain/137">Find on Chainlist</a></td>
-                </tr>
-                <tr>
                     <td><a href="https://avascan.info/">Avalanche C-Chain</a></td>
                     <td>✅</td>
                     <td>✅</td>
