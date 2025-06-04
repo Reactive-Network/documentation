@@ -30,11 +30,15 @@ You'll also need three smart contracts, along with their abstract contracts and 
 
 Additionally, you'll need **kREACT** (testnet REACT for Reactive Kopli) to complete the demo. To receive **kREACT**, send SepETH to the **Reactive faucet contract** on Ethereum Sepolia:
 
-```bash
+```json
 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434
 ```
 
 The exchange rate is **1/5**, meaning you'll receive **5 REACT** for **1 SepETH** sent. To connect your MetaMask wallet to the **Reactive Kopli**, use the button below:
+
+:::info[Important]
+Do not send more than 10 SepETH per request, as doing so will cause you to lose the excess amount without receiving any additional REACT. The maximum that should be sent in a single transaction is 10 SepETH, which will yield 50 REACT.
+:::
 
 <KopliButton />
 
