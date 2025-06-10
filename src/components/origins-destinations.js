@@ -53,7 +53,7 @@ const MainnetChainTable = () => {
                     <td>➖</td>
                     <td>146</td>
                     <td>➖</td>
-                    <td>https://rpc.soniclabs.com</td>
+                    <td><a href="https://chainlist.org/chain/146">Find on Chainlist</a></td>
                 </tr>
                 <tr>
                     <td><a href="https://reactscan.net">Reactive Mainnet</a></td>
