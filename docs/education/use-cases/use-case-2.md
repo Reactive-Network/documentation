@@ -11,6 +11,32 @@ slug: use-case-2
 
 This article focuses on the [Approval Magic Demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/approval-magic), where a reactive contract listens for token approvals and automates token transfers using pre-approved assets. Traditional approval mechanisms often require manual steps, but this demo uses reactive contracts to automate approvals and transfers across multiple networks.
 
+## Magic Exchange Flow
+
+![Exchange](./img/magic-exchange.png)
+
+1. Validator calls `callback()` on `CallbackProxy`.
+2. `CallbackProxy` calls `onApproval()` on `ApprovalService`.
+3. `ApprovalService` calls `onApproval()` on `ApprovalEthExch`, which:
+    - Transfers tokens from the EOA signing the transaction.
+    - Sends ETH to the EOA signing the transaction, equivalent to the token amount.
+4. `ApprovalService` then calls `settle()` on `ApprovalEthExch`, which:
+    - Sends ETH to `ApprovalService` for gas.
+
+## Magic Swap Flow
+
+![Swap](./img/magic-swap.png)
+
+1. Validator calls `callback()` on `CallbackProxy`.
+2. `CallbackProxy` calls `onApproval()` on `ApprovalService`.
+3. `ApprovalService` calls `onApproval()` on `ApprovalMagicSwap`, which:
+    - Transfers approved tokens from the EOA signing the transaction.
+    - Approves Uniswap router.
+    - Swaps the tokens via Uniswap.
+    - Sends the output tokens back to the EOA signing the transaction.
+4. `ApprovalService` then calls `settle()` on `ApprovalMagicSwap`, which:
+    - Sends ETH to `ApprovalService` for gas.
+
 ## Contracts
 
 **Subscription-Based Approval Service**: The [ApprovalService](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/approval-magic/ApprovalService.sol) contract is responsible for subscription-based approvals. Users (or contracts) can subscribe by paying a fee, enabling them to receive and process approval callbacks that originate from token approvals. This service tracks subscribers, covers the gas cost of triggered callbacks, and emits `Subscribe`/`Unsubscribe` events. If the subscription conditions aren’t met or a contract fails to pay for its gas usage, the subscriber is automatically unsubscribed.
