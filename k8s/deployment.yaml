@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: $KUBERNETES_RESOURCE_NAME
+  namespace: $KUBERNETES_NAMESPACE
+spec:
+  selector:
+    matchLabels:
+      app: $KUBERNETES_RESOURCE_NAME
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: $KUBERNETES_RESOURCE_NAME
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: $KUBERNETES_RESOURCE_NAME
+          image: ghcr.io/reactive-network/$KUBERNETES_RESOURCE_NAME:$ENV-$COMMIT_SHORT_SHA
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          ports:
+            - containerPort: 3000

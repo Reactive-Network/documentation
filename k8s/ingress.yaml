@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: $KUBERNETES_RESOURCE_NAME
+  namespace: $KUBERNETES_NAMESPACE
+  annotations:
+    cert-manager.io/cluster-issuer: le-prq-public
+spec:
+  ingressClassName: $INGRESS_CLASS
+  tls:
+    - hosts:
+        - $INGRESS_DOMAIN
+      secretName: ${KUBERNETES_RESOURCE_NAME}-tls
+  rules:
+    - host: $INGRESS_DOMAIN
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: $KUBERNETES_RESOURCE_NAME
+                port:
+                  number: 80

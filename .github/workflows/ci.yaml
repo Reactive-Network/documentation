@@ -1,152 +1,93 @@
-name: Build
+name: "Docs - Build and Deploy"
+
 on:
-  push:
-    tags:        
-      - '**' 
-    branches:
-      - main
-  release:
-    types: [published]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  GITHUB_SHA: ${{ github.sha}}
 
 jobs:
-  docker-release:
-    name: Tagged Docker release to Google Artifact Registry
+  build-and-push-image:
     runs-on: self-hosted
-    #if: github.event_name == 'push' && startsWith(github.ref, 'main')
-
     permissions:
-      contents: "read"
-      id-token: "write"
-
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    outputs:
+      commit_hash: ${{ steps.commit-sha.outputs.commit_hash }}
     steps:
-      - id: checkout
-        name: Checkout
-        uses: actions/checkout@v2
-
-      - id: auth
-        name: Authenticate with Google Cloud
-        uses: google-github-actions/auth@v2
-        with:
-          token_format: access_token
-          workload_identity_provider: ${{ secrets.WORKFLOW_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.SERVICE_ACCOUNT }}
-          access_token_lifetime: 300s
-
-      - id: auth-registry
-        name: Login to Artifact Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ${{ secrets.GOOGLE_PROJECT_REGION}}-docker.pkg.dev
-          username: oauth2accesstoken
-          password: ${{ steps.auth.outputs.access_token }}
-
-      - id: get-tag
-        name: Get tag
-        run: echo REF_TAG=${GITHUB_REF#refs/*/} >> $GITHUB_OUTPUT
-  
-      - id: get-ref
-        name: Get short ref
-        run: echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Creating short sha env variable
+        id: commit-sha
+        run: echo "commit_hash=$GITHUB_SHA" >> $GITHUB_OUTPUT
       - name: Set up Buildx
         uses: docker/setup-buildx-action@v3
-
-      - id: docker-push-tagged
-        name: Tag Docker image and push to Google Artifact Registry
-        uses: docker/build-push-action@v6
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
         with:
-          push: true
-          build-args: |
-            GOOGLE_TAG=${{ secrets.GOOGLE_TAG }}
-            ALGOLIA_ID=${{ secrets.ALGOLIA_ID }}
-            ALGOLIA_KEY=${{ secrets.ALGOLIA_KEY }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            ${{ secrets.GOOGLE_PROJECT_REGION}}-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/reactive-network/documentation:${{ steps.get-tag.outputs.REF_TAG }}
-            ${{ secrets.GOOGLE_PROJECT_REGION}}-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/reactive-network/documentation:${{ steps.get-ref.outputs.SHA_SHORT }}
-            ${{ secrets.GOOGLE_PROJECT_REGION}}-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/reactive-network/documentation:latest
-
-  # deploy-staging:
-  #   name: "Deploy main branch to Staging"
-  #   runs-on: ubuntu-latest
-  #   needs: docker-release
-
-  #   permissions:
-  #     contents: "read"
-  #     id-token: "write"
-  #   if: github.ref == 'refs/heads/main'
-  #   steps:
-
-  #     - id: checkout
-  #       name: Checkout
-  #       uses: actions/checkout@v2
-  
-  #     - id: auth
-  #       uses: "google-github-actions/auth@v2"
-  #       with:
-  #         project_id: "${{ secrets.GOOGLE_PROJECT }}"
-  #         workload_identity_provider: ${{ secrets.WORKFLOW_IDENTITY_PROVIDER }}
-  #         service_account: ${{ secrets.SERVICE_ACCOUNT }}
-
-  #     - id: get-credentials
-  #       uses: "google-github-actions/get-gke-credentials@v2"
-  #       with:
-  #         cluster_name: "${{ secrets.PRODUCTION_K8S_CLUSTER }}"
-  #         location: "${{ secrets.GOOGLE_PROJECT_REGION}}"
-  #         namespace: ${{ secrets.DEPLOYMENT_NAMESPACE }}
-  
-  #     - id: get-tag
-  #       name: Get tag
-  #       run: echo REF_TAG=${GITHUB_REF#refs/*/} >> $GITHUB_OUTPUT
-
-  #     - id: get-ref
-  #       name: Get short ref
-  #       run: echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
-  #     - id: set-image
-  #       run: "kubectl -n ${{ secrets.DEPLOYMENT_NAMESPACE }} set image deployment/reactive-docs reactive-docs=${{ secrets.GOOGLE_PROJECT_REGION}}-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/reactive-network/documentation:${{ steps.get-ref.outputs.SHA_SHORT }}"
-
-  #     - id: wait-deployment
-  #       run: "kubectl -n ${{ secrets.DEPLOYMENT_NAMESPACE }} rollout status deployment reactive-docs"
-
-  deploy-production:
-    name: "Deploy release"
-    runs-on: ubuntu-latest
-    needs: docker-release
-
-    permissions:
-      contents: "read"
-      id-token: "write"
-    if: github.ref == 'refs/heads/main'
+            type=sha,enable=true,format=short,prefix=mainnet-
+            type=raw,value=latest
+      - name: Build and push Docker image
+        id: push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: Dockerfile
+          build-args: |
+            BUILDNUM=1
+          cache-from: type=gha
+          cache-to: type=gha,mode=max,ignore-error=true
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+  deploy:
+    needs: build-and-push-image
+    runs-on: self-hosted
+    environment:
+      name: mainnet
+      url: https://reactive.network
+    env:
+      KUBERNETES_RESOURCE_NAME: "reactive-network-dev-portal"
+      KUBERNETES_NAMESPACE: "mainnet"
+      INGRESS_DOMAIN: "dev.reactive.network"
+      INGRESS_CLASS: "traefik"
+      ENV: "mainnet"
+      COMMIT_SHA: ${{ needs.build-and-push-image.outputs.commit_hash }}
+    container:
+      image: ghcr.io/reactive-network/ci-image:deployer-v1
     steps:
-
-      - id: checkout
-        name: Checkout
-        uses: actions/checkout@v2
-
-      - id: auth
-        uses: "google-github-actions/auth@v2"
+      - name: Creating short sha env variable
+        id: short-sha
+        run: |
+          echo "COMMIT_SHORT_SHA=`echo ${COMMIT_SHA} | cut -c1-7`" >> $GITHUB_ENV
+          export COMMIT_SHORT_SHA=`echo ${COMMIT_SHA} | cut -c1-7`
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          project_id: "${{ secrets.GOOGLE_PROJECT }}"
-          workload_identity_provider: ${{ secrets.WORKFLOW_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.SERVICE_ACCOUNT }}
+          ref: ${{ env.COMMIT_SHA }}
 
-      - id: get-credentials
-        uses: "google-github-actions/get-gke-credentials@v2"
+      - name: Set the Kubernetes context
+        uses: azure/k8s-set-context@v4
         with:
-          cluster_name: "${{ secrets.PRODUCTION_K8S_CLUSTER }}"
-          location: "${{ secrets.GOOGLE_PROJECT_REGION}}"
-          namespace: ${{ secrets.DEPLOYMENT_NAMESPACE }}
+          method: service-account
+          k8s-url: https://109.235.247.124:6443
+          k8s-secret: ${{ secrets.PRQ_SA_KEY }}
 
-      - id: get-tag
-        name: Get tag
-        run: echo REF_TAG=${GITHUB_REF#refs/*/} >> $GITHUB_OUTPUT
-
-      - id: get-ref
-        name: Get short ref
-        run: echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
-      - id: set-image
-        run: "kubectl -n ${{ secrets.DEPLOYMENT_NAMESPACE }} set image deployment/reactive-docs reactive-docs=${{ secrets.GOOGLE_PROJECT_REGION}}-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/reactive-network/documentation:${{ steps.get-ref.outputs.SHA_SHORT }}"
-      
-      - id: wait-deployment
-        run: "kubectl -n ${{ secrets.DEPLOYMENT_NAMESPACE }} rollout status deployment reactive-docs"
+      - name: "Deploy"
+        run: |
+          for f in ./k8s/*.yaml; do envsubst -no-unset -no-empty -fail-fast < $f | sponge $f; done
+          kapp deploy -a ${{ env.KUBERNETES_RESOURCE_NAME }} -c -y -n ${{ env.KUBERNETES_NAMESPACE }} -f ./k8s/
+          kapp inspect -a ${{ env.KUBERNETES_RESOURCE_NAME }} -n ${{ env.KUBERNETES_NAMESPACE }} -t
