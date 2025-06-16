@@ -48,6 +48,9 @@ jobs:
           file: Dockerfile
           build-args: |
             BUILDNUM=1
+            GOOGLE_TAG=${{ secrets.GOOGLE_TAG }}
+            ALGOLIA_ID=${{ secrets.ALGOLIA_ID }}
+            ALGOLIA_KEY=${{ secrets.ALGOLIA_KEY }}
           cache-from: type=gha
           cache-to: type=gha,mode=max,ignore-error=true
           push: true
@@ -58,7 +61,7 @@ jobs:
     runs-on: self-hosted
     environment:
       name: mainnet
-      url: https://reactive.network
+      url: https://dev.reactive.network
     env:
       KUBERNETES_RESOURCE_NAME: "reactive-network-dev-portal"
       KUBERNETES_NAMESPACE: "mainnet"
