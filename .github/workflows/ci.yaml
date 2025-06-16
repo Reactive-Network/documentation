@@ -63,7 +63,7 @@ jobs:
       name: mainnet
       url: https://dev.reactive.network
     env:
-      KUBERNETES_RESOURCE_NAME: "reactive-network-dev-portal"
+      KUBERNETES_RESOURCE_NAME: "documentation"
       KUBERNETES_NAMESPACE: "mainnet"
       INGRESS_DOMAIN: "dev.reactive.network"
       INGRESS_CLASS: "traefik"
