@@ -1,6 +1,63 @@
 import React from 'react';
 
 const TestnetChainTable = () => {
+    const data = [
+        {
+            chain: 'Ethereum Sepolia',
+            chainId: 11155111,
+            link: 'https://sepolia.etherscan.io/',
+            callbackAddress: '0xc9f36411C9897e7F959D99ffca2a0Ba7ee0D7bDA',
+            rpcUrl: 'https://chainlist.org/chain/11155111',
+            origin: true,
+            destination: true
+        },
+        {
+            chain: 'Binance Smart Chain',
+            chainId: 97,
+            link: 'https://testnet.bscscan.com/',
+            callbackAddress: '',
+            rpcUrl: 'https://chainlist.org/chain/97',
+            origin: true,
+            destination: false
+        },
+        {
+            chain: 'Polygon Amoy',
+            chainId: 80002,
+            link: 'https://www.oklink.com/amoy',
+            callbackAddress: '',
+            rpcUrl: 'https://chainlist.org/chain/80002',
+            origin: true,
+            destination: false
+        },
+        {
+            chain: 'Avalanche Fuji',
+            chainId: 43113,
+            link: 'https://43113.testnet.routescan.io/',
+            callbackAddress: '',
+            rpcUrl: 'https://chainlist.org/chain/43113',
+            origin: true,
+            destination: false
+        },
+        {
+            chain: 'Base Sepolia',
+            chainId: 84532,
+            link: 'https://sepolia.basescan.org/',
+            callbackAddress: '',
+            rpcUrl: 'https://chainlist.org/chain/84532',
+            origin: true,
+            destination: false
+        },
+        {
+            chain: 'Reactive Kopli',
+            chainId: 5318008,
+            link: 'https://kopli.reactscan.net',
+            callbackAddress: '0x0000000000000000000000000000000000fffFfF',
+            rpcUrl: 'https://kopli-rpc.rnk.dev/',
+            origin: true,
+            destination: true
+        }
+    ];
+
     return (
         <div className="tableContainer">
             <table className="table">
@@ -15,54 +72,28 @@ const TestnetChainTable = () => {
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td><a href="https://sepolia.etherscan.io/">Ethereum Sepolia</a></td>
-                    <td>✅</td>
-                    <td>✅</td>
-                    <td>11155111</td>
-                    <td>0xc9f36411C9897e7F959D99ffca2a0Ba7ee0D7bDA</td>
-                    <td><a href="https://chainlist.org/chain/11155111">Find on Chainlist</a></td>
-                </tr>
-                <tr>
-                    <td><a href="https://testnet.bscscan.com/">Binance Smart Chain</a></td>
-                    <td>✅</td>
-                    <td>➖</td>
-                    <td>97</td>
-                    <td></td>
-                    <td><a href="https://chainlist.org/chain/97">Find on Chainlist</a></td>
-                </tr>
-                <tr>
-                    <td><a href="https://www.oklink.com/amoy">Polygon Amoy</a></td>
-                    <td>✅</td>
-                    <td>➖</td>
-                    <td>80002</td>
-                    <td></td>
-                    <td><a href="https://chainlist.org/chain/80002">Find on Chainlist</a></td>
-                </tr>
-                <tr>
-                    <td><a href="https://43113.testnet.routescan.io/">Avalanche Fuji</a></td>
-                    <td>✅</td>
-                    <td>➖</td>
-                    <td>43113</td>
-                    <td></td>
-                    <td><a href="https://chainlist.org/chain/43113">Find on Chainlist</a></td>
-                </tr>
-                <tr>
-                    <td><a href="https://sepolia.basescan.org/">Base Sepolia</a></td>
-                    <td>✅</td>
-                    <td>➖</td>
-                    <td>84532</td>
-                    <td></td>
-                    <td><a href="https://chainlist.org/chain/84532">Find on Chainlist</a></td>
-                </tr>
-                <tr>
-                    <td><a href="https://kopli.reactscan.net">Reactive Kopli</a></td>
-                    <td>✅</td>
-                    <td>✅</td>
-                    <td>5318008</td>
-                    <td>0x0000000000000000000000000000000000fffFfF</td>
-                    <td>https://kopli-rpc.rnk.dev/</td>
-                </tr>
+                {data.map((row, idx) => (
+                    <tr key={idx}>
+                        <td>
+                            <a href={row.link} target="_blank" rel="noopener noreferrer">
+                                {row.chain}
+                            </a>
+                        </td>
+                        <td>{row.origin ? '✅' : '➖'}</td>
+                        <td>{row.destination ? '✅' : '➖'}</td>
+                        <td>{row.chainId}</td>
+                        <td>{row.callbackAddress || '➖'}</td>
+                        <td>
+                            {row.rpcUrl.includes('chainlist.org') ? (
+                                <a href={row.rpcUrl} target="_blank" rel="noopener noreferrer">
+                                    Find on Chainlist
+                                </a>
+                            ) : (
+                                <code>{row.rpcUrl}</code>
+                            )}
+                        </td>
+                    </tr>
+                ))}
                 </tbody>
             </table>
         </div>
