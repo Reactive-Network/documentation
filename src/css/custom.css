@@ -283,12 +283,24 @@ td {
     color: var(--ifm-color-content);
 }
 
-td:nth-child(5),
+td:nth-child(5) {
+    overflow-wrap: anywhere;
+    font-family: monospace;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 td:nth-child(6) {
     overflow-wrap: anywhere;
     font-family: monospace;
-    text-align: left;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
 
 tr {
     border: 1px solid transparent;
@@ -309,9 +321,9 @@ a:hover {
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
-    td:nth-child(1), /* Chain Name */
-    td:nth-child(5), /* Callback Proxy Address */
-    td:nth-child(6) { /* Recommended RPC URL */
+    td:nth-child(1),
+    td:nth-child(5),
+    td:nth-child(6) {
         white-space: nowrap;
     }
 }

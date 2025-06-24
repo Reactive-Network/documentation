@@ -22,6 +22,10 @@ Origins and destinations don't have to be the same. Reactive contracts can be co
 
 The Callback Proxy address ensures the validity of a callback transaction by enforcing two key conditions. First, it checks that the callback is genuinely initiated by the Reactive Network by verifying that the sender address matches the Callback Proxy address. Then, it confirms the legitimacy of the callback’s origin by checking the RVM ID embedded in the transaction payload, which should correspond to the intended reactive contract.
 
+:::info[Hyperlane]
+Some networks are currently unable to act as destination chains because the callback proxy contract has not yet been deployed on them. In such cases, it is recommended to use [Hyperlane](origins-and-destinations#hyperlane-mailbox) as the cross-chain message relayer.
+:::
+
 ## Mainnet Chains
 
 <MainnetChainTable />
