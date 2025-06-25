@@ -18,6 +18,8 @@ Reactive contracts receive event logs from various chains, executing Solidity lo
 
 [Origins & Destinations →](./origins-and-destinations.mdx) Check on Reactive's origins and destinations, along with their Callback Proxy addresses.
 
+[Hyperlane →](./hyperlane.mdx) Explore an alternative transport system for callbacks like Hyperlane.
+
 [Reactive Contracts →](./reactive-smart-contracts.md) Understand the core concept of reactive contracts.
 
 [ReactVM →](./reactvm.md) Learn about ReactVM and its purpose.
