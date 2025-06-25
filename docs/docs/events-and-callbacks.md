@@ -1,6 +1,6 @@
 ---
 title: Events & Callbacks
-sidebar_position: 8
+sidebar_position: 9
 description: Explore how EVM events and callbacks operate within the Reactive Network.
 slug: /events-&-callbacks
 hide_title: true

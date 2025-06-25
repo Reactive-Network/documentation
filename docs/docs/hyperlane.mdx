@@ -1,0 +1,28 @@
+---
+title: Hyperlane
+sidebar_position: 3
+description: Discover Hyperlane mailboxes as alternative transport to callback proxy contracts for providing cross-chain communication.
+slug: /hyperlane
+hide_title: true
+---
+
+import MailboxAddressTable from "../../src/components/hyperlane-mailbox-table";
+import TransportComparisonTable from "../../src/components/hyperlane-comparison";
+
+![Hyperlane Image](./img/hyperlane.jpg)
+
+## Overview
+
+An alternative to Reactive transport can be Hyperlane Mailboxes. Hyperlane is a modular interoperability protocol for cross-chain messaging. Its core component, the Mailbox contract, is deployed on each supported blockchain. The Mailbox acts as both the entry and exit point for cross-chain messages, allowing smart contracts to transmit and receive data across networks.
+
+## Hyperlane/Reactive Comparison
+
+<TransportComparisonTable />
+
+## Hyperlane Mailboxes
+
+:::info[Hyperlane Demo]
+See our [Hyperlane Demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/hyperlane) to understand how to deploy contracts and send messages with Hyperlane mailboxes.
+:::
+
+<MailboxAddressTable />
