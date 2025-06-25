@@ -32,13 +32,21 @@ const TransportComparisonTable = () => {
     };
 
     return (
-        <div className="tableContainer">
-            <table className="table">
+        <div className="tableContainer" style={{ overflowX: 'auto' }}>
+            <table
+                className="table"
+                style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'collapse' }}
+            >
+                <colgroup>
+                    <col style={{ width: '20%' }} />
+                    <col style={{ width: '40%' }} />
+                    <col style={{ width: '40%' }} />
+                </colgroup>
                 <thead>
                 <tr>
                     <th>Category</th>
-                    <th>Hyperlane Transport</th>
-                    <th>Reactive Transport</th>
+                    <th>Hyperlane</th>
+                    <th>Reactive</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -48,13 +56,9 @@ const TransportComparisonTable = () => {
                             {idx === 0 ? (
                                 <td
                                     rowSpan={Math.max(hyperlane[category].length, reactive[category].length)}
-                                    style={{
-                                        fontWeight: 'bold',
-                                        verticalAlign: 'top',
-                                        pointerEvents: 'none',
-                                    }}
+                                    className="category-cell-wrapper"
                                 >
-                                    {category}
+                                    <div className="category-cell">{category}</div>
                                 </td>
                             ) : null}
                             <td>{hyperlane[category][idx] || ''}</td>
