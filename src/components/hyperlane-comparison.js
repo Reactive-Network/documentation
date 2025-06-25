@@ -52,7 +52,6 @@ const TransportComparisonTable = () => {
                                         fontWeight: 'bold',
                                         verticalAlign: 'top',
                                         pointerEvents: 'none',
-                                        backgroundColor: 'white', // or match your table's background
                                     }}
                                 >
                                     {category}
