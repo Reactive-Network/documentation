@@ -8,7 +8,6 @@ hide_title: true
 
 import MainnetChainTable from "../../src/components/origins-destinations";
 import TestnetChainTable from "../../src/components/origins-destinations-testnet";
-import MailboxAddressTable from "../../src/components/hyperlane-mailbox-table";
 
 ![Origins & Destinations Image](./img/origins-and-destinations.jpg)
 
@@ -23,7 +22,7 @@ Origins and destinations don't have to be the same. Reactive contracts can be co
 The Callback Proxy address ensures the validity of a callback transaction by enforcing two key conditions. First, it checks that the callback is genuinely initiated by the Reactive Network by verifying that the sender address matches the Callback Proxy address. Then, it confirms the legitimacy of the callback’s origin by checking the RVM ID embedded in the transaction payload, which should correspond to the intended reactive contract.
 
 :::info[Hyperlane]
-Some networks are currently unable to act as destination chains because the callback proxy contract has not yet been deployed on them. In such cases, it is recommended to use [Hyperlane](origins-and-destinations#hyperlane-mailbox) as the cross-chain message relayer.
+Some networks are currently unable to act as destination chains because the callback proxy contract has not yet been deployed on them. In such cases, it is recommended to use [Hyperlane](./hyperlane) as the cross-chain message relayer.
 :::
 
 ## Mainnet Chains
@@ -33,14 +32,6 @@ Some networks are currently unable to act as destination chains because the call
 ## Testnet Chains
 
 <TestnetChainTable />
-
-## Hyperlane Mailbox
-
-In addition to using callback senders, you can integrate Hyperlane Mailboxes. A Hyperlane Mailbox is a smart contract designed to send and receive verified cross-chain messages between blockchains, providing a secure and standardized mechanism for interchain communication.
-
-See our [Hyperlane Demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/hyperlane) to understand how to deploy contracts and send messages with Hyperlane mailboxes.
-
-<MailboxAddressTable />
 
 [//]: # (emojis for status ✅ ➖ ⌛)
 

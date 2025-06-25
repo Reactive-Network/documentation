@@ -1,6 +1,6 @@
 ---
 title: FAQ
-sidebar_position: 13
+sidebar_position: 14
 description: Find the answers to the most frequetly asked questions about the Reactive Network's architecture, features, and capabilities.
 slug: /faq
 hide_title: true
