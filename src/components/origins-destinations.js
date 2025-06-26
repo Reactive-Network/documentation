@@ -39,6 +39,15 @@ const MainnetChainTable = () => {
             destination: true
         },
         {
+            chain: 'Arbitrum One',
+            chainId: 42161,
+            link: 'https://www.arbiscan.io/',
+            callbackAddress: '0x4730c58FDA9d78f60c987039aEaB7d261aAd942E',
+            rpcUrl: 'https://chainlist.org/chain/42161',
+            origin: true,
+            destination: true
+        },
+        {
             chain: 'Sonic Mainnet',
             chainId: 146,
             link: 'https://sonicscan.org/',
