@@ -57,6 +57,15 @@ const MainnetChainTable = () => {
             destination: false
         },
         {
+            chain: 'HyperEVM',
+            chainId: 999,
+            link: 'https://hyperevmscan.io/',
+            callbackAddress: '➖',
+            rpcUrl: 'https://chainlist.org/chain/999',
+            origin: true,
+            destination: false
+        },
+        {
             chain: 'Reactive Mainnet',
             chainId: 1597,
             link: 'https://reactscan.net',
