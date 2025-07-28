@@ -14,7 +14,7 @@ Reactscan is a tool that provides developers with an overview of the Reactive Ne
 
 [Reactive Scan (Mainnet) →](https://reactscan.net/)
 
-[Kopli Scan (Testnet) →](https://kopli.reactscan.net/)
+[Lasna Scan (Testnet) →](https://lasna.reactscan.net/)
 
 ## My RVM Address
 

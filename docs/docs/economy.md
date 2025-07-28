@@ -52,7 +52,7 @@ cast send --legacy --rpc-url $REACTIVE_RPC --private-key $REACTIVE_PRIVATE_KEY $
 ```
 
 :::info[Contract Status]
-The contract's status is available on [Reactive Scan](https://kopli.reactscan.net/) under its dedicated RVM. If `active`, it will execute transactions normally. If `inactive`, outstanding debt must be settled.
+The contract's status is available on [Reactive Scan](https://reactscan.net/) under its dedicated RVM. If `active`, it will execute transactions normally. If `inactive`, outstanding debt must be settled.
 :::
 
 ### Depositing via System Contract

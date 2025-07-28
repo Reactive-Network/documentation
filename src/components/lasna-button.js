@@ -1,13 +1,13 @@
 import '../css/custom.css';
 
-const CHAIN_ID = '0x512578';
+const CHAIN_ID = '0x512577';
 
 const checkWallet = async () => {
     if (typeof window.ethereum !== 'undefined') {
         const chainId = await window.ethereum.request({ method: 'eth_chainId' });
 
         if (chainId === CHAIN_ID) {
-            alert('Already connected to Kopli Testnet.');
+            alert('Already connected to Lasna Testnet.');
         }
         return true;
     } else {
@@ -34,14 +34,14 @@ export const AddToWeb3Provider = async () => {
                     method: 'wallet_addEthereumChain',
                     params: [{
                         chainId: CHAIN_ID,
-                        rpcUrls: ['https://kopli-rpc.rnk.dev/'],
-                        chainName: 'Reactive Kopli',
+                        rpcUrls: ['https://lasna-rpc.rnk.dev/'],
+                        chainName: 'Reactive Lasna',
                         nativeCurrency: {
                             name: 'REACT',
                             symbol: 'REACT',
                             decimals: 18,
                         },
-                        blockExplorerUrls: ['https://kopli.reactscan.net/'],
+                        blockExplorerUrls: ['https://lasna.reactscan.net/'],
                     }],
                 });
             } catch (e) {
@@ -51,10 +51,10 @@ export const AddToWeb3Provider = async () => {
     }
 };
 
-const KopliButton = () => {
+const LasnaButton = () => {
     return (
         <button
-            id="kopli-button"
+            id="lasna-button"
             onClick={AddToWeb3Provider}
             style={{
                 width: '200px',
@@ -64,8 +64,8 @@ const KopliButton = () => {
                 textAlign: 'center',
                 padding: '0',
                 display: 'block',
-                color: 'var(--kopli-button-text)',
-                backgroundColor: 'var(--kopli-button-bg)',
+                color: 'var(--lasna-button-text)',
+                backgroundColor: 'var(--lasna-button-bg)',
                 border: 'none',
                 borderRadius: '12px',
                 cursor: 'pointer',
@@ -73,17 +73,17 @@ const KopliButton = () => {
                 transition: 'background-color 0.3s ease, transform 0.2s ease',
             }}
             onMouseOver={(e) => {
-                e.target.style.backgroundColor = 'var(--kopli-button-hover-bg)';
+                e.target.style.backgroundColor = 'var(--lasna-button-hover-bg)';
                 e.target.style.transform = 'scale(1.05)';
             }}
             onMouseOut={(e) => {
-                e.target.style.backgroundColor = 'var(--kopli-button-bg)';
+                e.target.style.backgroundColor = 'var(--lasna-button-bg)';
                 e.target.style.transform = 'scale(1)';
             }}
         >
-            Connect to Kopli Testnet
+            Connect to Lasna Testnet
         </button>
     );
 }
 
-export default KopliButton;
+export default LasnaButton;

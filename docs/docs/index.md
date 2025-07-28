@@ -28,7 +28,7 @@ Reactive contracts receive event logs from various chains, executing Solidity lo
 
 ## Step 2 — Reactive Essentials
 
-[Reactive Mainnet & Kopli Testnet →](./reactive-mainnet.mdx) Connect to Reactive Mainnet or Kopli Testnet.
+[Reactive Mainnet & Lasna Testnet →](./reactive-mainnet.mdx) Connect to Reactive Mainnet or Lasna Testnet.
 
 [Reactive Library →](./reactive-lib.mdx) Implement abstract contracts and interfaces in your project.
 

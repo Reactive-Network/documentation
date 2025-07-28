@@ -5,7 +5,7 @@ description: Learn how to deploy a Basic Reactive Smart Contract using Remix IDE
 slug: remix-ide-demo
 ---
 
-import KopliButton from "../../../src/components/kopli-button";
+import LasnaButton from "../../../src/components/lasna-button";
 import DownloadButton from "../../../src/components/download-zip";
 
 # Deploying Reactive Smart Contracts with Remix
@@ -28,19 +28,19 @@ You'll also need three smart contracts, along with their abstract contracts and 
 
 <hr />
 
-Additionally, you'll need **kREACT** (testnet REACT for Reactive Kopli) to complete the demo. To receive **kREACT**, send SepETH to the **Reactive faucet contract** on Ethereum Sepolia:
+Additionally, you'll need **kREACT** (testnet REACT for Reactive Lasna) to complete the demo. To receive **kREACT**, send SepETH to the **Reactive faucet contract** on Ethereum Sepolia:
 
 ```json
 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434
 ```
 
-The exchange rate is **1/5**, meaning you'll receive **5 REACT** for **1 SepETH** sent. To connect your MetaMask wallet to the **Reactive Kopli**, use the button below:
+The exchange rate is **1/5**, meaning you'll receive **5 REACT** for **1 SepETH** sent. To connect your MetaMask wallet to the **Reactive Lasna**, use the button below:
 
 :::info[Important]
 Do not send more than 10 SepETH per request, as doing so will cause you to lose the excess amount without receiving any additional REACT. The maximum that should be sent in a single transaction is 10 SepETH, which will yield 50 REACT.
 :::
 
-<KopliButton />
+<LasnaButton />
 
 <hr />
 
@@ -98,9 +98,9 @@ Do not send more than 10 SepETH per request, as doing so will cause you to lose 
 
 ![Reactive](img/3.png)
 
-3. Deploy the contract to Reactive Kopli.
+3. Deploy the contract to Reactive Lasna.
 
-* Open MetaMask and select Reactive Kopli.
+* Open MetaMask and select Reactive Lasna.
 
 * In Remix, in the **Deploy & Run Transactions** tab, select "Injected Provider — MetaMask" as your Environment.
 
@@ -118,12 +118,12 @@ Do not send more than 10 SepETH per request, as doing so will cause you to lose 
     
     `_callback`: the destination chain contract address.
 
-* Click the **transact** button. MetaMask will prompt you to confirm the transaction. Check the transaction details to ensure you are deploying the contract to Reactive Kopli.
+* Click the **transact** button. MetaMask will prompt you to confirm the transaction. Check the transaction details to ensure you are deploying the contract to Reactive Lasna.
 
 * After you confirm the transaction, the contract address will appear in the **Deployed Contracts** list. Copy this contract address if needed.
 
 ![Reactive](img/33.png)
 
-4. Once the reactive сontract is successfully deployed, check the transaction details using the contract address on [Reactive Scan](https://kopli.reactscan.net/).
+4. Once the reactive сontract is successfully deployed, check the transaction details using the contract address on [Reactive Scan](https://lasna.reactscan.net/).
 
 To receive a callback on the destination chain contract, you should send 0.01 ether to the origin chain contract via Metamask. To see the callback, check the destination contract's [events](https://sepolia.etherscan.io/address/0x26fF307f0f0Ea0C4B5Df410Efe22754324DACE08#events) on the relevant block explorer.

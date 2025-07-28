@@ -50,7 +50,7 @@ $CONTRACT_ADDR $CONTRACT_NAME
 
 **Replace:**
 
-- `$CHAIN_ID` with `1597` for Reactive Mainnet and `5318008` for Kopli Testnet
+- `$CHAIN_ID` with `1597` for Reactive Mainnet and `5318007` for Lasna Testnet
 - `$CONTRACT_ADDR` with your deployed contract’s address
 - `$CONTRACT_NAME` with the name of the contract (e.g., `MyContract`)
 
@@ -70,7 +70,7 @@ $PATH
 
 **Replace:**
 
-- `$CHAIN_ID` with `1597` for Reactive Mainnet and `5318008` for Kopli Testnet
+- `$CHAIN_ID` with `1597` for Reactive Mainnet and `5318007` for Lasna Testnet
 - `$PATH` with something like `src/MyContract.sol:MyContract`
 - `$PRIVATE_KEY` with your signer’s private key
 
@@ -105,7 +105,7 @@ error: unexpected argument '--broadcast' found
 
 ### Verified Contracts on Reactscan
 
-**Reactive Block Explorers:** [Mainnet](https://reactscan.net/) and [Kopli Testnet](https://kopli.reactscan.net/).
+**Reactive Block Explorers:** [Mainnet](https://reactscan.net/) and [Lasna Testnet](https://lasna.reactscan.net/).
 
 After verification, go to the relevant **Reactscan.** While in your RVM, navigate to **Contracts** and click the required contract address.
 
