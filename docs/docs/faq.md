@@ -64,7 +64,7 @@ If your cast calls the Reactive Network instance of the contract, the callback w
 
 **How can I check if my reactive contract is listening to my origin contract events?**  
 
-You can verify this by checking for a new transaction on [Reactive Scan](https://kopli.reactscan.net/) in the relevant RVM.
+You can verify this by checking for a new transaction on [Reactive Scan](https://reactscan.net/) in the relevant RVM.
 
 **What is received in `bytes calldata` in the `react()` function?**  
 

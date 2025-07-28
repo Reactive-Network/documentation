@@ -48,11 +48,11 @@ const TestnetChainTable = () => {
             destination: false
         },
         {
-            chain: 'Reactive Kopli',
-            chainId: 5318008,
-            link: 'https://kopli.reactscan.net',
+            chain: 'Reactive Lasna',
+            chainId: 5318007,
+            link: 'https://lasna.reactscan.net',
             callbackAddress: '0x0000000000000000000000000000000000fffFfF',
-            rpcUrl: 'https://kopli-rpc.rnk.dev/',
+            rpcUrl: 'https://lasna-rpc.rnk.dev/',
             origin: true,
             destination: true
         }

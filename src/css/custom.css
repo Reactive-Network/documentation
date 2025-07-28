@@ -75,9 +75,9 @@
 
     --ifm-navbar-height: 5rem;
 
-    --kopli-button-bg: #FF7A29;
-    --kopli-button-hover-bg: #D65F15;
-    --kopli-button-text: #ffffff;
+    --lasna-button-bg: #FF7A29;
+    --lasna-button-hover-bg: #D65F15;
+    --lasna-button-text: #ffffff;
     --mainnet-button-bg: #2756fc;
     --mainnet-button-hover-bg: #1A4C92;
     --mainnet-button-text: #ffffff;
@@ -163,9 +163,9 @@ html[data-theme="dark"] {
     --ifm-color-secondary-contrast-background: #1d1d1f;
     --ifm-color-secondary-contrast-foreground: #f5f5f7;
 
-    --kopli-button-bg: #E76F51;
-    --kopli-button-hover-bg: #C8553D;
-    --kopli-button-text: #1d1d1f;
+    --lasna-button-bg: #E76F51;
+    --lasna-button-hover-bg: #C8553D;
+    --lasna-button-text: #1d1d1f;
     --mainnet-button-bg: #7B59E6;
     --mainnet-button-hover-bg: #5F44B5;
     --mainnet-button-text: #1d1d1f;
