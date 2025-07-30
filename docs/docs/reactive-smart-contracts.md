@@ -78,7 +78,6 @@ An example of verifying on deployment could look like so:
 
 ```bash
 forge create \
-  --legacy \
   --broadcast \
   --rpc-url $REACTIVE_RPC_URL \
   --private-key $REACTIVE_PRIVATE_KEY \

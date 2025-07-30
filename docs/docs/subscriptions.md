@@ -144,8 +144,7 @@ export REACTIVE_IGNORE=0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce3
 If you're only interested in unsubscribing from a contract with a specific `topic0` and don't care about the values of `topic1`, `topic2`, or `topic3`, use `REACTIVE_IGNORE` in those positions:
 
 ```bash
-cast send --legacy \
-  --rpc-url $REACTIVE_RPC \
+cast send --rpc-url $REACTIVE_RPC \
   --private-key $REACTIVE_PRIVATE_KEY \
   $SYSTEM_CONTRACT_ADDR \
   "unsubscribeContract(address,uint256,address,uint256,uint256,uint256,uint256)" \
