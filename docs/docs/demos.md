@@ -42,4 +42,4 @@ The [ERC-721 Ownership Demo](https://github.com/Reactive-Network/reactive-smart-
 
 ## Reactive Faucet App/Demo
 
-The [Reactive Faucet App/Demo](https://github.com/Reactive-Network/kopli-faucet) facilitates fund transfers between any chain and the Reactive Network. This is the same faucet that operates on our testnet. It involves two smart contracts: [ReactiveFaucetL1.sol](https://github.com/Reactive-Network/kopli-faucet/blob/main/src/faucet/ReactiveFaucetL1.sol) and [ReactiveFaucet.sol](https://github.com/Reactive-Network/kopli-faucet/blob/main/src/faucet/ReactiveFaucet.sol).
+The [Reactive Faucet App/Demo](https://github.com/Reactive-Network/testnet-faucet) facilitates fund transfers between any chain and the Reactive Network. This is the same faucet that operates on our testnet. It involves two smart contracts: [ReactiveFaucetL1.sol](https://github.com/Reactive-Network/testnet-faucet/blob/main/src/faucet/ReactiveFaucetL1.sol) and [ReactiveFaucet.sol](https://github.com/Reactive-Network/testnet-faucet/blob/main/src/faucet/ReactiveFaucet.sol).
