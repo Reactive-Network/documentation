@@ -8,9 +8,14 @@ hide_title: true
 
 ![Contacts Image](./img/contacts.jpg)
 
-Welcome to Team Reactive! We are here to assist you with any inquiries or support you may need. Whether you're looking for help with integrating Reactive Smart Contracts into your dApps, troubleshooting issues, or understanding our platform's unique features, our team is ready to guide you.
+We’re here to support developers building with Reactive. Deployments and integrations can bring challenges, and we welcome your questions, feedback, and ideas. Our team is ready to help you troubleshoot issues, explore new use cases, and refine your projects.
 
-For general inquiries, please contact us at support@parsiq.net. To explore solutions with our custom Web3 API, reach out to bd@parsiq.net. Stay updated with the latest news and announcements on our official Telegram channel: [Reactive Network](https://t.me/reactivedevs). For more specific inquiries or discussions, feel free to join one of our dedicated Telegram chats:
+Stay updated with the latest news and announcements in our official [Telegram Channel](https://t.me/reactivedevs). For more specific inquiries or discussions, feel free to join one of our dedicated Telegram chats:
 
-- [Dev Questions](https://t.me/reactivedevs/9)
-- [General](https://t.me/reactivedevs/1)
+- [Technical Questions ->](https://t.me/reactivedevs/9)
+- [General Questions ->](https://t.me/reactivedevs/1)
+
+If you prefer reaching out directly, contact us by email at [info@reactive.network](mailto:info@reactive.network).
+
+
+
