@@ -20,7 +20,7 @@ RVM transactions have no gas price or any monetary value. Payments occur post-fa
 The maximum gas limit for RVM transactions is 900,000 units.
 :::
 
-An RVM transaction happens in block *n*, while accounting occurs in block *n+1* (or later) using that block’s base fee. However, it’s impossible to trace which specific RVM transaction was accounted for, as the block aggregates all transactions without distinction. 
+An RVM transaction happens in block *n*, while accounting occurs in block *n+1* (or later) using that block’s base fee. However, it’s impossible to trace which specific RVM transaction was accounted for, as the block aggregates all transactions without distinction.
 
 The Reactive Transaction Fee is determined by the formula:
 
