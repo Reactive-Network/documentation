@@ -116,11 +116,37 @@ cast send --rpc-url $DESTINATION_RPC --private-key $DESTINATION_PRIVATE_KEY $CAL
 Implementing the `pay()` method or inheriting from `AbstractPayer` enables automatic settlement. The callback proxy triggers `pay()` when a callback results in contract debt. The standard implementation verifies the caller is the proxy, checks for sufficient funds, and then settles the debt.
 :::
 
+## Callback Contract Balance
+
+### Contract Balance
+
+To retrieve the balance of a callback contract, run:
+
+```bash
+cast balance $CONTRACT_ADDR --rpc-url $DESTINATION_RPC
+```
+
+### Contract Debt
+
+To query the debt of a callback contract as recorded by the callback proxy, run:
+
+```bash
+cast call $CALLBACK_PROXY_ADDR "debts(address)" $CONTRACT_ADDR --rpc-url $DESTINATION_RPC | cast to-dec
+```
+
+### Contract Reserves
+
+To retrieve the reserve amount of a callback contract held by the callback proxy, run:
+
+```bash
+cast call $CALLBACK_PROXY_ADDR "reserves(address)" $CONTRACT_ADDR --rpc-url $DESTINATION_RPC | cast to-dec
+```
+
 ## Reactive Balance
 
 ### Contract Balance
 
-To retrieve the current balance of the specified contract in REACT, run the following command:
+To retrieve the balance of a reactive contract in REACT, run:
 
 ```bash
 cast balance $CONTRACT_ADDR --rpc-url $REACTIVE_RPC
@@ -128,16 +154,16 @@ cast balance $CONTRACT_ADDR --rpc-url $REACTIVE_RPC
 
 ### Contract Debt
 
-To query the debt of the specified contract as recorded by the system contract, run the following command:
+To query the debt of a reactive contract as recorded by the system contract, run:
 
 ```bash
-cast call $SYSTEM_CONTRACT_ADDR "debts(address)" $CONTRACT_ADDR --rpc-url $REACTIVE_RPC
+cast call $SYSTEM_CONTRACT_ADDR "debts(address)" $CONTRACT_ADDR --rpc-url $REACTIVE_RPC | cast to-dec
 ```
 
 ### Contract Reserves
 
-To retrieve the reserve amount (decimal) of the specified contract held by the system contract, run the following command:
+To retrieve the reserve amount of a reactive contract held by the system contract, run:
 
 ```bash
-cast call $SYSTEM_CONTRACT_ADDR "reserves(address)" $CONTRACT_ADDR --rpc-url $REACTIVE_RPC | xargs printf "%d\n"
+cast call $SYSTEM_CONTRACT_ADDR "reserves(address)" $CONTRACT_ADDR --rpc-url $REACTIVE_RPC | cast to-dec
 ```
