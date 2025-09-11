@@ -130,6 +130,11 @@ const config = {
             position: 'right',
           },
           {
+            href: 'https://reactscan.net/',
+            label: 'Reactscan',
+            position: 'right',
+          },
+          {
             href: 'https://github.com/Reactive-Network',
             label: 'GitHub',
             position: 'right',
