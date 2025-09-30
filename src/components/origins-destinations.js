@@ -72,7 +72,7 @@ const MainnetChainTable = () => {
             callbackAddress: '➖',
             rpcUrl: 'https://chainlist.org/chain/2741',
             origin: true,
-            destination: true
+            destination: false
         },
         {
             chain: 'Reactive Mainnet',
