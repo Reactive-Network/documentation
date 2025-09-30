@@ -66,6 +66,15 @@ const MainnetChainTable = () => {
             destination: true
         },
         {
+            chain: 'Abstract',
+            chainId: 2741,
+            link: 'https://abscan.org/',
+            callbackAddress: '➖',
+            rpcUrl: 'https://chainlist.org/chain/2741',
+            origin: true,
+            destination: true
+        },
+        {
             chain: 'Reactive Mainnet',
             chainId: 1597,
             link: 'https://reactscan.net',
