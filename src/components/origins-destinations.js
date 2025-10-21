@@ -79,7 +79,7 @@ const MainnetChainTable = () => {
             chainId: 59144,
             link: 'https://lineascan.build/',
             callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
-            rpcUrl: 'https://rpc.linea.build',
+            rpcUrl: 'https://chainlist.org/chain/59144',
             origin: true,
             destination: true
         },
