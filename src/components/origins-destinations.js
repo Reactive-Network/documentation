@@ -3,7 +3,7 @@ import React from 'react';
 const MainnetChainTable = () => {
     const data = [
         {
-            chain: 'Ethereum Mainnet',
+            chain: 'Ethereum',
             chainId: 1,
             link: 'https://etherscan.io/',
             callbackAddress: '0x1D5267C1bb7D8bA68964dDF3990601BDB7902D76',
@@ -48,7 +48,7 @@ const MainnetChainTable = () => {
             destination: true
         },
         {
-            chain: 'Sonic Mainnet',
+            chain: 'Sonic',
             chainId: 146,
             link: 'https://sonicscan.org/',
             callbackAddress: '0x9299472a6399fd1027ebf067571eb3e3d7837fc4',
@@ -71,6 +71,15 @@ const MainnetChainTable = () => {
             link: 'https://abscan.org/',
             callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
             rpcUrl: 'https://chainlist.org/chain/2741',
+            origin: true,
+            destination: true
+        },
+        {
+            chain: 'Linea',
+            chainId: 59144,
+            link: 'https://lineascan.build/',
+            callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
+            rpcUrl: 'https://rpc.linea.build',
             origin: true,
             destination: true
         },
