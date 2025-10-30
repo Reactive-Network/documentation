@@ -32,7 +32,7 @@ Reactive contracts receive event logs from various chains, executing Solidity lo
 
 [Reactive Library →](./reactive-lib.mdx) Implement abstract contracts and interfaces in your project.
 
-[Events & Callbacks →](./events-and-callbacks.md) Read up on how to work with events and callbacks in reactive contracts. 
+[Events & Callbacks →](./events-and-callbacks.md#callbacks-to-destination-chains) Read up on how to work with events and callbacks in reactive contracts. 
 
 [Subscriptions →](./subscriptions.md) Set up and manage subscriptions.
 
