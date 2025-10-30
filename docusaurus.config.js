@@ -120,6 +120,12 @@ const config = {
           },
           {
             type: "docSidebar",
+            sidebarId: "debugging",
+            position: "left",
+            label: "Debugging",
+          },
+          {
+            type: "docSidebar",
             sidebarId: "contacts",
             position: "left",
             label: "Contact Us",
