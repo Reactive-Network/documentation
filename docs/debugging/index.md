@@ -10,6 +10,8 @@ hide_title: true
 
 ## Overview
 
+The debugging page is dedicated to key operational and troubleshooting details for Reactive Network smart contracts. Use it as a quick reference when setting up or troubleshooting your deployments.
+
 ## Callback Structure
 
 Callbacks **must include at least one argument** — the first slot **must always be left for an RVM address**. Omitting it will cause the call to fail. Reactive automatically overwrites the first 160 bits of the payload with the relevant **RVM ID** (the deployer’s address).
