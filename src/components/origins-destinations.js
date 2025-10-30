@@ -84,6 +84,15 @@ const MainnetChainTable = () => {
             destination: true
         },
         {
+            chain: 'Unichain',
+            chainId: 130,
+            link: 'https://uniscan.xyz/',
+            callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
+            rpcUrl: 'https://chainlist.org/chain/130',
+            origin: true,
+            destination: true
+        },
+        {
             chain: 'Reactive Mainnet',
             chainId: 1597,
             link: 'https://reactscan.net',
