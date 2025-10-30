@@ -10,7 +10,7 @@ hide_title: true
 
 ## Overview
 
-The debugging page is dedicated to key operational and troubleshooting details for Reactive Network smart contracts. Use it as a quick reference when setting up or troubleshooting your deployments.
+The debugging page is dedicated to key operational and troubleshooting details for Reactive Network and beyond. Use it as a quick reference when setting up or troubleshooting your deployments.
 
 ## Callback Structure
 
