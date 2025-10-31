@@ -210,10 +210,6 @@ const config = {
               to: "/education/introduction/"
             },
             {
-              from: "/docs/kopli-testnet",
-              to: "/reactive-mainnet"
-            },
-            {
               from: "/system-contract",
               to: "/economy"
             },
@@ -222,28 +218,16 @@ const config = {
               to: "/"
             },
             {
-              from: "/docs/architecture/reactive-smart-contracts",
-              to: "/reactive-smart-contracts"
-            },
-            {
-              from: "/architecture/reactive-smart-contracts",
-              to: "/reactive-smart-contracts"
-            },
-            {
-              from: "/docs/architecture/react-vm",
-              to: "/reactvm"
-            },
-            {
-              from: "/architecture/react-vm",
-              to: "/reactvm"
-            },
-            {
               from: "/docs/demos",
               to: "/demos"
             },
             {
               from: "/docs/reactive-smart-contracts",
-              to: "/demos/reactive-contracts"
+              to: "/reactive-contracts"
+            },
+            {
+              from: "/reactive-smart-contracts",
+              to: "/reactive-contracts"
             },
           ]
         }
