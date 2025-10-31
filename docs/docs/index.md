@@ -1,12 +1,12 @@
 ---
 sidebar_position: 1
 title: Getting Started
-description: Explore Reactive Network, an EVM-compatible layer for advanced dApps. Learn about Reactive Smart Contracts that use data flows from multiple blockchains. Get started with setup, development and testing, and our unique architecture.
+description: Explore Reactive Network, an EVM-compatible layer for advanced dApps. Learn about Reactive Contracts that use data flows from multiple blockchains. Get started with setup, development and testing, and our unique architecture.
 slug: /
 hide_title: true
 ---
 
-![Reactive Network Docs Image](./img/reactive-docs.jpg)
+![Reactive Docs Image](./img/reactive-docs.jpg)
 
 ## Overview
 
@@ -20,7 +20,7 @@ Reactive contracts receive event logs from various chains, executing Solidity lo
 
 [Hyperlane →](./hyperlane.mdx) Explore an alternative transport system for callbacks like Hyperlane.
 
-[Reactive Contracts →](./reactive-smart-contracts.md) Understand the core concept of reactive contracts.
+[Reactive Contracts →](./reactive-contracts.md) Understand the core concept of reactive contracts.
 
 [ReactVM →](./reactvm.md) Learn about ReactVM and its purpose.
 
@@ -51,6 +51,8 @@ Reactive contracts receive event logs from various chains, executing Solidity lo
 [Reactive Education →](../education/introduction/index.md) Begin a Reactive Tech education course.
 
 [FAQ →](./faq.md) Find answers to common questions.
+
+[Debugging →](../debugging/index.md) Debug errors and issues related to Reactive and beyond.
 
 [Contacts →](../contacts/index.md) Reach out via socials for technical or trading inquiries.
 

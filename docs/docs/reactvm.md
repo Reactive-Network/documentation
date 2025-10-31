@@ -1,7 +1,7 @@
 ---
 title: ReactVM
 sidebar_position: 5
-description: Explore ReactVM, a dedicated EVM within the Reactive Network for executing Reactive Smart Contracts. It enables random transactions while maintaining order, serving as a sandbox for contract deployment.
+description: Explore ReactVM, a dedicated EVM within the Reactive Network for executing Reactive Contracts. It enables random transactions while maintaining order, serving as a sandbox for contract deployment.
 slug: /reactvm
 hide_title: true
 ---
@@ -10,13 +10,13 @@ hide_title: true
 
 ## Overview
 
-The ReactVM is a specialized Ethereum Virtual Machine (EVM) within the Reactive Network, designed to execute [Reactive Smart Contracts](./reactive-smart-contracts.md) (RSCs). It allows transactions to occur in random order across multiple threads while maintaining order within each ReactVM.
+The ReactVM is a specialized Ethereum Virtual Machine (EVM) within the Reactive Network, designed to execute [Reactive Contracts](./reactive-contracts) (RCs). It allows transactions to occur in random order across multiple threads while maintaining order within each ReactVM.
 
-Technically, ReactVM is an isolated execution environment that activates when an event matches an RSC's subscription. Although this approach introduces some overhead, we've optimized the process by separating the EVM from Geth, reducing ReactVm's boot time to approximately 100 microseconds. This overhead is insignificant relative to the network's processing capabilities.
+Technically, ReactVM is an isolated execution environment that activates when an event matches an RC's subscription. Although this approach introduces some overhead, we've optimized the process by separating the EVM from Geth, reducing ReactVm's boot time to approximately 100 microseconds. This overhead is insignificant relative to the network's processing capabilities.
 
 ## My ReactVM
 
-When you deploy a Reactive Smart Contract, it is assigned to a ReactVM. The ReactVM's address will match the Externally Owned Account (EOA) address used for the deployment. All smart contracts deployed to the Reactive Network will ultimately reside within your personal ReactVM, enabling shared state and interaction among contracts. Although multiple RSCs can be deployed within a single ReactVM, this practice is generally discouraged.
+When you deploy a Reactive Contract, it is assigned to a ReactVM. The ReactVM's address will match the Externally Owned Account (EOA) address used for the deployment. All smart contracts deployed to the Reactive Network will ultimately reside within your personal ReactVM, enabling shared state and interaction among contracts. Although multiple RCs can be deployed within a single ReactVM, this practice is generally discouraged.
 
 ### Calling subscribe()
 
@@ -30,7 +30,7 @@ The Reactive Network's state is determined by the collective states of individua
 
 The Reactive Network operates within a dual-state environment that supports parallel transaction execution. While the EVM processes commands sequentially in a single-threaded manner, ReactVMs can operate independently and in parallel across different cores or threads. This architecture facilitates the management of various operations, including fund flows and token management, with each contract copy having its own state and execution context.
 
-Each [Reactive Smart Contract](./reactive-smart-contracts.md) has two instances with different states, both initialized in the constructor:
+Each [Reactive Contract](./reactive-contracts) has two instances with different states, both initialized in the constructor:
 
 &nbsp;&nbsp;&nbsp;&nbsp; **ReactVM State**: Updates when an event occurs.
 
@@ -43,37 +43,5 @@ For example, in a governance contract, vote counts are maintained in the ReactVM
 The following diagram illustrates a process involving the interaction between an Origin Chain, the Reactive Network along with ReactVM, and a Destination Chain.
 
 ![Reactive Network Lifecycle](./img/global-processing-flow.png)
-
-### Step-by-step Description
-
-**New Block in Origin Chain**: The process starts when a new block is created on the Origin Chain. This block contains multiple transactions.
-
-**Catch Block in Reactive Network**: The Reactive Network catches the newly created block from the Origin Chain.
-
-**Iterate Transactions**: The system iterates through all the transactions in the newly caught block.
-
-**Extract Transaction Logs**: Transaction logs are extracted from each transaction.
-
-**Find Transactions at System SC**: The system identifies specific transactions that need to be processed by the System Smart Contract (System SC).
-
-**Prepare Transaction and Publish to RVM**: The identified transactions are prepared and published to the ReactVM for further processing.
-
-**ReactVM Processing**:
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **ReactVM Exists?**: The system checks if a ReactVM already exists.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **No**: If no ReactVM exists, the system sets up a new ReactVM.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Run ReactVM**: The ReactVM is run to process the transaction.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Execute Transaction**: The transaction is executed within the ReactVM.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Stop ReactVM**: After executing the transaction, the ReactVM is stopped.
-
-**Transaction Receipt**: After the ReactVM completes processing the transaction, a transaction receipt is generated.
-
-**Prepare Transaction for Destination Chain**: Based on the transaction receipt, a new transaction is prepared for the Destination Chain.
-
-**Transaction at Mem. Pool in Destination Chain**: The prepared transaction is placed in the memory pool of the Destination Chain, ready to be included in a new block on that chain.
 
 [More on ReactVM →](../education/module-1/react-vm.md)

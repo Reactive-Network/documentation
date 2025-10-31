@@ -11,13 +11,13 @@ slug: how-events-work
 
 In Ethereum, events enable smart contracts to communicate with the external world by logging specific information when certain conditions are met. This allows decentralized applications (dApps) to trigger and respond to occurrences without constantly polling the blockchain. Events are indexed by the EVM, making them easily searchable, which is particularly useful for monitoring blockchain activities like transfers, contract updates, and price changes from oracles.
 
-This lesson focuses on the role of events and callbacks in smart contracts. By learning how to emit, process, and listen to events, developers can create dynamic dApps that respond to blockchain changes in real-time. We will also explore how Reactive Smart Contracts use the `react()` method to handle events and initiate cross-chain transactions through callbacks, enabling improved functionality within the Reactive Network.
+This lesson focuses on the role of events and callbacks in smart contracts. By learning how to emit, process, and listen to events, developers can create dynamic dApps that respond to blockchain changes in real-time. We will also explore how Reactive Contracts use the `react()` method to handle events and initiate cross-chain transactions through callbacks, enabling improved functionality within the Reactive Network.
 
 By the end of this lesson, you will learn to:
 
 * Define and emit events in an Ethereum smart contract.
 * Listen for and process events using decentralized applications.
-* Implement event processing in Reactive Smart Contracts.
+* Implement event processing in Reactive Contracts.
 * Send callbacks to trigger actions on destination chains.
 
 ## How EVM Events Work
@@ -54,11 +54,11 @@ In this line, `newEthPrice` is the updated price of Ethereum fetched from Chainl
 
 ### Listening for the Price Update
 
-A dApp or an investor's portfolio management tool can listen for the `PriceUpdated` event to trigger specific actions such as rebalancing a portfolio or issuing a loan. We will use a Reactive Smart Contract to catch these events in later lessons.
+A dApp or an investor's portfolio management tool can listen for the `PriceUpdated` event to trigger specific actions such as rebalancing a portfolio or issuing a loan. We will use a Reactive Contract to catch these events in later lessons.
 
-## Event Processing in Reactive Smart Contracts
+## Event Processing in Reactive Contracts
 
-Reactive smart contracts must implement the [`IReactive`](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol) interface to handle incoming events.
+Reactive Contracts must implement the [`IReactive`](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol) interface to handle incoming events.
 
 ```solidity
 pragma solidity >=0.8.0;
@@ -168,14 +168,14 @@ emit Callback(chain_id, stop_order, CALLBACK_GAS_LIMIT, payload);
 
 ## Conclusion
 
-In this lesson, we've explored the fundamentals of events and callbacks in Ethereum and their application in Reactive Smart Contracts. Key takeaways include:
+In this lesson, we've explored the fundamentals of events and callbacks in Ethereum and their application in Reactive Contracts. Key takeaways include:
 
 - **Understanding Events:** Events allow smart contracts to log information and interact with external applications, providing a powerful way to respond to on-chain activities without directly altering the blockchain state.
 
-- **Reactive Smart Contracts and the react() Method:** RSCs use the `react()` method to autonomously process incoming events based on specified criteria, enabling real-time, decentralized, and responsive contract behavior.
+- **Reactive Contracts and the react() Method:** RCs use the `react()` method to autonomously process incoming events based on specified criteria, enabling real-time, decentralized, and responsive contract behavior.
 
-- **Callbacks for Cross-Chain Transactions:** RSCs can initiate actions on different blockchains using callbacks, broadening their functionality beyond single-chain constraints and facilitating more complex decentralized applications.
+- **Callbacks for Cross-Chain Transactions:** RCs can initiate actions on different blockchains using callbacks, broadening their functionality beyond single-chain constraints and facilitating more complex decentralized applications.
 
-- **Secure and Controlled Execution:** The ReactVM environment ensures that RSCs operate securely by restricting interactions to contracts deployed by the same deployer, maintaining a controlled execution space.
+- **Secure and Controlled Execution:** The ReactVM environment ensures that RCs operate securely by restricting interactions to contracts deployed by the same deployer, maintaining a controlled execution space.
 
-The concepts from this lesson are shown in the [Basic Demo Smart Contract](../use-cases/use-case-1.md) use case. Feel free to explore it and join our [Telegram](https://t.me/reactivedevs) group for additional guidance.
+The concepts from this lesson are shown in the [Basic Demo](../use-cases/use-case-1.md) use case. Feel free to explore it and join our [Telegram](https://t.me/reactivedevs) group for additional guidance.

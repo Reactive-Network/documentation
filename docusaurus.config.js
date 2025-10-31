@@ -199,7 +199,7 @@ const config = {
             },
             {
               from: "/education/getting-started/reactive-smart-contracts",
-              to: "/education/introduction/reactive-smart-contracts"
+              to: "/education/introduction/reactive-contracts"
             },
             {
               from: "/docs/data-origins-and-destinations",
@@ -210,10 +210,6 @@ const config = {
               to: "/education/introduction/"
             },
             {
-              from: "/docs/kopli-testnet",
-              to: "/reactive-mainnet"
-            },
-            {
               from: "/system-contract",
               to: "/economy"
             },
@@ -222,36 +218,16 @@ const config = {
               to: "/"
             },
             {
-              from: "/docs/architecture/reactive-smart-contracts",
-              to: "/reactive-smart-contracts"
-            },
-            {
-              from: "/architecture/reactive-smart-contracts",
-              to: "/reactive-smart-contracts"
-            },
-            {
-              from: "/docs/architecture/react-vm",
-              to: "/reactvm"
-            },
-            {
-              from: "/architecture/react-vm",
-              to: "/reactvm"
-            },
-            {
               from: "/docs/demos",
               to: "/demos"
             },
             {
-              from: "/architecture",
-              to: "/"
+              from: "/docs/reactive-smart-contracts",
+              to: "/reactive-contracts"
             },
             {
-              from: "/compendium",
-              to: "/"
-            },
-            {
-              from: "/kopli-testnet",
-              to: "/reactive-mainnet"
+              from: "/reactive-smart-contracts",
+              to: "/reactive-contracts"
             },
           ]
         }

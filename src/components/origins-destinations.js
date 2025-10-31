@@ -3,20 +3,20 @@ import React from 'react';
 const MainnetChainTable = () => {
     const data = [
         {
-            chain: 'Ethereum',
-            chainId: 1,
-            link: 'https://etherscan.io/',
-            callbackAddress: '0x1D5267C1bb7D8bA68964dDF3990601BDB7902D76',
-            rpcUrl: 'https://chainlist.org/chain/1',
+            chain: 'Abstract',
+            chainId: 2741,
+            link: 'https://abscan.org/',
+            callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
+            rpcUrl: 'https://chainlist.org/chain/2741',
             origin: true,
             destination: true
         },
         {
-            chain: 'Binance Smart Chain',
-            chainId: 56,
-            link: 'https://bscscan.com/',
-            callbackAddress: '0xdb81A196A0dF9Ef974C9430495a09B6d535fAc48',
-            rpcUrl: 'https://chainlist.org/chain/56',
+            chain: 'Arbitrum One',
+            chainId: 42161,
+            link: 'https://www.arbiscan.io/',
+            callbackAddress: '0x4730c58FDA9d78f60c987039aEaB7d261aAd942E',
+            rpcUrl: 'https://chainlist.org/chain/42161',
             origin: true,
             destination: true
         },
@@ -39,20 +39,20 @@ const MainnetChainTable = () => {
             destination: true
         },
         {
-            chain: 'Arbitrum One',
-            chainId: 42161,
-            link: 'https://www.arbiscan.io/',
-            callbackAddress: '0x4730c58FDA9d78f60c987039aEaB7d261aAd942E',
-            rpcUrl: 'https://chainlist.org/chain/42161',
+            chain: 'Binance Smart Chain',
+            chainId: 56,
+            link: 'https://bscscan.com/',
+            callbackAddress: '0xdb81A196A0dF9Ef974C9430495a09B6d535fAc48',
+            rpcUrl: 'https://chainlist.org/chain/56',
             origin: true,
             destination: true
         },
         {
-            chain: 'Sonic',
-            chainId: 146,
-            link: 'https://sonicscan.org/',
-            callbackAddress: '0x9299472a6399fd1027ebf067571eb3e3d7837fc4',
-            rpcUrl: 'https://chainlist.org/chain/146',
+            chain: 'Ethereum',
+            chainId: 1,
+            link: 'https://etherscan.io/',
+            callbackAddress: '0x1D5267C1bb7D8bA68964dDF3990601BDB7902D76',
+            rpcUrl: 'https://chainlist.org/chain/1',
             origin: true,
             destination: true
         },
@@ -66,20 +66,29 @@ const MainnetChainTable = () => {
             destination: true
         },
         {
-            chain: 'Abstract',
-            chainId: 2741,
-            link: 'https://abscan.org/',
-            callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
-            rpcUrl: 'https://chainlist.org/chain/2741',
-            origin: true,
-            destination: true
-        },
-        {
             chain: 'Linea',
             chainId: 59144,
             link: 'https://lineascan.build/',
             callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
             rpcUrl: 'https://chainlist.org/chain/59144',
+            origin: true,
+            destination: true
+        },
+        {
+            chain: 'Reactive Mainnet',
+            chainId: 1597,
+            link: 'https://reactscan.net',
+            callbackAddress: '0x0000000000000000000000000000000000fffFfF',
+            rpcUrl: 'https://mainnet-rpc.rnk.dev/',
+            origin: true,
+            destination: true
+        },
+        {
+            chain: 'Sonic',
+            chainId: 146,
+            link: 'https://sonicscan.org/',
+            callbackAddress: '0x9299472a6399fd1027ebf067571eb3e3d7837fc4',
+            rpcUrl: 'https://chainlist.org/chain/146',
             origin: true,
             destination: true
         },
@@ -92,15 +101,6 @@ const MainnetChainTable = () => {
             origin: true,
             destination: true
         },
-        {
-            chain: 'Reactive Mainnet',
-            chainId: 1597,
-            link: 'https://reactscan.net',
-            callbackAddress: '0x0000000000000000000000000000000000fffFfF',
-            rpcUrl: 'https://mainnet-rpc.rnk.dev/',
-            origin: true,
-            destination: true
-        }
     ];
 
     return (

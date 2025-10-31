@@ -624,7 +624,7 @@ Retrieves the bytecode of a deployed contract at a specific transaction or block
 #### Parameters
 
 1. **rvmId**: `DATA`, 20 bytes — The unique identifier of the RVM.
-2. **contract** `DATA`, 20 bytes — The address of the smart contract.
+2. **contract** `DATA`, 20 bytes — The Reactive contract address.
 3. **txNumberOrHash** `HEX | TAG` — Specifies the state at which the contract code is retrieved. Accepts either a block number (`HEX`) or a tag (`"latest"`, `"earliest"`, `"pending"`).
 
 #### cURL
@@ -703,7 +703,7 @@ Returns the storage value:
 
 ## rnk_call
 
-Performs a read-only simulation of a smart contract function call on a given RVM, without creating a transaction.
+Performs a read-only simulation of a Reactive contract function call on a given RVM, without creating a transaction.
 
 #### Parameters
 

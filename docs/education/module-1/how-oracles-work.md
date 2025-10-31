@@ -1,7 +1,7 @@
 ---
 title: "Lesson 5: How Oracles Work"
 sidebar_position: 5
-description: Discover the power of oracles in Reactive Smart Contracts (RSCs) and explore their role in integrating real-world data with blockchain applications.
+description: Discover the power of oracles in Reactive Contracts (RCs) and explore their role in integrating real-world data with blockchain applications.
 slug: how-oracles-work
 ---
 
@@ -9,14 +9,14 @@ slug: how-oracles-work
 
 ## Overview 
 
-Reactive Smart Contracts are adept at monitoring on-chain events and executing subsequent on-chain actions in response. Yet within the smart contract ecosystem, a distinct category exists specifically for importing off-chain data onto the blockchain. These are known as oracles. Among the myriad events to which Reactive Smart Contracts can respond, those emitted by oracles hold significant importance. This article delves deeper into the concept of oracles, setting the stage for a clearer comprehension of the upcoming use case we'll explore. By unpacking the mechanisms and implications of oracles within the blockchain framework, we aim to equip you with the knowledge needed to fully grasp the potential and utility of Reactive Smart Contracts in interacting with real-world data.
+Reactive Contracts are adept at monitoring on-chain events and executing subsequent on-chain actions in response. Yet within the smart contract ecosystem, a distinct category exists specifically for importing off-chain data onto the blockchain. These are known as oracles. Among the myriad events to which Reactive Contracts can respond, those emitted by oracles hold significant importance. This article delves deeper into the concept of oracles, setting the stage for a clearer comprehension of the upcoming use case we'll explore. By unpacking the mechanisms and implications of oracles within the blockchain framework, we aim to equip you with the knowledge needed to fully grasp the potential and utility of Reactive Contracts in interacting with real-world data.
 
 By the end of this lesson, you will learn to:
 
 * Understand the role of oracles in bridging the gap between blockchain and real-world data.
 * Address the oracle problem by exploring how oracles bring off-chain data onto the blockchain.
 * Implement and integrate oracles within smart contracts, using examples like Chainlink to fetch external data.
-* Recognize the advantages of combining Reactive Smart Contracts with oracles for real-time interaction with on-chain and off-chain events.
+* Recognize the advantages of combining Reactive Contracts with oracles for real-time interaction with on-chain and off-chain events.
 
 ## What Oracles Do
 
@@ -84,17 +84,17 @@ This contract demonstrates fetching the latest ETH/USD price using Chainlink's d
 
 However, as you may have observed, the smart contract can only request data through the getLatestPrice() function when it's explicitly called. To ensure your contract's data remains current, you should periodically invoke the function that queries the oracle. This challenge isn't insurmountable; one could simply update the price each time someone interacts with the contract, basing this interaction on the most recent price data. Yet this approach falls short of enabling your system to respond to price changes — or other oracle-generated events — in real time.
 
-In the Ethereum ecosystem, while one smart contract can indeed call another, such calls must initially be triggered by an Externally Owned Account (EOA) address. An EOA is an Ethereum address controlled directly by the private key's owner, unlike smart contract addresses, which are governed by contract code. Consequently, each transaction is initiated and signed by a specific EOA, restricting the capacity for smart contracts to operate in real time. This limitation underscores the distinctive advantage of Reactive Smart Contracts.
+In the Ethereum ecosystem, while one smart contract can indeed call another, such calls must initially be triggered by an Externally Owned Account (EOA) address. An EOA is an Ethereum address controlled directly by the private key's owner, unlike smart contract addresses, which are governed by contract code. Consequently, each transaction is initiated and signed by a specific EOA, restricting the capacity for smart contracts to operate in real time. This limitation underscores the distinctive advantage of Reactive Contracts.
 
-## Why We Need Reactive Smart Contracts
+## Why We Need Reactive Contracts
 
-Our exploration has previously touched upon the Inversion of Control principle, a defining characteristic of Reactive Smart Contracts. Here, it's worth emphasizing again: Reactive Smart Contracts stand out because they react not just to direct user transactions but to events across various EVM chains. Following these events, they execute on-chain actions, potentially on the same or different chains.
+Our exploration has previously touched upon the Inversion of Control principle, a defining characteristic of Reactive Contracts. Here, it's worth emphasizing again: Reactive Contracts stand out because they react not just to direct user transactions but to events across various EVM chains. Following these events, they execute on-chain actions, potentially on the same or different chains.
 
-This brings us to the significance of oracles in our discussion: by integrating oracles with Reactive Smart Contracts, we unlock the potential to respond to off-chain events — once brought on-chain by oracles — with predefined on-chain actions as articulated in our Reactive Smart Contracts. This synergy between oracles and Reactive Smart Contracts enables a dynamic, responsive system capable of real-time interaction with both the digital and physical worlds. This broadens the scope and utility of blockchain technology beyond its current constraints.
+This brings us to the significance of oracles in our discussion: by integrating oracles with Reactive Contracts, we unlock the potential to respond to off-chain events — once brought on-chain by oracles — with predefined on-chain actions as articulated in our Reactive Contracts. This synergy between oracles and Reactive Contracts enables a dynamic, responsive system capable of real-time interaction with both the digital and physical worlds. This broadens the scope and utility of blockchain technology beyond its current constraints.
 
 ## Conclusion
 
-In this article, we’ve talked about the role of oracles within the context of Reactive Smart Contracts (RSCs), highlighting their significance in bridging the gap between on-chain and off-chain data. Key takeaways include:
+In this article, we’ve talked about the role of oracles within the context of Reactive Contracts (RCs), highlighting their significance in bridging the gap between on-chain and off-chain data. Key takeaways include:
 
 - **Oracle Functionality:** Oracles are essential for importing real-world data onto the blockchain, enabling smart contracts to interact with external information such as price feeds, weather reports, and more.
 
@@ -102,6 +102,6 @@ In this article, we’ve talked about the role of oracles within the context of 
 
 - **Practical Applications:** Oracles facilitate various use cases, including decentralized finance (DeFi), insurance, and online betting, by providing real-time data to smart contracts and enabling automated, trustless interactions.
 
-- **Integration with Reactive Smart Contracts:** The synergy between oracles and RSCs allows for dynamic, real-time responses to off-chain events. This integration leverages the strengths of both technologies to enhance the functionality and reach of blockchain applications.
+- **Integration with Reactive Contracts:** The synergy between oracles and RCs allows for dynamic, real-time responses to off-chain events. This integration leverages the strengths of both technologies to enhance the functionality and reach of blockchain applications.
 
 For practical applications and further insights, explore our [use cases](../use-cases/index.md) and join our [Telegram](https://t.me/reactivedevs) group to engage with the community.

@@ -1,26 +1,26 @@
 ---
-title: Reactive Smart Contracts
+title: Reactive Contracts
 sidebar_position: 4
-description: Explore Reactive Smart Contracts, which enable event-driven interactions and transaction creation. Learn their setup, processing, and applications through clear examples.
-slug: /reactive-smart-contracts
+description: Explore Reactive Contracts, which enable event-driven interactions and transaction creation. Learn their setup, processing, and applications through clear examples.
+slug: /reactive-contracts
 hide_title: true
 ---
 
-![Reactive Smart Contracts Image](./img/reactive-smart-contracts.jpg)
+![Reactive Contracts Image](./img/reactive-contracts.jpg)
 
 ## Overview
 
-Reactive smart contracts (RSCs) operate on a standard Ethereum Virtual Machine (EVM) and can be written in any EVM-compatible language, with Application Binary Interfaces (ABIs) particularly customized for Solidity. Their unique capabilities stem from reactive nodes and a specialized pre-deployed system contract.
+Reactive Contracts (RCs) operate on a standard Ethereum Virtual Machine (EVM) and can be written in any EVM-compatible language, with Application Binary Interfaces (ABIs) particularly customized for Solidity. Their unique capabilities stem from Reactive nodes and a specialized pre-deployed system contract.
 
 ## Key Features
 
-Reactive Smart Contracts (RSCs) monitor blockchains for specific events and respond automatically, unlike traditional contracts that rely on EOAs to trigger actions. This reactivity and their use of Inversion of Control (IoC) — where contracts decide when to act — set them apart.
+Reactive Contracts monitor blockchains for specific events and respond automatically, unlike traditional contracts that rely on EOAs to trigger actions. This reactivity and their use of Inversion of Control (IoC) — where contracts decide when to act — set them apart.
 
-RSCs define which blockchains, contracts, and events to watch. When a relevant event occurs, they execute logic, update state, and perform trustless transactions within the Reactive Network.
+RCs define which blockchains, contracts, and events to watch. When a relevant event occurs, they execute logic, update state, and perform trustless transactions within the Reactive Network.
 
 ### Deployment
 
-RSCs deploy to both the main Reactive Network and a private [ReactVM](./reactvm.md). The main copy interacts with EOAs and manages subscriptions via the system contract. The ReactVM copy handles event processing but is not accessible to EOAs.
+RCs deploy to both the main Reactive Network and a private [ReactVM](./reactvm.md). The main copy interacts with EOAs and manages subscriptions via the system contract. The ReactVM copy handles event processing but is not accessible to EOAs.
 
 ### State and Separation
 
@@ -28,7 +28,7 @@ The two copies are isolated and don’t share state. Since they use the same byt
 
 ### ReactVM Limitations
 
-In [ReactVM](./reactvm.md), RSCs can’t access external systems directly. They receive logs from the Reactive Network and can call destination chain contracts but nothing else.
+In [ReactVM](./reactvm.md), RCs can’t access external systems directly. They receive logs from the Reactive Network and can call destination chain contracts but nothing else.
 
 ## Contract Verification
 
@@ -126,4 +126,4 @@ Compiler: 0.8.28
 
 The source code will be publicly viewable, with full syntax highlighting and structure, helping others understand and trust the contract logic.
 
-[More on Reactive Smart Contracts →](../education/module-1/reactive-smart-contracts.md)
+[More on Reactive Contracts →](../education/module-1/reactive-contracts)

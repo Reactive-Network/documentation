@@ -112,4 +112,4 @@ You will need to disable Smart Transactions in MetaMask:
 
 After this, your transactions will go through the regular route and should work correctly.
 
-[More on Smart Transactions →](https://support.metamask.io/manage-crypto/transactions/smart-transactions/) 
+[More on MetaMask's Smart Transactions →](https://support.metamask.io/manage-crypto/transactions/smart-transactions/) 

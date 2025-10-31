@@ -64,4 +64,4 @@ To deploy the contracts to Ethereum Sepolia and Reactive Lasna, [clone](https://
 
 ## Conclusion
 
-The Approval Magic Demo exemplifies the transformative potential of reactive smart contracts by automating token approvals and transfers. By utilizing `ApprovalService` and `ApprovalListener`, the system simplifies complex multi-chain interactions while optimizing gas costs. Client contracts like `ApprovalEthExch` and `ApprovalMagicSwap` further demonstrate its real-world utility in enabling token exchanges and swaps.
+The Approval Magic Demo exemplifies the transformative potential of Reactive Contracts by automating token approvals and transfers. By utilizing `ApprovalService` and `ApprovalListener`, the system simplifies complex multi-chain interactions while optimizing gas costs. Client contracts like `ApprovalEthExch` and `ApprovalMagicSwap` further demonstrate its real-world utility in enabling token exchanges and swaps.

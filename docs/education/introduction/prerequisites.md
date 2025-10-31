@@ -1,23 +1,23 @@
 ---
-title: Technical and Knowledge Prerequisites for Mastering Reactive Smart Contracts
+title: Technical and Knowledge Prerequisites for Mastering Reactive Contracts
 sidebar_position: 2
-description: Learn Reactive Smart Contracts (RSCs) with prerequisites like Solidity, EVM basics, Git, and an Ethereum wallet.
+description: Learn Reactive Contracts (RCs) with prerequisites like Solidity, EVM basics, Git, and an Ethereum wallet.
 slug: prerequisites
 ---
 
-# Technical and Knowledge Prerequisites for Mastering Reactive Smart Contracts
+# Technical and Knowledge Prerequisites for Mastering Reactive Contracts
 
 ## Overview 
 
-Before embarking on your journey, it's crucial to have a solid foundation in several key areas. These prerequisites will ensure you can fully grasp the concepts and practical applications of Reactive Smart Contracts (RSCs).
+Before embarking on your journey, it's crucial to have a solid foundation in several key areas. These prerequisites will ensure you can fully grasp the concepts and practical applications of Reactive Contracts (RCs).
 
 ## What You Need to Know for This Course
 
-In this course, we aim to equip you with everything you need to grasp the basic use cases of Reactive Smart Contracts, including deploying and interacting with them. While we intend to cover all critical information, a foundational understanding of Ethereum Smart Contracts will greatly improve your learning experience. Below are the prerequisites along with resources to help you get up to speed.
+In this course, we aim to equip you with everything you need to grasp the basic use cases of Reactive Contracts, including deploying and interacting with them. While we intend to cover all critical information, a foundational understanding of Ethereum Smart Contracts will greatly improve your learning experience. Below are the prerequisites along with resources to help you get up to speed.
 
 ### Solidity and Smart Contract Development
 
-Understanding the syntax and functionalities of Solidity is fundamental. You should be comfortable writing simple smart contracts and familiar with concepts like smart contracts and functions.
+Understanding the syntax and functionalities of Solidity is fundamental. You should be comfortable writing simple smart contracts and familiar with their concepts.
 
 Educational Resource: [Solidity by Example](https://solidity-by-example.org/) is an excellent place to start, offering hands-on examples to guide you through Solidity's basics to more advanced topics.
 
@@ -41,22 +41,22 @@ Getting Sepolia ETH: Visit the [Sepolia Faucet](https://www.alchemy.com/faucets/
 
 ## What You Don’t Need to Know Beforehand
 
-We recognize that some topics, while not directly related to Reactive Smart Contracts, are essential for a comprehensive understanding of the blockchain landscape. To ensure you have a well-rounded knowledge base, we've included lessons on these broader blockchain concepts and tools. This means you won’t have to look elsewhere to fill in the gaps.
+We recognize that some topics, while not directly related to Reactive Contracts, are essential for a comprehensive understanding of the blockchain landscape. To ensure you have a well-rounded knowledge base, we've included lessons on these broader blockchain concepts and tools. This means you won’t have to look elsewhere to fill in the gaps.
 
 ### Knowledge of EVM Events
 
-EVM events are a cornerstone for RSCs, serving as triggers for reactive functionalities. An understanding of how events work, how they're logged, and how to interact with them is crucial.
+EVM events are a cornerstone for RCs, serving as triggers for reactive functionalities. An understanding of how events work, how they're logged, and how to interact with them is crucial.
 
 Educational Resource: Learn about [EVM events](../module-1/how-events-work.md) in detail.
 
 ### Decentralized Finance Concepts
 
-Familiarity with DeFi concepts, such as liquidity pools, yield farming, and automated market makers (AMMs), will be helpful, especially for understanding real-world applications of RSCs.
+Familiarity with DeFi concepts, such as liquidity pools, yield farming, and automated market makers (AMMs), will be helpful, especially for understanding real-world applications of RCs.
 
 Educational Resource: We'll explain some of these concepts in our next articles as we walk you through the corresponding use cases.
 
 ## Conclusion
 
-These prerequisites will set you up for success in mastering Reactive Smart Contracts, and fully leveraging their potential in your blockchain projects. Stay tuned for our upcoming article on EVM events that will further solidify your understanding and application of these concepts.
+These prerequisites will set you up for success in mastering Reactive Contracts, and fully leveraging their potential in your blockchain projects. Stay tuned for our upcoming article on EVM events that will further solidify your understanding and application of these concepts.
 
 Remember, the blockchain space is ever-evolving, so continuous learning is key. These resources are just the beginning; dive deep, experiment, and don't hesitate to engage with the community for insights and assistance.

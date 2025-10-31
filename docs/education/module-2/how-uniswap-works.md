@@ -85,7 +85,7 @@ for more complex interactions like flash swaps.
 
 This logic encapsulates the essence of a swap transaction in Uniswap V2, balancing the pool's reserves to maintain the constant product while facilitating token exchanges.
 
-We will be mostly interested in `Swap` events to monitor the blockchain activity and run Reactive smart contracts based on it. Since the code of the pool smart contract does not change, most of the information that is different for every transaction is being logged in the event. So let’s talk a bit more about the two types of events we’ll be most interested in: `Swap` and `Sync`.
+We will be mostly interested in `Swap` events to monitor the blockchain activity and run Reactive Contracts based on it. Since the code of the pool smart contract does not change, most of the information that is different for every transaction is being logged in the event. So let’s talk a bit more about the two types of events we’ll be most interested in: `Swap` and `Sync`.
 
 ## Events in Uniswap V2
 
@@ -139,7 +139,7 @@ In this article, we’ve explored the fundamentals of Uniswap V2, a cornerstone 
 
 - **Constant Product Formula:** The formula (x * y = k) ensures that the product of the quantities of the two tokens remains constant, allowing for dynamic pricing based on trading activity.
 
-- **Swap and Sync Events:** The `Swap` event provides detailed information about trades, including token amounts and addresses, while the `Sync` event keeps track of reserve updates. These events are crucial for monitoring and integrating Uniswap activity with Reactive Smart Contracts.
+- **Swap and Sync Events:** The `Swap` event provides detailed information about trades, including token amounts and addresses, while the `Sync` event keeps track of reserve updates. These events are crucial for monitoring and integrating Uniswap activity with Reactive Contracts.
 
 - **Code Mechanics:** The provided code example illustrates the core functionality of the `swap` function in Uniswap V2, demonstrating how the contract maintains liquidity and ensures accurate token swaps.
 
