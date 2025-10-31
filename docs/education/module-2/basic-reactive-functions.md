@@ -1,7 +1,7 @@
 ---
 title: "Lesson 7: Implementing Basic Reactive Functions"
 sidebar_position: 2
-description: Learn to implement Reactive Smart Contracts for Uniswap V2, automate stop orders, and understand their execution based on Sync events.
+description: Learn to implement Reactive Contracts for Uniswap V2, automate stop orders, and understand their execution based on Sync events.
 slug: basic-reactive-functions
 ---
 
@@ -9,11 +9,11 @@ slug: basic-reactive-functions
 
 ## Overview
 
-In this lesson, we’ll go through the Reactive Smart Contract (RSC) specifically designed for the Uniswap V2 platform, aimed at executing stop orders based on predefined conditions. By the end of this lesson, you’ll know:
+In this lesson, we’ll go through the Reactive Contract (RC) specifically designed for the Uniswap V2 platform, aimed at executing stop orders based on predefined conditions. By the end of this lesson, you’ll know:
 
-* That RSCs are pretty similar to Ethereum smart contracts and thus easy to understand.
-* What each part of the stop-order reactive smart contract means.
-* How this reactive smart contract is executed and what it does.
+* That RCs are pretty similar to Ethereum smart contracts and thus easy to understand.
+* What each part of the stop-order reactive contract means.
+* How this reactive contract is executed and what it does.
 
 ## Contract
 
@@ -198,11 +198,11 @@ If `token0` is selected, the function checks if the ratio of `reserve1` to `rese
 
 ## Conclusion
 
-In this article, we’ve examined the implementation of a Reactive Smart Contract (RSC) for managing stop orders on the Uniswap V2 platform. Key takeaways include:
+In this article, we’ve examined the implementation of a Reactive Contract (RC) for managing stop orders on the Uniswap V2 platform. Key takeaways include:
 
-- **Similarity to Ethereum Smart Contracts:** RSCs are conceptually similar to Ethereum smart contracts, making them accessible for those familiar with Ethereum's architecture.
+- **Similarity to Ethereum Smart Contracts:** RCs are conceptually similar to Ethereum smart contracts, making them accessible for those familiar with Ethereum's architecture.
 
-- **Contract Components:** We reviewed the key elements of the stop-order reactive smart contract, including event declarations, contract variables, and the logic behind the `react()` and `below_threshold()` functions.
+- **Contract Components:** We reviewed the key elements of the stop-order reactive contract, including event declarations, contract variables, and the logic behind the `react()` and `below_threshold()` functions.
 
 - **Execution Flow:** The contract’s lifecycle involves subscribing to relevant events, monitoring Uniswap V2 pool reserves, triggering stop orders when conditions are met, and capturing completion events to finalize the process.
 

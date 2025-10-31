@@ -1,7 +1,7 @@
 ---
 title: "Lesson 4: How Subscriptions Work"
 sidebar_position: 4
-description: Understand how to implement subscriptions in the constructor of reactive smart contracts and how to manage subscriptions dynamically using callbacks to destination chains 
+description: Understand how to implement subscriptions in the constructor of reactive contracts and how to manage subscriptions dynamically using callbacks to destination chains 
 slug: how-subscriptions-work
 ---
 
@@ -9,13 +9,13 @@ slug: how-subscriptions-work
 
 ## Overview
 
-In the previous lesson, we covered the basic differences between the Reactive Network and ReactVM. In this one, we will dive into subscriptions, a key feature that allows RSCs to automatically respond to events emitted by other contracts. When these events occur, the subscribing contract can automatically execute predefined logic.
+In the previous lesson, we covered the basic differences between the Reactive Network and ReactVM. In this one, we will dive into subscriptions, a key feature that allows RCs to automatically respond to events emitted by other contracts. When these events occur, the subscribing contract can automatically execute predefined logic.
 
 By the end of this article, you will learn to:
 
 * Configure and manage subscriptions both statically and dynamically.
 * Handle subscription and unsubscription events within your smart contracts.
-* Recognize the limitations and best practices for using subscriptions in Reactive Smart Contracts.
+* Recognize the limitations and best practices for using subscriptions in Reactive Contracts.
 
 ## How to Implement Subscriptions
 
@@ -415,13 +415,13 @@ The function processes incoming log records from the ReactVM and executes differ
 
 ## Conclusion
 
-In this article, we’ve explored the use of subscriptions in Reactive Smart Contracts, a fundamental feature that enables automatic responses to events from other contracts. Key takeaways include:
+In this article, we’ve explored the use of subscriptions in Reactive Contracts, a fundamental feature that enables automatic responses to events from other contracts. Key takeaways include:
 
 - **Subscription Setup:** Subscriptions are established using the `subscribe` method from the Reactive Network’s system contract. This can be done statically in the constructor or managed dynamically as needed.
 
 - **Subscription Criteria:** Proper configuration is essential for effective subscriptions. Wildcards and specific values are used to define the scope of events to which a contract subscribes. Avoid prohibited subscription patterns to ensure efficient operation.
 
-- **Dynamic Management:** Subscriptions can be dynamically adjusted based on incoming events, with the `react()` method playing a central role in managing these operations. This approach ensures that RSCs can respond in real-time to changes in the network.
+- **Dynamic Management:** Subscriptions can be dynamically adjusted based on incoming events, with the `react()` method playing a central role in managing these operations. This approach ensures that RCs can respond in real-time to changes in the network.
 
 - **Handling Events:** Contracts must handle events carefully by preparing appropriate payloads for subscription, unsubscription, and approval actions. This ensures accurate and timely updates across the network.
 

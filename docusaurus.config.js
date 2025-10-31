@@ -199,7 +199,7 @@ const config = {
             },
             {
               from: "/education/getting-started/reactive-smart-contracts",
-              to: "/education/introduction/reactive-smart-contracts"
+              to: "/education/introduction/reactive-contracts"
             },
             {
               from: "/docs/data-origins-and-destinations",
@@ -240,18 +240,6 @@ const config = {
             {
               from: "/docs/demos",
               to: "/demos"
-            },
-            {
-              from: "/architecture",
-              to: "/"
-            },
-            {
-              from: "/compendium",
-              to: "/"
-            },
-            {
-              from: "/kopli-testnet",
-              to: "/reactive-mainnet"
             },
           ]
         }

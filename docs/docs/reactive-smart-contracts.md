@@ -126,4 +126,4 @@ Compiler: 0.8.28
 
 The source code will be publicly viewable, with full syntax highlighting and structure, helping others understand and trust the contract logic.
 
-[More on Reactive Smart Contracts →](../education/module-1/reactive-smart-contracts.md)
+[More on Reactive Smart Contracts →](../education/module-1/reactive-contracts)
