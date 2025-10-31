@@ -241,6 +241,10 @@ const config = {
               from: "/docs/demos",
               to: "/demos"
             },
+            {
+              from: "/docs/reactive-smart-contracts",
+              to: "/demos/reactive-contracts"
+            },
           ]
         }
       ]
