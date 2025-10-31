@@ -3,33 +3,6 @@ import React from 'react';
 const TestnetChainTable = () => {
     const data = [
         {
-            chain: 'Ethereum Sepolia',
-            chainId: 11155111,
-            link: 'https://sepolia.etherscan.io/',
-            callbackAddress: '0xc9f36411C9897e7F959D99ffca2a0Ba7ee0D7bDA',
-            rpcUrl: 'https://chainlist.org/chain/11155111',
-            origin: true,
-            destination: true
-        },
-        {
-            chain: 'Binance Smart Chain',
-            chainId: 97,
-            link: 'https://testnet.bscscan.com/',
-            callbackAddress: '',
-            rpcUrl: 'https://chainlist.org/chain/97',
-            origin: true,
-            destination: false
-        },
-        {
-            chain: 'Polygon Amoy',
-            chainId: 80002,
-            link: 'https://www.oklink.com/amoy',
-            callbackAddress: '',
-            rpcUrl: 'https://chainlist.org/chain/80002',
-            origin: true,
-            destination: false
-        },
-        {
             chain: 'Avalanche Fuji',
             chainId: 43113,
             link: 'https://43113.testnet.routescan.io/',
@@ -48,6 +21,24 @@ const TestnetChainTable = () => {
             destination: false
         },
         {
+            chain: 'Binance Smart Chain',
+            chainId: 97,
+            link: 'https://testnet.bscscan.com/',
+            callbackAddress: '',
+            rpcUrl: 'https://chainlist.org/chain/97',
+            origin: true,
+            destination: false
+        },
+        {
+            chain: 'Ethereum Sepolia',
+            chainId: 11155111,
+            link: 'https://sepolia.etherscan.io/',
+            callbackAddress: '0xc9f36411C9897e7F959D99ffca2a0Ba7ee0D7bDA',
+            rpcUrl: 'https://chainlist.org/chain/11155111',
+            origin: true,
+            destination: true
+        },
+        {
             chain: 'Reactive Lasna',
             chainId: 5318007,
             link: 'https://lasna.reactscan.net',
@@ -55,7 +46,16 @@ const TestnetChainTable = () => {
             rpcUrl: 'https://lasna-rpc.rnk.dev/',
             origin: true,
             destination: true
-        }
+        },
+        {
+            chain: 'Polygon Amoy',
+            chainId: 80002,
+            link: 'https://www.oklink.com/amoy',
+            callbackAddress: '',
+            rpcUrl: 'https://chainlist.org/chain/80002',
+            origin: true,
+            destination: false
+        },
     ];
 
     return (
