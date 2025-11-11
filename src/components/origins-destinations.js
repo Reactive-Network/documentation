@@ -75,6 +75,15 @@ const MainnetChainTable = () => {
             destination: true
         },
         {
+            chain: 'Plasma',
+            chainId: 9745,
+            link: 'https://plasmascan.to/',
+            callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
+            rpcUrl: 'https://chainlist.org/chain/9745',
+            origin: true,
+            destination: true
+        },
+        {
             chain: 'Reactive Mainnet',
             chainId: 1597,
             link: 'https://reactscan.net',
