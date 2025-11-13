@@ -60,7 +60,7 @@ const MainnetChainTable = () => {
             chain: 'HyperEVM',
             chainId: 999,
             link: 'https://hyperevmscan.io/',
-            callbackAddress: '0x9299472a6399fd1027ebf067571eb3e3d7837fc4',
+            callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
             rpcUrl: 'https://chainlist.org/chain/999',
             origin: true,
             destination: true
@@ -71,6 +71,15 @@ const MainnetChainTable = () => {
             link: 'https://lineascan.build/',
             callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
             rpcUrl: 'https://chainlist.org/chain/59144',
+            origin: true,
+            destination: true
+        },
+        {
+            chain: 'Plasma',
+            chainId: 9745,
+            link: 'https://plasmascan.to/',
+            callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
+            rpcUrl: 'https://chainlist.org/chain/9745',
             origin: true,
             destination: true
         },
@@ -87,7 +96,7 @@ const MainnetChainTable = () => {
             chain: 'Sonic',
             chainId: 146,
             link: 'https://sonicscan.org/',
-            callbackAddress: '0x9299472a6399fd1027ebf067571eb3e3d7837fc4',
+            callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
             rpcUrl: 'https://chainlist.org/chain/146',
             origin: true,
             destination: true

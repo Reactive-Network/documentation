@@ -12,6 +12,10 @@ hide_title: true
 
 This page provides an overview of the RPC methods specific to the Reactive Network's Geth version, essential for interacting with nodes and ReactVMs within the Reactive Network (RNK). These methods enable transaction retrieval, log access, callback information, etc. Below, you will find a detailed description of each method, including its parameters, cURLs, and responses.
 
+:::tip[Ethereum RPC Methods]
+Reactive Network is fully compatible with [standard Geth RPC methods](https://geth.ethereum.org/docs/interacting-with-geth/rpc). This page covers additional Reactive-specific methods.
+:::
+
 ## rnk_getTransactionByHash
 
 Returns the details of a transaction for the specified ReactVM ID and transaction hash.
