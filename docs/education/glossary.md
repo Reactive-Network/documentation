@@ -1,7 +1,7 @@
 ---
 title: Glossary
 sidebar_position: 4
-description: Unlock the language of blockchain with our glossary, covering Airdrops to Yield Farming. Dive into essential terms and concepts to navigate the Web3 world effortlessly.
+description: A comprehensive blockchain and DeFi glossary for developers, traders, and builders joining Reactive Network. Learn essential Web3, EVM, cross-chain, and Reactive Contract concepts—from Airdrops and Finality to TPS, block time, and automated DeFi execution.
 slug: glossary
 hide_title: true
 ---
@@ -10,242 +10,204 @@ hide_title: true
 
 ## A
 
-**Airdrop** – the distribution of free tokens or cryptocurrencies to wallet addresses, often used by blockchain projects as a marketing strategy to raise awareness, incentivize participation, or reward existing token holders. Eligibility typically requires meeting specific criteria like owning a cryptocurrency or belonging to a specific community.
+**Airdrop** – free tokens sent to eligible wallets. Projects use airdrops to attract users, reward early supporters, or bootstrap a community. Eligibility often depends on actions (e.g., using a protocol) or holding a token.
 
-**APY (Annual Percentage Yield)** – the annual rate of return on investment, accounting for compound interest, commonly used in decentralized finance (DeFi) and blockchain-based financial products for calculating and comparing potential returns.
+**APY (Annual Percentage Yield)** – estimated yearly return that includes compounding (earning “interest on interest”). In DeFi, APY can change frequently as rewards and usage fluctuate.
 
-**Arbitrary Logic** – the implementation of customized rules or conditions within a blockchain smart contract or protocol, allowing for flexible functionalities beyond standardized operations.
+**Atomic Swap** – a trustless trade between two cryptocurrencies where the swap either completes fully or doesn’t happen at all (no partial fills, no counterparty risk), usually enforced by smart contract logic.
 
-**ASIC (Application-Specific Integrated Circuit)** – a specialized hardware device designed specifically for mining cryptocurrencies, offering higher efficiency compared to general-purpose computing devices.
+**Auto-Compounding** – automatically reinvesting earned rewards back into your position so your balance grows faster over time, without you manually claiming and re-depositing.
 
-**Atomic Swap** – a smart contract technology that enables the exchange of one cryptocurrency for another without the need for a trusted third party or centralized exchange.
-
-**Atomicity** – a property of blockchain transactions that ensures they are indivisible and irreducible, meaning that either all parts of a transaction are executed, or none are.
-
-**Auto-Compounding** – a feature in decentralized finance (DeFi) protocols that automatically reinvests earned yields or rewards back into the original investment, increasing the overall value and compounding returns over time without requiring manual intervention from users.
-
-**AMMs (Automated Market Makers)** – algorithmic protocols within decentralized exchanges (DEXs) that determine asset prices using liquidity pools, enabling direct trading without traditional order books.
+**AMMs (Automated Market Makers)** – DEX trading systems that use liquidity pools and a pricing formula instead of an order book. You trade against a pool, and the price adjusts as the pool balance changes.
 
 ## B
 
-**Beacon Chain** – a central chain in the Ethereum 2.0 upgrade that coordinates the network, manages validators, and facilitates communication between shards.
+**Beacon Chain** – Ethereum’s proof-of-stake coordination layer introduced during the Ethereum 2.0 upgrade. It manages validators and consensus for the network.
 
-**Block Reward** – the incentive given to a miner for successfully hashing a new block and adding it to the blockchain. The reward typically consists of newly minted cryptocurrency and transaction fees.
+**Block Time** – how often a chain produces new blocks (e.g., ~7 seconds). Shorter block time usually means faster “first confirmation,” but not always faster finality.
 
-**Bridging** – the process of enabling interoperability and transferring assets or data between different blockchain networks or protocols.
+**Bridging** – moving tokens (or messages) from one blockchain to another using a bridge. Bridges are useful but can add risk because they rely on extra infrastructure.
 
-**Burning (Token Burn)** – the process of permanently removing a certain amount of cryptocurrency tokens from circulation, reducing the total supply, often used to increase scarcity and potentially boost value.
+**Burning (Token Burn)** – permanently removing tokens from circulation (sent to an unusable address or destroyed by protocol rules). Burns reduce supply and may affect token economics.
 
 ## C
 
-**Centralized Point of Control** – a single entity or system within a network that holds authority and decision-making power over critical functions, data, or resources, contrasting with decentralized models where control is distributed among multiple participants.
+**Cold Wallet** – a wallet whose private keys are stored offline (e.g., hardware wallet). Safer from online attacks, but less convenient for frequent transactions.
 
-**Chainlink Automation** – automating data input/output between blockchain smart contracts and external systems using Chainlink's decentralized oracle network.
+**Confirmation** – a transaction has been included in a block. More confirmations means more blocks were added after it, making it harder to reverse on chains with probabilistic finality.
 
-**Cold Wallet** – a cryptocurrency wallet that is not connected to the internet, providing a higher level of security against online threats.
+**Consensus Algorithm** – the rules the network uses to agree on the “true” chain and validate blocks/transactions (e.g., PoS, PoW). Consensus is what lets thousands of nodes share one ledger state.
 
-**Consensus Algorithm** – the protocol through which blockchain network participants agree on the state of the ledger, ensuring that all copies of the distributed ledger are the same. Common types include Proof of Work (PoW), Proof of Stake (PoS), Practical Byzantine Fault Tolerance (PBFT), and Proof of Authority (PoA).
+**Cross-chain Copy Trading** – automatically copying another trader’s actions across one or more chains (e.g., their swaps, opens/closes), so your wallet mirrors their strategy.
 
-**Cross-Chain Copy Trading** – automatically mirroring trades across multiple blockchain networks without manual intervention.
-
-**Cross-Chain Ownership** – the ability to possess and manage assets that exist on multiple blockchain networks simultaneously, enabling transfer and utilization across different decentralized ecosystems.
-
-**Custodial Wallet** – a type of cryptocurrency wallet where a third party holds and manages the private keys on behalf of the user, offering convenience at the expense of direct control.
+**Custodial Wallet** – a wallet where someone else (an exchange or provider) controls the private keys for you. Easier to use, but you rely on the custodian for access and security.
 
 ## D
 
-**DAO Governance** – the process of decision-making and management within a Decentralized Autonomous Organization, where stakeholders participate in voting and consensus mechanisms to determine the direction, policies, and actions of the organization without centralized control.
+**DAO Governance** – community decision-making using on-chain voting. Token holders (or members) vote on proposals like upgrades, spending, or parameter changes.
 
-**dApp (Decentralized Application)** – an application built on a decentralized network that combines a smart contract and a front-end user interface, operating without centralized control.
+**dApp (Decentralized Application)** – an app whose core logic runs on smart contracts. The UI may look like a normal website, but actions are executed on-chain.
 
-**DeFi (Decentralized Finance)** – a financial system built on blockchain technology that aims to recreate traditional financial services in a decentralized manner, allowing for peer-to-peer transactions, lending, borrowing, and trading without intermediaries.
+**DeFi (Decentralized Finance)** – financial services built with smart contracts (trading, lending, borrowing) that run without traditional intermediaries.
 
-**Delegated Proof of Stake (DPoS)** – a consensus algorithm where stakeholders vote for a small group of delegates to validate transactions and maintain the blockchain.
+**Delegated Proof of Stake (DPoS)** – a PoS variant where token holders elect a smaller set of delegates/validators to produce blocks on behalf of the network.
 
-**Destination Chain** - a designated ecosystem where the state transition (transaction) occurs.
+**Destination Chain** – the chain where a transaction ultimately executes and changes state (where the “final action” happens).
 
-**DEX Swaps** – peer-to-peer transactions of digital assets directly between users on Decentralized Exchange platforms, eliminating the need for intermediaries and providing greater control over trades and liquidity.
-
-**Distribution Fee** – a charge imposed on the transfer or allocation of tokens or assets within a blockchain network, typically collected to cover transaction processing costs or to fund network development and maintenance.
-
-**Dummy Smart Contract** – a simplified or placeholder smart contract used for testing, demonstration, or educational purposes, typically containing basic functionalities and data structures to simulate interactions within a blockchain network without executing complex operations or real-world transactions.
-
-**Dust Transactions** – very small cryptocurrency transactions that are often considered spam due to their negligible value and potential to clog the network.
+**DEX Swaps** – exchanging one token for another on a decentralized exchange using smart contracts, usually via AMMs or on-chain order books.
 
 ## E
 
-**Elliptic Curve Cryptography (ECC)** – a type of public key cryptography based on the algebraic structure of elliptic curves, used in blockchain for securing transactions and generating addresses.
+**Emitting Events** – smart contracts writing “event logs” that external apps can read. Events are often used for indexing, notifications, and triggering automation (they don’t directly change state by themselves).
 
-**Emitting Events** – the process of triggering and broadcasting specific occurrences or actions within a smart contract on a blockchain network.
+**EOA (Externally Owned Account)** – a normal wallet account controlled by a private key (e.g., MetaMask). EOAs can sign transactions; smart contracts cannot sign on their own.
 
-**EOA (Externally Owned Account)** – a type of account on the Ethereum blockchain that is controlled by private keys held by individuals or entities outside the blockchain. EOAs are used for sending transactions, deploying smart contracts, and managing funds.
+**ERC-20** – the common token standard on Ethereum/EVM chains. Most fungible tokens follow ERC-20 rules (balances, transfers, approvals).
 
-**ERC-20** – a standard for creating and issuing smart contracts on the Ethereum blockchain, specifically for tokens that can interact with each other.
+**ERC-721** – the standard for NFTs (unique tokens). Each token ID represents a distinct asset.
 
-**ERC-721** – a standard for non-fungible tokens (NFTs) on the Ethereum blockchain, allowing the creation and transfer of unique digital assets.
+**Event-Driven Execution** – contracts/app logic that reacts to events or data changes rather than a user manually clicking “execute”.
 
-**Event Sources** - the various origins from which events, such as transactions, smart contract executions, or external data inputs, are generated within the blockchain ecosystem.
+**Event Sources** – where events come from (e.g., transactions on an origin chain, specific contracts, or a monitored event stream).
 
-**EVM Events** – events generated within the Ethereum Virtual Machine when specific conditions are met, typically used to notify external applications or contracts about state changes or transactions occurring within Ethereum smart contracts.
-
-**External Prompt** – an input or trigger from an external source, such as a user or another system, that initiates an action or process within a blockchain application or smart contract.
+**EVM Events** – event logs produced by EVM smart contracts. Wallets/indexers use them to track activity like transfers, swaps, and state-related notifications.
 
 ## F
 
-**Fiat Gateway** – a service or platform that enables the conversion between fiat currency and cryptocurrency, allowing users to buy or sell cryptocurrencies using traditional money.
+**Fiat Gateway** – a service that lets you buy/sell crypto using traditional money (bank transfer, card, etc.), bridging fiat ↔ crypto.
 
-**Flash Loan** – a type of uncollateralized loan in DeFi that allows borrowers to borrow funds within a single transaction block without providing collateral, commonly used for arbitrage and trading strategies.
+**Finality** – the point at which a transaction can no longer be reverted. Some chains reach fast deterministic finality; others rely on “more confirmations” to increase confidence.
 
-**Fork** – a change to the protocol of a blockchain network that results in a divergence into two separate paths. A **soft fork** is backward compatible, while a **hard fork** creates a new blockchain incompatible with the old version.
+**Flash Loan** – a loan that must be borrowed and repaid within the same transaction. If repayment fails, the whole transaction reverts. Used for arbitrage and complex DeFi operations.
 
-**Front-Running** – the unethical practice where an entity with insider knowledge of a pending transaction executes a similar transaction ahead of it to profit from the expected price movement.
+**Fork** – a protocol change. A soft fork is backward-compatible; a hard fork creates a split where older nodes can’t follow the new rules.
 
-**Fungibility** – the property of an asset whose individual units are interchangeable and indistinguishable from one another, such as traditional currencies or cryptocurrencies like Bitcoin.
+**Fungibility** – every unit is interchangeable (1 USDC ≈ any other 1 USDC). NFTs are non-fungible because each item is unique.
 
 ## G
 
-**Gas** – a unit of measure for computational work required to execute operations on the Ethereum network, with associated fees paid in Ether (ETH).
+**Gas** – the fee unit for computation on EVM chains. You pay gas to run transactions; complex actions cost more.
 
-**Gauge Voting** – a governance mechanism in DeFi protocols where token holders vote to influence parameters or decisions related to liquidity pools, yield farming rewards, or other protocol functionalities.
+**Gauge Voting** – voting that directs incentives (often reward emissions) to specific pools/strategies, commonly used in DeFi to influence where liquidity goes.
 
-**Genesis Block** – the first block in a blockchain, serving as the foundation upon which all subsequent blocks are added.
+**Genesis Block** – the first block of a blockchain (block 0), from which all later blocks follow.
 
 ## H
 
-**Halving** – an event in which the reward for mining new blocks is halved, reducing the rate at which new coins are generated. This is typically programmed to occur at regular intervals in certain cryptocurrencies like Bitcoin.
+**Hash** – a “digital fingerprint” of data. A small change in input produces a very different output, which makes hashes useful for integrity and linking blocks.
 
-**Hash** – the output of a hash function, which takes an input and produces a fixed-size string of characters. Used in blockchain to secure data through encryption.
-
-**Hash Rate** – the measure of computational power used in cryptocurrency mining, representing the number of hash operations performed per second.
-
-**Hot Wallet** – a cryptocurrency wallet that is connected to the internet, providing easy access for transactions but with increased vulnerability to cyberattacks.
+**Hot Wallet** – a wallet whose keys are on an internet-connected device. Convenient, but higher exposure to phishing/malware than cold storage.
 
 ## I
 
-**Initial Coin Offering (ICO)** – a fundraising method in which a new cryptocurrency project sells tokens to early backers in exchange for established cryptocurrencies like Bitcoin or Ether.
+**Initial Coin Offering (ICO)** – fundraising by selling a new token to early backers (historically common; now often replaced by other launch models).
 
-**Interoperability** – the ability of different blockchain networks to interact and exchange information or assets with one another.
+**Interoperability** – the ability for chains/apps to communicate or move assets/messages across networks.
 
-**Inversion-of-Control** – a programming principle of Reactive Contracts, where control over execution flow is shifted from external actors to the system itself, allowing autonomous decision-making based on predefined events.
+**Inversion-of-Control** – in Reactive Contracts, execution is triggered by the system when relevant events happen, rather than users manually calling functions at the right moment.
 
-**Immutable** – a characteristic of blockchain data that prevents it from being altered or deleted once recorded, ensuring the integrity and permanence of the information.
+**Immutable** – once data is finalized on-chain, it can’t be changed without extraordinary network-level intervention.
 
 ## K
 
-**Keypair** – a pair of cryptographic keys (private and public) used in blockchain transactions. The private key signs transactions, while the public key verifies them.
+**Keypair** – your public key is like an address identifier; your private key is the secret that signs transactions. Whoever controls the private key controls the funds.
 
-**KYC (Know Your Customer)** – a regulatory requirement for financial services to verify the identity of their clients, commonly implemented in crypto exchanges to comply with anti-money laundering (AML) regulations.
+**KYC (Know Your Customer)** – identity verification required by many regulated services (exchanges, fiat gateways) to comply with AML laws.
 
 ## L
 
-**L1 (Layer One)** – the primary blockchain layer responsible for executing and validating transactions, typically featuring its consensus mechanism and native token.
+**L1 (Layer One)** – the base blockchain that provides security and final settlement (e.g., Ethereum, Solana).
 
-**L2 (Layer Two)** – secondary frameworks or protocols built on top of an existing blockchain (Layer One) to improve scalability and speed without altering the base layer's structure.
+**L2 (Layer Two)** – a scaling layer that processes transactions off the L1 main path and settles results back to L1 (often cheaper/faster).
 
-**LayerZero** – an interoperability protocol that connects blockchains, allowing developers to build cross-chain applications, tokens, and experiences.
+**Latency** – how long it takes from submitting an action to seeing it executed/confirmed.
 
-**Lightning Network** – a second-layer solution built on top of a blockchain (such as Bitcoin) that enables fast, low-cost transactions through off-chain payment channels.
+**Liquidation Protection** – features designed to reduce the chance a leveraged/collateralized position gets liquidated (varies by protocol).
 
-**Liquidation Protection** – safeguards implemented within DeFi protocols to mitigate the risk of user positions being liquidated due to falling asset prices or insufficient collateral.
-
-**Liquidity Pools** – pools of funds provided by users in DeFi platforms, used to facilitate trading and lending by providing liquidity to the market.
-
-**Liquidity Pools Rebalancing** – the process of adjusting the allocation of assets within liquidity pools in DeFi platforms to maintain optimal liquidity and minimize risks associated with price fluctuations.
+**Liquidity Pools** – shared token reserves that enable trading/lending. Liquidity providers deposit assets and earn fees/rewards, but take risks (e.g., price movement).
 
 ## M
 
-**Merkle Root** – the top hash of a Merkle tree, summarizing all transactions in a block. It ensures data integrity and quick verification.
+**Merkle Root** – a single hash that represents a whole set of data (like all transactions in a block). It lets nodes verify inclusion efficiently.
 
-**Merkle Tree** – a data structure used in blockchain technology to efficiently and securely verify the integrity of data. It is a binary tree where each leaf node is a hash of a data block, and each non-leaf node is a hash of its children.
+**Merkle Tree** – a structure that organizes hashes so you can prove a piece of data is included without downloading everything.
 
-**Micropayments** – very small transactions facilitated by blockchain technology, often used for tipping, content monetization, or microservices.
-
-**Multisig Protocol** – a blockchain protocol that allows multiple parties to jointly control funds or assets by requiring the authorization of a predefined number of signatories before a transaction can be executed.
+**Multisig Protocol** – a wallet/control scheme requiring multiple approvals (e.g., 2-of-3 signatures) before funds move.
 
 ## N 
 
-**Node** – a computer that participates in a blockchain network by validating and relaying transactions and maintaining a copy of the entire blockchain ledger.
+**Node** – a computer running blockchain software that helps validate, relay, and store chain data.
 
-**Nonce** – a random or pseudo-random number used in cryptographic communication to ensure that old communications can't be reused in replay attacks. In mining, it's the value miners adjust to find a valid hash.
+**Nonce** – a value used once. In PoW it’s adjusted to find a valid block hash; in accounts it can prevent replay and enforce transaction ordering.
 
 ## O
 
-**Oracles** – trusted third-party services or decentralized networks that provide external data to smart contracts on blockchain platforms, enabling the execution of conditional actions based on real-world events or information.
+**Oracles** – systems that bring external data (prices, outcomes, timestamps) on-chain so smart contracts can react to real-world information.
 
-**Origin Chain** - an event log provider facilitating the processing and delivery of events to Reactive Contracts. 
+**Origin Chain** – the chain where the relevant events are observed/emitted before being processed for Reactive Contract execution.
 
 ## P
 
-**Proof of Authority (PoA)** – a consensus algorithm that relies on a small number of trusted nodes with known identities to validate transactions and create new blocks, offering high performance and scalability.
+**Proof of Authority (PoA)** – a consensus model where a known set of validators produces blocks. Efficient, but more centralized than open validator sets.
 
-**Proof of Stake (PoS)** – a consensus mechanism where validators are chosen to create new blocks and confirm transactions based on the amount of cryptocurrency they hold and are willing to "stake" as collateral.
-
-**Public Key Infrastructure (PKI)** – a framework for managing public key encryption, including the creation, distribution, and verification of digital certificates.
-
-## Q
-
-**Quantum Computing** – an emerging field of computing with the potential to solve complex problems much faster than classical computers, posing both opportunities and threats to current cryptographic methods used in blockchain.
+**Proof of Stake (PoS)** – consensus where validators stake tokens to participate and can be penalized for malicious behavior.
 
 ## R
 
-**ReactVM** – a specialized EVM within the Reactive Network for executing Reactive Contracts, allowing transactions to run in random order across multiple threads while maintaining transaction order for each ReactVM.
+**ReacDeFi** – Reactive Network’s dApp for automated trade management (e.g., stop-loss and take-profit), with upcoming liquidation protection — built to execute strategies via on-chain event-centric logic rather than bots.
 
-**Reactive Network** – a blockchain layer supporting Reactive Contracts, where data-driven execution replaces user input, allowing conditional state changes across blockchains and efficient computation through parallelized EVM implementation using event streams.
+**ReactVM** – Reactive Network’s execution environment for Reactive Contracts, designed for high-throughput parallel processing while preserving correct ordering where needed.
 
-**Reactive Contract** – a type of contract that autonomously monitors and responds to events on EVM-compatible chains, enabling decentralized automation without external prompts.
+**Reactive Network** – a blockchain layer designed for event-centric smart contracts that execute automatically based on on-chain events (including cross-chain), reducing reliance on off-chain bots and centralized automation.
 
-**Reactivity** – the ability of Reactive Contracts to autonomously respond to data flows, allowing conditional state changes and efficient cross-chain computation without relying on user input.
+**Reactive Contract** – a smart contract that watches for specified events and executes automatically when conditions are met (e.g., “if price hits X, do Y”).
 
-**Rollups** – a layer two scaling solution that aggregates multiple transactions into a single batch for more efficient processing on the main blockchain, reducing fees and improving throughput.
+**Reactivity** – the property of a system where actions are triggered by incoming events/data streams instead of manual user transactions.
+
+**Rollups** – L2 systems that batch many transactions and post compressed proofs/data to an L1 to reduce cost and increase throughput.
 
 ## S
 
-**Self-Rebalancing Liquidity Pools** – liquidity pools in DeFi platforms that automatically adjust their asset allocations to maintain equilibrium and optimize liquidity without requiring manual intervention from users.
+**Self-Rebalancing Liquidity Pools** – pools that automatically adjust allocations/weights according to predefined rules, rather than relying on manual rebalancing.
 
-**Shard** – a smaller partition of a blockchain network that allows for parallel processing of transactions, improving scalability and throughput.
+**Sharding** – a scalability technique that splits a blockchain into multiple shards, each handling part of the total workload. It increases throughput and reduces congestion, but adds complexity around security and cross-shard communication.
 
-**Sharding** – a scalability method that divides a blockchain into smaller, more manageable pieces (shards) that can process transactions simultaneously.
+**Sidechain** – a separate blockchain connected to a main chain, often with different rules or performance characteristics, and a bridge for moving assets between them. Sidechains can offer cheaper or faster transactions, but usually rely on their own security assumptions rather than the main chain’s.
 
-**Sidechain** – a separate blockchain that runs in parallel to a main blockchain, allowing for the transfer of assets between chains and enabling more complex functionality without congesting the main chain.
+**Stateful** – a contract or system that stores data over time and updates it as transactions/events occur (as opposed to stateless computation).
 
-**Soft Fork** – a backward-compatible update to a blockchain protocol that allows for more stringent rules without splitting the blockchain into two separate networks.
+**Stop Order** – an order that triggers when price reaches a set level, typically to limit losses or enter a position.
 
-**Stateful** – describes a system, protocol, or smart contract on a blockchain that maintains and updates its internal state over time, typically recording changes in data or conditions.
-
-**Stop Order** – a trade order automatically executed when an asset's price hits a specified level, commonly used for risk management in trading.
-
-**Stop Price** – the predefined price level at which a stop order is triggered, initiating the execution of a trade to buy or sell an asset.
+**Stop Price** – the price level that triggers the stop order.
 
 ## T
 
-**Tokenomics** – the study and design of the economic systems and models surrounding a cryptocurrency token, including its creation, distribution, and utility.
+**Tokenomics** – how a token’s supply, distribution, incentives, and utility are designed (and how those choices affect behavior and value).
 
-**Trading Pools** – pooled funds in DeFi platforms used for trading assets, providing liquidity, and facilitating decentralized exchange transactions.
+**TPS (Transactions Per Second)** – a rough throughput metric. TPS comparisons can be misleading unless you also consider transaction type, finality, and fees.
 
-**Trustlessness** – the property of a blockchain system where participants can interact and transact without needing to trust intermediaries or counterparties.
+**Trading Pools** – pooled liquidity used to enable trading and price discovery on DEXs.
+
+**Trustlessness** – the idea that you don’t need to trust a person or company because rules are enforced by code and consensus (though you still trust assumptions like contract correctness).
 
 ## U
 
-**Uniswap** – a popular decentralized exchange protocol on Ethereum that uses automated market making (AMM) to facilitate trading without the need for a traditional order book.
+**Uniswap** – a leading decentralized exchange (DEX) on Ethereum where users swap tokens directly from their wallets. Instead of matching buyers and sellers in an order book, Uniswap typically uses liquidity pools and AMM pricing.
 
 ## V
 
-**Validator** – a participant in a blockchain network that verifies and confirms transactions, often through staking cryptocurrency in Proof of Stake systems.
-
-**Vanity Address** – a cryptocurrency address that includes a recognizable pattern or prefix, typically generated through brute force or specialized software.
+**Validator** – a network participant that proposes and verifies blocks. In PoS systems, validators lock up (“stake”) tokens to earn rewards and can be penalized (slashed) for malicious behavior or going offline.
 
 ## W
 
-**Whale Moves** – significant transactions or actions executed by large holders of cryptocurrencies or assets, referred to as "whales", which can have a notable impact on market prices or sentiment due to their substantial size.
+**Whale Moves** – very large trades or transfers made by “whales” (wallets with substantial holdings). These transactions can move prices, shift liquidity, or signal market sentiment—though not every large transfer means a trade happened.
 
-**Wrapped Tokens** – tokens that represent another cryptocurrency on a different blockchain, allowing for interoperability and use in DeFi applications (e.g., Wrapped Bitcoin (WBTC) on Ethereum).
+**Wrapped Tokens** – tokens that track the value of an asset from another chain so it can be used in a new ecosystem (e.g., BTC represented as WBTC on Ethereum). Wrapped tokens typically rely on custody or protocol mechanisms to keep the “wrapped” token redeemable for the original asset.
 
 ## Y
 
-**Yield Farming** – a DeFi strategy where users use their assets by providing liquidity to protocols in exchange for rewards, typically in the form of additional tokens or a share of transaction fees.
+**Yield Farming** – earning rewards by putting tokens to work in DeFi (e.g., providing liquidity, lending, staking). Returns can be high but variable, and strategies carry risks such as smart contract bugs, price volatility, and impermanent loss.
 
 ## Z 
 
-**Zero-Knowledge Proof (ZKP)** – a cryptographic method that allows one party to prove to another that a statement is true without revealing any additional information. Commonly used for enhancing privacy and security in blockchain transactions.
-
-**zk-SNARKs** (Zero-Knowledge Succinct Non-Interactive Arguments of Knowledge) – a type of zero-knowledge proof that enables one party to prove possession of certain information without revealing the information itself or requiring interaction between prover and verifier.
+**Zero-Knowledge Proof (ZKP)** – a cryptographic proof that lets you demonstrate something is true (e.g., “I meet condition X”) without revealing the underlying data (e.g., the exact balance or identity).
