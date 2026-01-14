@@ -69,17 +69,31 @@ cast call $PROXY_ADDR "debts(address)" $CONTRACT_ADDR --rpc-url $RPC_URL | cast 
 
 [More on Reactive Economy →](../docs/economy.md)
 
-## Faucet Issue
+## Getting Testnet lReact
 
-If you’ve sent **SepETH** to the Reactive Faucet at `0x9b9BB25f1A81078C544C829c5EB7822d747Cf434` but haven’t received **REACT** within a few minutes, the faucet may be experiencing a temporary issue. Report it in our [General Telegram channel](https://t.me/reactivedevs/1). You will receive your test REACT once the issue is resolved.
+To obtain testnet lReact, send SepEth to the Reactive faucet contract on Ethereum Sepolia: `0x9b9BB25f1A81078C544C829c5EB7822d747Cf434`. The exchange rate is **1 SepETH → 100 lReact** (e.g., **0.1 SepETH = 10 lReact**). Use MetaMask or any compatible wallet.
 
-The current exchange rate is **0.1 SepETH = 10 REACT**. You can request REACT manually using MetaMask or Foundry cast command:
+Alternatively, you can exchange SepETH for lREACT via [ReacDEFI](https://reacdefi.app/markets). Select the desired lREACT amount, and the app will calculate the required SepETH. An Ethereum Sepolia wallet (MetaMask or Coinbase) must be connected.
+
+:::info[Important]
+Do not send more than **5 SepETH** in a single transaction. Any excess will be lost. Maximum per request: **5 SepETH → 500 lReact**.
+:::
+
+You can also request lReact by calling the faucet contract:
 
 ```bash
-cast send 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434 --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY "request(address)" $CONTRACT_ADDR --value 0.1ether
+cast send 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434 \
+  --rpc-url $SEPOLIA_RPC \
+  --private-key $SEPOLIA_PRIVATE_KEY \
+  "request(address)" $CONTRACT_ADDR \
+  --value 0.1ether
 ```
 
 [More on Reactive Faucet →](../docs/reactive-mainnet.mdx#get-testnet-react)
+
+## Reactive Faucet Issue
+
+If you’ve sent **SepETH** to the Reactive Faucet at `0x9b9BB25f1A81078C544C829c5EB7822d747Cf434` but haven’t received **REACT** within a few minutes, the faucet may be experiencing a temporary issue. Report it in our [General Telegram channel](https://t.me/reactivedevs/1). You will receive your test REACT once the issue is resolved.
 
 ## Nonce & Gas Price Issue
 
@@ -112,4 +126,6 @@ You will need to disable Smart Transactions in MetaMask:
 
 After this, your transactions will go through the regular route and should work correctly.
 
-[More on MetaMask's Smart Transactions →](https://support.metamask.io/manage-crypto/transactions/smart-transactions/) 
+[More on MetaMask's Smart Transactions →](https://support.metamask.io/manage-crypto/transactions/smart-transactions/)
+
+## Getting Testnet lReact
