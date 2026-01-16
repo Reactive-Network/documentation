@@ -15,10 +15,10 @@ const TestnetChainTable = () => {
             chain: 'Base Sepolia',
             chainId: 84532,
             link: 'https://sepolia.basescan.org/',
-            callbackAddress: '',
+            callbackAddress: '0xa6eA49Ed671B8a4dfCDd34E36b7a75Ac79B8A5a6',
             rpcUrl: 'https://chainlist.org/chain/84532',
             origin: true,
-            destination: false
+            destination: true
         },
         {
             chain: 'Binance Smart Chain',
