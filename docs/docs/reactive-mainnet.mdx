@@ -33,18 +33,44 @@ Reactive Mainnet and Lasna Testnet use the same system contract address: `0x0000
 
 ## Get Testnet REACT
 
-To receive testnet REACT, send SepETH to the Reactive faucet contract on Ethereum Sepolia: `0x9b9BB25f1A81078C544C829c5EB7822d747Cf434`. The factor is 1/100, meaning you get 100 REACT for 1 SepETH sent. You can use MetaMask or any compatible wallet for the transfer.
+### Reactive Faucet
 
-You can exchange SepETH for lREACT using [ReacDEFI](https://reacdefi.app/markets), Reactive’s app. After selecting the desired amount of lREACT, the app automatically calculates the required SepETH. To complete the exchange, users must connect an Ethereum Sepolia wallet via MetaMask or Coinbase Wallet.
+To obtain **testnet REACT (lREACT)**, send **ETH** to one of the Reactive faucet contracts:
+
+```json
+Ethereum Sepolia: 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434
+
+Base Sepolia: 0x2afaFD298b23b62760711756088F75B7409f5967
+```
+
+The exchange rate is **1:100** — for each **ETH** sent, you receive **100 lREACT**. You can make the transfer using **MetaMask** or any Ethereum-compatible wallet.
 
 :::info[Important]
-Do not send more than 5 SepETH per request, as doing so will cause you to lose the excess amount without receiving any additional REACT. The maximum that should be sent in a single transaction is 5 SepETH, which will yield 500 REACT.
+**Do not** send more than **5 ETH** in a single transaction.
+* **Maximum per transaction**: 5 ETH
+* **Maximum received**: 500 lREACT
+* Any amount above 5 ETH will be **lost** and **will not** generate extra lREACT
 :::
 
-Alternatively, call the `request(address)` method on the Reactive faucet contract:
+### ReacDEFI Swap
+
+You can also swap ETH for lREACT directly using [ReacDEFI](https://reacdefi.app/markets), Reactive’s app:
+
+1. Choose how much **lREACT** you want to receive.
+2. The app automatically calculates the required **ETH**.
+3. Connect an Ethereum/Base Sepolia wallet via MetaMask or Coinbase.
+4. Confirm the transaction.
+
+### Terminal Request
+
+Alternatively, call the `request(address)` method on one of the Reactive faucet contracts:
 
 ```bash
-cast send 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434 --rpc-url $SEPOLIA_RPC --private-key $SEPOLIA_PRIVATE_KEY "request(address)" $CONTRACT_ADDR --value 0.1ether
+cast send 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434 --rpc-url $ETHEREUM_SEPOLIA_RPC --private-key $ETHEREUM_SEPOLIA_PRIVATE_KEY "request(address)" $CONTRACT_ADDR --value 0.1ether
+```
+
+```bash
+cast send 0x2afaFD298b23b62760711756088F75B7409f5967 --rpc-url $BASE_SEPOLIA_RPC --private-key $BASE_SEPOLIA_PRIVATE_KEY "request(address)" $CONTRACT_ADDR --value 0.1ether
 ```
 
 ## Lasna Testnet
@@ -52,7 +78,7 @@ cast send 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434 --rpc-url $SEPOLIA_RPC --pr
 * Network Name — Reactive Lasna
 * RPC URL — https://lasna-rpc.rnk.dev/
 * Chain ID — 5318007
-* Currency Symbol — REACT
+* Currency Symbol — lREACT
 * Block Explorer URL — https://lasna.reactscan.net
 
 <LasnaButton />
