@@ -69,22 +69,44 @@ cast call $PROXY_ADDR "debts(address)" $CONTRACT_ADDR --rpc-url $RPC_URL | cast 
 
 [More on Reactive Economy →](../docs/economy.md)
 
-## Getting Testnet lReact
+## Getting Testnet lREACT
 
-To obtain testnet lReact, send SepEth to the Reactive faucet contract on Ethereum Sepolia: `0x9b9BB25f1A81078C544C829c5EB7822d747Cf434`. The exchange rate is **1 SepETH → 100 lReact** (e.g., **0.1 SepETH = 10 lReact**). Use MetaMask or any compatible wallet.
+### Reactive Faucet
 
-Alternatively, you can exchange SepETH for lREACT via [ReacDEFI](https://reacdefi.app/markets). Select the desired lREACT amount, and the app will calculate the required SepETH. An Ethereum Sepolia wallet (MetaMask or Coinbase) must be connected.
+To obtain testnet **lREACT**, send **ETH** to one of the Reactive faucet contracts:
+
+```json
+Ethereum Sepolia: 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434
+
+Base Sepolia: 0x2afaFD298b23b62760711756088F75B7409f5967
+```
+
+The exchange rate is **1:100** — for each **ETH** sent, you receive **100 lREACT**. You can make the transfer using **MetaMask** or any Ethereum-compatible wallet.
 
 :::info[Important]
-Do not send more than **5 SepETH** in a single transaction. Any excess will be lost. Maximum per request: **5 SepETH → 500 lReact**.
+**Do not** send more than **5 ETH** in a single transaction. Any excess will be **lost**. Maximum per request: **5 ETH → 500 lREACT**.
 :::
 
-You can also request lReact by calling the faucet contract:
+### ReacDEFI Swap
+
+You can also swap ETH for lREACT directly using [ReacDEFI](https://reacdefi.app/markets). Select the desired lREACT amount, and the app will calculate the required ETH. An Ethereum/Base Sepolia wallet (MetaMask or Coinbase) must be connected.
+
+### Terminal Request
+
+You can also request lREACT by calling `request()` on one of the faucet contracts:
 
 ```bash
 cast send 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434 \
-  --rpc-url $SEPOLIA_RPC \
-  --private-key $SEPOLIA_PRIVATE_KEY \
+  --rpc-url $ETHEREUM_SEPOLIA_RPC \
+  --private-key $ETHEREUM_SEPOLIA_PRIVATE_KEY \
+  "request(address)" $CONTRACT_ADDR \
+  --value 0.1ether
+```
+
+```bash
+cast send 0x2afaFD298b23b62760711756088F75B7409f5967 \
+  --rpc-url $BASE_SEPOLIA_RPC \
+  --private-key $BASE_SEPOLIA_PRIVATE_KEY \
   "request(address)" $CONTRACT_ADDR \
   --value 0.1ether
 ```
@@ -93,7 +115,7 @@ cast send 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434 \
 
 ## Reactive Faucet Issue
 
-If you’ve sent **SepETH** to the Reactive Faucet at `0x9b9BB25f1A81078C544C829c5EB7822d747Cf434` but haven’t received **REACT** within a few minutes, the faucet may be experiencing a temporary issue. Report it in our [General Telegram channel](https://t.me/reactivedevs/1). You will receive your test REACT once the issue is resolved.
+If you’ve sent **ETH** to the Reactive Faucet at `0x9b9BB25f1A81078C544C829c5EB7822d747Cf434` (Ethereum Sepolia) or `0x2afaFD298b23b62760711756088F75B7409f5967` (Base Sepolia) but haven’t received **lREACT** within a few minutes, the faucet might be experiencing a temporary issue. Report it in our [General Telegram channel](https://t.me/reactivedevs/1). You will receive your test lREACT once the issue is resolved.
 
 ## Nonce & Gas Price Issue
 
