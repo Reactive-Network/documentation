@@ -229,6 +229,10 @@ const config = {
               from: "/reactive-smart-contracts",
               to: "/reactive-contracts"
             },
+            {
+              from: "/kopli-testnet",
+              to: "/reactive-mainnet"
+            },
           ]
         }
       ]
