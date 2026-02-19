@@ -231,6 +231,34 @@ const config = {
               from: "/faq",
               to: "/debugging"
             },
+            {
+              from: "/education/introduction/reactive-smart-contracts",
+              to: "/education/introduction/reactive-contracts"
+            },
+            {
+              from: "/education/introduction/module-1/reactive-smart-contracts",
+              to: "/education/module-1/reactive-contracts"
+            },
+            {
+              from: "/architecture/reactive-smart-contracts",
+              to: "/reactive-contracts"
+            },
+            {
+              from: "/architecture/react-vm",
+              to: "/reactvm"
+            },
+            {
+              from: "/docs/architecture/react-vm",
+              to: "/reactvm"
+            },
+            {
+              from: "/compendium",
+              to: "/debugging"
+            },
+            {
+              from: "/docs/kopli-testnet",
+              to: "/reactive-mainnet"
+            },
           ]
         }
       ]
