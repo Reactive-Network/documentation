@@ -227,6 +227,10 @@ const config = {
               from: "/kopli-testnet",
               to: "/reactive-mainnet"
             },
+            {
+              from: "/faq",
+              to: "/debugging"
+            },
           ]
         }
       ]
