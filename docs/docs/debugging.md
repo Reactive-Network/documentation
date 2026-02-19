@@ -1,12 +1,12 @@
 ---
-sidebar_position: 1
 title: Debugging
+sidebar_position: 14
 description: The page dedicated to debugging of most frequent errors and issues on Reactive Network.
-slug: /debugging/
+slug: /debugging
 hide_title: true
 ---
 
-![Debugging Image](./img/debugging.jpg)
+![Debugging Image](../docs/img/debugging.jpg)
 
 ## Overview
 
@@ -31,13 +31,13 @@ bytes memory payload = abi.encodeWithSignature(
 emit Callback(chain_id, stop_order, CALLBACK_GAS_LIMIT, payload);
 ```
 
-[More on Callbacks →](../docs/events-and-callbacks.md#callbacks-to-destination-chains)
+[More on Callbacks →](events-and-callbacks.md#callbacks-to-destination-chains)
 
 ## Contract Inactive
 
 If you see `Contract Status: Inactive` on Reactscan, it means the contract doesn’t have enough funds to cover gas for reactive transactions. Both **destination** and **reactive contracts** must hold sufficient balance to stay active.
 
-![Debugging Image](./img/contract-inactive.png)
+![Debugging Image](../docs/img/contract-inactive.png)
 
 You can either fund the relevant contract on deployment:
 
@@ -67,7 +67,7 @@ To check the outstanding debt, query the relevant proxy contract (`0x00000000000
 cast call $PROXY_ADDR "debts(address)" $CONTRACT_ADDR --rpc-url $RPC_URL | cast to-dec
 ```
 
-[More on Reactive Economy →](../docs/economy.md)
+[More on Reactive Economy →](economy.md)
 
 ## Getting Testnet lREACT
 
@@ -111,7 +111,7 @@ cast send 0x2afaFD298b23b62760711756088F75B7409f5967 \
   --value 0.1ether
 ```
 
-[More on Reactive Faucet →](../docs/reactive-mainnet.mdx#get-testnet-react)
+[More on Reactive Faucet →](reactive-mainnet.mdx#get-testnet-react)
 
 ## Reactive Faucet Issue
 

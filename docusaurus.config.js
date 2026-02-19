@@ -120,12 +120,6 @@ const config = {
           },
           {
             type: "docSidebar",
-            sidebarId: "debugging",
-            position: "left",
-            label: "Debugging",
-          },
-          {
-            type: "docSidebar",
             sidebarId: "contacts",
             position: "left",
             label: "Contact Us",
@@ -141,7 +135,7 @@ const config = {
             position: 'right',
           },
           {
-            href: 'https://github.com/Reactive-Network',
+            href: 'https://github.com/Reactive-Network/reactive-smart-contract-demos',
             label: 'GitHub',
             position: 'right',
           },
