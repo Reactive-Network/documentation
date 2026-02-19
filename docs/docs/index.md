@@ -52,7 +52,7 @@ Reactive contracts receive event logs from various chains, executing Solidity lo
 
 [FAQ →](./faq.md) Find answers to common questions.
 
-[Debugging →](../debugging/index.md) Debug errors and issues related to Reactive and beyond.
+[Debugging →](debugging.md) Debug errors and issues related to Reactive and beyond.
 
 [Contacts →](../contacts/index.md) Reach out via socials for technical or trading inquiries.
 
