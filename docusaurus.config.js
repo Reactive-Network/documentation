@@ -228,10 +228,6 @@ const config = {
               to: "/reactive-mainnet"
             },
             {
-              from: "/debugging/index.md",
-              to: "/debugging"
-            },
-            {
               from: "/faq",
               to: "/debugging"
             },
