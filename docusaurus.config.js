@@ -236,7 +236,7 @@ const config = {
               to: "/education/introduction/reactive-contracts"
             },
             {
-              from: "/education/introduction/module-1/reactive-smart-contracts",
+              from: "/education/module-1/reactive-smart-contracts",
               to: "/education/module-1/reactive-contracts"
             },
             {
