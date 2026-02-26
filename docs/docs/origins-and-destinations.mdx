@@ -1,7 +1,7 @@
 ---
 title: Origins & Destinations
 sidebar_position: 2
-description: Discover how Reactive Network manages event streams and transactions across different ecosystems and learn about network compatibility.
+description: Learn how Reactive Contracts subscribe to event logs on origin chains and send callback transactions to destination chains.
 slug: /origins-and-destinations
 hide_title: true
 ---
@@ -13,22 +13,30 @@ import TestnetChainTable from "../../src/components/origins-destinations-testnet
 
 ## Overview
 
-The Reactive Network reads event streams and enables transactions across different ecosystems. An Origin acts as an event log provider, delivering events to reactive contracts within the Reactive Network. A Destination is the ecosystem where the actual state transition (transaction) takes place.
+Reactive Contracts (RCs) can **listen to event logs on one chain** and **trigger actions on another**. To describe that flow, we use two roles:
 
-Origins and destinations don't have to be the same. Reactive contracts can be configured to work with multiple origins, and the system allows for multiple destinations, enabling conditional selection of which destination ecosystem will be used.
+- **Origin** — the chain where events happen and event logs are read from (the event source).
+- **Destination** — the chain where Reactive Network delivers a callback transaction (the chain where state changes happen).
+
+Origins and destinations don’t have to be the same. A single Reactive Contract can subscribe to events from multiple origin chains, and it can send callbacks to one or more destination chains. Your Solidity logic can also choose the destination conditionally.
 
 ## Callback Proxy Address
 
-The Callback Proxy address ensures the validity of a callback transaction by enforcing two key conditions. First, it checks that the callback is genuinely initiated by the Reactive Network by verifying that the sender address matches the Callback Proxy address. Then, it confirms the legitimacy of the callback’s origin by checking the RVM ID embedded in the transaction payload, which should correspond to the intended reactive contract.
+Callbacks are delivered to destination chains via a **Callback Proxy** contract. Its job is to make callback transactions verifiable and safe for destination-side contracts.
+
+A destination contract can validate a callback by checking:
+
+1. **The sender is the Callback Proxy** (so the call is coming through the expected entry point).
+2. **The embedded RVM ID matches the intended Reactive Contract** (so the callback is tied to the correct RC).
 
 :::info[Hyperlane]
-Some networks are currently unable to act as destination chains because the callback proxy contract has not yet been deployed on them. In such cases, it is recommended to use [Hyperlane](./hyperlane) as the cross-chain message relayer.
+Some networks can’t act as destination chains yet because the Callback Proxy contract hasn’t been deployed there. In that case, use [Hyperlane](./hyperlane) as the transport for cross-chain callbacks.
 :::
 
 ## Mainnet Chains
 
 :::info[Origin/Destination]
-Origin is the chain where events originate and are read from. Destination is the chain where callbacks are delivered in response to those events. Mainnets and testnets must not be mixed. If origin is a mainnet, destination must also be a mainnet.
+Origin is the chain where events originate (and are read from). Destination is the chain where callbacks are delivered in response to those events. Mainnets and testnets must not be mixed: if the origin is a mainnet, the destination must also be a mainnet.
 :::
 
 <MainnetChainTable />
@@ -36,7 +44,7 @@ Origin is the chain where events originate and are read from. Destination is the
 ## Testnet Chains
 
 :::info[Origin/Destination]
-Origin is the chain where events originate and are read from. Destination is the chain where callbacks are delivered in response to those events. Mainnets and testnets must not be mixed. If origin is a testnet, destination must also be a testnet.
+Origin is the chain where events originate (and are read from). Destination is the chain where callbacks are delivered in response to those events. Mainnets and testnets must not be mixed: if the origin is a testnet, the destination must also be a testnet.
 :::
 
 <TestnetChainTable />
