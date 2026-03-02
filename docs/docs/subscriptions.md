@@ -229,23 +229,31 @@ Duplicate subscriptions are allowed but behave as one subscription.
 
 Each `subscribe()` transaction still costs gas.
 
-
-
-
-
 ## Dynamic Subscriptions
 
-Subscriptions in the Reactive Network are managed through the system contract, which is accessible only from the network. Events are sent to the ReactVM's contract copy, which has no direct access to the system contract. Therefore, dynamic subscriptions and unsubscriptions based on incoming events must be handled via callbacks.
+Subscriptions can be created or removed dynamically based on incoming events.
 
-The `react()` method from the [reactive contract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/approval-magic/ApprovalListener.sol) of the [Approval Magic demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/approval-magic) processes incoming events and checks if `topic_0` indicates a `subscribe` or `unsubscribe` event. If so, it generates a callback to the Reactive Network to manage the subscription.
+Subscription management is performed through the system contract, which is accessible only from Reactive Network (RNK). The ReactVM instance of a contract can't call the system contract directly, so dynamic subscription changes must be performed through callback transactions.
+
+The typical flow is:
+
+1. An event is received in the ReactVM.
+2. The contract decides whether to subscribe or unsubscribe.
+3. A `Callback` event is emitted.
+4. Reactive Network (RNK) executes the subscription change.
 
 ### Subscribing & Unsubscribing
 
-These functions allow the contract to subscribe or unsubscribe a subscriber address to/from the `APPROVAL_TOPIC_0` in the Reactive Network.
+These functions run on the Reactive Network contract instance and modify subscriptions through the system contract. The example below is based on the [ApprovalListener.sol](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/approval-magic/ApprovalListener.sol) contract from the [Approval Magic demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/approval-magic).
 
 ```solidity
-    // Methods specific to reactive network contract instance
-    function subscribe(address rvm_id, address subscriber) external rnOnly callbackOnly(rvm_id) {
+// Methods specific to Reactive Network contract instance
+
+function subscribe(address rvm_id, address subscriber)
+    external
+    rnOnly
+    callbackOnly(rvm_id)
+    {
         service.subscribe(
             SEPOLIA_CHAIN_ID,
             address(0),
@@ -256,7 +264,11 @@ These functions allow the contract to subscribe or unsubscribe a subscriber addr
         );
     }
 
-    function unsubscribe(address rvm_id, address subscriber) external rnOnly callbackOnly(rvm_id) {
+function unsubscribe(address rvm_id, address subscriber)
+    external
+    rnOnly
+    callbackOnly(rvm_id)
+    {
         service.unsubscribe(
             SEPOLIA_CHAIN_ID,
             address(0),
@@ -268,59 +280,82 @@ These functions allow the contract to subscribe or unsubscribe a subscriber addr
     }
 ```
 
-**Parameters**:
+Parameters:
 
-- `rvm_id`: The ID of the reactive virtual machine (RVM).
-- `subscriber`: The address that will be subscribed or unsubscribed.
+- **rvm_id** — ReactVM identifier (injected automatically)
+- **subscriber** — address to subscribe or unsubscribe
 
-**Operations**:
+Operations:
 
-- `subscribe`: Registers a subscriber to the `APPROVAL_TOPIC_0`.
-- `unsubscribe`: Removes a subscriber from the `APPROVAL_TOPIC_0`.
+- **subscribe** — registers a subscriber for `APPROVAL_TOPIC_0`
+- **unsubscribe** — removes a subscriber from `APPROVAL_TOPIC_0`
 
-### react Function & Logic
+### react() Logic
 
-The function processes incoming log records from the ReactVM and executes different actions based on the topic in the log.
+The `react()` function processes incoming events and emits callbacks when subscription changes are required.
 
 ```solidity
 // Methods specific to ReactVM contract instance
-    function react(LogRecord calldata log) external vmOnly {
-        if (log.topic_0 == SUBSCRIBE_TOPIC_0) {
-            bytes memory payload = abi.encodeWithSignature(
-                "subscribe(address,address)",
-                address(0),
-                address(uint160(log.topic_1))
-            );
-            emit Callback(REACTIVE_CHAIN_ID, address(this), CALLBACK_GAS_LIMIT, payload);
-        } else if (log.topic_0 == UNSUBSCRIBE_TOPIC_0) {
-            bytes memory payload = abi.encodeWithSignature(
-                "unsubscribe(address,address)",
-                address(0),
-                address(uint160(log.topic_1))
-            );
-            emit Callback(REACTIVE_CHAIN_ID, address(this), CALLBACK_GAS_LIMIT, payload);
-        } else {
-            (uint256 amount) = abi.decode(log.data, (uint256));
-            bytes memory payload = abi.encodeWithSignature(
-                "onApproval(address,address,address,address,uint256)",
-                address(0),
-                address(uint160(log.topic_2)),
-                address(uint160(log.topic_1)),
-                log._contract,
-                amount
-            );
-            emit Callback(SEPOLIA_CHAIN_ID, address(approval_service), CALLBACK_GAS_LIMIT, payload);
-        }
+function react(LogRecord calldata log) external vmOnly {
+        
+    if (log.topic_0 == SUBSCRIBE_TOPIC_0) {
+            
+        bytes memory payload = abi.encodeWithSignature(
+            "subscribe(address,address)",
+            address(0),
+            address(uint160(log.topic_1))
+        );
+        
+        emit Callback(
+            REACTIVE_CHAIN_ID, 
+            address(this), 
+            CALLBACK_GAS_LIMIT, 
+            payload
+        );
+        
+    } else if (log.topic_0 == UNSUBSCRIBE_TOPIC_0) {
+            
+        bytes memory payload = abi.encodeWithSignature(
+            "unsubscribe(address,address)",
+            address(0),
+            address(uint160(log.topic_1))
+        );
+            
+        emit Callback(
+            REACTIVE_CHAIN_ID, 
+            address(this), 
+            CALLBACK_GAS_LIMIT, 
+            payload);
+        
+    } else {
+        
+        (uint256 amount) = abi.decode(log.data, (uint256));
+            
+        bytes memory payload = abi.encodeWithSignature(
+            "onApproval(address,address,address,address,uint256)",
+            address(0),
+            address(uint160(log.topic_2)),
+            address(uint160(log.topic_1)),
+            log._contract,
+            amount
+        );
+        
+        emit Callback(
+            SEPOLIA_CHAIN_ID, 
+            address(approval_service), 
+            CALLBACK_GAS_LIMIT, 
+            payload
+        );
     }
 }
 ```
 
-**Log Processing**:
+Event handling:
 
-- Subscribe Logic: If the log's `topic_0` matches the `SUBSCRIBE_TOPIC_0`, the function encodes a payload for the `subscribe()` method and emits a callback.
-- Unsubscribe Logic: If the log's `topic_0` matches the `UNSUBSCRIBE_TOPIC_0`, the function encodes a payload for the `unsubscribe()` method and emits a callback.
-- Approval Logic: For any other log, it decodes the approval amount and creates a payload for the `onApproval` method, then emits a callback to the `approval_service` on Sepolia.
+- **Subscribe event** → emits a callback that creates a subscription
+- **Unsubscribe event** → emits a callback that removes a subscription
+- **Other events** → emit callbacks that trigger application logic
 
-**Callback Emission**: The function uses the `emit Callback` statement to send the appropriate payload and trigger the corresponding action on the Reactive chain.
+Callbacks are executed by Reactive Network after the event is processed.
 
 [More on Subscriptions →](../education/module-1/subscriptions.md)
