@@ -8,8 +8,8 @@ const CronTable = () => {
                 <tr>
                     <th>Event</th>
                     <th>Interval</th>
-                    <th>Approx. Time</th>
-                    <th>Topic0</th>
+                    <th>Approximate Time</th>
+                    <th>Topic 0</th>
                 </tr>
                 </thead>
                 <tbody>

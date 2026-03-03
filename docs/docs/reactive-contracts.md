@@ -1,7 +1,7 @@
 ---
 title: Reactive Contracts
 sidebar_position: 4
-description: Explore Reactive Contracts, which enable event-driven interactions and transaction creation. Learn their setup, processing, and applications through clear examples.
+description: Learn about Reactive Contracts (RCs) — event-driven smart contracts for cross-chain, on-chain automation that monitor event logs and trigger callback transactions.
 slug: /reactive-contracts
 hide_title: true
 ---
@@ -10,35 +10,35 @@ hide_title: true
 
 ## Overview
 
-Reactive Contracts (RCs) operate on a standard Ethereum Virtual Machine (EVM) and can be written in any EVM-compatible language, with Application Binary Interfaces (ABIs) particularly customized for Solidity. Their unique capabilities stem from Reactive nodes and a specialized pre-deployed system contract.
+Reactive Contracts (RCs) are event-driven smart contracts for cross-chain, on-chain automation. They monitor event logs across EVM chains, execute Solidity logic when subscribed events occur, and can trigger cross-chain callback transactions.
 
-## Key Features
+RCs define which chains, contracts, and events to monitor and operate autonomously based on on-chain events rather than user transactions or bots.
 
-Reactive Contracts monitor blockchains for specific events and respond automatically, unlike traditional contracts that rely on EOAs to trigger actions. This reactivity and their use of Inversion of Control (IoC) — where contracts decide when to act — set them apart.
+## Deployment
 
-RCs define which blockchains, contracts, and events to watch. When a relevant event occurs, they execute logic, update state, and perform trustless transactions within the Reactive Network.
+Reactive Contracts deploy in two environments:
 
-### Deployment
+- **Reactive Network (RNK)** — the public chain where EOAs interact with the contract and subscriptions are managed
 
-RCs deploy to both the main Reactive Network and a private [ReactVM](./reactvm.md). The main copy interacts with EOAs and manages subscriptions via the system contract. The ReactVM copy handles event processing but is not accessible to EOAs.
+- **ReactVM (RVM)** — a private execution environment where event processing takes place
 
-### State and Separation
+Both copies use identical bytecode but operate independently.
 
-The two copies are isolated and don’t share state. Since they use the same bytecode, use constructor flags or checks to distinguish the environment. You can detect if a contract is on ReactVM by calling the system contract — calls will revert outside ReactVMs. See [examples](./demos.md) for details.
+## State Separation
 
-### ReactVM Limitations
+The two deployments do not share state. Constructor flags or runtime checks can be used to distinguish environments. A contract can detect execution inside ReactVM by calling the system contract — calls revert outside ReactVM. See our [demos](./demos.md) for details.
 
-In [ReactVM](./reactvm.md), RCs can’t access external systems directly. They receive logs from the Reactive Network and can call destination chain contracts but nothing else.
+## ReactVM Limitations
 
-## Contract Verification
+Inside [ReactVM](./reactvm.md), Reactive Contracts can't access external systems directly. They receive event logs from Reactive Network and can send callback transactions to destination chains, but can't interact with external RPC endpoints or off-chain services.
 
-Contracts can be verified either after or during deployment with the Sourcify endpoint. Sourcify is a decentralized verification service that stores and verifies source code for smart contracts. It allows anyone to match deployed bytecode with human-readable source code, making smart contracts auditable and transparent.
+## Verifying Reactive Contracts
+
+Contracts can be verified during or after deployment using the Sourcify endpoint. Sourcify is a decentralized verification service that matches deployed bytecode with source code, making contracts auditable and transparent.
 
 **Reactive Sourcify Endpoint**: https://sourcify.rnk.dev/
 
-### Verify After Deployment
-
-For contract verification after deployment, run the following command:
+## Verify After Deployment
 
 ```bash
 forge verify-contract \
@@ -48,15 +48,13 @@ forge verify-contract \
 $CONTRACT_ADDR $CONTRACT_NAME
 ```
 
-**Replace:**
+Replace:
 
-- `$CHAIN_ID` with `1597` for Reactive Mainnet and `5318007` for Lasna Testnet
-- `$CONTRACT_ADDR` with your deployed contract’s address
-- `$CONTRACT_NAME` with the name of the contract (e.g., `MyContract`)
+- `$CHAIN_ID` → `1597` (Reactive Mainnet) or `5318007` (Lasna Testnet)
+- `$CONTRACT_ADDR` → deployed contract address
+- `$CONTRACT_NAME` → contract name (e.g. `MyContract`)
 
-### Verify on Deployment
-
-You can also verify the contract during deployment by appending the relevant flags to `forge create`. The following command submits your contract source to Sourcify right after deployment:
+## Verify on Deployment
 
 ```bash
 forge create \
@@ -68,13 +66,13 @@ forge create \
 $PATH
 ```
 
-**Replace:**
+Replace:
 
-- `$CHAIN_ID` with `1597` for Reactive Mainnet and `5318007` for Lasna Testnet
-- `$PATH` with something like `src/MyContract.sol:MyContract`
-- `$PRIVATE_KEY` with your signer’s private key
+- `$CHAIN_ID` → `1597` (Reactive Mainnet) or `5318007` (Lasna Testnet)
+- `$PATH` → e.g. `src/MyContract.sol:MyContract`
+- `$PRIVATE_KEY` → deployer key
 
-An example of verifying on deployment could look like so: 
+Example: 
 
 ```bash
 forge create \
@@ -95,26 +93,29 @@ forge create \
 ```
 
 :::warning[Broadcast Error]
-If you encounter the error described below, it means your Foundry version (or local setup) does not expect the `--broadcast flag` for `forge create`. Simply remove `--broadcast` from your command and re-run it.
+If you encounter the error below, your Foundry version doesn't expect the `--broadcast` flag for `forge create`. Remove `--broadcast` and retry.
 
 ```go
 error: unexpected argument '--broadcast' found
 ```
 :::
 
-### Verified Contracts on Reactscan
+## Verified Contracts on Reactscan
 
-**Reactive Block Explorers:** [Mainnet](https://reactscan.net/) and [Lasna Testnet](https://lasna.reactscan.net/).
+After verification:
 
-After verification, go to the relevant **Reactscan.** While in your RVM, navigate to **Contracts** and click the required contract address.
+1. Open Reactscan ([Reactive Mainnet](https://reactscan.net/), [Lasna Testnet](https://lasna.reactscan.net/))
+2. Navigate to your RVM
+3. Open Contracts
+
 
 ![Image a](./img/verify-a.png)
 
-Open the “Contract” tab.
+4. Select the contract address
 
 ![Image b](./img/verify-b.png)
 
-If successful, you’ll see the following:
+Successful verification shows:
 
 ```json
 Contract Address: 0xc3e185561D2a8b04F0Fcd104A562f460D6cC503c
@@ -124,6 +125,6 @@ Compiler: 0.8.28
 
 ![Image c](./img/verify-c.png)
 
-The source code will be publicly viewable, with full syntax highlighting and structure, helping others understand and trust the contract logic.
+Verified contracts expose full source code with syntax highlighting and file structure.
 
 [More on Reactive Contracts →](../education/module-1/reactive-contracts)

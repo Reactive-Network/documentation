@@ -89,7 +89,7 @@ The exchange rate is **1:100** — for each **ETH** sent, you receive **100 lREA
 
 ### ReacDEFI Swap
 
-You can also swap ETH for lREACT directly using [ReacDEFI](https://reacdefi.app/markets). Select the desired lREACT amount, and the app will calculate the required ETH. An Ethereum/Base Sepolia wallet (MetaMask or Coinbase) must be connected.
+You can also swap ETH for lREACT directly using [ReacDEFI](https://reacdefi.app/markets#testnet-faucet). Select the desired lREACT amount, and the app will calculate the required ETH. An Ethereum/Base Sepolia wallet (MetaMask or Coinbase) must be connected.
 
 ### Terminal Request
 

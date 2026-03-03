@@ -1,7 +1,7 @@
 ---
 title: Subscriptions
 sidebar_position: 10
-description: Explore how to subscribe to events via Reactive Contracts, allowing for event-driven interactions and transaction creation.
+description: Learn how Reactive Contracts subscribe to events and configure event-driven automation.
 slug: /subscriptions
 hide_title: true
 ---
@@ -10,13 +10,24 @@ hide_title: true
 
 ## Overview
 
-This section explains how to configure and manage subscriptions in a reactive contract within the Reactive Network. It covers the basics of setting up subscriptions in the contract's constructor, handling dynamic subscriptions through callbacks, and applying filtering criteria like chain ID, contract address, and event topics.
+Subscriptions define which events Reactive Contracts (RCs) listens to. RCs subscribe to events through the system contract by specifying:
+
+- Origin chain ID
+- Contract address
+- Event topics
+
+When a matching event is detected, the contract's `react()` function is triggered.
+
+Subscriptions can be configured:
+
+- During deployment (constructor)
+- Dynamically via callbacks
 
 ## Subscription Basics
 
-In a reactive contract, subscriptions are established by invoking the `subscribe()` method of the Reactive Network's [system contract](./economy). This method is typically called in the contract's `constructor()` or dynamically via a callback (see [Dynamic Subscriptions](./subscriptions.md#dynamic-subscriptions)).
+Subscriptions are created by calling `subscribe()` on the system contract. This is typically done inside the contract constructor. Since contracts deploy both on Reactive Network (RNK) and inside a ReactVM (where the system contract doesn't exist), the constructor must avoid calling `subscribe()` inside ReactVM.
 
-Since deployments occur both on the Reactive Network and in the deployer's private ReactVM, where the system contract is not present, the reactive contract must handle potential reverts. [IReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol), [AbstractReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractReactive.sol), and [ISystemContract](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/ISystemContract.sol) should be implemented. Here's a subscription example in the constructor, taken from the [Basic Demo reactive contract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoReactiveContract.sol).
+[IReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol), [AbstractReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractReactive.sol), and [ISystemContract](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/ISystemContract.sol) should be implemented. Here's a subscription example in the constructor from the [Basic Demo Reactive Contract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoReactiveContract.sol):
 
 ```solidity
 uint256 public originChainId;
@@ -34,6 +45,7 @@ constructor(
     address _callback
 ) payable {
     service = ISystemContract(payable(_service));
+    
     originChainId = _originChainId;
     destinationChainId = _destinationChainId;
     callback = _callback;
@@ -51,100 +63,120 @@ constructor(
 }
 ```
 
-The Reactive Network uses the subscription system to link various `uint256` fields to specific events. Subscribers can then filter events based on exact matches of these fields.
+Subscriptions filter events using:
+
+- Chain ID
+- Contract address
+- Topics 0–3
 
 :::info[Filtering Criteria]
-The Reactive Network provides filtering criteria based on the originating contract's chain ID, address, and all four topics.
+Reactive Network provides filtering criteria based on the origin contract's chain ID, address, and all four topics.
 :::
 
-### Using 'REACTIVE_IGNORE' and '0'
+## Wildcards & Matching
 
-`REACTIVE_IGNORE` is an arbitrary predefined value `0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad` that allows you to subscribe to any topic.
+### REACTIVE_IGNORE
 
-`address(0)` can be used for contract address and `uint256(0)` for chain ID to match any value. Ensure at least one criterion is specific to create a meaningful subscription.
+`REACTIVE_IGNORE` is a predefined wildcard value that matches any topic value:
+
+```json
+0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad
+```
+
+### Zero Values
+
+Wildcards can also be specified with:
+
+- `uint256(0)` → any chain ID
+- `address(0)` → any contract
+
+**At least one parameter must be specific.**
 
 ### Subscription Examples
 
-**All Events from a Specific Contract**: Subscribe to all events from `0x7E0987E5b3a30e3f2828572Bb659A548460a3003`.
+#### All Events From One Contract
 
 ```solidity
-service.subscribe(CHAIN_ID, 0x7E0987E5b3a30e3f2828572Bb659A548460a3003, REACTIVE_IGNORE, REACTIVE_IGNORE, REACTIVE_IGNORE, REACTIVE_IGNORE)
+service.subscribe(
+    CHAIN_ID,
+    0x7E0987E5b3a30e3f2828572Bb659A548460a3003,
+    REACTIVE_IGNORE,
+    REACTIVE_IGNORE,
+    REACTIVE_IGNORE,
+    REACTIVE_IGNORE
+);
 ```
 
-**Specific Topic 0**: Subscribe to all Uniswap V2 Sync events.
+#### Specific Event Type
+
+Example: Uniswap V2 Sync events
 
 ```solidity
-service.subscribe(CHAIN_ID, 0, 0x1c411e9a96e071241c2f21f7726b17ae89e3cab4c78be50e062b03a9fffbbad1, REACTIVE_IGNORE, REACTIVE_IGNORE, REACTIVE_IGNORE)
+service.subscribe(
+    CHAIN_ID,
+    address(0),
+    0x1c411e9a96e071241c2f21f7726b17ae89e3cab4c78be50e062b03a9fffbbad1,
+    REACTIVE_IGNORE,
+    REACTIVE_IGNORE,
+    REACTIVE_IGNORE
+);
 ```
 
-**Specific Contract with Specific Topic 0**: Subscribe to events from `0x7E0987E5b3a30e3f2828572Bb659A548460a3003` with topic 0 `0x1c411e9a96e071241c2f21f7726b17ae89e3cab4c78be50e062b03a9fffbbad1`.
+#### Specific Contract and Event
 
 ```solidity
-service.subscribe(CHAIN_ID, 0x7E0987E5b3a30e3f2828572Bb659A548460a3003, 0x1c411e9a96e071241c2f21f7726b17ae89e3cab4c78be50e062b03a9fffbbad1, REACTIVE_IGNORE, REACTIVE_IGNORE, REACTIVE_IGNORE)
+service.subscribe(
+    CHAIN_ID,
+    0x7E0987E5b3a30e3f2828572Bb659A548460a3003,
+    0x1c411e9a96e071241c2f21f7726b17ae89e3cab4c78be50e062b03a9fffbbad1,
+    REACTIVE_IGNORE,
+    REACTIVE_IGNORE,
+    REACTIVE_IGNORE
+);
 ```
 
-**Multiple Independent Subscriptions**: Call the `subscribe()` method multiple times in the constructor to create multiple independent subscriptions.
+#### Multiple Subscriptions
+
+Call `subscribe()` multiple times:
 
 ```solidity
-uint256 public originChainId;
-uint256 public destinationChainId;
-uint64 private constant GAS_LIMIT = 1000000;
+if (!vm) {
 
-address private callback;
+    service.subscribe(
+        originChainId,
+        _contract1,
+        _topic0,
+        REACTIVE_IGNORE,
+        REACTIVE_IGNORE,
+        REACTIVE_IGNORE
+    );
 
-constructor(
-    address _service,
-    uint256 _originChainId,
-    uint256 _destinationChainId,
-    address _contract1,
-    uint256 _topic0,
-    address _contract2,
-    uint256 _topic1,
-    address _callback
-) payable {
-    service = ISystemContract(payable(_service));
-    originChainId = _originChainId;
-    destinationChainId = _destinationChainId;
-    callback = _callback;
-
-    if (!vm) {
-        // First subscription
-        service.subscribe(
-            originChainId,
-            _contract1,
-            _topic0,
-            REACTIVE_IGNORE,
-            REACTIVE_IGNORE,
-            REACTIVE_IGNORE
-        );
-
-        // Second subscription
-        service.subscribe(
-            originChainId,
-            _contract2,
-            REACTIVE_IGNORE,
-            _topic1,
-            REACTIVE_IGNORE,
-            REACTIVE_IGNORE
-        );
-    }
+    service.subscribe(
+        originChainId,
+        _contract2,
+        REACTIVE_IGNORE,
+        _topic1,
+        REACTIVE_IGNORE,
+        REACTIVE_IGNORE
+    );
 }
 ```
 
-### Unsubscribing via System Contract
+### Unsubscribing
 
-There may be situations where a reactive contract needs to stop listening to a particular topic — such as for revoking automation, optimizing gas usage, or replacing an outdated listener. To do this, you need to invoke the `unsubscribeContract()` function on the system contract by executing the command given below.
+Subscriptions can be removed through the system contract.
 
-First, export the `REACTIVE_IGNORE` constant, which is used as a wildcard value when you want to ignore certain topic parameters:
+Export the wildcard constant:
 
 ```bash
 export REACTIVE_IGNORE=0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad
 ```
 
-If you're only interested in unsubscribing from a contract with a specific `topic0` and don't care about the values of `topic1`, `topic2`, or `topic3`, use `REACTIVE_IGNORE` in those positions:
+Example:
 
 ```bash
-cast send --rpc-url $REACTIVE_RPC \
+cast send \
+  --rpc-url $REACTIVE_RPC \
   --private-key $REACTIVE_PRIVATE_KEY \
   $SYSTEM_CONTRACT_ADDR \
   "unsubscribeContract(address,uint256,address,uint256,uint256,uint256,uint256)" \
@@ -157,29 +189,71 @@ cast send --rpc-url $REACTIVE_RPC \
   $REACTIVE_IGNORE
 ```
 
-### Prohibited Subscriptions
+### Subscription Limitations
 
-**Non-Equality Operations**: Subscriptions can’t match event parameters using less than (\<), greater than (\>), range, or bitwise operations. Only strict equality is supported.
+#### Equality Matching Only
 
-**Complex Criteria Sets**: Subscriptions can’t use disjunction or sets of criteria within a single subscription. While calling the `subscribe()` method multiple times can achieve similar results, it may lead to combinatorial explosion.
+Subscriptions support exact matches only.
 
-**Single Chain and All Contracts**: Subscribing to events from all chains or all contracts simultaneously is not allowed. Subscribing to all events from only one chain is also prohibited, as it is considered unnecessary.
+Not supported:
 
-**Duplicate Subscriptions**: While duplicate subscriptions are technically allowed, they function as a single subscription. Users are charged for each transaction sent to the system contract. Preventing duplicates in the system contract is costly due to EVM storage limitations, so duplicate subscriptions are permitted to keep costs manageable.
+- `<` or `>`
+- Ranges
+- Bitwise filters
+
+#### Complex Criteria Sets
+
+Each subscription defines **one set of matching criteria**.
+
+Not supported:
+
+- Disjunctions (OR conditions)
+- Multiple criteria sets within one subscription
+
+Workaround:
+
+- Use multiple `subscribe()` calls
+- May lead to a **large number of subscriptions**
+
+#### No Global Subscriptions
+
+Not allowed:
+
+- All chains
+- All contracts
+- All events on a chain
+
+#### Duplicate Subscriptions
+
+Duplicate subscriptions are allowed but behave as one subscription.
+
+Each `subscribe()` transaction still costs gas.
 
 ## Dynamic Subscriptions
 
-Subscriptions in the Reactive Network are managed through the system contract, which is accessible only from the network. Events are sent to the ReactVM's contract copy, which has no direct access to the system contract. Therefore, dynamic subscriptions and unsubscriptions based on incoming events must be handled via callbacks.
+Subscriptions can be created or removed dynamically based on incoming events.
 
-The `react()` method from the [reactive contract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/approval-magic/ApprovalListener.sol) of the [Approval Magic demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/approval-magic) processes incoming events and checks if `topic_0` indicates a `subscribe` or `unsubscribe` event. If so, it generates a callback to the Reactive Network to manage the subscription.
+Subscription management is performed through the system contract, which is accessible only from Reactive Network (RNK). The ReactVM instance of a contract can't call the system contract directly, so dynamic subscription changes must be performed through callback transactions.
+
+The typical flow is:
+
+1. An event is received in the ReactVM.
+2. The contract decides whether to subscribe or unsubscribe.
+3. A `Callback` event is emitted.
+4. Reactive Network (RNK) executes the subscription change.
 
 ### Subscribing & Unsubscribing
 
-These functions allow the contract to subscribe or unsubscribe a subscriber address to/from the `APPROVAL_TOPIC_0` in the Reactive Network.
+These functions run on the Reactive Network contract instance and modify subscriptions through the system contract. The example below is based on the [ApprovalListener.sol](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/approval-magic/ApprovalListener.sol) contract from the [Approval Magic demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/approval-magic).
 
 ```solidity
-    // Methods specific to reactive network contract instance
-    function subscribe(address rvm_id, address subscriber) external rnOnly callbackOnly(rvm_id) {
+// Methods specific to Reactive Network contract instance
+
+function subscribe(address rvm_id, address subscriber)
+    external
+    rnOnly
+    callbackOnly(rvm_id)
+    {
         service.subscribe(
             SEPOLIA_CHAIN_ID,
             address(0),
@@ -190,7 +264,11 @@ These functions allow the contract to subscribe or unsubscribe a subscriber addr
         );
     }
 
-    function unsubscribe(address rvm_id, address subscriber) external rnOnly callbackOnly(rvm_id) {
+function unsubscribe(address rvm_id, address subscriber)
+    external
+    rnOnly
+    callbackOnly(rvm_id)
+    {
         service.unsubscribe(
             SEPOLIA_CHAIN_ID,
             address(0),
@@ -202,59 +280,82 @@ These functions allow the contract to subscribe or unsubscribe a subscriber addr
     }
 ```
 
-**Parameters**:
+Parameters:
 
-- `rvm_id`: The ID of the reactive virtual machine (RVM).
-- `subscriber`: The address that will be subscribed or unsubscribed.
+- **rvm_id** — ReactVM identifier (injected automatically)
+- **subscriber** — address to subscribe or unsubscribe
 
-**Operations**:
+Operations:
 
-- `subscribe`: Registers a subscriber to the `APPROVAL_TOPIC_0`.
-- `unsubscribe`: Removes a subscriber from the `APPROVAL_TOPIC_0`.
+- **subscribe** — registers a subscriber for `APPROVAL_TOPIC_0`
+- **unsubscribe** — removes a subscriber from `APPROVAL_TOPIC_0`
 
-### react Function & Logic
+### react() Logic
 
-The function processes incoming log records from the ReactVM and executes different actions based on the topic in the log.
+The `react()` function processes incoming events and emits callbacks when subscription changes are required.
 
 ```solidity
 // Methods specific to ReactVM contract instance
-    function react(LogRecord calldata log) external vmOnly {
-        if (log.topic_0 == SUBSCRIBE_TOPIC_0) {
-            bytes memory payload = abi.encodeWithSignature(
-                "subscribe(address,address)",
-                address(0),
-                address(uint160(log.topic_1))
-            );
-            emit Callback(REACTIVE_CHAIN_ID, address(this), CALLBACK_GAS_LIMIT, payload);
-        } else if (log.topic_0 == UNSUBSCRIBE_TOPIC_0) {
-            bytes memory payload = abi.encodeWithSignature(
-                "unsubscribe(address,address)",
-                address(0),
-                address(uint160(log.topic_1))
-            );
-            emit Callback(REACTIVE_CHAIN_ID, address(this), CALLBACK_GAS_LIMIT, payload);
-        } else {
-            (uint256 amount) = abi.decode(log.data, (uint256));
-            bytes memory payload = abi.encodeWithSignature(
-                "onApproval(address,address,address,address,uint256)",
-                address(0),
-                address(uint160(log.topic_2)),
-                address(uint160(log.topic_1)),
-                log._contract,
-                amount
-            );
-            emit Callback(SEPOLIA_CHAIN_ID, address(approval_service), CALLBACK_GAS_LIMIT, payload);
-        }
+function react(LogRecord calldata log) external vmOnly {
+        
+    if (log.topic_0 == SUBSCRIBE_TOPIC_0) {
+            
+        bytes memory payload = abi.encodeWithSignature(
+            "subscribe(address,address)",
+            address(0),
+            address(uint160(log.topic_1))
+        );
+        
+        emit Callback(
+            REACTIVE_CHAIN_ID, 
+            address(this), 
+            CALLBACK_GAS_LIMIT, 
+            payload
+        );
+        
+    } else if (log.topic_0 == UNSUBSCRIBE_TOPIC_0) {
+            
+        bytes memory payload = abi.encodeWithSignature(
+            "unsubscribe(address,address)",
+            address(0),
+            address(uint160(log.topic_1))
+        );
+            
+        emit Callback(
+            REACTIVE_CHAIN_ID, 
+            address(this), 
+            CALLBACK_GAS_LIMIT, 
+            payload);
+        
+    } else {
+        
+        (uint256 amount) = abi.decode(log.data, (uint256));
+            
+        bytes memory payload = abi.encodeWithSignature(
+            "onApproval(address,address,address,address,uint256)",
+            address(0),
+            address(uint160(log.topic_2)),
+            address(uint160(log.topic_1)),
+            log._contract,
+            amount
+        );
+        
+        emit Callback(
+            SEPOLIA_CHAIN_ID, 
+            address(approval_service), 
+            CALLBACK_GAS_LIMIT, 
+            payload
+        );
     }
 }
 ```
 
-**Log Processing**:
+Event handling:
 
-- Subscribe Logic: If the log's `topic_0` matches the `SUBSCRIBE_TOPIC_0`, the function encodes a payload for the `subscribe()` method and emits a callback.
-- Unsubscribe Logic: If the log's `topic_0` matches the `UNSUBSCRIBE_TOPIC_0`, the function encodes a payload for the `unsubscribe()` method and emits a callback.
-- Approval Logic: For any other log, it decodes the approval amount and creates a payload for the `onApproval` method, then emits a callback to the `approval_service` on Sepolia.
+- **Subscribe event** → emits a callback that creates a subscription
+- **Unsubscribe event** → emits a callback that removes a subscription
+- **Other events** → emit callbacks that trigger application logic
 
-**Callback Emission**: The function uses the `emit Callback` statement to send the appropriate payload and trigger the corresponding action on the Reactive chain.
+Callbacks are executed by Reactive Network after the event is processed.
 
 [More on Subscriptions →](../education/module-1/subscriptions.md)
