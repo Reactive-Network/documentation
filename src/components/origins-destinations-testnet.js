@@ -5,7 +5,7 @@ const TestnetChainTable = () => {
         {
             chain: 'Avalanche Fuji',
             chainId: 43113,
-            explorer: 'https://43113.testnet.routescan.io/',
+            explorer: 'https://43113.testnet.routescan.io',
             callbackAddress: '',
             rpcUrl: 'https://chainlist.org/chain/43113',
             origin: true,
@@ -14,7 +14,7 @@ const TestnetChainTable = () => {
         {
             chain: 'Base Sepolia',
             chainId: 84532,
-            explorer: 'https://sepolia.basescan.org/',
+            explorer: 'https://sepolia.basescan.org',
             callbackAddress: '0xa6eA49Ed671B8a4dfCDd34E36b7a75Ac79B8A5a6',
             rpcUrl: 'https://chainlist.org/chain/84532',
             origin: true,
@@ -23,7 +23,7 @@ const TestnetChainTable = () => {
         {
             chain: 'BSC Testnet',
             chainId: 97,
-            explorer: 'https://testnet.bscscan.com/',
+            explorer: 'https://testnet.bscscan.com',
             callbackAddress: '',
             rpcUrl: 'https://chainlist.org/chain/97',
             origin: true,
@@ -32,7 +32,7 @@ const TestnetChainTable = () => {
         {
             chain: 'Ethereum Sepolia',
             chainId: 11155111,
-            explorer: 'https://sepolia.etherscan.io/',
+            explorer: 'https://sepolia.etherscan.io',
             callbackAddress: '0xc9f36411C9897e7F959D99ffca2a0Ba7ee0D7bDA',
             rpcUrl: 'https://chainlist.org/chain/11155111',
             origin: true,
@@ -50,11 +50,20 @@ const TestnetChainTable = () => {
         {
             chain: 'Polygon Amoy',
             chainId: 80002,
-            explorer: 'https://amoy.polygonscan.com/',
+            explorer: 'https://amoy.polygonscan.com',
             callbackAddress: '',
             rpcUrl: 'https://chainlist.org/chain/80002',
             origin: true,
             destination: false
+        },
+        {
+            chain: 'Unichain Sepolia',
+            chainId: 1301,
+            explorer: 'https://sepolia.uniscan.xyz',
+            callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
+            rpcUrl: 'https://chainlist.org/chain/1301',
+            origin: true,
+            destination: true
         },
     ];
 
