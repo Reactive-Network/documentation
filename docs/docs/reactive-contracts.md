@@ -36,14 +36,11 @@ Inside [ReactVM](./reactvm.md), Reactive Contracts can't access external systems
 
 Contracts can be verified during or after deployment using the Sourcify endpoint. Sourcify is a decentralized verification service that matches deployed bytecode with source code, making contracts auditable and transparent.
 
-**Reactive Sourcify Endpoint**: https://sourcify.rnk.dev/
-
 ## Verify After Deployment
 
 ```bash
 forge verify-contract \
 --verifier sourcify \
---verifier-url https://sourcify.rnk.dev/ \
 --chain-id $CHAIN_ID \
 $CONTRACT_ADDR $CONTRACT_NAME
 ```
@@ -59,7 +56,6 @@ Replace:
 ```bash
 forge create \
 --verifier sourcify \
---verifier-url https://sourcify.rnk.dev/ \
 --verify \
 --chain-id $CHAIN_ID \
 --private-key $PRIVATE_KEY \
@@ -83,7 +79,6 @@ forge create \
   --value 0.01ether \
   --verify \
   --verifier sourcify \
-  --verifier-url https://sourcify.rnk.dev/ \
   src/.../MyContract.sol:MyContract \
   --constructor-args \
     $ARGUMENT_1 \
