@@ -12,7 +12,7 @@ hide_title: true
 
 Reactive Network is an EVM-compatible chain built around Reactive Contracts (RCs) — event-driven smart contracts for cross-chain, on-chain automation.
 
-Reactive Contracts monitor event logs across EVM chains and execute Solidity logic automatically when conditions are met. Instead of waiting for users or bots to trigger transactions, RCs run continuously and decide when to send cross-chain callback transactions — essentially providing **if-this-then-that automation for smart contracts**.
+Reactive Contracts monitor event logs across EVM chains and execute Solidity logic automatically when conditions are met. Instead of waiting for users or bots to trigger transactions, RCs run continuously and decide when to send cross-chain callback transactions, essentially providing on-chain if-this-then-that automation for smart contracts.
 
 This makes it possible to build conditional cross-chain workflows such as:
 
