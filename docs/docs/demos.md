@@ -6,7 +6,7 @@ slug: /demos
 hide_title: true
 ---
 
-![Demos Image](img/demos.jpg)
+![Demos Image](./img/demos.jpg)
 
 ## Overview
 
