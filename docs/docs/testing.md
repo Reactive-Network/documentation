@@ -6,7 +6,7 @@ slug: /testing
 hide_title: true
 ---
 
-[Testing Image](../docs/img/testing.jpg)
+![Testing Image](./img/testing.jpg)
 
 ## Overview
 
