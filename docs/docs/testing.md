@@ -1,56 +1,58 @@
 ---
 title: Testing with Foundry
 sidebar_position: 15
-description: Test Reactive Contracts locally with Foundry using the reactive-test-lib — no testnet deployment required.
+description: Test Reactive Contracts locally with Foundry using reactive-test-lib. Simulate event-driven, cross-chain smart contract execution with forge test — no testnet required.
 slug: /testing
 hide_title: true
 ---
 
-# Testing with Foundry
+[//]: # (![Testing Image]&#40;../docs/img/testing.jpg&#41;)
 
 ## Overview
 
-[Reactive Test Lib](https://github.com/Reactive-Network/reactive-test-lib) is a Foundry-native testing library that simulates the full Reactive Network lifecycle locally. It replaces the system contract, ReactVM, and callback proxy with mock implementations, allowing you to run `forge test` against your Reactive Contracts without deploying to a testnet.
+Test Reactive Contracts locally with Foundry. No testnet, no waiting.
 
-The library supports:
+[Reactive Test Lib](https://github.com/Reactive-Network/reactive-test-lib) swaps out the System Contract, ReactVM, and Callback Proxy for mock versions that run entirely in `forge test`. You get the full reactive flow (event trigger through callback execution) on a single EVM instance.
 
-- Event subscriptions with wildcard matching
-- The full `react()` invocation pipeline
-- Cross-chain callback execution with RVM ID injection
-- Same-chain (self) callbacks via `SERVICE_ADDR`
+What works:
+
+- Event subscriptions (wildcards included)
+- Full `react()` pipeline
+- Cross-chain and same-chain callbacks
+- Same-chain callbacks via `SERVICE_ADDR`
 - Cron-based triggers
-- Multi-step reactive protocols (e.g., confirmation chains, bridges)
-- Automatic chain ID detection via a contract registry
+- Multi-step workflows (bridges, confirmations)
+- Automatic chain ID resolution
 
-Install the library:
+Install:
 
 ```bash
 forge install Reactive-Network/reactive-test-lib
 ```
 
-Add the remapping to `remappings.txt`:
+Add to `remappings.txt`:
 
-```
+```json
 reactive-test-lib/=lib/reactive-test-lib/src/
 ```
 
-## Architecture
+## What Gets Mocked
 
-The library simulates three runtime components that normally only exist on the Reactive Network:
+The library replaces three main Reactive components with local mocks:
 
-| Real Component | Mock | Purpose |
-|---|---|---|
-| System Contract | `MockSystemContract` | Subscription registry with wildcard matching |
-| ReactVM | `ReactiveSimulator` | Event delivery and `react()` invocation |
-| Callback Proxy | `MockCallbackProxy` | Cross-chain callback execution with RVM ID injection |
+| Real Component  | Mock                 | Purpose                                              |
+|-----------------|----------------------|------------------------------------------------------|
+| System Contract | `MockSystemContract` | Subscription registry with wildcard matching         |
+| ReactVM         | `ReactiveSimulator`  | Event delivery and `react()` invocation              |
+| Callback Proxy  | `MockCallbackProxy`  | Cross-chain callback execution with RVM ID injection |
 
-The simulation runs on a single EVM instance. Chain IDs are logical values — there is no actual cross-chain communication.
+Chain IDs are purely logical, nothing actually crosses chains. It all runs on one EVM.
 
 ## Getting Started
 
 ### Base Test Contract
 
-All reactive tests inherit from `ReactiveTest`, which extends Foundry's `Test.sol`:
+Inherit from `ReactiveTest`:
 
 ```solidity
 import "reactive-test-lib/base/ReactiveTest.sol";
@@ -59,23 +61,23 @@ import {CallbackResult} from "reactive-test-lib/interfaces/IReactiveInterfaces.s
 contract MyReactiveTest is ReactiveTest {
     function setUp() public override {
         super.setUp();
-        // Deploy your contracts here
+        // your contracts go here
     }
 }
 ```
 
-`super.setUp()` automatically:
+`super.setUp()` handles the plumbing:
 
 1. Deploys `MockSystemContract` and etches its code to `SERVICE_ADDR` (`0x...fffFfF`)
 2. Deploys `MockCallbackProxy` for cross-chain callback execution
-3. Sets `rvmId` to `address(this)` (simulated deployer identity)
+3. Sets `rvmId` to `address(this)`
 4. Sets `reactiveChainId` to `REACTIVE_CHAIN_ID` (`0x512512`)
 
-After setup, any contract that calls `subscribe()` on `SERVICE_ADDR` in its constructor — including contracts inheriting from `AbstractReactive` — will register subscriptions with the mock system contract.
+Any contract that calls `subscribe()` on `SERVICE_ADDR` in its constructor (including anything extending `AbstractReactive`) will register subscriptions automatically.
 
-### Deploying Contracts Under Test
+### Deploying Your Contracts
 
-Deploy your origin, reactive, and callback contracts in `setUp()`. Pass `address(proxy)` as the callback sender for contracts extending `AbstractCallback`:
+Set up your Origin, Reactive, and Callback contracts in `setUp()`. Pass `address(proxy)` to anything that extends `AbstractCallback`:
 
 ```solidity
 // Origin contract (L1) — emits events that trigger reactions
@@ -95,9 +97,9 @@ rc = new BasicDemoReactiveContract(
 );
 ```
 
-### Running a Single Reactive Cycle
+### Running a Reactive Cycle
 
-`triggerAndReact()` executes the full pipeline once: emit event → match subscription → call `react()` → execute callbacks.
+`triggerAndReact()` does the whole thing in one call: emit → match → react → execute callbacks.
 
 ```solidity
 function testCallbackFires() public {
@@ -124,9 +126,9 @@ CallbackResult[] memory results = triggerAndReactWithValue(
 );
 ```
 
-## Testing the Basic Demo
+## Basic Demo
 
-The [Basic Demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/basic) is the simplest Reactive Contract pattern. An L1 contract emits an event when receiving ETH. The reactive contract subscribes to that event and, if the value exceeds a threshold, emits a `Callback` to the L1 callback contract.
+The [Basic Demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/basic) is the simplest Reactive Contract pattern. An origin contract emits an event when receiving ETH. The Reactive contract subscribes to that event and, if the value exceeds a threshold, emits a Callback to the destination contract.
 
 ```solidity
 contract BasicDemoTest is ReactiveTest {
@@ -178,11 +180,11 @@ contract BasicDemoTest is ReactiveTest {
 }
 ```
 
-## Testing Uniswap Stop Orders
+## Uniswap Stop Orders
 
-The [Uniswap V2 Stop Order](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/uniswap-v2-stop-order) demo monitors a Uniswap pair's reserves and triggers a swap when the price crosses a threshold. The reactive contract subscribes to `Sync` events on the pair contract.
+The [Uniswap V2 Stop Order](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/uniswap-v2-stop-order) demo watches a pair's reserves and triggers a swap when price crosses a threshold. The reactive contract subscribes to `Sync` events.
 
-To test this pattern, simulate the Sync event by deploying a mock pair that emits the event:
+To test it, deploy a mock pair that emits the event:
 
 ```solidity
 contract StopOrderTest is ReactiveTest {
@@ -224,24 +226,24 @@ contract StopOrderTest is ReactiveTest {
 ```
 
 :::info[vmOnly Modifier]
-Contracts that use `vmOnly` on their `react()` function need `enableVmMode(address(rc))` called after deployment. This flips the internal `vm` storage flag to `true`. Without this, `react()` will revert with `"VM only"`.
+If your Reactive contract uses `vmOnly` on `react()`, call `enableVmMode(address(rc))` after deploying it. This flips the internal `vm` flag to `true`. Skip this and `react()` reverts with `"VM only"`.
 :::
 
-## Testing Self-Callbacks
+## Self-Callbacks
 
-Some Reactive Contracts emit callbacks that target themselves on the Reactive Network rather than an external chain. This pattern is used in the [REACT Bridge](https://github.com/Reactive-Network/react-bridge), where `ReactiveBridge` emits:
+Some Reactive Contracts emit callbacks targeting themselves on Reactive Network, not an external chain. The [REACT Bridge](https://github.com/Reactive-Network/react-bridge) does this where `ReactiveBridge` emits:
 
 ```solidity
 emit Callback(reactive_chain_id, address(this), GAS_LIMIT, payload);
 ```
 
-On the real network, these same-chain callbacks are delivered by `SERVICE_ADDR`. The `ReactiveBridge` constructor authorizes `SERVICE_ADDR` as its callback sender:
+In production, `SERVICE_ADDR` delivers these. The bridge authorizes it in its constructor:
 
 ```solidity
 constructor(...) AbstractCallback(address(SERVICE_ADDR)) { ... }
 ```
 
-The simulator handles this automatically. When a `Callback` event's `chain_id` matches `reactiveChainId`, it delivers via `vm.prank(SERVICE_ADDR)` instead of the proxy. This means `authorizedSenderOnly` passes correctly.
+The simulator handles this for you. When a `Callback` event's `chain_id` matches `reactiveChainId`, it delivers via `vm.prank(SERVICE_ADDR)` instead of the proxy. `authorizedSenderOnly` passes correctly.
 
 ```solidity
 contract SelfCallbackTest is ReactiveTest {
@@ -277,9 +279,9 @@ contract SelfCallbackTest is ReactiveTest {
 }
 ```
 
-## Testing Multi-Step Protocols
+## Multi-Step Protocols
 
-Complex protocols like the [REACT Bridge](https://github.com/Reactive-Network/react-bridge) require multiple reactive cycles. A single user action triggers a chain of events across multiple logical chains:
+Complex protocols like the [REACT Bridge](https://github.com/Reactive-Network/react-bridge) chain multiple Reactive cycles off a single user action:
 
 ```
 1. ReactiveBridge.bridge() → emits SendMessage
@@ -290,7 +292,7 @@ Complex protocols like the [REACT Bridge](https://github.com/Reactive-Network/re
 6. Bridge emits DeliveryConfirmation → react() → ...
 ```
 
-`triggerAndReact()` only runs one cycle. For multi-step protocols, use `triggerFullCycle()`:
+`triggerAndReact()` only runs one cycle. For chains like this, use `triggerFullCycle()`:
 
 ```solidity
 CallbackResult[] memory results = triggerFullCycleWithValue(
@@ -302,20 +304,20 @@ CallbackResult[] memory results = triggerFullCycleWithValue(
 );
 ```
 
-The simulator chains reactive rounds automatically:
+Under the hood, the simulator loops:
 
-1. Executes the initial call, captures events
-2. Matches events against subscriptions, calls `react()`, collects `Callback` specs
-3. Executes each callback while recording events emitted by the target
-4. Tags new events with the callback's `chain_id` (events from a Sepolia callback become Sepolia events)
-5. Feeds events back to step 2
-6. Stops when no more callbacks are produced or `maxIterations` is reached
+1. Executes the call, captures events
+2. Matches events → calls `react()` → collects callback specs
+3. Executes each callback, recording any new events
+4. Tags new events with the callback's chain_id (events from a Sepolia callback become Sepolia events)
+5. Feeds those events back into step 2
+6. Stops when there are no more callbacks or `maxIterations` is hit
 
-All `CallbackResult` values across all iterations are returned in a single array.
+Every `CallbackResult` from every iteration comes back in one array.
 
 ## Chain Registry
 
-When testing contracts that span multiple logical chains, you must pass the correct `originChainId` for each trigger call. The chain registry eliminates this by mapping contract addresses to their logical chain IDs:
+When contracts span multiple logical chains, you need to pass the right `originChainId` for each trigger. The chain registry handles this — map addresses to chain IDs once, then forget about it:
 
 ```solidity
 function setUp() public override {
@@ -330,7 +332,7 @@ function setUp() public override {
 }
 ```
 
-After registration, use the auto-detect overloads that omit `originChainId`:
+Now you can drop the `originChainId` argument:
 
 ```solidity
 // These resolve the chain ID from the registry automatically
@@ -346,11 +348,13 @@ CallbackResult[] memory results = triggerFullCycle(
 );
 ```
 
-In full-cycle mode, events from callback execution are automatically tagged with the callback's destination chain ID, so the registry is mainly useful for the initial trigger.
+In full-cycle mode, events from callbacks are auto-tagged with destination chain IDs, so the registry mostly matters for the initial trigger.
 
-## Testing Cron Contracts
+## Cron Contracts
 
 Reactive Contracts can subscribe to system cron events for periodic execution. The simulator provides `triggerCron()` to deliver synthetic cron events:
+
+Reactive Contracts can subscribe to system cron events. The simulator gives you `triggerCron()` for this:
 
 ```solidity
 import {CronType} from "reactive-test-lib/interfaces/IReactiveInterfaces.sol";
@@ -379,9 +383,9 @@ contract CronTest is ReactiveTest {
 }
 ```
 
-Available cron types: `Cron1` (every block), `Cron10`, `Cron100`, `Cron1000`, `Cron10000`.
+Cron types: `Cron1` (every block), `Cron10`, `Cron100`, `Cron1000`, `Cron10000`.
 
-## Assertion Helpers
+## Assertions
 
 `ReactiveTest` provides assertion helpers for common callback checks:
 
@@ -400,34 +404,34 @@ assertCallbackSuccess(results, 0);
 assertCallbackFailure(results, 1);
 ```
 
-Each `CallbackResult` contains:
+Each `CallbackResult` gives you:
 
-| Field | Description |
-|---|---|
-| `chainId` | Destination chain ID from the `Callback` event |
-| `target` | Address the callback was executed on |
-| `gasLimit` | Gas limit specified by `react()` |
-| `payload` | ABI-encoded function call (with RVM ID injected) |
-| `success` | Whether the callback call succeeded |
-| `returnData` | Return or revert data |
+| Field        | Description                                    |
+|--------------|------------------------------------------------|
+| `chainId`    | Destination chain ID from the `Callback` event |
+| `target`     | Address the callback executed on               |
+| `gasLimit`   | Gas limit from `react()`                       |
+| `payload`    | ABI-encoded call (RVM ID already injected)     |
+| `success`    | Whether the call succeeded                     |
+| `returnData` | Return or revert data                          |
 
 ## How the Mock Environment Works
 
 ### Subscription Matching
 
-`MockSystemContract` stores subscriptions and supports the same wildcard semantics as the real system contract:
+`MockSystemContract` supports the same wildcard rules as the real system contract:
 
-| Field | Wildcard | Meaning |
-|---|---|---|
-| `chain_id` | `0` | Match any chain |
-| `_contract` | `address(0)` | Match any contract |
-| `topic_0..3` | `REACTIVE_IGNORE` | Match any topic |
+| Field        | Wildcard          | Meaning      |
+|--------------|-------------------|--------------|
+| `chain_id`   | `0`               | Any chain    |
+| `_contract`  | `address(0)`      | Any contract |
+| `topic_0..3` | `REACTIVE_IGNORE` | Any topic    |
 
 ### RVM ID Injection
 
-The real Reactive Network overwrites the first 160 bits of the first callback argument with the deployer's address. Both the `MockCallbackProxy` (cross-chain) and the simulator's direct delivery (same-chain) replicate this. The `rvmIdOnly` modifier works correctly in tests.
+The real network overwrites the first 160 bits of the first callback argument with the deployer's address. Both `MockCallbackProxy` (cross-chain) and the simulator's direct delivery (same-chain) replicate this, so `rvmIdOnly` works correctly in tests.
 
-Override `rvmId` to simulate a different deployer:
+To simulate a different deployer:
 
 ```solidity
 rvmId = makeAddr("customDeployer");
@@ -435,22 +439,22 @@ rvmId = makeAddr("customDeployer");
 
 ### Callback Routing
 
-Callbacks are routed based on the `Callback` event's `chain_id`:
+Based on the `Callback` event's `chain_id`:
 
-- **Cross-chain** (`chain_id != reactiveChainId`) — executed via `MockCallbackProxy`
-- **Same-chain** (`chain_id == reactiveChainId`) — executed via `vm.prank(SERVICE_ADDR)`
+- **Cross-chain** (`chain_id != reactiveChainId`) → goes through `MockCallbackProxy`
+- **Same-chain** (`chain_id == reactiveChainId`) → delivered via `vm.prank(SERVICE_ADDR)`
 
-### `vmOnly` and `rnOnly`
+### vmOnly and rnOnly
 
-Etching `MockSystemContract` to `SERVICE_ADDR` causes `detectVm()` to set `vm = false` (code exists at the address). This means:
+Since `MockSystemContract` is deployed to `SERVICE_ADDR`, `detectVm()` sets `vm = false` (it sees code at that address). So:
 
-- `rnOnly` functions work in constructors — `subscribe()` calls succeed
+- `rnOnly` functions work in constructors — `subscribe()` calls go through
 - `vmOnly` functions need `enableVmMode(address(rc))` after deployment
 
-## Further Considerations
+## Good to Know
 
-- **Single-chain simulation**: Everything runs on one EVM. Chain IDs are logical values only — there is no fork or actual cross-chain communication.
-- **No dependency on `reactive-lib`**: The test library reimplements ABI-compatible interfaces. Your contracts import `reactive-lib` as usual; the test library only needs to be ABI-compatible.
-- **Compatibility**: Solidity >= 0.8.20, Foundry with `vm.recordLogs()` support, `reactive-lib` v0.2.0+.
+- **Single EVM**: Everything runs in one place. Chain IDs are just numbers.
+- **No reactive-lib dependency**: The test lib reimplements ABI-compatible interfaces. Your contracts keep importing `reactive-lib` as usual.
+- **Requirements**: Solidity ≥ 0.8.20, Foundry with `vm.recordLogs()`, `reactive-lib` v0.2.0+.
 
 [Reactive Test Lib on GitHub →](https://github.com/Reactive-Network/reactive-test-lib)
