@@ -832,9 +832,9 @@ Returns an array of filter objects. Each filter object contains the following fi
 - **chainId** (`uint32`): The chain ID on which the filter is active.
 - **contract** (`string`): The address of the contract the filter is listening to.
 - **topics** (`array[string | null]`): An array of up to 4 log topics (from `topic_0` to `topic_3`) used for event filtering. Unused topics are null.
-- **configs** (`array[object]`): An array of configuration objects for reactive contracts and their associated ReactVMs.
-- **contract** (`string`): The reactive contract address.
-- **rvmId** (`string`): The ReactVM ID where the reactive contract resides.
+- **configs** (`array[object]`): An array of configuration objects for Reactive contracts and their associated ReactVMs.
+- **contract** (`string`): The Reactive contract address.
+- **rvmId** (`string`): The ReactVM ID where the Reactive contract resides.
 - **active** (`bool`): Indicates whether the subscription/filter is active.
 
 ```json

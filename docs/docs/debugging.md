@@ -35,7 +35,7 @@ emit Callback(chain_id, stop_order, CALLBACK_GAS_LIMIT, payload);
 
 ## Contract Inactive
 
-If you see `Contract Status: Inactive` on Reactscan, it means the contract doesn’t have enough funds to cover gas for reactive transactions. Both **destination** and **reactive contracts** must hold sufficient balance to stay active.
+If you see `Contract Status: Inactive` on Reactscan, it means the contract doesn’t have enough funds to cover gas for Reactive transactions. Both destination and Reactive contracts must hold sufficient balance to stay active.
 
 ![Debugging Image](../docs/img/contract-inactive.png)
 
