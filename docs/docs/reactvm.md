@@ -10,11 +10,11 @@ hide_title: true
 
 ## Overview
 
-ReactVM is a private execution environment within Reactive Network where [Reactive Contracts](./reactive-contracts) process events and execute logic. Each Reactive Contract runs inside a dedicated ReactVM that activates when subscribed events occur. Event logs are delivered to the ReactVM, where the contract executes Solidity logic and determines whether callback transactions should be sent to destination chains. ReactVMs run independently and can execute in parallel, allowing Reactive Contracts to process events while maintaining deterministic execution within each ReactVM.
+ReactVM is a private execution environment within Reactive Network where [Reactive Contracts](./reactive-contracts) process events and execute logic. Each Reactive contract runs inside a dedicated ReactVM that activates when subscribed events occur. Event logs are delivered to the ReactVM, where the contract executes Solidity logic and determines whether callback transactions should be sent to destination chains. ReactVMs run independently and can execute in parallel, allowing Reactive Contracts to process events while maintaining deterministic execution within each ReactVM.
 
 ## My ReactVM
 
-Each deployed Reactive Contract is assigned to a ReactVM derived from the deployer’s address. Contracts deployed from the same EOA share the same ReactVM and can interact through shared state. Although multiple Reactive Contracts can be deployed within one ReactVM, separating contracts across ReactVMs is generally recommended.
+Each deployed Reactive contract is assigned to a ReactVM derived from the deployer’s address. Contracts deployed from the same EOA share the same ReactVM and can interact through shared state. Although multiple Reactive Contracts can be deployed within one ReactVM, separating contracts across ReactVMs is generally recommended.
 
 ### Calling subscribe()
 
@@ -26,7 +26,7 @@ Each ReactVM maintains its own state based on processed events. ReactVM blocks i
 
 ### Dual-State Environment
 
-Each Reactive Contract exists in two environments with separate state:
+Each Reactive contract exists in two environments with separate state:
 
 - **ReactVM State** — updated automatically when subscribed events occur
 - **Reactive Network State** — updated when EOAs call contract functions

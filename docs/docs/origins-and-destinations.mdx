@@ -18,7 +18,7 @@ Reactive Contracts (RCs) can **listen to event logs on one chain** and **trigger
 - **Origin** — the chain where events happen and event logs are read from (the event source).
 - **Destination** — the chain where Reactive Network delivers a callback transaction (the chain where state changes happen).
 
-Origins and destinations don’t have to be the same. A single Reactive Contract can subscribe to events from multiple origin chains, and it can send callbacks to one or more destination chains. Your Solidity logic can also choose the destination conditionally.
+Origins and destinations don’t have to be the same. A single Reactive contract can subscribe to events from multiple origin chains, and it can send callbacks to one or more destination chains. Your Solidity logic can also choose the destination conditionally.
 
 ## Callback Proxy Address
 
@@ -27,7 +27,7 @@ Callbacks are delivered to destination chains via a **Callback Proxy** contract.
 A destination contract can validate a callback by checking:
 
 1. **The sender is the Callback Proxy** (so the call is coming through the expected entry point).
-2. **The embedded RVM ID matches the intended Reactive Contract** (so the callback is tied to the correct RC).
+2. **The embedded RVM ID matches the intended Reactive contract** (so the callback is tied to the correct RC).
 
 :::info[Hyperlane]
 Some networks can’t act as destination chains yet because the Callback Proxy contract hasn’t been deployed there. In that case, use [Hyperlane](./hyperlane) as the transport for cross-chain callbacks.

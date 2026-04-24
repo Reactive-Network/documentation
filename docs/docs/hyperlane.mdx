@@ -12,11 +12,11 @@ import MailboxAddressTable from "../../src/components/hyperlane-mailbox-table";
 
 ## Overview
 
-Reactive Contracts send **cross-chain callback transactions** to destination chains. By default, callbacks are delivered through the Reactive **Callback Proxy**. Hyperlane Mailboxes provide an alternative transport for these callbacks. The Mailbox contract on each supported chain acts as the entry and exit point for cross-chain messages.
+Reactive Contracts send **cross-chain callback transactions** to destination chains. By default, callbacks are delivered through the Reactive callback proxy. Hyperlane Mailboxes provide alternative transport for these callbacks. The Mailbox contract on each supported chain acts as the entry and exit point for cross-chain messages.
 
 Reactive Contracts still listen to event logs and trigger actions in the same way, only the callback transport changes. Hyperlane transport is useful when:
 
-- A chain does not yet support the Callback Proxy
+- A chain does not yet support the callback proxy
 - You need additional routing flexibility
 - You want to integrate Reactive Contracts with existing Hyperlane-based systems
 
