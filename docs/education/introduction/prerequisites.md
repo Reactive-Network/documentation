@@ -1,7 +1,7 @@
 ---
 title: Technical and Knowledge Prerequisites for Mastering Reactive Contracts
 sidebar_position: 2
-description: Learn Reactive Contracts (RCs) with prerequisites like Solidity, EVM basics, Git, and an Ethereum wallet.
+description: What you need to know before starting the Reactive Contracts course. Covers required background in Solidity, EVM, Git, and command line tools, plus wallet setup for Ethereum Sepolia testnet deployment.
 slug: prerequisites
 ---
 
@@ -9,54 +9,44 @@ slug: prerequisites
 
 ## Overview 
 
-Before embarking on your journey, it's crucial to have a solid foundation in several key areas. These prerequisites will ensure you can fully grasp the concepts and practical applications of Reactive Contracts (RCs).
+This course aims to cover everything you need to understand and work with Reactive contracts, including deploying and interacting with them. That said, some foundational knowledge will make the material much easier to follow. Here's what helps to know going in, along with resources to get up to speed if anything is unfamiliar.
 
-## What You Need to Know for This Course
-
-In this course, we aim to equip you with everything you need to grasp the basic use cases of Reactive Contracts, including deploying and interacting with them. While we intend to cover all critical information, a foundational understanding of Ethereum Smart Contracts will greatly improve your learning experience. Below are the prerequisites along with resources to help you get up to speed.
+## What You Need to Know
 
 ### Solidity and Smart Contract Development
 
-Understanding the syntax and functionalities of Solidity is fundamental. You should be comfortable writing simple smart contracts and familiar with their concepts.
+You should be comfortable writing simple smart contracts in Solidity and familiar with its core concepts: variables, functions, modifiers, and contract structure. You don't need to be an expert, but the course assumes you've written and deployed at least a basic contract before.
 
-Educational Resource: [Solidity by Example](https://solidity-by-example.org/) is an excellent place to start, offering hands-on examples to guide you through Solidity's basics to more advanced topics.
+Resource: [Solidity by Example](https://solidity-by-example.org/) walks you through Solidity from basics to more advanced topics with hands-on examples.
 
 ### Ethereum Virtual Machine (EVM)
 
-A basic understanding of the EVM is crucial as it's the runtime environment for smart contracts. Knowledge about how contracts are executed, how functions operate, and how transactions are signed will be beneficial.
+A general understanding of how the EVM executes smart contracts will help. Knowing how function calls work, how transactions are signed, and what happens when a contract runs is enough. You don't need to understand bytecode-level details.
 
-Educational Resource: The [Ethereum EVM illustrated](https://takenobu-hs.github.io/downloads/ethereum_evm_illustrated.pdf) guide provides a visual and detailed explanation of the EVM's inner workings.
+Resource: The [Ethereum EVM illustrated](https://takenobu-hs.github.io/downloads/ethereum_evm_illustrated.pdf) is a visual walkthrough of how the EVM works internally.
 
-### Git and Command Line Understanding
+### Git and Command Line
 
-Understanding basic Git commands and command line usage is crucial for effectively using the code examples that we will provide. Familiarity with an Integrated Development Environment (IDE) like Visual Studio Code can significantly enhance your coding experience.
+The course includes code examples you'll clone and run locally, so you'll need to be comfortable with basic Git commands and working in a terminal. Familiarity with an IDE like Visual Studio Code also helps.
 
-Educational Resource: The [Pro Git](https://git-scm.com/book/en/v2) book offers a concise and practical introduction to Git. For command line basics, check out the [Codecademy's Command Line](https://www.codecademy.com/learn/learn-the-command-line) course.
+Resource: The [Pro Git](https://git-scm.com/book/en/v2) covers everything you need to know about Git. For terminal basics, try [Codecademy's Command Line](https://www.codecademy.com/learn/learn-the-command-line) course.
 
 ### Ethereum Wallet and Test ETH
 
-To interact with Ethereum networks, including deploying and testing smart contracts, you'll need an Ethereum wallet and some ETH on the Sepolia testnet. This setup is vital for transaction fees (gas) and interacting with deployed contracts.
+You'll need an Ethereum wallet (like MetaMask) and some test ETH on the Ethereum Sepolia testnet to deploy and interact with contracts during the course. Test ETH is used to cover gas fees on the testnet, so you can experiment without spending real funds.
 
-Getting Sepolia ETH: Visit the [Sepolia Faucet](https://www.alchemy.com/faucets/ethereum-sepolia) to obtain testnet ETH.
+Resource: Get Sepolia ETH from the [Sepolia Faucet](https://www.alchemy.com/faucets/ethereum-sepolia).
 
-## What You Don’t Need to Know Beforehand
+## What the Course Covers for You
 
-We recognize that some topics, while not directly related to Reactive Contracts, are essential for a comprehensive understanding of the blockchain landscape. To ensure you have a well-rounded knowledge base, we've included lessons on these broader blockchain concepts and tools. This means you won’t have to look elsewhere to fill in the gaps.
+Some topics are important for working with Reactive contracts but aren't prerequisites as the course teaches them directly. You don't need to study these in advance.
 
-### Knowledge of EVM Events
+### EVM Events
 
-EVM events are a cornerstone for RCs, serving as triggers for reactive functionalities. An understanding of how events work, how they're logged, and how to interact with them is crucial.
+Events are central to how Reactive contracts work. They act as the triggers that tell a Reactive contract something has happened on another chain. The course covers how events are emitted, logged, and consumed in detail.
 
-Educational Resource: Learn about [EVM events](../module-1/how-events-work.md) in detail.
+Resource: [How Events and Callbacks Work](../module-1/how-events-work.md).
 
-### Decentralized Finance Concepts
+### Decentralized Finance (DeFi) Concepts
 
-Familiarity with DeFi concepts, such as liquidity pools, yield farming, and automated market makers (AMMs), will be helpful, especially for understanding real-world applications of RCs.
-
-Educational Resource: We'll explain some of these concepts in our next articles as we walk you through the corresponding use cases.
-
-## Conclusion
-
-These prerequisites will set you up for success in mastering Reactive Contracts, and fully leveraging their potential in your blockchain projects. Stay tuned for our upcoming article on EVM events that will further solidify your understanding and application of these concepts.
-
-Remember, the blockchain space is ever-evolving, so continuous learning is key. These resources are just the beginning; dive deep, experiment, and don't hesitate to engage with the community for insights and assistance.
+Some modules use DeFi protocols like Uniswap V2 as real-world examples. Concepts like liquidity pools and automated market makers come up, but the course explains them as they become relevant. No prior DeFi knowledge required.
