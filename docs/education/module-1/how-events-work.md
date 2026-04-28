@@ -1,7 +1,7 @@
 ---
 title: "Lesson 2: How Events and Callbacks Work"
 sidebar_position: 2
-description: Discover how EVM events enable smart contracts to communicate with the outside world on the Ethereum blockchain. Learn about event creation, emission, and listening, with a Chainlink's price oracle integration example. Learn on callbacks to destination chains.
+description: Learn how EVM events and callbacks work in Reactive Contracts. Covers event creation and emission, the IReactive interface and react() method, and how callbacks trigger cross-chain transactions on destination chains.
 slug: how-events-work
 ---
 
@@ -9,56 +9,43 @@ slug: how-events-work
 
 ## Overview
 
-In Ethereum, events enable smart contracts to communicate with the external world by logging specific information when certain conditions are met. This allows decentralized applications (dApps) to trigger and respond to occurrences without constantly polling the blockchain. Events are indexed by the EVM, making them easily searchable, which is particularly useful for monitoring blockchain activities like transfers, contract updates, and price changes from oracles.
+Events are how smart contracts communicate with the outside world. When something happens on-chain (a transfer, a price update, a contract state change), a smart contract can emit an event that gets recorded in the transaction's logs. External applications can listen for these events and respond to them.
 
-This lesson focuses on the role of events and callbacks in smart contracts. By learning how to emit, process, and listen to events, developers can create dynamic dApps that respond to blockchain changes in real-time. We will also explore how Reactive Contracts use the `react()` method to handle events and initiate cross-chain transactions through callbacks, enabling improved functionality within the Reactive Network.
+This is the foundation that Reactive contracts are built on. Instead of an external application listening for events and manually submitting transactions in response, a Reactive contract handles that entire loop on-chain: it detects events through the `react()` method, processes them, and can trigger actions on other chains through callbacks.
 
-By the end of this lesson, you will learn to:
+By the end of this lesson, you'll understand:
 
-* Define and emit events in an Ethereum smart contract.
-* Listen for and process events using decentralized applications.
-* Implement event processing in Reactive Contracts.
-* Send callbacks to trigger actions on destination chains.
+- How events are defined, emitted, and listened for in Ethereum
+- How Reactive Contracts process events through the `IReactive` interface
+- How callbacks let a Reactive contract trigger transactions on destination chains
 
 ## How EVM Events Work
 
-When a smart contract emits an event, the event data is stored in the transaction's logs. These logs are attached to the blocks of the blockchain but don't directly affect the blockchain state. Instead, they provide a way to record and retrieve information based on the event's parameters.
+When a smart contract emits an event, the data is stored in the transaction's logs. These logs are attached to blocks on the blockchain but don't directly affect the blockchain state. They're a way to record and retrieve information without writing to contract storage.
 
-Developers define events in smart contracts using the `event` keyword, followed by the event name and the data types of the information they want to log. To emit an event, the smart contract uses the `emit` keyword, followed by the event name and the data to be logged.
-
-External applications, such as dApps or backend services, can listen for these events. By specifying the event signature and, optionally, filtering parameters, these applications can subscribe to real-time updates whenever the event is emitted. This mechanism is pivotal for creating responsive and interactive blockchain applications.
-
-## Example: Chainlink Price Oracle Integration
-
-Chainlink's decentralized oracle network provides real-time data feeds for various cryptocurrencies, commodities, and other off-chain data, directly into smart contracts. Let's see how an EVM event can be used in conjunction with Chainlink's price oracle.
-
-### Defining the Price Update Event
-
-Imagine a smart contract that needs real-time price information to execute its logic, such as a DeFi lending platform that adjusts collateral requirements based on the latest market prices. The contract might define an event like this:
+To define an event, you use the `event` keyword in Solidity, followed by the event name and the data types you want to log. To fire it, you use the `emit` keyword:
 
 ```solidity
+// Define
 event PriceUpdated(string symbol, uint256 newPrice);
-```
 
-This event is designed to log the symbol of the asset and its new price whenever the price is updated.
-
-### Emitting the Event
-
-When the smart contract receives a new price update from Chainlink's oracle, it emits the `PriceUpdated` event:
-
-```solidity
+// Emit
 emit PriceUpdated("ETH", newEthPrice);
 ```
 
-In this line, `newEthPrice` is the updated price of Ethereum fetched from Chainlink, whose oracle is updated periodically.
+External applications (dApps, backend services, or in our case Reactive contracts) can subscribe to these events by specifying the event signature and optional filtering parameters. Whenever a matching event is emitted, the subscriber gets notified. This is what makes responsive, real-time blockchain applications possible.
 
-### Listening for the Price Update
+## Example: Chainlink Price Oracle
 
-A dApp or an investor's portfolio management tool can listen for the `PriceUpdated` event to trigger specific actions such as rebalancing a portfolio or issuing a loan. We will use a Reactive Contract to catch these events in later lessons.
+To make this concrete, consider a DeFi lending platform that adjusts collateral requirements based on market prices. It uses Chainlink's decentralized oracle network to get real-time price data.
+
+The contract defines a `PriceUpdated` event and emits it whenever Chainlink's oracle delivers a new price. A portfolio management tool, a liquidation bot, or a Reactive contract can listen for that event and act on it immediately, rebalancing a portfolio, issuing a loan, or triggering a cross-chain transaction.
+
+In later lessons, you'll see how to set up a Reactive Contract to catch exactly these kinds of events.
 
 ## Event Processing in Reactive Contracts
 
-Reactive Contracts must implement the [`IReactive`](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol) interface to handle incoming events.
+To receive and process events, a Reactive contract must implement the [`IReactive`](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol) interface:
 
 ```solidity
 pragma solidity >=0.8.0;
@@ -92,66 +79,42 @@ interface IReactive is IPayer {
 }
 ```
 
-**LogRecord Structure**: A structured data type, `LogRecord`, is defined to contain detailed information about an event log:
-- `chain_id`: ID of the blockchain where the event originated.
-- `_contract`: Address of the contract that emitted the event.
-- `topic_0` to `topic_3`: Indexed topics of the log.
-- `data`: Non-indexed data from the event log.
-- `block_number`: Block number where the event occurred.
-- `op_code`: Potentially denotes an operation code.
-- `block_hash`, `tx_hash`, and `log_index`: Additional identifiers to trace the event's origin and context.
+This interface has three key parts:
 
-**Callback Event**: An event to notify subscribers of specific occurrences:
-- `chain_id`: Blockchain ID of the event.
-- `_contract`: Address of the emitting contract.
-- `gas_limit`: Maximum gas allocated for the callback.
-- `payload`: Encoded data accompanying the callback.
+**LogRecord** is the data structure that describes an incoming event. It contains everything a Reactive contract needs to understand what happened and where: the chain ID, the contract address that emitted the event, indexed topics, raw event data, and identifiers like block number, transaction hash, and log index.
 
-**react Function**: A key function that handles incoming event notifications.
-- Takes a `LogRecord` as input, enabling reactive contracts to process event logs dynamically.
-- Marked as `external`, allowing it to be called only from outside the contract.
+**Callback** is the event a Reactive contract emits when it wants to trigger an action on another chain. It specifies the destination chain ID, the target contract address, a gas limit, and an encoded payload containing the transaction details.
 
-The Reactive Network continuously monitors event logs and matches them against the subscription criteria defined in reactive contracts. When an event that meets the criteria is detected, the network triggers the `react()` method, passing in relevant details.
+**react()** is the function Reactive Network calls when a matching event is detected. It receives a `LogRecord` as input, and your implementation decides what to do with it (update state, run calculations, emit a callback, or all of the above).
 
-Reactive contracts can access all standard EVM functionalities. However, they run within a private ReactVM, which restricts them to interacting with contracts deployed by the same deployer. This isolation ensures that reactive contracts maintain a controlled and secure environment while processing events from the Reactive Network.
+Reactive Network continuously monitors event logs and matches them against the subscription criteria defined in your contract. When a match is found, it triggers `react()` with the relevant event details.
+
+One important constraint: Reactive Contracts run within a private ReactVM instance, which restricts them to interacting with contracts deployed by the same deployer. This isolation keeps the execution environment secure while the contract processes events from across the network.
 
 ## Callbacks to Destination Chains
 
-Reactive contracts can initiate transactions on destination chains by emitting log records in a specific format. These records are picked up by the Reactive Network, which then carries out the desired transactions on the relevant chain.
+Callbacks are how a Reactive contract reaches beyond Reactive Network and triggers actions on other blockchains. When your `react()` logic determines that something needs to happen on a destination chain, it emits a `Callback` event. Reactive picks that up and submits the corresponding transaction.
 
-### Emitting Callback Events
+### Emitting a Callback
 
-To request actions on destination chains, the user must trigger a `Callback` event in the Reactive Contract. Once triggered, this event is emitted by the smart contract and provides critical information that the Reactive Network needs to create and submit the transaction.
+The `Callback` event takes four parameters:
 
-The `Callback` event includes the following parameters:
+- `chain_id` — the EIP155 chain ID of the destination network
+- `_contract` — the address of the target contract on that chain
+- `gas_limit` — the gas limit for the destination transaction
+- `payload` — ABI-encoded data specifying the function call to execute
 
-- `chain_id`: The EIP155 chain ID of the destination network.
-- `_contract`: The address of the destination contract.
-- `gas_limit`: The gas limit for the transaction on the destination chain.
-- `payload`: Encoded data that specifies a function call on the destination. This data directs the Reactive Network on how to execute the intended action on the destination contract.
+### How the Callback Is Processed
 
-Here’s the signature of the `Callback` event:
+When Reactive Network detects a `Callback` event, it decodes the `payload`, constructs a transaction targeting the specified contract on the destination chain, and submits it with the provided gas limit.
 
-```solidity
-event Callback(
-    uint256 indexed chain_id,
-    address indexed _contract,
-    uint64 indexed gas_limit,
-    bytes payload
-);
-```
+### Callback Identity
 
-### Processing the Callback
+When a Reactive contract constructs a callback payload, the first argument must be reserved for the RVM ID. Developers pass `address(0)` as a placeholder in this slot, and Reactive Network automatically overwrites the first 160 bits with the deployer's address before the callback reaches the destination chain. This means callbacks always carry an authenticated origin that can't be forged by the contract itself.
 
-When the `Callback` event is emitted, the Reactive Network detects it and processes the `payload`, which encodes the transaction details in a specific format. The Reactive Network then submits a transaction to the specified contract on the destination chain, using the provided `chain_id` and  `gas_limit`.
+The callback must include at least one argument, omitting the first slot entirely will cause the call to fail, since the system has no location to inject the RVM ID. Destination contracts can rely on this first argument to identify which ReactVM originated the callback.
 
-### Important Note on Authorization
-
-For security and authorization purposes, the Reactive Network automatically replaces the first 160 bits of the call arguments within the `payload` with the RVM ID (equivalent to the ReactVM address) of the calling reactive contract. This RVM ID is identical to the contract deployer's address. As a result, the first argument in your callback will always be the ReactVM address (of type `address`), regardless of the variable name you use in your Solidity code.
-
-### Encoding and Emitting the Callback Event
-
-To initiate actions on a destination chain, you can encode the transaction details into the `payload` and emit the `Callback` event. For example, in the Uniswap Stop Order Demo, this process is used to trigger token sales through the destination chain contract:
+Example from [Uniswap V2 Stop Order Demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/f1f85ab2a0a8f917b9b37a57c00be2ffc8ad5ad4/src/demos/uniswap-v2-stop-order/UniswapDemoStopOrderReactive.sol#L107):
 
  ```solidity
 bytes memory payload = abi.encodeWithSignature(
@@ -166,16 +129,10 @@ bytes memory payload = abi.encodeWithSignature(
 emit Callback(chain_id, stop_order, CALLBACK_GAS_LIMIT, payload);
 ```
 
-## Conclusion
+## About This Course
 
-In this lesson, we've explored the fundamentals of events and callbacks in Ethereum and their application in Reactive Contracts. Key takeaways include:
+This course is designed to give you both the theory and the hands-on experience to start building with Reactive contracts. It includes detailed lectures, code examples on GitHub, and video workshops covering everything from basic concepts to real-world deployments.
 
-- **Understanding Events:** Events allow smart contracts to log information and interact with external applications, providing a powerful way to respond to on-chain activities without directly altering the blockchain state.
+Whether you want to understand how Reactive contracts work under the hood or jump straight into building, the course adapts to either path. Explore the [use cases](../use-cases/index.md) if you want to see what's possible, or start from Module 1 to build up from the fundamentals.
 
-- **Reactive Contracts and the react() Method:** RCs use the `react()` method to autonomously process incoming events based on specified criteria, enabling real-time, decentralized, and responsive contract behavior.
-
-- **Callbacks for Cross-Chain Transactions:** RCs can initiate actions on different blockchains using callbacks, broadening their functionality beyond single-chain constraints and facilitating more complex decentralized applications.
-
-- **Secure and Controlled Execution:** The ReactVM environment ensures that RCs operate securely by restricting interactions to contracts deployed by the same deployer, maintaining a controlled execution space.
-
-The concepts from this lesson are shown in the [Basic Demo](../use-cases/use-case-1.md) use case. Feel free to explore it and join our [Telegram](https://t.me/reactivedevs) group for additional guidance.
+Join the [Telegram](https://t.me/reactivedevs) community if you have questions or want to connect with other developers working with Reactive contracts.

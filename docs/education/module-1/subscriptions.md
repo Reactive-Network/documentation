@@ -1,7 +1,7 @@
 ---
 title: "Lesson 4: How Subscriptions Work"
 sidebar_position: 4
-description: Understand how to implement subscriptions in the constructor of reactive contracts and how to manage subscriptions dynamically using callbacks to destination chains 
+description: Learn how to set up and manage event subscriptions in Reactive Contracts. Covers static subscriptions in the constructor, subscription criteria and wildcards, prohibited patterns, and dynamic subscription management through callbacks.
 slug: how-subscriptions-work
 ---
 
@@ -9,23 +9,26 @@ slug: how-subscriptions-work
 
 ## Overview
 
-In the previous lesson, we covered the basic differences between the Reactive Network and ReactVM. In this one, we will dive into subscriptions, a key feature that allows RCs to automatically respond to events emitted by other contracts. When these events occur, the subscribing contract can automatically execute predefined logic.
+Subscriptions are how a Reactive contract tells Reactive Network which events it cares about. When a matching event is emitted on an origin chain, the subscribing contract's `react()` function is called automatically.
 
-By the end of this article, you will learn to:
+The previous lesson covered the dual-state environment and how to detect which context your code is running in. This lesson builds on that by showing how subscriptions are configured and what rules govern how they work.
 
-* Configure and manage subscriptions both statically and dynamically.
-* Handle subscription and unsubscription events within your smart contracts.
-* Recognize the limitations and best practices for using subscriptions in Reactive Contracts.
+By the end of this lesson, you'll understand:
 
-## How to Implement Subscriptions
+- How to set up subscriptions using the `ISubscriptionService` interface
+- How wildcards and filtering criteria work
+- What subscription patterns are prohibited
+- How to manage subscriptions dynamically through callbacks
 
-In reactive contracts, subscriptions are set up using the `subscribe` method from the Reactive Network’s system contract. Typically, this is done in the constructor to initialize subscriptions, though they can also be managed dynamically. We’ll discuss [dynamic subscriptions](./how-subscriptions-work#dynamic-subscriptions) closer to the end of this article.
+## Setting Up Subscriptions
 
-The reactive contract must also handle reverts due to deployments on both the Reactive Network, which has the system contract, and their deployer's private ReactVM, where the system contract is not present.
+Subscriptions are created using the `subscribe` method from Reactive Network's system contract. Most commonly this happens in the constructor, but subscriptions can also be added or removed at runtime. We'll cover [dynamic subscriptions](#dynamic-subscriptions) later in this lesson.
+
+Since every Reactive contract is deployed to both Reactive Network and a private ReactVM (and the system contract only exists on Reactive Network), your subscription logic needs to be wrapped in the `if (!vm)` check covered in the previous lesson.
 
 ### ISubscriptionService Interface
 
-The [ISubscriptionService](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/ISubscriptionService.sol) interface serves as an event subscription service for reactive contracts that can use this service to subscribe to specific events based on certain criteria and receive notifications when those events occur.
+The [ISubscriptionService](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/ISubscriptionService.sol) interface provides two methods (`subscribe` and `unsubscribe`) that mirror each other:
 
 ```solidity
 pragma solidity >=0.8.0;
@@ -53,16 +56,13 @@ interface ISubscriptionService is IPayable {
 }
 ```
 
-The parameters of both functions mirror each other:
-- `chain_id`: A `uint256` representing the `EIP155` source chain ID for the event.
-- `_contract`: The address of the origin chain contract that emitted the event.
-- `topic_0`, `topic_1`, `topic_2`, `topic_3`: The topics of the event, which are `uint256` values.
+Both functions take the same parameters: `chain_id` (the `EIP-155` origin chain ID), `_contract` (the address of the contract that emits the event), and `topic_0` through `topic_3` (the indexed event topics to filter on).
 
-Unsubscribing is an expensive operation due to the necessity of searching and removing subscriptions. Duplicate or overlapping subscriptions are allowed, but clients must ensure idempotency.
+Note that unsubscribing is an expensive operation because it requires searching for and removing the subscription. Duplicate subscriptions are allowed, but managing idempotency is your responsibility.
 
 ### IReactive Interface
 
-The [IReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol) interface defines a standard for reactive contracts that can receive and handle notifications about events matching their subscriptions. It extends the [IPayer](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IPayer.sol) interface, indicating that it includes payment-related functionalities.
+The [IReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol) interface defines a standard for Reactive contracts that can receive and handle notifications about events matching their subscriptions. It extends the [IPayer](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IPayer.sol) interface, indicating that it includes payment-related functionalities.
 
 ```solidity
 pragma solidity >=0.8.0;
@@ -116,9 +116,9 @@ interface IReactive is IPayer {
 **react Function**: The main entry point for processing event notifications.
 - `log` (of type `LogRecord`): Contains event details.
 
-### Constructor Subscribtion
+### Subscribing in the Constructor
 
-Here’s how you can subscribe in the constructor:
+Here's a basic example of setting up a subscription when the contract is deployed:
 
 ```solidity
 // State specific to reactive network instance of the contract
@@ -150,11 +150,11 @@ constructor(
 
 ### Subscription Criteria
 
-When configuring subscriptions in reactive contracts, you should adhere to the following rules:
+When configuring subscriptions, two rules apply:
 
-- Wildcard Usage: Use `address(0)` to indicate filtering by any contract address, `uint256(0)` to indicate any chain ID, and `REACTIVE_IGNORE` for topics to filter by any topic.
+**Wildcards.** Use `address(0)` to match any contract address, `uint256(0)` for any chain ID, and `REACTIVE_IGNORE` for any topic value. This lets you cast a wider net when you need to monitor a broad category of events.
 
-- Concrete Values: At least one criterion must be a specific value to ensure meaningful subscriptions.
+**At least one concrete value.** Every subscription must include at least one specific (non-wildcard) criterion. You can't subscribe to "everything."
 
 ### Examples
 
@@ -228,21 +228,25 @@ constructor(
 
 ### Prohibited Subscriptions
 
-- **Non-Equality Operations**: Subscriptions can’t match event parameters using less than (\<), greater than (\>), range, or bitwise operations. Only strict equality is supported.
+Not everything is supported. Keep these restrictions in mind:
 
-- **Complex Criteria Sets**: Subscriptions can’t use disjunction or sets of criteria within a single subscription. While calling the `subscribe()` method multiple times can achieve similar results, it may lead to combinatorial explosion.
+**No inequality matching.** Subscriptions only support strict equality. You can't filter by less than, greater than, ranges, or bitwise operations.
 
-- **Single Chain and All Contracts**: Subscribing to events from all chains or all contracts simultaneously is not allowed. Subscribing to all events from only one chain is also prohibited, as it is considered unnecessary.
+**No disjunction within a single subscription.** You can't say "match topic A or topic B" in one call. You can achieve similar results with multiple `subscribe()` calls, but be careful as this can lead to combinatorial explosion.
 
-- **Duplicate Subscriptions**: While duplicate subscriptions are technically allowed, they function as a single subscription. Users are charged for each transaction sent to the system contract. Preventing duplicates in the system contract is costly due to EVM storage limitations, so duplicate subscriptions are permitted to keep costs manageable.
+**No blanket subscriptions.** Subscribing to all events from all chains, all contracts, or an entire chain is not allowed.
+
+**Duplicates are allowed but redundant.** Duplicate subscriptions function as a single subscription, but you're still charged for each transaction to the system contract. Preventing duplicates on-chain would be prohibitively expensive, so this is left to the developer to manage.
 
 ## Dynamic Subscriptions
 
-Reactive contracts can dynamically manage their subscriptions based on incoming events. Since the system contract responsible for managing subscriptions is only accessible from the Reactive Network, the ReactVM's contract copy handles these operations and communicates with the Reactive Network using callbacks. You can read more on that in [ReactVM and Reactive Network As a Dual-State Environment](./react-vm). Below is an example of how you can make a dynamic subscription, based on the [Approval Magic Demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/approval-magic).
+Sometimes you need to add or remove subscriptions at runtime based on what's happening on-chain. Since the system contract is only accessible from Reactive Network, and event processing happens in the ReactVM, dynamic subscriptions work through callbacks: the ReactVM sends a callback to Reactive Network instance of the same contract, which then calls `subscribe()` or `unsubscribe()`.
 
-### Imports and Initialization
+For more on why this roundtrip is necessary, see [Lesson 3: ReactVM and the Dual-State Environment](./react-vm). The example below is based on the [Approval Magic Demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/approval-magic).
 
-Initialize the contract by declaring constants and variables that will be used throughout the contract:
+### Contract Setup
+
+The contract declares its constants and state variables, then subscribes to the events that will trigger dynamic subscription changes:
 
 ```solidity
 pragma solidity >=0.8.0;
@@ -260,24 +264,7 @@ contract ApprovalListener is AbstractReactive {
 
     address private owner;
     ApprovalService private approval_service;
-```
 
-
-**Constants**:
-- `REACTIVE_CHAIN_ID`: Represents the ID of the Reactive network.
-- `SEPOLIA_CHAIN_ID`: Represents the Sepolia test network.
-- `SUBSCRIBE_TOPIC_0`, `UNSUBSCRIBE_TOPIC_0`, `APPROVAL_TOPIC_0`: Topics used to identify the different types of actions (subscription, unsubscription, and approval) in the Reactive Network.
-- `CALLBACK_GAS_LIMIT`: The maximum gas allowed for callback operations.
-
-**State Variables**:
-- `owner`: The address of the contract owner, typically the one who deployed the contract.
-- `approval_service`: An instance of the ApprovalService contract, used to manage subscription-related operations.
-
-### Constructor
-
-The constructor sets up the contract's initial state, including registering for the relevant subscription and unsubscription events.
-
-```solidity
     constructor(
         ApprovalService service_
     ) payable {
@@ -301,22 +288,15 @@ The constructor sets up the contract's initial state, including registering for 
                 REACTIVE_IGNORE,
                 REACTIVE_IGNORE
             );
-
         }
     }
 ```
 
-**Constructor Parameters**:
-- `service_`: The address of the `ApprovalService` contract to interact with for subscription management.
-
-**Initialization**:
-- `owner` is set to the address that deploys the contract.
-- `approval_service` is set to the provided `ApprovalService` contract instance.
-- If the environment is not `vm` instance, the constructor subscribes to the relevant topics (subscription and unsubscription) by calling `service.subscribe` for both `SUBSCRIBE_TOPIC_0` and `UNSUBSCRIBE_TOPIC_0`.
+The constructor subscribes to two event types from the `ApprovalService` contract: subscribe requests and unsubscribe requests. When either event is detected, the contract's `react()` function handles it.
 
 ### Authorization
 
-This modifier restricts the execution of certain functions to only authorized callers (the service contract and the owner).
+A modifier ensures that only authorized callers (specifically the service contract, verified against the owner's address) can trigger subscription changes on Reactive Network:
 
 ```solidity
 modifier callbackOnly(address evm_id) {
@@ -332,9 +312,9 @@ modifier callbackOnly(address evm_id) {
 
 **Functionality**: This ensures that only the service contract or the owner can trigger certain actions, preventing unauthorized access.
 
-### Subscribing & Unsubscribing
+### Subscribe and Unsubscribe
 
-These functions allow the contract to subscribe or unsubscribe a subscriber address to/from the `APPROVAL_TOPIC_0` in the Reactive Network.
+These functions run on Reactive Network (`rnOnly`) and are called via callbacks from the ReactVM. They add or remove subscriptions to `APPROVAL_TOPIC_0` for a given subscriber address:
 
 ```solidity
     // Methods specific to reactive network contract instance
@@ -361,17 +341,9 @@ These functions allow the contract to subscribe or unsubscribe a subscriber addr
     }
 ```
 
-**Parameters**:
-- `rvm_id`: The ID of the reactive virtual machine (RVM).
-- `subscriber`: The address that will be subscribed or unsubscribed.
+### Processing Events in the ReactVM
 
-**Operations**:
-- `subscribe`: Registers a subscriber to the `APPROVAL_TOPIC_0`.
-- `unsubscribe`: Removes a subscriber from the `APPROVAL_TOPIC_0`.
-
-### react Function & Logic
-
-The function processes incoming log records from the ReactVM and executes different actions based on the topic in the log.
+The `react()` function handles three types of incoming events and routes each one to the appropriate action via a callback:
 
 ```solidity
 // Methods specific to ReactVM contract instance
@@ -400,29 +372,20 @@ The function processes incoming log records from the ReactVM and executes differ
                 log._contract,
                 amount
             );
-            emit Callback(SEPOLIA_CHAIN_ID, address(approval_service), CALLBACK_GAS_LIMIT, payload);
+            emit Callback(DESTINATION_CHAIN_ID, address(approval_service), CALLBACK_GAS_LIMIT, payload);
         }
     }
 }
 ```
 
-**Log Processing**:
-- Subscribe Logic: If the log's `topic_0` matches the `SUBSCRIBE_TOPIC_0`, the function encodes a payload for the `subscribe()` method and emits a callback.
-- Unsubscribe Logic: If the log's `topic_0` matches the `UNSUBSCRIBE_TOPIC_0`, the function encodes a payload for the `unsubscribe()` method and emits a callback.
-- Approval Logic: For any other log, it decodes the approval amount and creates a payload for the `onApproval` method, then emits a callback to the `approval_service` on Sepolia.
+When a subscribe or unsubscribe event arrives, the ReactVM encodes the appropriate payload and sends a callback to itself on Reactive Network, where the `subscribe()` or `unsubscribe()` function executes with the system contract. When an approval event arrives, it encodes the approval details and sends a callback to the `ApprovalService` on the destination chain.
 
-**Callback Emission**: The function uses the emit `Callback` statement to send the appropriate payload and trigger the corresponding action on the Reactive chain.
+This pattern when ReactVM detects an event, sends a callback to Reactive Network instance, which then modifies subscriptions, is how you manage subscriptions dynamically while respecting the dual-state architecture.
 
-## Conclusion
+## About This Course
 
-In this article, we’ve explored the use of subscriptions in Reactive Contracts, a fundamental feature that enables automatic responses to events from other contracts. Key takeaways include:
+This course is designed to give you both the theory and the hands-on experience to start building with Reactive contracts. It includes detailed lectures, code examples on GitHub, and video workshops covering everything from basic concepts to real-world deployments.
 
-- **Subscription Setup:** Subscriptions are established using the `subscribe` method from the Reactive Network’s system contract. This can be done statically in the constructor or managed dynamically as needed.
+Whether you want to understand how Reactive contracts work under the hood or jump straight into building, the course adapts to either path. Explore the [use cases](../use-cases/index.md) if you want to see what's possible, or start from Module 1 to build up from the fundamentals.
 
-- **Subscription Criteria:** Proper configuration is essential for effective subscriptions. Wildcards and specific values are used to define the scope of events to which a contract subscribes. Avoid prohibited subscription patterns to ensure efficient operation.
-
-- **Dynamic Management:** Subscriptions can be dynamically adjusted based on incoming events, with the `react()` method playing a central role in managing these operations. This approach ensures that RCs can respond in real-time to changes in the network.
-
-- **Handling Events:** Contracts must handle events carefully by preparing appropriate payloads for subscription, unsubscription, and approval actions. This ensures accurate and timely updates across the network.
-
-For practical applications and further insights, explore our [use cases](../use-cases/index.md) and join our [Telegram](https://t.me/reactivedevs) group to engage with the community.
+Join the [Telegram](https://t.me/reactivedevs) community if you have questions or want to connect with other developers working with Reactive contracts.
