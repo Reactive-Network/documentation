@@ -6,7 +6,7 @@ slug: /debugging
 hide_title: true
 ---
 
-![Debugging Image](../docs/img/debugging.jpg)
+![Debugging Image](./img/debugging.jpg)
 
 ## Overview
 
