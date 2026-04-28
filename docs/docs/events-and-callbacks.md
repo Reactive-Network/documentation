@@ -14,7 +14,7 @@ Reactive Contracts process on-chain events and trigger transactions on destinati
 
 ## Event Processing
 
-To process events, a Reactive Contract must implement the `react()` function defined in the [IReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol) interface:
+To process events, a Reactive contract must implement the `react()` function defined in the [IReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol) interface:
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
@@ -81,7 +81,7 @@ When this event appears in the transaction trace, Reactive Network submits a tra
 - **payload** — encoded function call
 
 :::info[Callback Authorization]
-Reactive Network automatically replaces the first 160 bits of the callback payload with the ReactVM ID (the deployer's address). As a result, the first callback argument is always the ReactVM address (`address` type), regardless of how it is named in Solidity. This ensures that callbacks are tied to the correct Reactive Contract.
+Reactive Network automatically replaces the first 160 bits of the callback payload with the ReactVM ID (the deployer's address). As a result, the first callback argument is always the ReactVM address (`address` type), regardless of how it is named in Solidity. This ensures that callbacks are tied to the correct Reactive contract.
 :::
 
 ### Example: Uniswap Stop Order Demo

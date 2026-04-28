@@ -171,7 +171,7 @@ cast call $CALLBACK_PROXY_ADDR "reserves(address)" $CONTRACT_ADDR --rpc-url $DES
 
 ### Balance
 
-Retrieve the REACT balance of a reactive contract:
+Retrieve the REACT balance of a Reactive contract:
 
 ```bash
 cast balance $CONTRACT_ADDR --rpc-url $REACTIVE_RPC

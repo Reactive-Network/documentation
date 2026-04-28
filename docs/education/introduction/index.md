@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 title: Introduction
-description: Embark on a journey through Reactive Contracts with our educational program. Dive into lectures, GitHub code, and video demos for a hands-on learning experience.
+description: Educational course on Reactive Contracts covering events, callbacks, subscriptions, oracles, and ReactVM. Includes lectures, GitHub code examples, and video workshops for developers building on Reactive Network.
 slug: /education/introduction
 hide_title: true
 ---
@@ -10,11 +10,11 @@ hide_title: true
 
 ## Overview
 
-To better understand the concept of Reactive Contracts (RCs), we have developed an educational course featuring detailed lectures, code snippets on [GitHub](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos), and video workshops on [YouTube](https://www.youtube.com/@0xReactive/streams). Our goal is to provide both theoretical knowledge and practical challenges, creating a community where developers can fully explore RCs.
+Reactive contracts allow smart contracts to automatically respond to events on other blockchains, without anyone having to trigger them manually. If that sounds unfamiliar, you're in the right place.
 
-## Where to Begin 
+This course walks you through how Reactive contracts work, step by step. You'll find detailed lectures, working code on [GitHub](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos), and video workshops on [YouTube](https://www.youtube.com/@0xReactive/streams). Each module pairs theory with hands-on challenges so you can learn by building, not just reading.
 
-The Introduction chapter provides an overview of Reactive Contracts, highlighting their ability to autonomously react to events on EVM-compatible chains. It also outlines the technical and knowledge prerequisites necessary for mastering these concepts.
+Start with the introduction for a closer look at what Reactive contracts can do and how they operate across EVM-compatible chains, then check the prerequisites to make sure you have the right background before moving on.
 
 [Introduction to Reactive Contracts →](./reactive-contracts.md)
 
@@ -22,7 +22,7 @@ The Introduction chapter provides an overview of Reactive Contracts, highlightin
 
 ## Module One
 
-[Module 1](../module-1/index.md) is dedicated to the basics of Reactive Contracts, events and callbacks, the ReactVM and Reactive Network environments, subscriptions, and the function of oracles in integrating off-chain data.
+[Module 1](../module-1/index.md) covers the building blocks. You'll learn how Reactive contracts are structured, how they detect and respond to events through callbacks, and how the ReactVM execution environment fits into the picture. It also explains subscriptions (how a contract "listens" for specific events) and the role oracles play in bringing off-chain data on-chain.
 
 [Reactive Contracts →](../module-1/reactive-contracts.md)
 
@@ -36,7 +36,7 @@ The Introduction chapter provides an overview of Reactive Contracts, highlightin
 
 ## Module Two
 
-[Module 2](../module-2/index.md) explores Uniswap V2, focusing on liquidity pools and smart contract operations. It also elaborates on the basic functions of Reactive Contracts that enable autonomous execution.
+[Module 2](../module-2/index.md) puts those building blocks to use with a real protocol. You'll walk through how Uniswap V2 works under the hood (its liquidity pools and smart contract mechanics) then see how Reactive contracts can interact with it autonomously. This is where the basics start clicking into practical applications.
 
 [How Uniswap Works →](../module-2/how-uniswap-works.md)
 
@@ -44,7 +44,7 @@ The Introduction chapter provides an overview of Reactive Contracts, highlightin
 
 ## Use Cases
 
-The [Use Cases](../use-cases/index.md) section explains scenarios where Reactive Contracts can improve blockchain apps. It includes a basic demo for low-latency log monitoring and interaction across different chains, a guide on deploying RCs using Remix, and a demonstration of a stop order implementation on a Uniswap V2 liquidity pool.
+Once you understand the fundamentals, the [Use Cases](../use-cases/index.md) section shows what you can build with them. It walks through a basic demo for monitoring logs across chains with low latency, a stop order on a Uniswap V2 pool that executes automatically, and a step-by-step guide to deploying Reactive contracts using the Remix IDE.
 
 [Basic Demo →](../use-cases/use-case-1.md)
 
@@ -54,6 +54,6 @@ The [Use Cases](../use-cases/index.md) section explains scenarios where Reactive
 
 ## Glossary
 
-The Glossary provides concise definitions of key terms related to blockchain technology, decentralized finance, and smart contracts, including specific Reactive terms to prevent potential confusion.
+Blockchain documentation comes with a lot of specialized terminology. The glossary defines key concepts from blockchain, DeFi, and smart contract development, along with terms specific to the Reactive ecosystem. Worth bookmarking if something in the course doesn't immediately click.
 
 [Glossary →](../glossary.md)

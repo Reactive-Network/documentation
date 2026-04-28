@@ -1,7 +1,7 @@
 ---
 title: "Module 1: Beginner — Foundations of Reactive Contracts"
 sidebar_position: 1
-description: Learn the basics of RCs, including their reactive nature, state management, EVM events, and oracles. Ideal for beginners looking to understand and apply RCs in blockchain projects.
+description: Introduction to Reactive Contracts covering how they respond to on-chain events, EVM event handling and callbacks, the ReactVM dual-state environment, subscriptions, and how oracles connect blockchain with off-chain data.
 slug: /education/module-1
 ---
 
@@ -9,24 +9,24 @@ slug: /education/module-1
 
 # Overview
 
-Welcome to Module 1: Beginner — Foundations of Reactive Contracts (RCs)! This module introduces the core concepts and functionalities of RCs, providing a foundation for applying them in blockchain projects.
+Module 1 covers the core concepts behind Reactive contracts: how they work, what makes them different from regular smart contracts, and the infrastructure that supports them. By the end of this module, you'll understand how Reactive contracts detect events, execute responses, and interact with off-chain data.
 
 [Lesson 1: Reactive Contracts](./reactive-contracts.md)
 
-Explore the mechanisms of RCs, focusing on their reactive nature and Inversion of Control. Learn through use cases such as data collection with oracles and executing stop orders on decentralized exchanges.
+How Reactive contracts work in practice, focusing on their reactive nature. Walks through real use cases like data collection with oracles and executing stop orders on decentralized exchanges.
 
 [Lesson 2: How Events and Callbacks Work](./how-events-work.md)
 
-Understand how EVM events and callbacks enable interaction between smart contracts and external systems. Includes a practical example of Chainlink's price oracle integration.
+How EVM events and callbacks enable communication between smart contracts and external systems. Includes a practical example using Chainlink's price oracle integration.
 
 [Lesson 3: ReactVM and Reactive Network As a Dual-State Environment](./react-vm.md)
 
-Examine the dual-state environment of RCs within the Reactive Network and ReactVM. Learn about state management and transaction execution across these domains.
+Reactive Network runs on a dual-state environment: ReactVM for Reactive logic and Reactive Network (RNK) for on-chain execution. This lesson explains how state management and transactions work across both.
 
 [Lesson 4: How Subscriptions Work](./subscriptions.md)
 
-Learn about setting up and managing subscriptions in RCs to streamline event handling and automate contract execution.
+Subscriptions are how Reactive contracts listen for specific on-chain events. This lesson covers setting them up, managing them, and using them to automate contract execution.
 
 [Lesson 5: How Oracles Work](./how-oracles-work.md)
 
-Discover the role of oracles in connecting blockchain with off-chain data. Explore multisig protocols and practical applications in DeFi, insurance, and online betting.
+Oracles bridge the gap between blockchain and real-world data. This lesson explains how they work, covers multisig protocols for securing oracle data, and walks through applications in DeFi, insurance, and prediction markets.
