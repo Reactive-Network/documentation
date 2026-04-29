@@ -1,5 +1,5 @@
 ---
-title: "Lesson 3: ReactVM and Reactive Network As a Dual-State Environment"
+title: "Lesson 3: ReactVM and the Dual-State Environment"
 sidebar_position: 3
 description: Learn how Reactive contracts operate across two separate states — one on Reactive Network and one in a private ReactVM instance. Covers execution context detection, managing dual variable sets, and how transactions flow in each environment.
 slug: react-vm
