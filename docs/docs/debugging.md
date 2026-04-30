@@ -1,6 +1,6 @@
 ---
 title: Debugging
-sidebar_position: 14
+sidebar_position: 15
 description: The page dedicated to debugging of most frequent errors and issues on Reactive Network.
 slug: /debugging
 hide_title: true
