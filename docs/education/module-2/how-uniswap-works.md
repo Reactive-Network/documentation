@@ -1,40 +1,42 @@
 ---
-title: "Lesson 6: How Uniswap Works / Understanding Uniswap V2 Pools and Smart Contracts"
+title: "Lesson 6: How Uniswap V2 Works"
 sidebar_position: 1
 description: Discover how Uniswap V2 pools and smart contracts work, including the constant product formula and key events like Swap and Sync. Learn about token swaps, liquidity provisioning, and see a smart contract example.
 slug: how-uniswap-works
 ---
 
-# Lesson 6: How Uniswap Works / Understanding Uniswap V2 Pools and Smart Contracts
+# Lesson 6: How Uniswap V2 Works
 
 ## Overview
 
-Uniswap V2, a decentralized finance protocol, operates on the Ethereum blockchain, facilitating automated trading of decentralized tokens. At its core are liquidity pools and smart contracts that enable seamless token swaps. Understanding Uniswap-like DEXes is crucial for understanding DeFi, smart contract applications, and Reactive use cases. By the end of this lesson, you'll be equipped with knowledge on:
+Before building a Reactive contract that interacts with a DeFi protocol, you need to understand how that protocol works. This lesson covers Uniswap V2, one of the most widely used decentralized exchanges, and the mechanics that make it relevant for Reactive contracts.
 
-* The structure and function of Uniswap V2 pools, including how they facilitate token swaps and liquidity provisioning.
-* The constant product formula (x * y = k) that governs the pricing mechanism within Uniswap V2.
-* The execution and significance of Swap and Sync events in maintaining pool dynamics and providing transparency.
-* A practical understanding through a code example that demonstrates the swap function within Uniswap V2's smart contracts.
+By the end of this lesson, you'll understand:
+
+- How Uniswap V2 liquidity pools work and how they enable token swaps without traditional market makers
+- The constant product formula that governs pricing
+- How the `swap()` function executes trades on-chain
+- What the `Swap` and `Sync` events contain and why they matter for Reactive contracts
 
 ## Uniswap V2 Pools
 
-Liquidity pools in Uniswap V2 are essentially reserves of two tokens, forming a trading pair. These pools are the backbone of the Uniswap ecosystem, allowing users to trade tokens without the need for traditional market makers.
+A Uniswap V2 liquidity pool is a pair of two tokens held in reserve. Anyone can trade one token for the other by interacting with the pool's smart contract. No order book, no counterparty, no intermediary. These pools are the foundation of the Uniswap ecosystem and a good example of how decentralized exchanges work in general.
 
-In Uniswap V2, each trade or liquidity provision is executed through transactions on the Ethereum blockchain. These transactions are public and can be [viewed on Etherscan](https://etherscan.io/tx/0x7b969e8a74ae9891e322311ca5fe6e5d7bcb53ac3412b4189d84683961043503) or similar block explorers.
+Every trade and liquidity provision is an on-chain transaction, publicly visible on block explorers like [Etherscan](https://etherscan.io/tx/0x7b969e8a74ae9891e322311ca5fe6e5d7bcb53ac3412b4189d84683961043503). The smart contracts managing these pools enforce the trading rules and ensure every swap follows the protocol's pricing algorithm, known as the Constant Product Market Maker model.
 
-Smart contracts in Uniswap V2 manage the liquidity pools, dictate the rules for token swapping, and ensure that trades are executed according to the protocol's algorithm, often referred to as the Constant Product Market Maker model.
+### Constant Product Formula
 
-### The Constant Product Formula
+Uniswap V2 pricing is governed by a simple formula: **x * y = k**, where `x` and `y` are the quantities of the two tokens in the pool and `k` is a constant. When someone buys token A from the pool, the amount of token A decreases and the amount of token B increases, shifting the price. The formula ensures that the pool's total liquidity is preserved regardless of how the ratio changes.
 
-The Uniswap V2 smart contract uses this formula: x * y = k, where x and y represent the quantity of the two tokens in the liquidity pool, and k is a constant. This formula maintains the pool's total liquidity while allowing the token prices to fluctuate based on trading activity.
+### Swap() Function
 
-Code Example: Here's a simplified snippet of what a Uniswap V2 swap() function might look like (see the explanation below the code):
+Here's a simplified version of Uniswap V2's `swap()` function:
 
 ```solidity
 function swap(uint amount0Out, uint amount1Out, address to, bytes calldata data) external {
-require(amount0Out > 0 || amount1Out > 0, "UniswapV2: INSUFFICIENT_OUTPUT_AMOUNT");
-(uint112 reserve0, uint112 reserve1,) = getReserves(); // fetches reserves of the pool
-require(amount0Out < reserve0 && amount1Out < reserve1, "UniswapV2: INSUFFICIENT_LIQUIDITY");
+    require(amount0Out > 0 || amount1Out > 0, "UniswapV2: INSUFFICIENT_OUTPUT_AMOUNT");
+    (uint112 reserve0, uint112 reserve1,) = getReserves();
+    require(amount0Out < reserve0 && amount1Out < reserve1, "UniswapV2: INSUFFICIENT_LIQUIDITY");
 
     uint balance0;
     uint balance1;
@@ -47,7 +49,6 @@ require(amount0Out < reserve0 && amount1Out < reserve1, "UniswapV2: INSUFFICIENT
         uint balanceAdjusted1 = balance1 * 1000 - amount1In * 3;
         require(balanceAdjusted0 * balanceAdjusted1 >= uint(reserve0) * uint(reserve1) * (1000**2), "UniswapV2: K");
 
-        // Emit the Swap event
         emit Swap(msg.sender, amount0In, amount1In, amount0Out, amount1Out, to);
     }
 
@@ -62,85 +63,61 @@ require(amount0Out < reserve0 && amount1Out < reserve1, "UniswapV2: INSUFFICIENT
 }
 ```
 
-In this function:
+Here's what's happening step by step:
 
-* `amount0Out` and `amount1Out` are the amounts of each token that the caller wants to receive from the pool.
+1. The caller specifies how many of each token they want out (`amount0Out`, `amount1Out`). The function checks that at least one is positive and that the pool has enough reserves.
 
-* The function first checks that the output amounts are positive and that the swap doesn't deplete the pool's reserves.
+2. It calculates how many tokens came in (`amount0In`, `amount1In`) based on the difference between the original reserves and the new balances.
 
-* It then calculates the input amounts (`amount0In` and `amount1In`) as the difference between the initial reserves and
-the new balances after the swap.
+3. The constant product invariant is enforced after accounting for Uniswap's 0.3% fee (the `balanceAdjusted` calculations). If the invariant doesn't hold, the transaction reverts.
 
-* The contract ensures that the trade maintains the constant product invariant (k) after accounting for a 0.3% fee
-(`balanceAdjusted0` and `balanceAdjusted1` calculations).
+4. The `Swap` event is emitted, logging the sender, input amounts, output amounts, and recipient.
 
-* The `_update` function is called to update the pool's reserves with the new balances.
+5. `_update` records the new reserve balances. Tokens are transferred to the recipient address.
 
-* Tokens are transferred to the recipient's address `to`.
+6. If callback data is provided, the function calls `uniswapV2Call` on the recipient. This is how flash swaps work.
 
-* If there is callback data (`data`), it calls the `uniswapV2Call` function on the recipient address, which can be used
-for more complex interactions like flash swaps.
-
-* The `Swap` event is emitted right after calculating the input and output amounts and before updating the reserves. The `Swap` event logs the sender, the amounts of tokens coming in and going out of the pool, and the recipient of the tokens.
-
-This logic encapsulates the essence of a swap transaction in Uniswap V2, balancing the pool's reserves to maintain the constant product while facilitating token exchanges.
-
-We will be mostly interested in `Swap` events to monitor the blockchain activity and run Reactive Contracts based on it. Since the code of the pool smart contract does not change, most of the information that is different for every transaction is being logged in the event. So let’s talk a bit more about the two types of events we’ll be most interested in: `Swap` and `Sync`.
+The key takeaway for Reactive contracts: most of the transaction-specific information lives in the events, not in contract storage. Since the pool's code doesn't change between swaps, the events are where you find what actually happened in each trade.
 
 ## Events in Uniswap V2
 
+Two events are particularly important for Reactive contracts: `Swap` and `Sync`.
+
 ### Swap
 
-The `Swap` event is emitted every time a trade occurs in a Uniswap V2 pool. It provides vital information about the transaction, such as the number of tokens involved in the swap and the addresses of the trader and recipient.
-
-Event structure example:
+The `Swap` event is emitted every time a trade occurs. It logs everything you need to know about the transaction:
 
 ```solidity
 event Swap(
-address indexed sender,
-uint amount0In,
-uint amount1In,
-uint amount0Out,
-uint amount1Out,
-address indexed to
+    address indexed sender,
+    uint amount0In,
+    uint amount1In,
+    uint amount0Out,
+    uint amount1Out,
+    address indexed to
 );
 ```
 
-In this event:
+`sender` is the address that initiated the swap. `amount0In` and `amount1In` are the tokens sent to the pool. `amount0Out` and `amount1Out` are the tokens sent from the pool. `to` is the address receiving the output tokens.
 
-* `sender` is the address that initiated the swap.
-* `amount0In` and `amount1In` are the amounts of the respective tokens that were sent to the pool.
-* `amount0Out` and `amount1Out` are the amounts of the respective tokens that were sent from the pool.
-* `to` is the address that receives the output tokens.
-
-You can see this event in [the list of the events](https://etherscan.io/tx/0x7b969e8a74ae9891e322311ca5fe6e5d7bcb53ac3412b4189d84683961043503#eventlog) in this transaction on Etherscan.
+You can see a real example of this event in [the event logs of this transaction](https://etherscan.io/tx/0x7b969e8a74ae9891e322311ca5fe6e5d7bcb53ac3412b4189d84683961043503#eventlog) on Etherscan.
 
 ### Sync
 
-The `Sync` event is emitted whenever the reserves of a Uniswap V2 pool are updated. This event occurs after a swap when liquidity is added or removed, or when there's a direct token transfer into or out of the pool. The `Sync` event helps keep track of the pool's reserves current state.
-
-Event Structure Example:
+The `Sync` event is emitted whenever the pool's reserves are updated: after a swap, when liquidity is added or removed, or when tokens are transferred directly into or out of the pool:
 
 ```solidity
 event Sync(uint112 reserve0, uint112 reserve1);
 ```
 
-In this event:
+`reserve0` and `reserve1` are the updated token balances in the pool. This event is what keeps external observers (including Reactive contracts) informed about the pool's current state, which directly affects pricing and slippage.
 
-* `reserve0` and `reserve1` represent the updated reserves of the pool's two tokens.
+Both events are visible in [the same Etherscan transaction logs](https://etherscan.io/tx/0x7b969e8a74ae9891e322311ca5fe6e5d7bcb53ac3412b4189d84683961043503#eventlog). In the next lesson, you'll see how a Reactive contract subscribes to these events and acts on them.
 
-The `Sync` event is critical for maintaining up-to-date information on the pool's liquidity, which in turn affects trading price and slippage. You can see this event in [the list of the events](https://etherscan.io/tx/0x7b969e8a74ae9891e322311ca5fe6e5d7bcb53ac3412b4189d84683961043503#eventlog) in this transaction on Etherscan.
+## About This Course
 
-## Conclusion
+This course is designed to give you both the theory and the hands-on experience to start building with Reactive contracts. It includes detailed lectures, code examples on GitHub, and video workshops covering everything from basic concepts to real-world deployments.
 
-In this article, we’ve explored the fundamentals of Uniswap V2, a cornerstone of DeFi that facilitates automated trading through liquidity pools and smart contracts. Key takeaways include:
+Whether you want to understand how Reactive contracts work under the hood or jump straight into building, the course adapts to either path. Explore the [use cases](../use-cases/index.md) if you want to see what's possible, or start from Module 1 to build up from the fundamentals.
 
-- **Uniswap V2 Pools:** These pools, consisting of two tokens, enable seamless trading and liquidity provisioning without traditional market makers. Each transaction is governed by the Constant Product Market Maker model, which maintains the balance of liquidity in the pool.
-
-- **Constant Product Formula:** The formula (x * y = k) ensures that the product of the quantities of the two tokens remains constant, allowing for dynamic pricing based on trading activity.
-
-- **Swap and Sync Events:** The `Swap` event provides detailed information about trades, including token amounts and addresses, while the `Sync` event keeps track of reserve updates. These events are crucial for monitoring and integrating Uniswap activity with Reactive Contracts.
-
-- **Code Mechanics:** The provided code example illustrates the core functionality of the `swap` function in Uniswap V2, demonstrating how the contract maintains liquidity and ensures accurate token swaps.
-
-For practical applications and further insights into integrating Uniswap V2 with your projects, explore our [use cases](../use-cases/index.md) and join our [Telegram](https://t.me/reactivedevs) group to engage with the community.
+Join the [Telegram](https://t.me/reactivedevs) community if you have questions or want to connect with other developers working with Reactive contracts.

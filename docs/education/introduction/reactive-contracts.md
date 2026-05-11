@@ -1,5 +1,5 @@
 ---
-title: "Reactive Contracts: What They Are and Why We Need Them"
+title: "What Are Reactive Contracts and Why Do They Matter"
 sidebar_position: 1
 description: Reactive Contracts are smart contracts that autonomously monitor and respond to events across EVM-compatible blockchains. Explains what they are, how they differ from traditional smart contracts, and why cross-chain automation matters.
 slug: reactive-contracts

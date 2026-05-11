@@ -1,7 +1,7 @@
 ---
 title: "Module 2: Intermediate - Building Blocks for Reactivity"
 sidebar_position: 1
-description: Learn the basics of DeFi with Uniswap V2 and Reactive Contracts. Discover how liquidity pools work and see RCs in action as they autonomously execute trades.
+description: Practical introduction to DeFi and Reactive Contracts. Covers how Uniswap V2 liquidity pools and smart contracts work, then shows how Reactive Contracts can autonomously execute trades based on real-time on-chain conditions.
 slug: /education/module-2
 ---
 
@@ -9,12 +9,14 @@ slug: /education/module-2
 
 # Overview
 
-Welcome to Module 2: Intermediate - Building Blocks for Reactivity! In this module, we're diving into decentralized finance (DeFi), with a focus on understanding and applying Reactive Contracts (RCs).
+Module 1 covered the core concepts: how Reactive contracts work, how they process events, and how subscriptions and callbacks fit together. This module puts that foundation to use with a real DeFi protocol.
 
-[Lesson 6: Understanding Uniswap V2 Pools and Smart Contracts](./how-uniswap-works.md)
+You'll start by learning how Uniswap V2 works under the hood: its liquidity pools, smart contracts, and trading mechanics. Then you'll see how a Reactive contract can plug into that system and autonomously execute trades when specific conditions are met. This is where the theory from Module 1 starts turning into practical applications.
 
-Gain an understanding of Uniswap V2, a key decentralized finance protocol. Learn how liquidity pools function and explore the smart contracts that drive Uniswap V2, enabling efficient and decentralized trading.
+[Lesson 6: How Uniswap V2 Works](./how-uniswap-works.md)
 
-[Lesson 7: Implementing Basic Reactive Functions](./basic-reactive-functions.md)
+How Uniswap V2's liquidity pools and smart contracts enable decentralized trading. Covers the constant product formula, how swaps work, and what events Uniswap emits, which is what a Reactive contract will subscribe to in the next lesson.
 
-Explore how Reactive Contracts (RCs) operate within the DeFi space. Understand how RCs can autonomously execute trades and respond to specific conditions, improving the capabilities of decentralized applications.
+[Lesson 7: Basic Reactive Functions](./basic-reactive-functions.md)
+
+How Reactive contracts operate in a DeFi context. Walks through how a Reactive contract can monitor Uniswap events and autonomously execute trades when on-chain conditions match predefined criteria.

@@ -1,29 +1,31 @@
 ---
-title: "Lesson 7: Implementing Basic Reactive Functions"
+title: "Lesson 7: Basic Reactive Functions"
 sidebar_position: 2
-description: Learn to implement Reactive Contracts for Uniswap V2, automate stop orders, and understand their execution based on Sync events.
+description: Walkthrough of a Reactive Contract that implements a Uniswap V2 stop order. Covers the contract structure, event subscriptions, the react() function, threshold logic, and the full execution flow from initialization to trade completion.
 slug: basic-reactive-functions
 ---
 
-# Lesson 7: Implementing Basic Reactive Functions
+# Lesson 7: Basic Reactive Functions
 
 ## Overview
 
-In this lesson, we’ll go through the Reactive Contract (RC) specifically designed for the Uniswap V2 platform, aimed at executing stop orders based on predefined conditions. By the end of this lesson, you’ll know:
+This lesson walks through a complete Reactive сontract, one that monitors a Uniswap V2 pool and executes a stop order when the price drops below a threshold. It's a practical example that ties together the concepts from the previous lessons: subscriptions, event processing, the dual-state environment, and callbacks.
 
-* That RCs are pretty similar to Ethereum smart contracts and thus easy to understand.
-* What each part of the stop-order reactive contract means.
-* How this reactive contract is executed and what it does.
+If you've worked with Solidity before, most of this will look familiar. Reactive contracts follow the same patterns as standard Ethereum smart contracts, with the addition of the `react()` function and the subscription/callback mechanics covered earlier in the course.
+
+By the end of this lesson, you'll understand:
+
+- How a real Reactive contract is structured from imports to execution logic
+- What each part of the stop-order contract does
+- How the contract moves from initialization to monitoring to trade execution
 
 ## Contract
 
-The [UniswapDemoStopOrderReactive](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/uniswap-v2-stop-order/UniswapDemoStopOrderReactive.sol) contract is set up to monitor liquidity pool events on Uniswap V2, namely tracking the `Sync` events to determine when the conditions for a stop order are met. When these conditions are triggered, it executes a callback transaction on the Ethereum blockchain to perform the stop order.
+The [UniswapDemoStopOrderReactive](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/uniswap-v2-stop-order/UniswapDemoStopOrderReactive.sol) contract monitors `Sync` events from a Uniswap V2 pair. When the reserve ratio drops below a predefined threshold, it sends a callback to execute a stop order on the destination chain.
 
-## Key Components
+### Imports and Events
 
-### Event Declarations
-
-Event Declarations: Events like `Subscribed`, `VM`, `AboveThreshold`, `CallbackSent`, and `Done` are used for logging and tracking the contract's operations on the blockchain.
+The contract imports the `IReactive` interface and `AbstractReactive` base contract, then defines a `Reserves` struct to decode Uniswap's `Sync` event data. The events are used for logging at each stage of the contract's lifecycle:
 
 ```solidity
 // SPDX-License-Identifier: GPL-2.0-or-later
@@ -57,9 +59,9 @@ contract UniswapDemoStopOrderReactive is IReactive, AbstractReactive {
     event Done();
 ```
 
-### Contract Variables
+`Subscribed` logs when the contract registers for events. `AboveThreshold` logs when the reserve ratio is checked but doesn't trigger. `CallbackSent` and `Done` mark the two key state transitions: when the stop order is sent and when it's confirmed.
 
-`UNISWAP_V2_SYNC_TOPIC_0` and `STOP_ORDER_STOP_TOPIC_0` are constants representing the topics for Uniswap's `Sync` events and the contract's `Stop` events, respectively. `CALLBACK_GAS_LIMIT` is the gas limit set for the callback transaction. Variables like `triggered`, `done`, `pair`, `stop_order`, `client`, `token0`, `coefficient`, and `threshold` store the state and configuration of the stop order.
+### Constants and State Variables
 
 ```solidity
     uint256 private constant SEPOLIA_CHAIN_ID = 11155111;
@@ -68,7 +70,7 @@ contract UniswapDemoStopOrderReactive is IReactive, AbstractReactive {
     uint64 private constant CALLBACK_GAS_LIMIT = 1000000;
 
     // State specific to ReactVM instance of the contract.
-    
+
     bool private triggered;
     bool private done;
     address private pair;
@@ -79,13 +81,15 @@ contract UniswapDemoStopOrderReactive is IReactive, AbstractReactive {
     uint256 private threshold;
 ```
 
+The constants define the chain ID, the topic hashes for the two events the contract cares about (`Sync` from Uniswap and `Stop` from the stop-order contract), and the gas limit for callbacks.
+
+The state variables track the contract's progress: `triggered` prevents duplicate callbacks once the threshold is hit, `done` signals that the stop order has been confirmed. The remaining variables (`pair`, `stop_order`, `client`, `token0`, `coefficient`, and `threshold`) configure which pool to watch, which contract to call, and what price condition to act on.
+
 ## Contract Logic
 
 ### Constructor
 
-The constructor initializes the contract by storing references to the Uniswap V2 pair (`_pair`), the stop-order contract (`_stop_order`), and the client (`_client`). It also records a boolean flag (`_token0`), which indicates whether this contract is managing `token0` or `token1`, and sets the `coefficient` and `threshold` parameters that handle its behavior.
-
-After these values are stored, the contract subscribes to the Uniswap V2 pair and stop-order contract events, but only if it is not operating in a reactVM instance. Subscribing to these events ensures the contract will be notified of any relevant updates, specifically `UNISWAP_V2_SYNC_TOPIC_0` from the Uniswap pair and `STOP_ORDER_STOP_TOPIC_0` from the stop-order contract.
+The constructor stores the configuration and sets up event subscriptions on Reactive Network:
 
 ```solidity
     constructor(
@@ -126,16 +130,13 @@ After these values are stored, the contract subscribes to the Uniswap V2 pair an
     }
 ```
 
+The `if (!vm)` block only runs on Reactive Network (as covered in [Lesson 3](../module-1/react-vm.md)). It subscribes to two event types: `Sync` events from the Uniswap pair to track reserve changes, and `Stop` events from the stop-order contract to know when execution is confirmed. The ReactVM instance skips this block and uses the same variables for event processing.
+
 ### react() Function
 
-The `react()` function processes incoming blockchain events and determines if actions need to be triggered based on the event type:
-
-**Stop-Order Events**: If the event originates from the stop-order contract, the function verifies that the event matches the expected topics and addresses (`pair` and `client`). Once confirmed and if the stop order has already been triggered (`triggered = true`), the contract marks the operation as completed (`done = true`) and emits the `Done` event.
-
-**Uniswap Pair Sync Events**: For events originating from the Uniswap pair contract (specifically `Sync` events), the function decodes the reserves data to check if the conditions for triggering the stop-order are met. This check is performed using the `below_threshold` function, which calculates whether the reserve ratio falls below the defined threshold. If the condition is satisfied, the contract emits a `CallbackSent` event, prepares the callback payload, sets `triggered = true`, and emits a `Callback` event to execute the stop order.
+This is where the contract's logic lives. It handles two types of incoming events:
 
 ```solidity
-    // Methods specific to ReactVM instance of the contract.
     function react(LogRecord calldata log) external vmOnly {
         assert(!done);
 
@@ -169,11 +170,13 @@ The `react()` function processes incoming blockchain events and determines if ac
     }
 ```
 
-### below_threshold() Function
+**When a `Sync` event arrives** from the Uniswap pair, the function decodes the reserve data and checks if the price has dropped below the threshold. If it has and the stop order hasn't been triggered yet, it encodes a callback payload targeting the stop-order contract and emits a `Callback` event. Reactive Network picks that up and submits the transaction on the destination chain.
 
-The `below_threshold()` function checks whether the current reserves in the Uniswap pool satisfy the conditions for executing a stop order. It compares the reserve ratio to a predefined threshold based on the selected token (either `token0` or `token1`).
+**When a `Stop` event arrives** from the stop-order contract, the function verifies that it matches the expected pair and client, then marks the operation as complete. After `done` is set to `true`, the contract won't process any more events.
 
-If `token0` is selected, the function checks if the ratio of `reserve1` to `reserve0`, multiplied by a coefficient, is less than or equal to the threshold. If `token0` is not selected, the function checks if the ratio of `reserve0` to `reserve1`, multiplied by the coefficient, is less than or equal to the threshold.
+### Threshold Check
+
+The `below_threshold()` function determines whether the current reserve ratio warrants triggering the stop order:
 
 ```solidity
     function below_threshold(Reserves memory sync) internal view returns (bool) {
@@ -185,25 +188,24 @@ If `token0` is selected, the function checks if the ratio of `reserve1` to `rese
     }
 ```
 
+The `token0` flag determines which direction to calculate the ratio. If you're watching token 0, it checks whether the price of token 0 (expressed as the ratio of `reserve1` to `reserve0`, scaled by the coefficient) has fallen to or below the threshold. The reverse applies when watching token 1. The `coefficient` is a scaling factor that lets you set precise price targets without running into integer division issues.
+
 ## Execution Flow
 
-**Initialization**: Upon deployment, the contract subscribes to the necessary events from the Uniswap V2 pair and the stop order callback contract.
+The full lifecycle of this contract follows four stages:
 
-**Event Monitoring**: The contract listens for Sync events from the Uniswap pair to monitor the pool's reserve changes and`Stop` events from the stop-order contract to track the execution of orders.
+**Initialization.** On deployment, the Reactive Network instance subscribes to `Sync` events from the Uniswap pair and `Stop` events from the stop-order contract.
 
-**Stop Order Activation**: When the `Sync` event indicates that the pool's price hits the threshold, the contract initiates the stop order through the callback function, executing a trade on Uniswap V2.
+**Monitoring.** Every time the Uniswap pair's reserves change, a `Sync` event is emitted. The ReactVM instance receives it through `react()` and checks the reserve ratio against the threshold.
 
-**Completion**: After the stop order is executed, the contract captures the Stop event from the stop-order contract, marking the process as complete.
+**Triggering.** When the ratio drops below the threshold, the contract encodes a callback payload and emits a `Callback` event. Reactive Network submits the corresponding transaction to the stop-order contract on the destination chain, executing the trade.
 
+**Completion.** The stop-order contract emits a `Stop` event after execution. The Reactive contract receives it, verifies the details, and marks the operation as done. No further events are processed.
 
-## Conclusion
+## About This Course
 
-In this article, we’ve examined the implementation of a Reactive Contract (RC) for managing stop orders on the Uniswap V2 platform. Key takeaways include:
+This course is designed to give you both the theory and the hands-on experience to start building with Reactive contracts. It includes detailed lectures, code examples on GitHub, and video workshops covering everything from basic concepts to real-world deployments.
 
-- **Similarity to Ethereum Smart Contracts:** RCs are conceptually similar to Ethereum smart contracts, making them accessible for those familiar with Ethereum's architecture.
+Whether you want to understand how Reactive contracts work under the hood or jump straight into building, the course adapts to either path. Explore the [use cases](../use-cases/index.md) if you want to see what's possible, or start from Module 1 to build up from the fundamentals.
 
-- **Contract Components:** We reviewed the key elements of the stop-order reactive contract, including event declarations, contract variables, and the logic behind the `react()` and `below_threshold()` functions.
-
-- **Execution Flow:** The contract’s lifecycle involves subscribing to relevant events, monitoring Uniswap V2 pool reserves, triggering stop orders when conditions are met, and capturing completion events to finalize the process.
-
-For a deeper look into practical applications, explore the [Uniswap Stop Order](../use-cases/use-case-3) use case and consider experimenting with these concepts in your own projects. Join our [Telegram](https://t.me/reactivedevs) group to engage with the community.
+Join the [Telegram](https://t.me/reactivedevs) community if you have questions or want to connect with other developers working with Reactive contracts.
