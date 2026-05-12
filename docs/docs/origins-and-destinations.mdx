@@ -22,12 +22,9 @@ Origins and destinations don’t have to be the same. A single Reactive contract
 
 ## Callback Proxy Address
 
-Callbacks are delivered to destination chains via a **Callback Proxy** contract. Its job is to make callback transactions verifiable and safe for destination-side contracts.
+Callbacks are delivered to destination chains via a Callback Proxy contract. Its job is to make callback transactions verifiable and safe for destination-side contracts.
 
-A destination contract can validate a callback by checking:
-
-1. **The sender is the Callback Proxy** (so the call is coming through the expected entry point).
-2. **The embedded RVM ID matches the intended Reactive contract** (so the callback is tied to the correct RC).
+A destination contract can validate a callback by checking that the sender is the Callback Proxy (so the call is coming through the expected entry point).
 
 :::info[Hyperlane]
 Some networks can’t act as destination chains yet because the Callback Proxy contract hasn’t been deployed there. In that case, use [Hyperlane](./hyperlane) as the transport for cross-chain callbacks.
