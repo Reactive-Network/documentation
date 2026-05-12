@@ -120,6 +120,12 @@ const config = {
           },
           {
             type: "docSidebar",
+            sidebarId: "legacy",
+            position: "left",
+            label: "Legacy",
+          },
+          {
+            type: "docSidebar",
             sidebarId: "contacts",
             position: "left",
             label: "Contact Us",
