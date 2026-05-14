@@ -1,7 +1,7 @@
 ---
 title: Reactive Contracts
 sidebar_position: 4
-description: Learn about Reactive Contracts (RCs) — event-driven smart contracts for cross-chain, on-chain automation that monitor event logs and trigger callback transactions.
+description: Learn about reactive contracts — event-driven smart contracts for cross-chain, on-chain automation that monitor event logs and trigger callback transactions.
 slug: /reactive-contracts
 hide_title: true
 ---
@@ -14,7 +14,7 @@ Reactive contracts are event-driven smart contracts for cross-chain, on-chain au
 
 ## Deployment
 
-Reactive contracts are deployed to Reactive Network (RNK) like any standard smart contract. Once deployed, the system contract delivers event logs to the contract's `react()` function and processes callback requests.
+Reactive contracts are deployed to Reactive Network like any standard smart contract. Once deployed, the system contract delivers event logs to the contract's `react()` function and processes callback requests.
 
 ## Verifying Reactive Contracts
 
@@ -79,4 +79,4 @@ error: unexpected argument '--broadcast' found
 ```
 :::
 
-[More on Reactive Contracts →](../education/module-1/reactive-contracts)
+[More on reactive contracts →](../education/module-1/reactive-contracts)
