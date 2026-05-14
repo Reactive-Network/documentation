@@ -1,7 +1,7 @@
 ---
 title: Reactive Library
 sidebar_position: 8
-description: Reference for the Reactive Library — abstract contracts and interfaces for building Reactive Contracts.
+description: Reference for the Reactive's library — abstract contracts and interfaces for building reactive contracts.
 slug: /reactive-library
 hide_title: true
 ---
@@ -12,7 +12,7 @@ import CronTable from "../../src/components/cron-table";
 
 ## Overview
 
-[Reactive Library](https://github.com/Reactive-Network/reactive-lib) provides abstract contracts and interfaces for building Reactive Contracts. The library includes components for subscriptions, callbacks, payments, and system contract interaction.
+[Reactive library](https://github.com/Reactive-Network/reactive-lib) provides abstract contracts and interfaces for building reactive contracts. The library includes components for subscriptions, callbacks, payments, and system contract interaction.
 
 Install the library in your Foundry project:
 
@@ -24,7 +24,7 @@ forge install Reactive-Network/reactive-lib
 
 ### AbstractCallback
 
-[AbstractCallback](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractCallback.sol) extends `AbstractPayer.sol` and provides callback authorization for Reactive Contracts.
+[AbstractCallback](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractCallback.sol) extends `AbstractPayer.sol` and provides callback authorization for reactive contracts.
 
 The contract initializes:
 
@@ -113,7 +113,7 @@ function resume() external rnOnly onlyOwner {
 
 ### AbstractPayer
 
-[AbstractPayer](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractPayer.sol) provides payment and debt-settlement functionality for Reactive Contracts.
+[AbstractPayer](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractPayer.sol) provides payment and debt-settlement functionality for reactive contracts.
 
 Features include:
 
@@ -175,7 +175,7 @@ receive() virtual external payable {
 
 ### AbstractReactive
 
-[AbstractReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractReactive.sol) is the base contract for Reactive Contracts. It extends `AbstractPayer.sol` and implements `IReactive.sol`, providing access to the Reactive Network system contract and subscription service.
+[AbstractReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractReactive.sol) is the base contract for reactive contracts. It extends `AbstractPayer.sol` and implements `IReactive.sol`, providing access to the Reactive Network system contract and subscription service.
 
 The contract defines two execution modes:
 
@@ -209,7 +209,7 @@ function detectVm() internal {
 
 ### IPayable
 
-[IPayable](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IPayable.sol) defines payment and debt-query functionality for Reactive Contracts.
+[IPayable](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IPayable.sol) defines payment and debt-query functionality for reactive contracts.
 
 - `receive()` — accepts direct payments
 - `debt()` — returns the outstanding debt of a contract
@@ -239,7 +239,7 @@ interface IPayer {
 
 ### IReactive
 
-[IReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol) defines the core interface for Reactive Contracts. It extends `IPayer.sol` and provides event notifications and the execution entry point.
+[IReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol) defines the core interface for reactive contracts. It extends `IPayer.sol` and provides event notifications and the execution entry point.
 
 The `LogRecord` struct contains event data delivered to the contract.
 
@@ -260,7 +260,7 @@ struct LogRecord {
 }
 ```
 
-The `Callback` event is emitted when a Reactive contract triggers a callback transaction.
+The `Callback` event is emitted when a reactive contract triggers a callback transaction.
 
 ```solidity
 event Callback(
@@ -279,7 +279,7 @@ function react(LogRecord calldata log) external;
 
 ### ISubscriptionService
 
-[ISubscriptionService](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/ISubscriptionService.sol) defines functions for managing event subscriptions. It extends `IPayable.sol` and allows Reactive Contracts to subscribe to or unsubscribe from event logs.
+[ISubscriptionService](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/ISubscriptionService.sol) defines functions for managing event subscriptions. It extends `IPayable.sol` and allows reactive contracts to subscribe to or unsubscribe from event logs.
 
 The `subscribe()` function registers a subscription with the specified event criteria.
 
@@ -325,7 +325,7 @@ Reactive Network operations are handled by three core contracts:
 
 [System Contract](https://github.com/Reactive-Network/system-smart-contracts/blob/main/src/SystemContract.sol):
 
-- Handles payments for Reactive Contracts
+- Handles payments for reactive contracts
 - Manages contract access control (whitelist/blacklist)
 - Emits cron events for periodic triggers
 
@@ -333,7 +333,7 @@ Reactive Network operations are handled by three core contracts:
 
 - Delivers callback transactions to destination contracts
 - Manages deposits, reserves, and debts
-- Restricts callbacks to authorized Reactive Contracts
+- Restricts callbacks to authorized reactive contracts
 - Calculates callback gas costs and kickbacks
 
 [AbstractSubscriptionService](https://github.com/Reactive-Network/system-smart-contracts/blob/main/src/AbstractSubscriptionService.sol):
@@ -345,7 +345,7 @@ Reactive Network operations are handled by three core contracts:
 
 ### CRON Functionality
 
-The `SystemContract` provides a cron mechanism for time-based automation by emitting events at fixed block intervals. Reactive Contracts can subscribe to these events to implement scheduled execution without polling or external automation.
+The `SystemContract` provides a cron mechanism for time-based automation by emitting events at fixed block intervals. reactive contracts can subscribe to these events to implement scheduled execution without polling or external automation.
 
 Only authorized validator root addresses can call `cron()`. Each call to `cron()` emits one or more `Cron` events depending on the divisibility of the current block number. Larger intervals produce less frequent events.
 
