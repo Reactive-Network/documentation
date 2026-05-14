@@ -1,7 +1,7 @@
 ---
 title: Origins & Destinations
 sidebar_position: 2
-description: Learn how Reactive Contracts subscribe to event logs on origin chains and send callback transactions to destination chains.
+description: Learn how reactive contracts subscribe to event logs on origin chains and send callback transactions to destination chains.
 slug: /origins-and-destinations
 hide_title: true
 ---
@@ -13,21 +13,21 @@ import TestnetChainTable from "../../src/components/origins-destinations-testnet
 
 ## Overview
 
-Reactive Contracts (RCs) can **listen to event logs on one chain** and **trigger actions on another**. To describe that flow, we use two roles:
+Reactive contracts can listen to event logs on one chain and trigger actions on another. To describe that flow, we use two roles:
 
 - **Origin** — the chain where events happen and event logs are read from (the event source).
-- **Destination** — the chain where Reactive Network delivers a callback transaction (the chain where state changes happen).
+- **Destination** — the chain where Reactive Network delivers a callback transaction (the chain where state changes occur).
 
-Origins and destinations don’t have to be the same. A single Reactive contract can subscribe to events from multiple origin chains, and it can send callbacks to one or more destination chains. Your Solidity logic can also choose the destination conditionally.
+Origins and destinations don’t have to be the same. A single reactive contract can subscribe to events from multiple origin chains, and it can send callbacks to one or more destination chains. Your Solidity logic can also choose the destination conditionally.
 
 ## Callback Proxy Address
 
-Callbacks are delivered to destination chains via a Callback Proxy contract. Its job is to make callback transactions verifiable and safe for destination-side contracts.
+Callbacks are delivered to destination chains via a callback proxy contract. Its job is to make callback transactions verifiable and safe for destination-side contracts.
 
-A destination contract can validate a callback by checking that the sender is the Callback Proxy (so the call is coming through the expected entry point).
+A destination contract can validate a callback by checking that the sender is the callback proxy (so the call is coming through the expected entry point).
 
 :::info[Hyperlane]
-Some networks can’t act as destination chains yet because the Callback Proxy contract hasn’t been deployed there. In that case, use [Hyperlane](./hyperlane) as the transport for cross-chain callbacks.
+Some networks can’t act as destination chains yet because a callback proxy hasn’t been deployed there. In that case, use [Hyperlane](./hyperlane) as the transport for cross-chain callbacks.
 :::
 
 ## Mainnet Chains
