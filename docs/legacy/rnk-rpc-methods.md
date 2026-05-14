@@ -1,8 +1,8 @@
 ---
 title: RNK RPC Methods
-sidebar_position: 11
+sidebar_position: 10
 description: Learn about Reactive Network's Geth version RPC methods used for interaction with Reactive nodes and ReactVMs.
-slug: /rnk-rpc-methods
+slug: /legacy/rnk-rpc-methods
 hide_title: true
 ---
 

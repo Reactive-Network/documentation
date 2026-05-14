@@ -1,8 +1,8 @@
 ---
 title: Economy
-sidebar_position: 6
+sidebar_position: 5
 description: Learn how Reactive Contracts pay for execution and cross-chain callbacks, including REACT funding, transaction fees, and callback pricing.
-slug: /economy
+slug: /legacy/economy
 hide_title: true
 ---
 

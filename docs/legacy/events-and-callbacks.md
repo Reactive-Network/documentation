@@ -1,8 +1,8 @@
 ---
 title: Events & Callbacks
-sidebar_position: 9
+sidebar_position: 8
 description: Learn how Reactive Contracts process events and trigger cross-chain callback transactions.
-slug: /events-&-callbacks
+slug: /legacy/events-&-callbacks
 hide_title: true
 ---
 

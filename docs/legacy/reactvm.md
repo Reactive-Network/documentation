@@ -1,8 +1,8 @@
 ---
 title: ReactVM
-sidebar_position: 5
+sidebar_position: 4
 description: Learn about ReactVM, the execution environment where Reactive Contracts process event logs and execute event-driven automation across chains.
-slug: /reactvm
+slug: /legacy/reactvm
 hide_title: true
 ---
 

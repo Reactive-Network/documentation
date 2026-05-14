@@ -1,8 +1,8 @@
 ---
 title: Reactive Contracts
-sidebar_position: 4
+sidebar_position: 3
 description: Learn about Reactive Contracts (RCs) — event-driven smart contracts for cross-chain, on-chain automation that monitor event logs and trigger callback transactions.
-slug: /reactive-contracts
+slug: /legacy/reactive-contracts
 hide_title: true
 ---
 

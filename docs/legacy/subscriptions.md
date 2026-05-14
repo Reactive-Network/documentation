@@ -1,8 +1,8 @@
 ---
 title: Subscriptions
-sidebar_position: 10
+sidebar_position: 9
 description: Learn how Reactive Contracts subscribe to events and configure event-driven automation.
-slug: /subscriptions
+slug: /legacy/subscriptions
 hide_title: true
 ---
 
