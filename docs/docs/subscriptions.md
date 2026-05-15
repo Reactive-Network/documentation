@@ -1,7 +1,7 @@
 ---
 title: Subscriptions
 sidebar_position: 10
-description: Learn how Reactive Contracts subscribe to events and configure event-driven automation.
+description: Learn how reactive contracts subscribe to events and configure event-driven automation.
 slug: /subscriptions
 hide_title: true
 ---
@@ -10,22 +10,22 @@ hide_title: true
 
 ## Overview
 
-Subscriptions define which events Reactive Contracts (RCs) listens to. RCs subscribe to events through the system contract by specifying:
+Subscriptions define which events reactive contracts listen to. They subscribe to events through the system contract by specifying:
 
 - Origin chain ID
 - Contract address
 - Event topics
 
-When a matching event is detected, the contract's `react()` function is triggered.
+When a matching event is detected, the system contract calls the contract's `react()` function.
 
 Subscriptions can be configured:
 
 - During deployment (constructor)
-- Dynamically via callbacks
+- Dynamically during `react()` execution
 
 ## Subscription Basics
 
-Subscriptions are created by calling `subscribe()` on the system contract. This is typically done inside the contract constructor. Since contracts deploy both on Reactive Network (RNK) and inside a ReactVM (where the system contract doesn't exist), the constructor must avoid calling `subscribe()` inside ReactVM.
+Subscriptions are created by calling `subscribe()` on the system contract. This is typically done inside the contract constructor.
 
 [IReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol), [AbstractReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractReactive.sol), and [ISystemContract](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/ISystemContract.sol) should be implemented. Here's a subscription example in the constructor from the [Basic Demo Reactive Contract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoReactiveContract.sol):
 
@@ -90,7 +90,7 @@ Wildcards can also be specified with:
 - `uint256(0)` → any chain ID
 - `address(0)` → any contract
 
-**At least one parameter must be specific.**
+At least one parameter must be specific.
 
 ### Subscription Examples
 
@@ -231,16 +231,7 @@ Each `subscribe()` transaction still costs gas.
 
 ## Dynamic Subscriptions
 
-Subscriptions can be created or removed dynamically based on incoming events.
-
-Subscription management is performed through the system contract, which is accessible only from Reactive Network (RNK). The ReactVM instance of a contract can't call the system contract directly, so dynamic subscription changes must be performed through callback transactions.
-
-The typical flow is:
-
-1. An event is received in the ReactVM.
-2. The contract decides whether to subscribe or unsubscribe.
-3. A `Callback` event is emitted.
-4. Reactive Network (RNK) executes the subscription change.
+Subscriptions can be created or removed dynamically during `react()` execution. Since the contract lives directly on Reactive Network, it can call `service.subscribe()` and `service.unsubscribe()` within its `react()` logic when conditions require it.
 
 ### Subscribing & Unsubscribing
 
@@ -279,16 +270,6 @@ function unsubscribe(address rvm_id, address subscriber)
         );
     }
 ```
-
-Parameters:
-
-- **rvm_id** — ReactVM identifier (injected automatically)
-- **subscriber** — address to subscribe or unsubscribe
-
-Operations:
-
-- **subscribe** — registers a subscriber for `APPROVAL_TOPIC_0`
-- **unsubscribe** — removes a subscriber from `APPROVAL_TOPIC_0`
 
 ### react() Logic
 
@@ -352,10 +333,8 @@ function react(LogRecord calldata log) external vmOnly {
 
 Event handling:
 
-- **Subscribe event** → emits a callback that creates a subscription
-- **Unsubscribe event** → emits a callback that removes a subscription
-- **Other events** → emit callbacks that trigger application logic
+- **Subscribe event** → directly creates a new subscription via the system contract
+- **Unsubscribe event** → directly removes a subscription via the system contract
+- **Other events** → requests a callback to trigger application logic on the destination chain
 
-Callbacks are executed by Reactive Network after the event is processed.
-
-[More on Subscriptions →](../education/module-1/subscriptions.md)
+[More on subscriptions →](../education/module-1/subscriptions.md)
