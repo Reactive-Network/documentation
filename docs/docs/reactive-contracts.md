@@ -1,7 +1,7 @@
 ---
 title: Reactive Contracts
 sidebar_position: 4
-description: Learn about reactive contracts — event-driven smart contracts for cross-chain, on-chain automation that monitor event logs and trigger callback transactions.
+description: Learn about reactive contracts, event-driven smart contracts for cross-chain, on-chain automation that subscribe to event logs and trigger callback transactions.
 slug: /reactive-contracts
 hide_title: true
 ---
@@ -10,7 +10,7 @@ hide_title: true
 
 ## Overview
 
-Reactive contracts are event-driven smart contracts for cross-chain, on-chain automation. They monitor event logs across various chains, execute Solidity logic when subscribed events occur, and trigger cross-chain callback transactions.
+Reactive contracts are event-driven smart contracts for cross-chain, on-chain automation. They subscribe to event logs across EVM chains, execute Solidity logic when matching events occur, and trigger cross-chain callback transactions.
 
 ## Deployment
 
