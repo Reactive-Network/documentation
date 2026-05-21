@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 title: Getting Started
-description: Explore Reactive Network — an automation layer for blockchains. Build reactive contracts — event-driven smart contracts for cross-chain, on-chain automation.
+description: Explore Reactive Network, an EVM automation layer with CometBFT consensus and instant finality. Build reactive contracts, event-driven smart contracts for cross-chain, on-chain automation.
 slug: /
 hide_title: true
 ---
@@ -10,17 +10,11 @@ hide_title: true
 
 ## Overview
 
-Reactive Network is a chain built around reactive contracts — event-driven smart contracts for cross-chain, on-chain automation.
+Reactive Network is an EVM automation layer built around reactive contracts, event-driven smart contracts for cross-chain, on-chain automation. It runs on CometBFT consensus, providing instant finality and roughly 1-second block times while maintaining full EVM compatibility.
 
-Reactive contracts monitor event logs across various chains and execute Solidity logic automatically when conditions are met. Instead of waiting for users or bots to trigger transactions, they run continuously and decide when to send cross-chain callback transactions, essentially providing on-chain if-this-then-that automation for smart contracts.
+Reactive contracts subscribe to event logs across EVM chains and execute Solidity logic automatically when matching events occur. Instead of relying on users or off-chain bots to trigger transactions, they decide autonomously when to send cross-chain callback transactions, providing on-chain if-this-then-that automation for smart contracts.
 
-This makes it possible to build conditional cross-chain workflows such as:
-
-* Automated stop-loss and take-profit orders
-* Liquidation protection
-* Automated portfolio rebalancing
-* Yield optimization
-* Cross-chain workflows
+This makes it possible to build workflows such as automated stop-loss and take-profit orders, liquidation protection, portfolio rebalancing, and yield optimization across chains.
 
 ## Step 1 — Reactive Basics
 
