@@ -17,7 +17,7 @@ Supported features:
 - Event subscriptions (including wildcards)
 - Full `react()` pipeline
 - Cross-chain and same-chain callbacks
-- Same-chain callbacks via `SERVICE_ADDR` (`0x0000000000000000000000000000000000fffFfF`)
+- Same-chain callbacks via `SERVICE_ADDR` (`0x8888888888888888888888888888888888888888`)
 - Cron-based triggers
 - Multi-step workflows (bridges, confirmations)
 - Automatic chain ID resolution
@@ -66,7 +66,7 @@ contract MyReactiveTest is ReactiveTest {
 
 `super.setUp()` performs the following setup:
 
-1. Deploys `MockSystemContract` and writes its code to `SERVICE_ADDR` (`0x0000000000000000000000000000000000fffFfF`)
+1. Deploys `MockSystemContract` and writes its code to `SERVICE_ADDR` (`0x8888888888888888888888888888888888888888`)
 2. Deploys `MockCallbackProxy` for cross-chain callback execution
 3. Sets `rvmId` to `address(this)`
 4. Sets `reactiveChainId` to `REACTIVE_CHAIN_ID` (`0x512512`) 

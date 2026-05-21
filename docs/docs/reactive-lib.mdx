@@ -200,7 +200,7 @@ Execution mode is determined automatically using `detectVm()`, which checks whet
 function detectVm() internal {
     uint256 size;
     // solhint-disable-next-line no-inline-assembly
-    assembly { size := extcodesize(0x0000000000000000000000000000000000fffFfF) }
+    assembly { size := extcodesize(0x8888888888888888888888888888888888888888) }
     vm = size == 0;
 }
 ```
