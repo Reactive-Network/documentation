@@ -24,8 +24,6 @@ This makes it possible to build workflows such as automated stop-loss and take-p
 
 [Reactive Contracts →](./reactive-contracts.md) Learn how reactive contracts subscribe to events and trigger actions.
 
-[Reactive Authentication →](./reactvm.md) Learn how reactive contract authentication works.
-
 [Economy →](./economy) Understand callback payments and Reactive's economy.
 
 ## Step 2 — Reactive Essentials
