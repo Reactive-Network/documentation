@@ -4,6 +4,7 @@ sidebar_position: 10
 description: Learn how reactive contracts subscribe to events and configure event-driven automation.
 slug: /subscriptions
 hide_title: true
+unlisted: true
 ---
 
 ![Subscriptions Image](./img/subscriptions.jpg)

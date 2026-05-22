@@ -4,6 +4,7 @@ sidebar_position: 6
 description: Learn how reactive contracts pay for execution and cross-chain callbacks, including REACT funding, transaction fees, and callback pricing.
 slug: /economy
 hide_title: true
+unlisted: true
 ---
 
 ![Economy](./img/economy.jpg)
