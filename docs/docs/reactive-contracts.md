@@ -1,36 +1,20 @@
 ---
 title: Reactive Contracts
 sidebar_position: 4
-description: Learn about Reactive Contracts (RCs) — event-driven smart contracts for cross-chain, on-chain automation that monitor event logs and trigger callback transactions.
+description: Learn about reactive contracts, event-driven smart contracts for cross-chain, on-chain automation that subscribe to event logs and trigger callback transactions.
 slug: /reactive-contracts
 hide_title: true
 ---
 
-![Reactive Contracts Image](./img/reactive-contracts.jpg)
+![Reactive Contracts Image](img/reactive-contracts.jpg)
 
 ## Overview
 
-Reactive Contracts (RCs) are event-driven smart contracts for cross-chain, on-chain automation. They monitor event logs across EVM chains, execute Solidity logic when subscribed events occur, and can trigger cross-chain callback transactions.
-
-RCs define which chains, contracts, and events to monitor and operate autonomously based on on-chain events rather than user transactions or bots.
+Reactive contracts are event-driven smart contracts for cross-chain, on-chain automation. They subscribe to event logs across EVM chains, execute Solidity logic when matching events occur, and trigger cross-chain callback transactions.
 
 ## Deployment
 
-Reactive Contracts deploy in two environments:
-
-- **Reactive Network (RNK)** — the public chain where EOAs interact with the contract and subscriptions are managed
-
-- **ReactVM (RVM)** — a private execution environment where event processing takes place
-
-Both copies use identical bytecode but operate independently.
-
-## State Separation
-
-The two deployments do not share state. Constructor flags or runtime checks can be used to distinguish environments. A contract can detect execution inside ReactVM by calling the system contract — calls revert outside ReactVM. See our [demos](./demos.md) for details.
-
-## ReactVM Limitations
-
-Inside [ReactVM](./reactvm.md), Reactive Contracts can't access external systems directly. They receive event logs from Reactive Network and can send callback transactions to destination chains, but can't interact with external RPC endpoints or off-chain services.
+Reactive contracts are deployed to Reactive Network like any standard smart contract. Once deployed, the system contract delivers event logs to the contract's `react()` function and processes callback requests.
 
 ## Verifying Reactive Contracts
 
@@ -94,32 +78,3 @@ If you encounter the error below, your Foundry version doesn't expect the `--bro
 error: unexpected argument '--broadcast' found
 ```
 :::
-
-## Verified Contracts on Reactscan
-
-After verification:
-
-1. Open Reactscan ([Reactive Mainnet](https://reactscan.net/), [Lasna Testnet](https://lasna.reactscan.net/))
-2. Navigate to your RVM
-3. Open Contracts
-
-
-![Image a](./img/verify-a.png)
-
-4. Select the contract address
-
-![Image b](./img/verify-b.png)
-
-Successful verification shows:
-
-```json
-Contract Address: 0xc3e185561D2a8b04F0Fcd104A562f460D6cC503c
-Status: VERIFIED (EXACT MATCH)
-Compiler: 0.8.28
-```
-
-![Image c](./img/verify-c.png)
-
-Verified contracts expose full source code with syntax highlighting and file structure.
-
-[More on Reactive Contracts →](../education/module-1/reactive-contracts)

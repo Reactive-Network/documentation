@@ -114,9 +114,9 @@ const config = {
           },
           {
             type: "docSidebar",
-            sidebarId: "education",
+            sidebarId: "legacy",
             position: "left",
-            label: "Education",
+            label: "Legacy",
           },
           {
             type: "docSidebar",
@@ -189,11 +189,11 @@ const config = {
           redirects: [
             {
               from: "/education/getting-started/",
-              to: "/education/introduction/"
+              to: "/"
             },
             {
               from: "/education/getting-started/reactive-smart-contracts",
-              to: "/education/introduction/reactive-contracts"
+              to: "/"
             },
             {
               from: "/docs/data-origins-and-destinations",
@@ -201,7 +201,7 @@ const config = {
             },
             {
               from: "/category/getting-started",
-              to: "/education/introduction/"
+              to: "/"
             },
             {
               from: "/system-contract",
@@ -233,11 +233,11 @@ const config = {
             },
             {
               from: "/education/introduction/reactive-smart-contracts",
-              to: "/education/introduction/reactive-contracts"
+              to: "/"
             },
             {
               from: "/education/module-1/reactive-smart-contracts",
-              to: "/education/module-1/reactive-contracts"
+              to: "/"
             },
             {
               from: "/architecture/reactive-smart-contracts",
@@ -259,6 +259,78 @@ const config = {
               from: "/docs/kopli-testnet",
               to: "/reactive-mainnet"
             },
+            {
+              from: "/education/introduction",
+              to: "/"
+            },
+            {
+              from: "/education/introduction/reactive-contracts",
+              to: "/"
+            },
+            {
+              from: "/education/introduction/prerequisites",
+              to: "/"
+            },
+            {
+              from: "/education/module-1",
+              to: "/"
+            },
+            {
+              from: "/education/module-1/reactive-contracts",
+              to: "/"
+            },
+            {
+              from: "/education/module-1/how-events-work",
+              to: "/"
+            },
+            {
+              from: "/education/module-1/react-vm",
+              to: "/"
+            },
+            {
+              from: "/education/module-1/how-subscriptions-work",
+              to: "/"
+            },
+            {
+              from: "/education/module-1/how-oracles-work",
+              to: "/"
+            },
+            {
+              from: "/education/module-2",
+              to: "/"
+            },
+            {
+              from: "/education/module-2/how-uniswap-works",
+              to: "/"
+            },
+            {
+              from: "/education/module-2/basic-reactive-functions",
+              to: "/"
+            },
+            {
+              from: "/education/use-cases",
+              to: "/"
+            },
+            {
+              from: "/education/use-cases/use-case-1",
+              to: "/"
+            },
+            {
+              from: "/education/use-cases/remix-ide-demo",
+              to: "/"
+            },
+            {
+              from: "/education/use-cases/use-case-3",
+              to: "/"
+            },
+            {
+              from: "/education/use-cases/use-case-2",
+              to: "/"
+            },
+            {
+              from: "/education/glossary",
+              to: "/"
+            }
           ]
         }
       ]

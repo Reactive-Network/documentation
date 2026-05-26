@@ -1,0 +1,356 @@
+---
+title: Reactive Library
+sidebar_position: 7
+description: Reference for the Reactive Library — abstract contracts and interfaces for building Reactive Contracts.
+slug: /legacy/reactive-library
+hide_title: true
+---
+
+import CronTable from "../../src/components/cron-table";
+
+![Reactive Library](./img/reactive-lib.jpg)
+
+## Overview
+
+[Reactive Library](https://github.com/Reactive-Network/reactive-lib) provides abstract contracts and interfaces for building Reactive Contracts. The library includes components for subscriptions, callbacks, payments, and system contract interaction.
+
+Install the library in your Foundry project:
+
+```bash
+forge install Reactive-Network/reactive-lib
+```
+
+## Abstract Contracts
+
+### AbstractCallback
+
+[AbstractCallback](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractCallback.sol) extends `AbstractPayer.sol` and provides callback authorization for Reactive Contracts.
+
+The contract initializes:
+
+- `rvm_id` — authorized ReactVM identifier
+- `vendor` — callback proxy address
+
+The `rvmIdOnly` modifier restricts functions to the authorized ReactVM.
+
+```solidity
+modifier rvmIdOnly(address _rvm_id) {
+    require(rvm_id == address(0) || rvm_id == _rvm_id, 'Authorized RVM ID only');
+    _;
+}
+```
+
+The constructor sets the deploying ReactVM as the authorized `rvm_id` and registers the callback proxy as an authorized payment sender.
+
+```solidity
+constructor(address _callback_sender) {
+    rvm_id = msg.sender;
+    vendor = IPayable(payable(_callback_sender));
+    addAuthorizedSender(_callback_sender);
+}
+```
+
+### AbstractPausableReactive
+
+[AbstractPausableReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractPausableReactive.sol) extends `AbstractReactive.sol` and provides pausable event subscriptions.
+
+Subscriptions are defined using the `Subscription` struct, which specifies chain ID, contract address, and event topics.
+
+The contract provides:
+
+- `pause()` — unsubscribes all pausable subscriptions
+- `resume()` — restores subscriptions
+
+Access is restricted to the contract owner.
+
+The constructor sets the deployer as the owner.
+
+```solidity
+constructor() {
+    owner = msg.sender;
+}
+```
+
+The `pause()` function unsubscribes all subscriptions returned by `getPausableSubscriptions()`:
+
+```solidity
+function pause() external rnOnly onlyOwner {
+    require(!paused, 'Already paused');
+    Subscription[] memory subscriptions = getPausableSubscriptions();
+    for (uint256 ix = 0; ix != subscriptions.length; ++ix) {
+        service.unsubscribe(
+            subscriptions[ix].chain_id,
+            subscriptions[ix]._contract,
+            subscriptions[ix].topic_0,
+            subscriptions[ix].topic_1,
+            subscriptions[ix].topic_2,
+            subscriptions[ix].topic_3
+        );
+    }
+    paused = true;
+}
+```
+
+The `resume()` function restores the same subscriptions:
+
+```solidity
+function resume() external rnOnly onlyOwner {
+    require(paused, 'Not paused');
+    Subscription[] memory subscriptions = getPausableSubscriptions();
+    for (uint256 ix = 0; ix != subscriptions.length; ++ix) {
+        service.subscribe(
+            subscriptions[ix].chain_id,
+            subscriptions[ix]._contract,
+            subscriptions[ix].topic_0,
+            subscriptions[ix].topic_1,
+            subscriptions[ix].topic_2,
+            subscriptions[ix].topic_3
+        );
+    }
+    paused = false;
+}
+```
+
+### AbstractPayer
+
+[AbstractPayer](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractPayer.sol) provides payment and debt-settlement functionality for Reactive Contracts.
+
+Features include:
+
+- Authorized payment senders
+- Vendor debt settlement
+- Direct contract funding
+
+The `authorizedSenderOnly` modifier restricts payment initiation to authorized senders.
+
+```solidity
+modifier authorizedSenderOnly() {
+    require(senders[msg.sender], 'Authorized sender only');
+    _;
+}
+```
+
+The contract provides:
+
+- `pay()` — transfers funds to the authorized sender
+- `coverDebt()` — settles outstanding vendor debt
+
+```solidity
+function pay(uint256 amount) external authorizedSenderOnly {
+    _pay(payable(msg.sender), amount);
+}
+
+function coverDebt() external {
+    uint256 amount = vendor.debt(address(this));
+    _pay(payable(vendor), amount);
+}
+
+function _pay(address payable recipient, uint256 amount) internal {
+    require(address(this).balance >= amount, 'Insufficient funds');
+    if (amount > 0) {
+        (bool success,) = payable(recipient).call{value: amount}(new bytes(0));
+        require(success, 'Transfer failed');
+    }
+}
+```
+
+Authorized senders are managed with:
+
+```solidity
+function addAuthorizedSender(address sender) internal {
+    senders[sender] = true;
+}
+
+function removeAuthorizedSender(address sender) internal {
+    senders[sender] = false;
+}
+```
+
+The contract accepts direct transfers:
+
+```solidity
+receive() virtual external payable {
+}
+```
+
+### AbstractReactive
+
+[AbstractReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/abstract-base/AbstractReactive.sol) is the base contract for Reactive Contracts. It extends `AbstractPayer.sol` and implements `IReactive.sol`, providing access to the Reactive Network system contract and subscription service.
+
+The contract defines two execution modes:
+
+- `vmOnly` — ReactVM execution
+- `rnOnly` — Reactive Network execution
+
+These modes ensure functions run in the appropriate environment.
+
+The constructor initializes the system contract as both the payment vendor and subscription service, and authorizes it for payment operations.
+
+```solidity
+constructor() {
+    vendor = service = SERVICE_ADDR;
+    addAuthorizedSender(address(SERVICE_ADDR));
+    detectVm();
+}
+```
+
+Execution mode is determined automatically using `detectVm()`, which checks whether the system contract is deployed.
+
+```solidity
+function detectVm() internal {
+    uint256 size;
+    // solhint-disable-next-line no-inline-assembly
+    assembly { size := extcodesize(0x0000000000000000000000000000000000fffFfF) }
+    vm = size == 0;
+}
+```
+
+## Interfaces
+
+### IPayable
+
+[IPayable](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IPayable.sol) defines payment and debt-query functionality for Reactive Contracts.
+
+- `receive()` — accepts direct payments
+- `debt()` — returns the outstanding debt of a contract
+
+```solidity
+interface IPayable {
+    receive() external payable;
+
+    function debt(address _contract) external view returns (uint256);
+}
+```
+
+### IPayer
+
+[IPayer](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IPayer.sol) defines a minimal interface for initiating payments and receiving funds.
+
+- `pay()` — initiates a payment
+- `receive()` — accepts direct transfers
+
+```solidity
+interface IPayer {
+    function pay(uint256 amount) external;
+
+    receive() external payable;
+}
+```
+
+### IReactive
+
+[IReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol) defines the core interface for Reactive Contracts. It extends `IPayer.sol` and provides event notifications and the execution entry point.
+
+The `LogRecord` struct contains event data delivered to the contract.
+
+```solidity
+struct LogRecord {
+   uint256 chain_id;
+   address _contract;
+   uint256 topic_0;
+   uint256 topic_1;
+   uint256 topic_2;
+   uint256 topic_3;
+   bytes data;
+   uint256 block_number;
+   uint256 op_code;
+   uint256 block_hash;
+   uint256 tx_hash;
+   uint256 log_index;
+}
+```
+
+The `Callback` event is emitted when a Reactive contract triggers a callback transaction.
+
+```solidity
+event Callback(
+   uint256 indexed chain_id,
+   address indexed _contract,
+   uint64 indexed gas_limit,
+   bytes payload
+);
+```
+
+The `react()` function processes event notifications.
+
+```solidity
+function react(LogRecord calldata log) external;
+```
+
+### ISubscriptionService
+
+[ISubscriptionService](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/ISubscriptionService.sol) defines functions for managing event subscriptions. It extends `IPayable.sol` and allows Reactive Contracts to subscribe to or unsubscribe from event logs.
+
+The `subscribe()` function registers a subscription with the specified event criteria.
+
+```solidity
+function subscribe(
+    uint256 chain_id,
+    address _contract,
+    uint256 topic_0,
+    uint256 topic_1,
+    uint256 topic_2,
+    uint256 topic_3
+) external;
+```
+
+The `unsubscribe()` function removes a subscription matching the specified criteria.
+
+```solidity
+function unsubscribe(
+    uint256 chain_id,
+    address _contract,
+    uint256 topic_0,
+    uint256 topic_1,
+    uint256 topic_2,
+    uint256 topic_3
+) external;
+```
+
+### ISystemContract
+
+[ISystemContract](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/ISystemContract.sol) combines the functionality of `IPayable.sol` and `ISubscriptionService.sol`. It represents the Reactive Network system contract interface used for payments and subscription management.
+
+```solidity
+import './IPayable.sol';
+import './ISubscriptionService.sol';
+
+interface ISystemContract is IPayable, ISubscriptionService {
+}
+```
+
+## System Contract
+
+Reactive Network operations are handled by three core contracts:
+
+[System Contract](https://github.com/Reactive-Network/system-smart-contracts/blob/main/src/SystemContract.sol):
+
+- Handles payments for Reactive Contracts
+- Manages contract access control (whitelist/blacklist)
+- Emits cron events for periodic triggers
+
+[Callback Proxy](https://github.com/Reactive-Network/system-smart-contracts/blob/main/src/CallbackProxy.sol):
+
+- Delivers callback transactions to destination contracts
+- Manages deposits, reserves, and debts
+- Restricts callbacks to authorized Reactive Contracts
+- Calculates callback gas costs and kickbacks
+
+[AbstractSubscriptionService](https://github.com/Reactive-Network/system-smart-contracts/blob/main/src/AbstractSubscriptionService.sol):
+
+- Manages event subscriptions
+- Supports filtering by chain, contract, and topics
+- Supports wildcard matching via `REACTIVE_IGNORE`
+- Emits subscription update events
+
+### CRON Functionality
+
+The `SystemContract` provides a cron mechanism for time-based automation by emitting events at fixed block intervals. Reactive Contracts can subscribe to these events to implement scheduled execution without polling or external automation.
+
+Only authorized validator root addresses can call `cron()`. Each call to `cron()` emits one or more `Cron` events depending on the divisibility of the current block number. Larger intervals produce less frequent events.
+
+Each `Cron` event contains a single parameter:
+
+- `number` — the current block number
+
+<CronTable />

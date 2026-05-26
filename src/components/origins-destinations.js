@@ -87,7 +87,7 @@ const MainnetChainTable = () => {
             chain: 'Reactive',
             chainId: 1597,
             explorer: 'https://reactscan.net',
-            callbackAddress: '0x0000000000000000000000000000000000fffFfF',
+            callbackAddress: '0x8888888888888888888888888888888888888888',
             rpcUrl: 'https://mainnet-rpc.rnk.dev/',
             origin: true,
             destination: true

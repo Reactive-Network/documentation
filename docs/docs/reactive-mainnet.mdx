@@ -6,39 +6,52 @@ slug: /reactive-mainnet
 hide_title: true
 ---
 
-import MainnetButton from "../../src/components/mainnet-button";
+[//]: # (import MainnetButton from "../../src/components/mainnet-button";)
+
 import LasnaButton from "../../src/components/lasna-button";
 
 ![Mainnet Testnet Image](./img/mainnet-testnet.jpg)
 
 ## Overview
 
-Reactive Mainnet is the production network for Reactive Contracts. Lasna Testnet provides a testing environment for development and experimentation before mainnet deployment.
+Reactive Mainnet is the production network for reactive contracts. Lasna Testnet provides a testing environment for development and experimentation before mainnet deployment.
 
-:::info[System Contract]
-Reactive Mainnet and Lasna Testnet share the same system contract address:
-`0x0000000000000000000000000000000000fffFfF`
-:::
+[//]: # (:::info[System Contract])
 
-## Reactive Mainnet
+[//]: # (Reactive Mainnet and Lasna Testnet share the same system contract address:)
 
-Network parameters:
+[//]: # (`0x8888888888888888888888888888888888888888`)
 
-* **Network Name:** Reactive Mainnet
-* **RPC URL:** https://mainnet-rpc.rnk.dev/
-* **Chain ID:** 1597
-* **Currency Symbol:** REACT
-* **Block Explorer:** https://reactscan.net/
+[//]: # (:::)
 
-<MainnetButton />
+[//]: # ()
+[//]: # (## Reactive Mainnet)
 
-<hr />
+[//]: # ()
+[//]: # (Network parameters:)
+
+[//]: # ()
+[//]: # (* **Network Name:** Reactive Mainnet)
+
+[//]: # (* **RPC URL:** https://mainnet-rpc.rnk.dev/)
+
+[//]: # (* **Chain ID:** 1597)
+
+[//]: # (* **Currency Symbol:** REACT)
+
+[//]: # (* **Block Explorer:** https://reactscan.net/)
+
+[//]: # ()
+[//]: # (<MainnetButton />)
+
+[//]: # ()
+[//]: # (<hr />)
 
 ## Get Testnet REACT
 
 ### Reactive Faucet
 
-To obtain **testnet REACT (lREACT)**, send **ETH** to one of the faucet contracts:
+To obtain testnet REACT (lREACT), send ETH to one of the faucet contracts:
 
 ```json
 Ethereum Sepolia: `0x9b9BB25f1A81078C544C829c5EB7822d747Cf434`
@@ -51,21 +64,25 @@ Exchange rate: **1 ETH → 100 lREACT**.
 Transfers can be made using MetaMask or any Ethereum-compatible wallet.
 
 :::info[Important]
-Do **not** send more than **5 ETH** per transaction.
+Don't send more than 5 ETH per transaction.
 
-- Maximum sent: **5 ETH**
-- Maximum received: **500 lREACT**
+- Maximum sent: 5 ETH
+- Maximum received: 500 lREACT
 
-Amounts above 5 ETH are **lost** and will not generate additional lREACT.
+Amounts above 5 ETH are lost and will not generate additional lREACT.
 :::
 
-### ReacDEFI Swap
+[//]: # (### ReacDEFI Swap)
 
-You can swap ETH for lREACT using [ReacDEFI](https://reacdefi.app/markets#testnet-faucet):
+[//]: # ()
+[//]: # (You can swap ETH for lREACT using [ReacDEFI]&#40;https://reacdefi.app/markets#testnet-faucet&#41;:)
 
-1. Choose the amount of **lREACT**
-2. Connect a Sepolia or Base Sepolia wallet
-3. Confirm the transaction
+[//]: # ()
+[//]: # (1. Choose the amount of lREACT)
+
+[//]: # (2. Connect an Ethereum Sepolia or Base Sepolia wallet)
+
+[//]: # (3. Confirm the transaction)
 
 ### Terminal Request
 
@@ -84,10 +101,9 @@ cast send 0x2afaFD298b23b62760711756088F75B7409f5967 --rpc-url $BASE_SEPOLIA_RPC
 Network parameters:
 
 * **Network Name:** Reactive Lasna
-* **RPC URL:** https://lasna-rpc.rnk.dev/
+* **RPC URL:** https://lasna-omni-rpc.rnk.dev/
 * **Chain ID:** 5318007
 * **Currency Symbol:** lREACT
-* **Block Explorer:** https://lasna.reactscan.net
+* **Block Explorer:** https://lasna-omni.reactscan.net/
 
 <LasnaButton />
-

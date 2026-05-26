@@ -42,7 +42,7 @@ const TestnetChainTable = () => {
             chain: 'Reactive Lasna',
             chainId: 5318007,
             explorer: 'https://lasna.reactscan.net',
-            callbackAddress: '0x0000000000000000000000000000000000fffFfF',
+            callbackAddress: '0x8888888888888888888888888888888888888888',
             rpcUrl: 'https://lasna-rpc.rnk.dev/',
             origin: true,
             destination: true

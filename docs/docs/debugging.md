@@ -4,6 +4,7 @@ sidebar_position: 15
 description: The page dedicated to debugging of most frequent errors and issues on Reactive Network.
 slug: /debugging
 hide_title: true
+unlisted: true
 ---
 
 ![Debugging Image](./img/debugging.jpg)
@@ -61,7 +62,7 @@ You can verify a contract’s balance anytime on Reactscan or via Foundry cast c
 cast balance $CONTRACT_ADDR --rpc-url $RPC_URL
 ```
 
-To check the outstanding debt, query the relevant proxy contract (`0x0000000000000000000000000000000000fffFfF` on Reactive):
+To check the outstanding debt, query the relevant proxy contract (`0x8888888888888888888888888888888888888888` on Reactive):
 
 ```bash
 cast call $PROXY_ADDR "debts(address)" $CONTRACT_ADDR --rpc-url $RPC_URL | cast to-dec

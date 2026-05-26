@@ -1,7 +1,7 @@
 ---
 title: Events & Callbacks
 sidebar_position: 9
-description: Learn how Reactive Contracts process events and trigger cross-chain callback transactions.
+description: Learn how reactive contracts process events and trigger cross-chain callback transactions.
 slug: /events-&-callbacks
 hide_title: true
 ---
@@ -10,100 +10,69 @@ hide_title: true
 
 ## Overview
 
-Reactive Contracts process on-chain events and trigger transactions on destination chains through callbacks. Contracts run inside isolated environments called [ReactVMs](./reactvm.md), where incoming events are processed and callback transactions are generated when conditions are met.
+Reactive contracts process on-chain events and trigger transactions on destination chains through callbacks. The system contract delivers event logs to the contract's `react()` function, and callback transactions are generated when conditions are met.
 
 ## Event Processing
 
-To process events, a Reactive contract must implement the `react()` function defined in the [IReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol) interface:
+To process events, a reactive contract must implement the `react()` function defined in the [IReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/main/src/interfaces/IReactive.sol) interface:
 
 ```solidity
-// SPDX-License-Identifier: UNLICENSED
-
-pragma solidity >=0.8.0;
-
-import './IPayer.sol';
-
-interface IReactive is IPayer {
-    struct LogRecord {
-        uint256 chain_id;
-        address _contract;
-        uint256 topic_0;
-        uint256 topic_1;
-        uint256 topic_2;
-        uint256 topic_3;
-        bytes data;
-        uint256 block_number;
-        uint256 op_code;
-        uint256 block_hash;
-        uint256 tx_hash;
-        uint256 log_index;
-    }
-    ...
+struct LogRecord {
+    uint256 chainId;
+    address contractAddress;
+    uint256 topic0;
+    uint256 topic1;
+    uint256 topic2;
+    uint256 topic3;
+    bytes data;
+    uint256 blockNumber;
+    uint256 opCode;
+    uint256 blockHash;
+    uint256 txHash;
+    uint256 logIndex;
 }
+
+function react(LogRecord calldata log_) external;
 ```
 
-Reactive Network calls `react()` whenever a subscribed event is detected. The `LogRecord` structure contains the event metadata, including chain ID, contract address, topics, and event data.
+The system contract calls `react()` whenever a subscribed event is detected. The `LogRecord` structure contains the event metadata, including chain ID, contract address, topics, and event data.
 
-Reactive Contracts execute inside a private ReactVM associated with the deployer's address. Contracts inside one ReactVM **can't** interact directly with contracts deployed by other users.
-
-Below is an example `react()` function from the [Basic Reactive Demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/basic/BasicDemoReactiveContract.sol):
-
-```solidity
-function react(LogRecord calldata log) external vmOnly {
-    
-    if (log.topic_3 >= 0.001 ether) {
-        bytes memory payload = abi.encodeWithSignature("callback(address)", address(0));
-        emit Callback(destinationChainId, callback, GAS_LIMIT, payload);
-    }
-}
-```
-
-[More on Events →](../education/module-1/how-events-work)
+Since `react()` is always called by the system contract, contracts should use the `onlySystem` modifier provided by `AbstractReactive` to restrict access.
 
 ## Callbacks to Destination Chains
 
-Reactive Contracts initiate transactions on destination chains by emitting `Callback` events, which are also part of the [IReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol) interface:
+Reactive contracts initiate transactions on destination chains by calling `requestCallback()` or `requestCallbackV_1_0()` on the system contract:
 
 ```solidity
-event Callback(
-    uint256 indexed chain_id,
-    address indexed _contract,
-    uint64 indexed gas_limit,
-    bytes payload
-);
+function requestCallback(CallbackVersion version_, bytes memory config_) external;
+
+function requestCallbackV_1_0(CallbackConfiguration_V_1_0 memory config_) external;
 ```
 
-When this event appears in the transaction trace, Reactive Network submits a transaction to the specified destination chain.
+When either method is called during `react()` execution, Reactive Network submits a transaction to the specified destination chain.
 
-- **chain_id** — destination network
-- **_contract** — target contract
-- **gas_limit** — execution gas limit
-- **payload** — encoded function call
+The `V_1_0` callback configuration uses the following struct:
+
+```solidity
+struct CallbackConfiguration_V_1_0 {
+    uint256 chainId;
+    address recipient;
+    uint64 gasLimit;
+    bytes payload;
+}
+```
+
+Where:
+
+* `chainId` -- destination network
+* `recipient` -- target contract on the destination chain
+* `gasLimit` -- execution gas limit
+* `payload` -- ABI-encoded function call
+
+The `requestCallbackV_1_0()` method is a typed convenience wrapper that avoids manual ABI encoding. Both methods produce the same result.
 
 :::info[Callback Authorization]
-Reactive Network automatically replaces the first 160 bits of the callback payload with the ReactVM ID (the deployer's address). As a result, the first callback argument is always the ReactVM address (`address` type), regardless of how it is named in Solidity. This ensures that callbacks are tied to the correct Reactive contract.
+Reactive Network replaces the first 160 bits of the callback payload with the address of the reactive contract that initiated the callback. The first callback argument is therefore always an `address`, regardless of how it is named in Solidity. On the destination side, contracts extending `AbstractCallback` can use the `onlyCallbackSender` modifier to verify this address matches the expected reactive contract.
 :::
 
-### Example: Uniswap Stop Order Demo
-
-Example callback payload construction from the [Uniswap Stop Order Reactive Contract](https://github.com/Reactive-Network/reactive-smart-contract-demos/blob/main/src/demos/uniswap-v2-stop-order/UniswapDemoStopOrderReactive.sol):
-
-```solidity
-bytes memory payload = abi.encodeWithSignature(
-    "stop(address,address,address,bool,uint256,uint256)",
-    address(0),
-    pair,
-    client,
-    token0,
-    coefficient,
-    threshold
-);
-triggered = true;
-emit Callback(log.chain_id, stop_order, CALLBACK_GAS_LIMIT, payload);
-```
-
-The payload encodes the function call and parameters that will be executed on the destination chain.
-
-[More on Callback Payment →](./economy#callback-payment)
-
-[More on Callbacks →](../education/module-1/how-events-work#callbacks-to-destination-chains)
+[More on callback payment →](./economy#callback-payment)
