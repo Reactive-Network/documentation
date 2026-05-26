@@ -114,12 +114,6 @@ const config = {
           },
           {
             type: "docSidebar",
-            sidebarId: "education",
-            position: "left",
-            label: "Education",
-          },
-          {
-            type: "docSidebar",
             sidebarId: "legacy",
             position: "left",
             label: "Legacy",
