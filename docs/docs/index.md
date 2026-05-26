@@ -18,13 +18,13 @@ This makes it possible to build workflows such as automated stop-loss and take-p
 
 ## Step 1 — Reactive Basics
 
-[Origins & Destinations →](./origins-and-destinations.mdx) Understand origin and destination chains and their callback proxy addresses.
+[//]: # ([Origins & Destinations →]&#40;./origins-and-destinations.mdx&#41; Understand origin and destination chains and their callback proxy addresses.)
 
 [Hyperlane →](./hyperlane.mdx) Learn how cross-chain callbacks are transported using Hyperlane.
 
 [Reactive Contracts →](./reactive-contracts.md) Learn how reactive contracts subscribe to events and trigger actions.
 
-[Economy →](./economy) Understand callback payments and Reactive's economy.
+[//]: # ([Economy →]&#40;./economy&#41; Understand callback payments and Reactive's economy.)
 
 ## Step 2 — Reactive Essentials
 
@@ -38,17 +38,23 @@ This makes it possible to build workflows such as automated stop-loss and take-p
 
 [RNK RPC Methods →](./rnk-rpc-methods.md) Reference RPC methods for Reactive's nodes.
 
-## Step 3 — Reactive Building
+[//]: # (## Step 3 — Reactive Building)
 
-[Reactive Demos →](./demos.md) Explore working examples. 
+[//]: # ()
+[//]: # ([Reactive Demos →]&#40;./demos.md&#41; Explore working examples. )
 
-[Reactive Demos on GitHub →](https://github.com/Reactive-Network/reactive-smart-contract-demos) Clone demo projects and start building.
+[//]: # ()
+[//]: # ([Reactive Demos on GitHub →]&#40;https://github.com/Reactive-Network/reactive-smart-contract-demos&#41; Clone demo projects and start building.)
 
-## Extra
+[//]: # ()
+[//]: # (## Extra)
 
-[Reactscan →](./reactscan.md) Explore reactive transactions and contracts.
+[//]: # ()
+[//]: # ([Reactscan →]&#40;./reactscan.md&#41; Explore reactive transactions and contracts.)
 
-[Debugging →](./debugging.md) Troubleshoot common issues.
+[//]: # ()
+[//]: # ([Debugging →]&#40;./debugging.md&#41; Troubleshoot common issues.)
 
-[Contacts →](../contacts/index.md) Get support and connect with the community.
+[//]: # ()
+[//]: # ([Contacts →]&#40;../contacts/index.md&#41; Get support and connect with the community.)
 
