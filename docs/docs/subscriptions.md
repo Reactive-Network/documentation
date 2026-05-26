@@ -337,5 +337,3 @@ Event handling:
 - **Subscribe event** → directly creates a new subscription via the system contract
 - **Unsubscribe event** → directly removes a subscription via the system contract
 - **Other events** → requests a callback to trigger application logic on the destination chain
-
-[More on subscriptions →](../education/module-1/subscriptions.md)

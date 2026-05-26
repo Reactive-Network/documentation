@@ -3,6 +3,7 @@ title: Technical and Knowledge Prerequisites for Mastering Reactive Contracts
 sidebar_position: 2
 description: What you need to know before starting the Reactive Contracts course. Covers required background in Solidity, EVM, Git, and command line tools, plus wallet setup for Ethereum Sepolia testnet deployment.
 slug: prerequisites
+unlisted: true
 ---
 
 # Technical and Knowledge Prerequisites for Mastering Reactive Contracts

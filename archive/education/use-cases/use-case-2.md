@@ -3,6 +3,7 @@ title: "Use Case: Approval Magic Demo"
 sidebar_position: 4
 description: Explore how the reactive network automates token approvals and transfers across multiple chains. Learn about the ApprovalService, ApprovalListener, and client contracts like ApprovalEthExch and ApprovalMagicSwap, and how they optimize gas costs while ensuring secure, real-time token interactions. Gain practical insights into its setup, functionality, and deployment.
 slug: use-case-2
+unlisted: true
 ---
 
 # Use Case: Approval Magic Demo
@@ -13,7 +14,7 @@ This article focuses on the [Approval Magic Demo](https://github.com/Reactive-Ne
 
 ## Magic Exchange Flow
 
-![Exchange](./img/magic-exchange.png)
+![Exchange](img/magic-exchange.png)
 
 1. Validator calls `callback()` on `CallbackProxy`.
 2. `CallbackProxy` calls `onApproval()` on `ApprovalService`.
@@ -25,7 +26,7 @@ This article focuses on the [Approval Magic Demo](https://github.com/Reactive-Ne
 
 ## Magic Swap Flow
 
-![Swap](./img/magic-swap.png)
+![Swap](img/magic-swap.png)
 
 1. Validator calls `callback()` on `CallbackProxy`.
 2. `CallbackProxy` calls `onApproval()` on `ApprovalService`.

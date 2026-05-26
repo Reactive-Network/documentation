@@ -3,6 +3,7 @@ title: "Lesson 2: How Events and Callbacks Work"
 sidebar_position: 2
 description: Learn how EVM events and callbacks work in Reactive Contracts. Covers event creation and emission, the IReactive interface and react() method, and how callbacks trigger cross-chain transactions on destination chains.
 slug: how-events-work
+unlisted: true
 ---
 
 # Lesson 2: How Events and Callbacks Work

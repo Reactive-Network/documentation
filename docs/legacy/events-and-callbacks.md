@@ -58,8 +58,6 @@ function react(LogRecord calldata log) external vmOnly {
 }
 ```
 
-[More on Events →](../education/module-1/how-events-work)
-
 ## Callbacks to Destination Chains
 
 Reactive Contracts initiate transactions on destination chains by emitting `Callback` events, which are also part of the [IReactive](https://github.com/Reactive-Network/reactive-lib/blob/main/src/interfaces/IReactive.sol) interface:
@@ -105,5 +103,3 @@ emit Callback(log.chain_id, stop_order, CALLBACK_GAS_LIMIT, payload);
 The payload encodes the function call and parameters that will be executed on the destination chain.
 
 [More on Callback Payment →](./economy#callback-payment)
-
-[More on Callbacks →](../education/module-1/how-events-work#callbacks-to-destination-chains)

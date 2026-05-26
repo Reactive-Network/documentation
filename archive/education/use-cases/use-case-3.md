@@ -3,15 +3,16 @@ title: "Use Case: Uniswap V2 Stop Order Demo"
 sidebar_position: 3
 description: Discover how a Reactive Contract executes stop orders on Uniswap V2 pools, automating trade actions based on predefined conditions. Gain practical insights into its setup, functionality, and deployment.
 slug: use-case-3
+unlisted: true
 ---
 
 # Use Case: Uniswap V2 Stop Order Demo
 
 ## Overview
 
-This article focuses on the [Uniswap V2 Stop Order Demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/uniswap-v2-stop-order) where a reactive contract listens for `Sync` events in a Uniswap V2 pool and triggers asset sales when the exchange rate hits a specified threshold. This demo extends the principles introduced in the [Reactive Network Demo](./use-case-1.md), which provides an introduction to building Reactive Contracts that respond to real-time events.
+This article focuses on the [Uniswap V2 Stop Order Demo](https://github.com/Reactive-Network/reactive-smart-contract-demos/tree/main/src/demos/uniswap-v2-stop-order) where a reactive contract listens for `Sync` events in a Uniswap V2 pool and triggers asset sales when the exchange rate hits a specified threshold. This demo extends the principles introduced in the [Reactive Network Demo](use-case-1.md), which provides an introduction to building Reactive Contracts that respond to real-time events.
 
-![Uniswap V2 Stop Order](./img/uniswap-stop-order.jpg)
+![Uniswap V2 Stop Order](img/uniswap-stop-order.jpg)
 
 ## Contracts
 

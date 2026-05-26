@@ -29,10 +29,6 @@ A destination contract can validate a callback by checking:
 1. **The sender is the Callback Proxy** (so the call is coming through the expected entry point).
 2. **The embedded RVM ID matches the intended Reactive contract** (so the callback is tied to the correct RC).
 
-:::info[Hyperlane]
-Some networks can’t act as destination chains yet because the Callback Proxy contract hasn’t been deployed there. In that case, use [Hyperlane](./hyperlane) as the transport for cross-chain callbacks.
-:::
-
 ## Mainnet Chains
 
 :::info[Origin/Destination]

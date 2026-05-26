@@ -4,6 +4,7 @@ title: Introduction
 description: Educational course on Reactive Contracts covering events, callbacks, subscriptions, oracles, and ReactVM. Includes lectures, GitHub code examples, and video workshops for developers building on Reactive Network.
 slug: /education/introduction
 hide_title: true
+unlisted: true
 ---
 
 ![Reactive Network Education Image](../img/reactive-education.jpg)
@@ -16,9 +17,9 @@ This course walks you through how Reactive contracts work, step by step. You'll 
 
 Start with the introduction for a closer look at what Reactive contracts can do and how they operate across EVM-compatible chains, then check the prerequisites to make sure you have the right background before moving on.
 
-[Introduction to Reactive Contracts →](./reactive-contracts.md)
+[Introduction to Reactive Contracts →](reactive-contracts.md)
 
-[Prerequisites →](./prerequisites.md)
+[Prerequisites →](prerequisites.md)
 
 ## Module One
 
@@ -36,11 +37,11 @@ Start with the introduction for a closer look at what Reactive contracts can do 
 
 ## Module Two
 
-[Module 2](../module-2/index.md) puts those building blocks to use with a real protocol. You'll walk through how Uniswap V2 works under the hood (its liquidity pools and smart contract mechanics) then see how Reactive contracts can interact with it autonomously. This is where the basics start clicking into practical applications.
+[Module 2](../use-cases/module-2/index.md) puts those building blocks to use with a real protocol. You'll walk through how Uniswap V2 works under the hood (its liquidity pools and smart contract mechanics) then see how Reactive contracts can interact with it autonomously. This is where the basics start clicking into practical applications.
 
-[How Uniswap Works →](../module-2/how-uniswap-works.md)
+[How Uniswap Works →](../use-cases/module-2/how-uniswap-works.md)
 
-[Basic Reactive Functions →](../module-2/basic-reactive-functions.md)
+[Basic Reactive Functions →](../use-cases/module-2/basic-reactive-functions.md)
 
 ## Use Cases
 

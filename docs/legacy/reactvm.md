@@ -60,11 +60,3 @@ For example, in a governance contract:
 - Administrative actions such as `pause()` may exist in the Reactive Network state
 
 Most automation logic runs inside ReactVM.
-
-## Reactive Network Processing Flow
-
-The diagram below shows how events from an origin chain are processed by Reactive Network and ReactVM, and how resulting actions are delivered to destination chains.
-
-![Reactive Network Lifecycle](img/global-processing-flow.png)
-
-[More on ReactVM →](../education/module-1/react-vm.md)

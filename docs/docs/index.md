@@ -48,7 +48,7 @@ This makes it possible to build workflows such as automated stop-loss and take-p
 
 [Reactscan →](./reactscan.md) Explore reactive transactions and contracts.
 
-[Debugging →](debugging.md) Troubleshoot common issues.
+[Debugging →](./debugging.md) Troubleshoot common issues.
 
 [Contacts →](../contacts/index.md) Get support and connect with the community.
 

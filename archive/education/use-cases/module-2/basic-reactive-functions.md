@@ -3,6 +3,7 @@ title: "Lesson 7: Basic Reactive Functions"
 sidebar_position: 2
 description: Walkthrough of a Reactive Contract that implements a Uniswap V2 stop order. Covers the contract structure, event subscriptions, the react() function, threshold logic, and the full execution flow from initialization to trade completion.
 slug: basic-reactive-functions
+unlisted: true
 ---
 
 # Lesson 7: Basic Reactive Functions
@@ -130,7 +131,7 @@ The constructor stores the configuration and sets up event subscriptions on Reac
     }
 ```
 
-The `if (!vm)` block only runs on Reactive Network (as covered in [Lesson 3](../module-1/react-vm.md)). It subscribes to two event types: `Sync` events from the Uniswap pair to track reserve changes, and `Stop` events from the stop-order contract to know when execution is confirmed. The ReactVM instance skips this block and uses the same variables for event processing.
+The `if (!vm)` block only runs on Reactive Network (as covered in [Lesson 3](../../module-1/react-vm.md)). It subscribes to two event types: `Sync` events from the Uniswap pair to track reserve changes, and `Stop` events from the stop-order contract to know when execution is confirmed. The ReactVM instance skips this block and uses the same variables for event processing.
 
 ### react() Function
 
@@ -206,6 +207,6 @@ The full lifecycle of this contract follows four stages:
 
 This course is designed to give you both the theory and the hands-on experience to start building with Reactive contracts. It includes detailed lectures, code examples on GitHub, and video workshops covering everything from basic concepts to real-world deployments.
 
-Whether you want to understand how Reactive contracts work under the hood or jump straight into building, the course adapts to either path. Explore the [use cases](../use-cases/index.md) if you want to see what's possible, or start from Module 1 to build up from the fundamentals.
+Whether you want to understand how Reactive contracts work under the hood or jump straight into building, the course adapts to either path. Explore the [use cases](../index.md) if you want to see what's possible, or start from Module 1 to build up from the fundamentals.
 
 Join the [Telegram](https://t.me/reactivedevs) community if you have questions or want to connect with other developers working with Reactive contracts.

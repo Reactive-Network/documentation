@@ -4,6 +4,7 @@ sidebar_position: 4
 description: A comprehensive blockchain and DeFi glossary for developers, traders, and builders joining Reactive Network. Learn essential Web3, EVM, cross-chain, and Reactive Contract concepts—from Airdrops and Finality to TPS, block time, and automated DeFi execution.
 slug: glossary
 hide_title: true
+unlisted: true
 ---
 
 ![Glossary Image](img/glossary.jpg)

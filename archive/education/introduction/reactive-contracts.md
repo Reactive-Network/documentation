@@ -3,6 +3,7 @@ title: "What Are Reactive Contracts and Why Do They Matter"
 sidebar_position: 1
 description: Reactive Contracts are smart contracts that autonomously monitor and respond to events across EVM-compatible blockchains. Explains what they are, how they differ from traditional smart contracts, and why cross-chain automation matters.
 slug: reactive-contracts
+unlisted: true
 ---
 
 # What Are Reactive Contracts and Why Do They Matter
@@ -13,7 +14,7 @@ Regular smart contracts sit idle until someone sends them a transaction. They ca
 
 Reactive contracts work differently. They monitor events across EVM-compatible chains and respond to them automatically, executing logic and triggering on-chain actions without anyone having to intervene. No manual transactions, no centralized bots, no private key management on your end.
 
-![Basic Reactive Workflow](./img/basic-reactive-workflow.jpg)
+![Basic Reactive Workflow](img/basic-reactive-workflow.jpg)
 
 ## Why This Matters
 

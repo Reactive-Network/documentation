@@ -3,6 +3,7 @@ title: "Lesson 3: ReactVM and the Dual-State Environment"
 sidebar_position: 3
 description: Learn how Reactive contracts operate across two separate states — one on Reactive Network and one in a private ReactVM instance. Covers execution context detection, managing dual variable sets, and how transactions flow in each environment.
 slug: react-vm
+unlisted: true
 ---
 
 # Lesson 3: ReactVM and the Dual-State Environment
@@ -24,7 +25,7 @@ By the end of this lesson, you'll understand:
 
 Every deployed Reactive contract has two instances: one on Reactive Network and one in a dedicated ReactVM. Both instances are physically stored and executed on each network node. This separation is an architectural decision made to ensure high performance even with large volumes of events.
 
-![Reactive Network | ReactVM](./img/reactvm.jpg)
+![Reactive Network | ReactVM](img/reactvm.jpg)
 
 **Reactive Network** operates as a standard EVM blockchain with additional system contracts that handle subscribing and unsubscribing to events on origin chains like Ethereum, BNB, Polygon, or Optimism. Each deployer address has its own dedicated ReactVM.
 

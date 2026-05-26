@@ -357,5 +357,3 @@ Event handling:
 - **Other events** → emit callbacks that trigger application logic
 
 Callbacks are executed by Reactive Network after the event is processed.
-
-[More on Subscriptions →](../education/module-1/subscriptions.md)

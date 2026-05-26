@@ -78,5 +78,3 @@ If you encounter the error below, your Foundry version doesn't expect the `--bro
 error: unexpected argument '--broadcast' found
 ```
 :::
-
-[More on reactive contracts →](../education/module-1/reactive-contracts)

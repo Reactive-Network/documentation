@@ -260,7 +260,7 @@ const config = {
               to: "/reactive-mainnet"
             },
             {
-              from: "/education/introduction/",
+              from: "/education/introduction",
               to: "/"
             },
             {

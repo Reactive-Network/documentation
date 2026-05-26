@@ -3,6 +3,7 @@ title: "Lesson 1: Reactive Contracts"
 sidebar_position: 1
 description: Learn how Reactive Contracts differ from traditional smart contracts and practical use cases including oracle data aggregation, Uniswap stop orders, DEX arbitrage, and cross-chain pool rebalancing.
 slug: reactive-contracts
+unlisted: true
 ---
 
 # Lesson 1: Reactive Contracts
@@ -25,7 +26,7 @@ With traditional smart contracts, control flows from the outside in. An external
 
 Reactive contracts invert that. The contract itself defines which events it cares about and what to do when they happen. Execution is triggered by on-chain events, not by someone signing a transaction.
 
-![Inversion of Control](./img/inversion-of-control.jpg)
+![Inversion of Control](img/inversion-of-control.jpg)
 
 To see why this matters, consider the alternative. Without a Reactive contract, you'd need to set up a separate service (typically a bot) to monitor blockchains using centralized data providers. That bot holds private keys for the funds it manages and submits transactions from its own EOA address. It works, but it introduces a centralized point of control that can fail, be compromised, or go offline.
 

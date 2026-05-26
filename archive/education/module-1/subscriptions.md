@@ -3,6 +3,7 @@ title: "Lesson 4: How Subscriptions Work"
 sidebar_position: 4
 description: Learn how to set up and manage event subscriptions in Reactive Contracts. Covers static subscriptions in the constructor, subscription criteria and wildcards, prohibited patterns, and dynamic subscription management through callbacks.
 slug: how-subscriptions-work
+unlisted: true
 ---
 
 # Lesson 4: How Subscriptions Work

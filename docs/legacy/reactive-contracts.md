@@ -121,5 +121,3 @@ Compiler: 0.8.28
 ![Image c](img/verify-c.png)
 
 Verified contracts expose full source code with syntax highlighting and file structure.
-
-[More on Reactive Contracts →](../education/module-1/reactive-contracts)

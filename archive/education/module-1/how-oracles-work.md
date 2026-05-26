@@ -3,6 +3,7 @@ title: "Lesson 5: How Oracles Work"
 sidebar_position: 5
 description: How oracles bring off-chain data onto the blockchain and why they matter for Reactive Contracts. Covers the oracle problem, multisig security, Chainlink integration, and how Reactive Contracts can respond to oracle events in real time.
 slug: how-oracles-work
+unlisted: true
 ---
 
 # Lesson 5: How Oracles Work

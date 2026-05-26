@@ -67,8 +67,6 @@ function react(LogRecord calldata log) external systemContractOnly {
 }
 ```
 
-[More on events →](../education/module-1/how-events-work)
-
 ## Callbacks to Destination Chains
 
 Reactive contracts initiate transactions on destination chains by calling `requestCallback()` on the system contract. The method accepts a version identifier and an ABI-encoded configuration struct:
@@ -122,5 +120,3 @@ emit Callback(log.chain_id, stop_order, CALLBACK_GAS_LIMIT, payload);
 The payload encodes the function call and parameters that will be executed on the destination chain.
 
 [More on callback payment →](./economy#callback-payment)
-
-[More on callbacks →](../education/module-1/how-events-work#callbacks-to-destination-chains)

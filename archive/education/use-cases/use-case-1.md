@@ -3,6 +3,7 @@ title: "Use Case: Reactive Network Demo"
 sidebar_position: 1
 description: Learn to build and deploy a Basic Reactive Contract. Understand low-latency log monitoring and cross-chain calls using Ethereum testnets. Ideal for mastering Reactive Network fundamentals.
 slug: use-case-1
+unlisted: true
 ---
 
 # Use Case: Reactive Network Demo
@@ -14,7 +15,7 @@ This article focuses on building and deploying a reactive contract, using the ba
 * Low-latency monitoring of logs emitted by contracts on the origin chain.
 * Executing calls from the Reactive Network to contracts on the destination chain.
 
-![Basic Demo](./img/use-case-1.png)
+![Basic Demo](img/use-case-1.png)
 
 ## Contracts
 
