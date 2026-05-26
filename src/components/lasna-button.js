@@ -34,14 +34,14 @@ export const AddToWeb3Provider = async () => {
                     method: 'wallet_addEthereumChain',
                     params: [{
                         chainId: CHAIN_ID,
-                        rpcUrls: ['https://lasna-rpc.rnk.dev/'],
+                        rpcUrls: ['https://lasna-omni-rpc.rnk.dev/'],
                         chainName: 'Reactive Lasna',
                         nativeCurrency: {
                             name: 'REACT',
                             symbol: 'REACT',
                             decimals: 18,
                         },
-                        blockExplorerUrls: ['https://lasna.reactscan.net/'],
+                        blockExplorerUrls: ['https://lasna-omni.reactscan.net/'],
                     }],
                 });
             } catch (e) {
