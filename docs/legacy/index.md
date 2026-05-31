@@ -2,7 +2,7 @@
 sidebar_position: 1
 title: Getting Started
 description: Explore Reactive Network — an automation layer for EVM chains. Build Reactive Contracts — event-driven smart contracts for cross-chain, on-chain automation.
-slug: /legacy/
+slug: /
 hide_title: true
 ---
 
