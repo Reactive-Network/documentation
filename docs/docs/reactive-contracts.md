@@ -16,6 +16,12 @@ Reactive contracts are event-driven smart contracts for cross-chain, on-chain au
 
 Reactive contracts are deployed to Reactive Network like any standard smart contract. Once deployed, the system contract delivers event logs to the contract's `react()` function and processes callback requests.
 
+## System Contract Interaction
+
+![Payment System](img/payment.png)
+
+![Reactive Tx Lifecycle](img/trigger.png)
+
 ## Verifying Reactive Contracts
 
 Contracts can be verified during or after deployment using the Sourcify endpoint. Sourcify is a decentralized verification service that matches deployed bytecode with source code, making contracts auditable and transparent.
