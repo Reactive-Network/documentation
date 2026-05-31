@@ -106,12 +106,12 @@ const config = {
           srcDark: "img/rn-docs-logo-white.svg",
         },
         items: [
-          {
-            type: "docSidebar",
-            sidebarId: "docs",
-            position: "left",
-            label: "Docs",
-          },
+          // {
+          //   type: "docSidebar",
+          //   sidebarId: "docs",
+          //   position: "left",
+          //   label: "Docs",
+          // },
           {
             type: "docSidebar",
             sidebarId: "legacy",
