@@ -4,6 +4,7 @@ title: Getting Started
 description: Explore Reactive Network, an EVM automation layer with CometBFT consensus and instant finality. Build reactive contracts, event-driven smart contracts for cross-chain, on-chain automation.
 slug: /
 hide_title: true
+unlisted: true
 ---
 
 ![Reactive Docs Image](./img/reactive-docs.jpg)

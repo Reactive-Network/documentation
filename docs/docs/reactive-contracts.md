@@ -4,6 +4,7 @@ sidebar_position: 4
 description: Learn about reactive contracts, event-driven smart contracts for cross-chain, on-chain automation that subscribe to event logs and trigger callback transactions.
 slug: /reactive-contracts
 hide_title: true
+unlisted: true
 ---
 
 ![Reactive Contracts Image](img/reactive-contracts.jpg)
@@ -15,6 +16,12 @@ Reactive contracts are event-driven smart contracts for cross-chain, on-chain au
 ## Deployment
 
 Reactive contracts are deployed to Reactive Network like any standard smart contract. Once deployed, the system contract delivers event logs to the contract's `react()` function and processes callback requests.
+
+## System Contract Interaction
+
+![Payment System](img/payment.png)
+
+![Reactive Tx Lifecycle](img/trigger.png)
 
 ## Verifying Reactive Contracts
 

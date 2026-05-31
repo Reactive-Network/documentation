@@ -4,6 +4,7 @@ sidebar_position: 9
 description: Learn how reactive contracts process events and trigger cross-chain callback transactions.
 slug: /events-&-callbacks
 hide_title: true
+unlisted: true
 ---
 
 ![Events and Callbacks Image](./img/events-and-callbacks.jpg)
@@ -41,7 +42,13 @@ Since `react()` is always called by the system contract, contracts should use th
 
 ## Callbacks to Destination Chains
 
-Reactive contracts initiate transactions on destination chains by calling `requestCallback()` or `requestCallbackV_1_0()` on the system contract:
+:::info[Callback Authorization]
+Reactive Network replaces the first 160 bits of the callback payload with the address of the reactive contract that initiated the callback. The first callback argument is therefore always an `address`, regardless of how it is named in Solidity. On the destination side, contracts extending `AbstractCallback` can use the `onlyCallbackSender` modifier to verify this address matches the expected reactive contract.
+:::
+
+Reactive contracts initiate transactions on destination chains by calling methods on the system contract, rather than emitting raw events directly. The system contract handles event emission and validation under the hood, giving developers a more intuitive interface.
+
+Two methods are available today:
 
 ```solidity
 function requestCallback(CallbackVersion version_, bytes memory config_) external;
@@ -49,7 +56,11 @@ function requestCallback(CallbackVersion version_, bytes memory config_) externa
 function requestCallbackV_1_0(CallbackConfiguration_V_1_0 memory config_) external;
 ```
 
-When either method is called during `react()` execution, Reactive Network submits a transaction to the specified destination chain.
+`requestCallbackV_1_0()` is a typed convenience wrapper, meaning you pass a configuration struct directly with no manual ABI encoding or version flag. This is what most developers should reach for.
+
+`requestCallback()` is the generic entry point. You specify a `CallbackVersion` and pass ABI-encoded configuration matching that version. As new callback types are introduced, each will get its own version and a corresponding typed convenience method like `V_1_0`.
+
+Both methods produce the same `CallbackRequest` event. When either is called during `react()` execution, Reactive Network submits a transaction to the specified destination chain.
 
 The `V_1_0` callback configuration uses the following struct:
 
@@ -64,15 +75,9 @@ struct CallbackConfiguration_V_1_0 {
 
 Where:
 
-* `chainId` -- destination network
-* `recipient` -- target contract on the destination chain
-* `gasLimit` -- execution gas limit
-* `payload` -- ABI-encoded function call
+* `chainId` -> destination network
+* `recipient` -> target contract on the destination chain
+* `gasLimit` -> execution gas limit
+* `payload` -> ABI-encoded function call
 
-The `requestCallbackV_1_0()` method is a typed convenience wrapper that avoids manual ABI encoding. Both methods produce the same result.
-
-:::info[Callback Authorization]
-Reactive Network replaces the first 160 bits of the callback payload with the address of the reactive contract that initiated the callback. The first callback argument is therefore always an `address`, regardless of how it is named in Solidity. On the destination side, contracts extending `AbstractCallback` can use the `onlyCallbackSender` modifier to verify this address matches the expected reactive contract.
-:::
-
-[More on callback payment →](./economy#callback-payment)
+[//]: # ([More on callback payment →]&#40;./economy#callback-payment&#41;)
