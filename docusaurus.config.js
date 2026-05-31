@@ -338,6 +338,10 @@ const config = {
             {
               from: "/education/glossary",
               to: "/"
+            },
+            {
+              from: "/",
+              to: "/legacy/"
             }
           ]
         }
