@@ -47,7 +47,7 @@ const config = {
           anonymizeIP: true
         },
         docs: {
-          routeBasePath: "/",
+          routeBasePath: "/legacy",
           sidebarPath: "./sidebars.js",
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
@@ -338,10 +338,6 @@ const config = {
             {
               from: "/education/glossary",
               to: "/"
-            },
-            {
-              from: "/",
-              to: "/legacy/"
             }
           ]
         }
