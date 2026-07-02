@@ -4,7 +4,6 @@ sidebar_position: 9
 description: Learn how reactive contracts process events and trigger cross-chain callback transactions.
 slug: /events-&-callbacks
 hide_title: true
-unlisted: true
 ---
 
 ![Events and Callbacks Image](./img/events-and-callbacks.jpg)
@@ -15,7 +14,7 @@ Reactive contracts process on-chain events and trigger transactions on destinati
 
 ## Event Processing
 
-To process events, a reactive contract must implement the `react()` function defined in the [IReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/main/src/interfaces/IReactive.sol) interface:
+To process events, a reactive contract must implement the `react()` function defined in the [IReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/IReactive.sol) interface:
 
 ```solidity
 struct LogRecord {
@@ -40,13 +39,15 @@ The system contract calls `react()` whenever a subscribed event is detected. The
 
 Since `react()` is always called by the system contract, contracts should use the `onlySystem` modifier provided by `AbstractReactive` to restrict access.
 
-## Callbacks to Destination Chains
+`onlySystem` checks that `msg.sender` is the configured service provider; for a reactive contract that's the system contract at the address `0x8888888888888888888888888888888888888888`. If anyone else calls `react()`, the call reverts with `NotAuthorized`.
+
+## Requesting Callbacks to Destination Chains
 
 :::info[Callback Authorization]
-Reactive Network replaces the first 160 bits of the callback payload with the address of the reactive contract that initiated the callback. The first callback argument is therefore always an `address`, regardless of how it is named in Solidity. On the destination side, contracts extending `AbstractCallback` can use the `onlyCallbackSender` modifier to verify this address matches the expected reactive contract.
+Reactive Network replaces the first 160 bits of the callback payload with the address of the reactive contract that initiates the callback. The first callback argument is therefore always an `address`, regardless of how it is named in Solidity. On the destination side, contracts extending `AbstractCallback` can use the `onlyCallbackSender` modifier to verify this address matches the expected reactive contract. A mismatch will revert with `CallbackNotAuthorized`.
 :::
 
-Reactive contracts initiate transactions on destination chains by calling methods on the system contract, rather than emitting raw events directly. The system contract handles event emission and validation under the hood, giving developers a more intuitive interface.
+Reactive contracts initiate transactions on destination chains by calling methods on the system contract, rather than emitting raw events directly. The system contract handles event emission and validation under the hood.
 
 Two methods are available today:
 
@@ -58,9 +59,9 @@ function requestCallbackV_1_0(CallbackConfiguration_V_1_0 memory config_) extern
 
 `requestCallbackV_1_0()` is a typed convenience wrapper, meaning you pass a configuration struct directly with no manual ABI encoding or version flag. This is what most developers should reach for.
 
-`requestCallback()` is the generic entry point. You specify a `CallbackVersion` and pass ABI-encoded configuration matching that version. As new callback types are introduced, each will get its own version and a corresponding typed convenience method like `V_1_0`.
+`requestCallback()` is the generic entry point. You specify a `CallbackVersion` and pass ABI-encoded configuration matching that version. As new callback types are introduced, each will get its own version and a corresponding typed convenience method like `V_1_0`. Supplying a version the contract doesn't recognize will revert with `InvalidCallbackVersion`.
 
-Both methods produce the same `CallbackRequest` event. When either is called during `react()` execution, Reactive Network submits a transaction to the specified destination chain.
+Internally, both methods are the same code path: `requestCallbackV_1_0()` simply ABI-encodes your struct and calls the generic request with `CallbackVersion.V_1_0`.
 
 The `V_1_0` callback configuration uses the following struct:
 
@@ -79,5 +80,27 @@ Where:
 * `recipient` -> target contract on the destination chain
 * `gasLimit` -> execution gas limit
 * `payload` -> ABI-encoded function call
+
+### CallbackRequest Event
+
+When either method is called during `react()` execution, the system contract emits a `CallbackRequest` event, and Reactive Network picks it up to submit a transaction on the specified destination chain. It's worth knowing the event's shape, because it's what off-chain infrastructure and explorers index:
+
+```solidity
+event CallbackRequest(
+    uint256 indexed chainId,
+    address indexed sender,
+    address indexed recipient,
+    CallbackVersion version,
+    bytes configuration
+);
+```
+
+The three indexed fields make it cheap to filter for callbacks involving a specific contract:
+
+* destination's `chainId`
+* sender -> the reactive contract that requested the callback (`msg.sender`)
+* the recipient on the destination chain.
+
+The `version` flag and the full ABI-encoded configuration follow as data.
 
 [//]: # ([More on callback payment →]&#40;./economy#callback-payment&#41;)

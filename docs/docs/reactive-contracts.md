@@ -4,7 +4,6 @@ sidebar_position: 4
 description: Learn about reactive contracts, event-driven smart contracts for cross-chain, on-chain automation that subscribe to event logs and trigger callback transactions.
 slug: /reactive-contracts
 hide_title: true
-unlisted: true
 ---
 
 ![Reactive Contracts Image](img/reactive-contracts.jpg)

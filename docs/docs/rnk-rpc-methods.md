@@ -4,7 +4,6 @@ sidebar_position: 11
 description: Learn about Reactive Network's custom JSON-RPC methods for querying filters, subscriptions, and block sequences.
 slug: /rnk-rpc-methods
 hide_title: true
-unlisted: true
 ---
 
 ![RNK RPC Methods](./img/rnk-rpc-methods.jpg)
