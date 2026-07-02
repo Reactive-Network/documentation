@@ -40,7 +40,7 @@ constructor(/* ... */) payable {
   }
 ```
 
-Reactive transactions now arrive from the system contract, which lets your contract confirm it was called by the authorized entity rather than a random caller.
+Reactive transactions now arrive from the system contract, which lets your contract confirm it's been called by the authorized entity rather than a random caller.
 
 ```solidity
 // diff-remove
@@ -78,7 +78,7 @@ function requestCallbackV_1_0(CallbackConfiguration_V_1_0 memory config_) extern
 // diff-add-end
 ```
 
-The system contract exposes the new callback interface:
+The system contract moved to a new address:
 
 ```solidity
 // diff-remove
