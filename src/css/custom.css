@@ -238,6 +238,25 @@ html[data-theme="dark"] {
     background: var(--ifm-background-color) !important;
 }
 
+.code-block-diff-add-line {
+    display: block;
+    margin: 0 calc(-1 * var(--ifm-pre-padding));
+    padding: 0 var(--ifm-pre-padding);
+    background-color: color-mix(in srgb, var(--ifm-color-success) 8%, transparent);
+    border-left: 3px solid var(--ifm-color-success);
+}
+.code-block-diff-remove-line {
+    display: block;
+    margin: 0 calc(-1 * var(--ifm-pre-padding));
+    padding: 0 var(--ifm-pre-padding);
+    background-color: color-mix(in srgb, var(--ifm-color-danger) 8%, transparent);
+    border-left: 3px solid var(--ifm-color-danger);
+}
+.code-block-diff-add-line .token.number,
+.code-block-diff-remove-line .token.number {
+    color: var(--ifm-color-content) !important;
+}
+
 /**
  * Custom styles for the Chain Table component
  */
