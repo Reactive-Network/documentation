@@ -356,6 +356,22 @@ const config = {
               from: "/education/glossary",
               to: "/"
             },
+            {
+              from: "/hyperlane",
+              to: "/"
+            },
+            {
+              from: "/events-&-callbacks",
+              to: "/reactive-contracts"
+            },
+            {
+              from: "/subscriptions",
+              to: "/reactive-contracts"
+            },
+            {
+              from: "/reactvm",
+              to: "/"
+            },
           ]
         }
       ]
