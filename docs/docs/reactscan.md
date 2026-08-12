@@ -1,6 +1,6 @@
 ---
 title: Reactscan
-sidebar_position: 13
+sidebar_position: 12
 description: Learn how to find information on Reactscan with relevant links and pictures.
 slug: /reactscan
 hide_title: true

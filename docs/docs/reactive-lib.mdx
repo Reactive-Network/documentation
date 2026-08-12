@@ -1,12 +1,10 @@
 ---
 title: Reactive Library
-sidebar_position: 8
+sidebar_position: 7
 description: Reference for Reactive library, abstract contracts and interfaces for building reactive contracts.
 slug: /reactive-library
 hide_title: true
 ---
-
-import CronTable from "../../src/components/cron-table";
 
 ![Reactive Library](./img/reactive-lib.jpg)
 
@@ -24,7 +22,7 @@ forge install Reactive-Network/reactive-lib-omni
 
 ### AbstractCallback
 
-[AbstractCallback](https://github.com/Reactive-Network/reactive-lib-omni/blob/main/src/abstract-base/AbstractCallback.sol) provides callback authorization for destination-side contracts. The contract initializes `_CALLBACK_SENDER`, which is the reactive contract authorized to send callbacks.
+[AbstractCallback](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractCallback.sol) provides callback authorization for destination-side contracts. The contract initializes `_CALLBACK_SENDER`, which is the reactive contract authorized to send callbacks.
 
 The `onlyCallbackSender` modifier restricts callback functions to the authorized sender.
 
@@ -55,7 +53,7 @@ constructor(IPayable callbackProxy_, address callbackSender_) AbstractPayer(call
 
 ### AbstractPayer
 
-[AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/main/src/abstract-base/AbstractPayer.sol) provides payment and debt-settlement functionality for reactive contracts. The contract defines: `_SERVICE_PROVIDER`, which is the system contract or callback proxy authorized to request payments.
+[AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol) provides payment and debt-settlement functionality for reactive contracts. The contract defines: `_SERVICE_PROVIDER`, which is the system contract or callback proxy authorized to request payments.
 
 The `onlyServiceProvider` modifier restricts payment requests to the authorized provider.
 
@@ -116,7 +114,7 @@ receive() virtual external payable {
 
 ### AbstractReactive
 
-[AbstractReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/main/src/abstract-base/AbstractReactive.sol) is the base contract for reactive contracts. It provides access to the Reactive's system contract and subscription service.
+[AbstractReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractReactive.sol) is the base contract for reactive contracts. It provides access to the Reactive's system contract and subscription service.
 
 The contract defines:
 
@@ -143,7 +141,7 @@ constructor() AbstractPayer(SYSTEM) {
 
 ### IPayable
 
-[IPayable](https://github.com/Reactive-Network/reactive-lib-omni/blob/main/src/interfaces/IPayable.sol) defines payment and debt-query functionality for reactive contracts. It is the common interface for both the system contract and the callback proxy.
+[IPayable](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/IPayable.sol) defines payment and debt-query functionality for reactive contracts. It is the common interface for both the system contract and the callback proxy.
 
 ```solidity
 interface IPayable {
@@ -155,7 +153,7 @@ interface IPayable {
 
 ### IPayer
 
-[IPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/main/src/interfaces/IPayer.sol) defines the interface for contracts that need to pay for system contract or proxy services.
+[IPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/IPayer.sol) defines the interface for contracts that need to pay for system contract or proxy services.
 
 ```solidity
 interface IPayer {
@@ -167,7 +165,7 @@ interface IPayer {
 
 ### IReactive
 
-[IReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/main/src/interfaces/IReactive.sol) defines the main interface for reactive contracts. It provides event notifications and the execution entry point.
+[IReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/IReactive.sol) defines the main interface for reactive contracts. It provides event notifications and the execution entry point.
 
 The `LogRecord` struct contains event data delivered to the contract.
 
@@ -208,7 +206,7 @@ function react(LogRecord calldata log_) external;
 
 ### ISubscriptionService
 
-[ISubscriptionService](https://github.com/Reactive-Network/reactive-lib-omni/blob/main/src/interfaces/ISubscriptionService.sol) defines functions for managing event subscriptions. Reactive contracts use it to subscribe to or unsubscribe from event logs.
+[ISubscriptionService](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/ISubscriptionService.sol) defines functions for managing event subscriptions. Reactive contracts use it to subscribe to or unsubscribe from event logs.
 
 The `subscribe()` function registers a subscription with the specified event criteria.
 
@@ -238,7 +236,7 @@ function unsubscribe(
 
 ### ISystemContract
 
-[ISystemContract](https://github.com/Reactive-Network/reactive-lib-omni/blob/main/src/interfaces/ISystemContract.sol) combines the functionality of `IPayable` and `ISubscriptionService`, and provides callback request methods. It represents the Reactive's system contract interface.
+[ISystemContract](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/ISystemContract.sol) combines the functionality of `IPayable` and `ISubscriptionService`, and provides callback request methods. It represents the Reactive's system contract interface.
 
 The `CallbackVersion` enum and `CallbackConfiguration_V_1_0` struct define the callback configuration format.
 
@@ -260,13 +258,3 @@ function requestCallback(CallbackVersion version_, bytes memory config_) externa
 
 function requestCallbackV_1_0(CallbackConfiguration_V_1_0 memory config_) external;
 ```
-
-### CRON Functionality
-
-The legacy system contract `0x0000000000000000000000000000000000fffFfF` provides a cron mechanism for time-based automation by emitting events at fixed block intervals. reactive contracts can subscribe to these events to implement scheduled execution without polling or external automation.
-
-Only authorized validator root addresses can call `cron()`. Each call to `cron()` emits one or more `Cron` events depending on the divisibility of the current block number. Larger intervals produce less frequent events.
-
-Each `Cron` event contains a single parameter `number`, which is the current block number.
-
-<CronTable />

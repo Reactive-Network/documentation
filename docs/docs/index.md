@@ -111,8 +111,6 @@ The consensus layer moved from Geth+Prism to CometBFT. This is not a new chain: 
 
 [//]: # ([Origins & Destinations →]&#40;./origins-and-destinations.mdx&#41; Understand origin and destination chains and their callback proxy addresses.)
 
-[Hyperlane →](./hyperlane.mdx) Learn how cross-chain callbacks are transported using Hyperlane.
-
 [Reactive Contracts →](./reactive-contracts.md) Learn how reactive contracts subscribe to events and trigger actions.
 
 [//]: # ([Economy →]&#40;./economy&#41; Understand callback payments and Reactive's economy.)
@@ -122,10 +120,6 @@ The consensus layer moved from Geth+Prism to CometBFT. This is not a new chain: 
 [Reactive Mainnet & Lasna Testnet →](./reactive-mainnet.mdx) Connect to Reactive Mainnet or Lasna Testnet.
 
 [Reactive Library →](./reactive-lib.mdx) Use Reactive's abstract contracts and interfaces.
-
-[Events & Callbacks →](./events-and-callbacks.md) Learn how event subscriptions trigger cross-chain callbacks. 
-
-[Subscriptions →](./subscriptions.md) Configure event subscriptions.
 
 [RNK RPC Methods →](./rnk-rpc-methods.md) Reference RPC methods for Reactive's nodes.
 

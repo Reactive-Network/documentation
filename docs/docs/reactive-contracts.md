@@ -1,32 +1,345 @@
 ---
 title: Reactive Contracts
-sidebar_position: 4
-description: Learn about reactive contracts, event-driven smart contracts for cross-chain, on-chain automation that subscribe to event logs and trigger callback transactions.
+sidebar_position: 3
+description: Build a reactive contract that subscribes to events on any chain and triggers callbacks. Covers `AbstractReactive`, `react()`, subscriptions, and CRON.
 slug: /reactive-contracts
 hide_title: true
 ---
+
+import CronTable from "../../src/components/cron-table";
 
 ![Reactive Contracts Image](img/reactive-contracts.jpg)
 
 ## Overview
 
-Reactive contracts are event-driven smart contracts for cross-chain, on-chain automation. They subscribe to event logs across EVM chains, execute Solidity logic when matching events occur, and trigger cross-chain callback transactions.
+A reactive contract is an ordinary Solidity contract with one extra ability: it can subscribe to events on any chain we monitor, and the network calls it when a matching log appears. That call arrives at `react()`, where the contract can update its state, request a callback on another chain, or change its own subscriptions. Contracts on the receiving end of a callback are covered in [Callback Contracts](./callback-contracts.md).
 
-## Deployment
+## Inheritance
 
-Reactive contracts are deployed to Reactive Network like any standard smart contract. Once deployed, the system contract delivers event logs to the contract's `react()` function and processes callback requests.
+```solidity
+// SPDX-License-Identifier: UNLICENSED
 
-## System Contract Interaction
+pragma solidity ^0.8.29;
 
-![Payment System](img/payment.png)
+import { ISystemContract } from "@reactive/src/interfaces/ISystemContract.sol";
+import { IReactive } from "@reactive/src/interfaces/IReactive.sol";
+import { AbstractReactive } from "@reactive/src/base/AbstractReactive.sol";
 
-![Reactive Tx Lifecycle](img/trigger.png)
+contract MyReactive is AbstractReactive {
+    uint256 private immutable _originChainId;
+    address private immutable _originContract;
+    uint256 private immutable _topic0;
+
+    // `payable`, because the contract pays for the reactive transactions it triggers.
+    constructor(uint256 originChainId_, address originContract_, uint256 topic0_) payable {
+        _originChainId = originChainId_;
+        _originContract = originContract_;
+        _topic0 = topic0_;
+
+        SYSTEM.subscribe(
+            originChainId_,
+            originContract_,
+            topic0_,
+            REACTIVE_IGNORE,
+            REACTIVE_IGNORE,
+            REACTIVE_IGNORE
+        );
+    }
+
+    /// @inheritdoc IReactive
+    function react(LogRecord memory log_) external onlySystem {
+        // Your logic here.
+    }
+}
+```
+
+That compiles, deploys, and starts receiving events. Three requirements are doing the work.
+
+**Inherit [AbstractReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractReactive.sol).** It supplies `SYSTEM`, `REACTIVE_IGNORE`, and `onlySystem`, and brings [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol) with it.
+
+**Implement `react()` with `onlySystem`.** [IReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/IReactive.sol) leaves it abstract, so the contract won't compile without it. The modifier checks `msg.sender` against the service provider, which for a reactive contract is `SYSTEM` at `0x8888888888888888888888888888888888888888`, and reverts with `NotAuthorized` for anyone else. Without it, a caller can hand your contract a fabricated log record.
+
+**Make the constructor `payable` and fund it.** Reactive transactions cost gas and the contract pays for them. Reserves, charges, and debt are covered in [Economy](./economy.md).
+
+The constructor also subscribes, which is what makes the contract receive anything at all. See [Subscriptions](#subscriptions).
+
+Three imports, though only two are strictly required. [AbstractReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractReactive.sol) is the base you inherit, and [IReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/IReactive.sol) is needed for the `/// @inheritdoc IReactive` tag, though not for `LogRecord`, which inheritance already provides. [ISystemContract](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/ISystemContract.sol) is needed only when you name the callback configuration struct, but a contract that observes events without ever acting on them is the exception, so expect to [request callbacks](#requesting-callbacks) and import it from the start.
+
+Between the two base contracts, these are the names you inherit:
+
+| Name                  | Comes from                                                                                                          | What it's for                                                                                                  |
+|-----------------------|---------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| `SYSTEM`              | [AbstractReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractReactive.sol) | The system contract at `0x8888888888888888888888888888888888888888`, where you subscribe and request callbacks |
+| `REACTIVE_IGNORE`     | [AbstractReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractReactive.sol) | Wildcard value for any topic position                                                                          |
+| `onlySystem`          | [AbstractReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractReactive.sol) | Rejects `react()` calls from anyone but the system contract                                                    |
+| `LogRecord`           | [IReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/IReactive.sol)         | The struct `react()` receives                                                                                  |
+| `_SERVICE_PROVIDER`   | [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol)       | The contract allowed to bill you, `SYSTEM` for a reactive contract                                             |
+| `onlyServiceProvider` | [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol)       | Rejects calls from anyone but that service provider. `onlySystem` is this same check under a clearer name      |
+| `pay(uint256)`        | [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol)       | Already implemented, and it verifies the caller. Don't write your own                                          |
+| `_coverDebt()`        | [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol)       | Settles outstanding debt from the contract's balance. Internal, so expose it yourself if you want it callable  |
+| `receive()`           | [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol)       | Accepts funds, `virtual` so you can override it                                                                |
+## Subscriptions
+
+A subscription tells the network which logs should reach your contract. Each one is a set of criteria passed to `SYSTEM.subscribe()`, and both it and its counterpart take the same six arguments:
+
+```solidity
+function subscribe(
+    uint256 chainId_,
+    address contract_,
+    uint256 topic0_,
+    uint256 topic1_,
+    uint256 topic2_,
+    uint256 topic3_
+) external;
+
+function unsubscribe(
+    uint256 chainId_,
+    address contract_,
+    uint256 topic0_,
+    uint256 topic1_,
+    uint256 topic2_,
+    uint256 topic3_
+) external;
+```
+
+Each criterion narrows or widens independently. `topic0` is normally the event signature hash, with topics 1 through 3 holding indexed parameters, and any position can be left open:
+
+| Criterion              | Wildcard          | Matches                          |
+|------------------------|-------------------|----------------------------------|
+| `chainId_`             | `0`               | Every chain we monitor           |
+| `contract_`            | `address(0)`      | Every contract on the chain      |
+| `topic0_` to `topic3_` | `REACTIVE_IGNORE` | Any value in that position       |
+
+Combining them gives you the usual shapes:
+
+| Subscription                   | `chainId_` | `contract_`  | `topic0_`         |
+|--------------------------------|------------|--------------|-------------------|
+| Every event from one contract  | specific   | specific     | `REACTIVE_IGNORE` |
+| One event type across a chain  | specific   | `address(0)` | specific          |
+| One event from one contract    | specific   | specific     | specific          |
+
+At least one criterion has to be specific. Subscribing to every event on every contract on every chain isn't allowed.
+
+### Limits Worth Knowing
+
+- **Equality only.** Criteria match exact values. There are no ranges, comparisons, or bitwise filters.
+
+- **One criteria set per subscription.** There's no way to express OR within a single subscription. Call `subscribe()` once per combination you want, which is also how a contract watches several contracts or several event types at once.
+
+- **Duplicates are allowed but pointless.** Two identical subscriptions behave as one, and you pay gas for both calls.
+
+- **Subscriptions live in the node, not in contract storage.** You can't read your own back on-chain, so track them yourself if your logic depends on knowing them.
+
+### Changing Subscriptions At Runtime
+
+Subscribing isn't limited to the constructor. A contract can widen, narrow, or drop what it watches at any point, including from inside `react()`. Wrapping both calls in internal helpers keeps the six criteria in one place, which matters because `unsubscribe()` removes a subscription matching all six arguments exactly. Any drift between the two calls leaves the subscription in place and fails silently.
+
+```solidity
+function _subscribe() internal {
+    SYSTEM.subscribe(
+        _originChainId,
+        _originContract,
+        _topic0,
+        REACTIVE_IGNORE,
+        REACTIVE_IGNORE,
+        REACTIVE_IGNORE
+    );
+}
+
+function _unsubscribe() internal {
+    SYSTEM.unsubscribe(
+        _originChainId,
+        _originContract,
+        _topic0,
+        REACTIVE_IGNORE,
+        REACTIVE_IGNORE,
+        REACTIVE_IGNORE
+    );
+}
+```
+
+A contract that stops and restarts should settle up before resubscribing, since a contract in debt receives nothing:
+
+```solidity
+function updateLimit(uint256 limit_) external payable onlyOwner {
+    _limit = limit_;
+
+    if (limit_ == 0) {
+        _unsubscribe();
+    } else {
+        _coverDebt();
+        _subscribe();
+    }
+}
+```
+
+### CRON Events
+
+The legacy system contract at `0x0000000000000000000000000000000000fffFfF` emits `Cron` events at fixed block intervals, which gives a reactive contract scheduled execution with no polling and no external automation. Only authorized validator root addresses can call its `cron()` method, so these events come from the network itself rather than from anything you deploy.
+
+Each call to `cron()` emits one or more events depending on how the current block number divides. Larger intervals fire less often, and a block divisible by several intervals emits several events.
+
+<CronTable />
+
+These are protocol values, so unlike the subscriptions above they're hardcoded. The only difference from any other subscription is that the contract position names the legacy address:
+
+```solidity
+address internal constant LEGACY_SYSTEM_ADDR = 0x0000000000000000000000000000000000fffFfF;
+uint256 internal constant CRON100_TOPIC_0 = 0xb49937fb8970e19fd46d48f7e3fb00d659deac0347f79cd7cb542f0fc1503c70;
+
+function _subscribeToCron() internal {
+    SYSTEM.subscribe(
+        block.chainid,
+        LEGACY_SYSTEM_ADDR,
+        CRON100_TOPIC_0,
+        REACTIVE_IGNORE,
+        REACTIVE_IGNORE,
+        REACTIVE_IGNORE
+    );
+}
+```
+
+- Ticks arrive at the same `react()` as every other subscription, told apart by `topic0`.
+
+- Every `Cron` event carries one parameter, `number`, the block it fired for. It isn't indexed, so it arrives in `log_.data` as a single `uint256`. Inside `react()` you can usually read `block.number` instead and ignore the payload.
+
+- Because a single `cron()` call fires every interval the block number divides by, overlapping subscriptions overlap in practice. A contract subscribed to both `Cron1` and `Cron10` gets two separate reactive transactions on every tenth block, and pays for both.
+
+- Cron subscriptions bill on every tick whether or not your `react()` does anything. Pick the longest interval that fits, and build in a way to switch it off, unsubscribing to pause and resubscribing to resume.
+
+- A callback can target Reactive Network itself, with `chainId: block.chainid` and `recipient: address(this)`, which runs work in a fresh transaction rather than inside `react()`. The receiving method still needs the guards described in [Callback Contracts](./callback-contracts.md).
+
+## Reacting To Events
+
+Every subscription a contract holds arrives at the same `react()`, carrying our normalized form of an EVM log:
+
+```solidity
+struct LogRecord {
+    uint256 chainId;
+    address contractAddress;
+    uint256 topic0;
+    uint256 topic1;
+    uint256 topic2;
+    uint256 topic3;
+    bytes data;
+    uint256 blockNumber;
+    uint256 opCode;
+    uint256 blockHash;
+    uint256 txHash;
+    uint256 logIndex;
+}
+```
+
+Three fields need explaining. `data` holds the ABI-encoded non-indexed parameters, and nothing else. `opCode` is how many topics the original log had, so a `LOG3` arrives with `opCode` of `3`. And `blockHash` and `txHash` are `uint256` rather than `bytes32`, so cast them if you're comparing against values from elsewhere.
+
+There are always four topic fields, and positions the original log didn't use are zero. Since `data`'s layout depends on which parameters were indexed, check `opCode` before decoding. With more than one subscription, route on `topic0` first:
+
+```solidity
+/// @inheritdoc IReactive
+function react(LogRecord memory log_) external onlySystem {
+    if (log_.topic0 == _topic0 && log_.opCode == 3) {
+        uint256 amount = abi.decode(log_.data, ( uint256 ));
+
+        // Handle the event.
+    } else if (log_.topic0 == CRON100_TOPIC_0) {
+        // Run scheduled work.
+    }
+}
+```
+
+An ERC-20 `Transfer(address indexed from, address indexed to, uint256 value)` is the familiar case: three topics, both addresses already in the record, and only the amount left in `data`. The same event with unindexed parameters would arrive as a `LOG1` with all three values packed into `data`, which is why the count is worth checking. Where several non-indexed parameters are in play, decode them as a tuple in declaration order.
+
+- Logs that don't match should fall through and cost nothing extra. Reverting as a filter is a mistake: the system contract catches it, emits `ReactiveContractReverted`, and still bills you for the gas burned.
+
+- A zero in a topic position doesn't prove the log had fewer topics, since a topic can legitimately be zero. An ERC-20 mint emits `Transfer` with `from` as `address(0)`. `opCode` is the reliable count.
+
+- `react()` can do anything an ordinary function can, including subscribing, unsubscribing, and requesting callbacks. It's a normal transaction on Reactive Network, not a restricted callback context.
+
+## Requesting Callbacks
+
+Reacting to an event only changes state on Reactive Network. To act on another chain, ask the system contract to post a callback. This is what `ISystemContract` is imported for, since naming the configuration struct writes that identifier into your own file.
+
+```solidity
+enum CallbackVersion { V_1_0 }
+
+function requestCallback(CallbackVersion version_, bytes memory config_) external;
+function requestCallbackV_1_0(CallbackConfiguration_V_1_0 memory config_) external;
+
+struct CallbackConfiguration_V_1_0 {
+    uint256 chainId;    // destination network
+    address recipient;  // target contract on the destination chain
+    uint64 gasLimit;    // execution gas limit
+    bytes payload;      // ABI-encoded function call
+}
+```
+
+Reach for `requestCallbackV_1_0()`, which takes the struct directly with no manual encoding or version flag. `requestCallback()` is the generic entry point for choosing a version at runtime, taking configuration ABI-encoded to match it, and reverting with `InvalidCallbackVersion` on anything it doesn't recognize. Both share one code path, since the typed wrapper encodes your struct and calls the generic method with `CallbackVersion.V_1_0`. That's the only version today; future callback types each get their own, with a matching typed wrapper.
+
+:::info[Reserve the first argument of your payload]
+Reactive Network replaces the first 160 bits of the payload with the address of the reactive contract that requested the callback, so the destination can authenticate the sender. Your payload has to declare an `address` there and pass `address(0)` as a placeholder, whatever you name it in Solidity. Forgetting it is the most common way to break a callback.
+:::
+
+```solidity
+uint64 private constant CALLBACK_GAS_LIMIT = 1000000;
+
+function _requestCallback(uint256 chainId_, address recipient_, uint256 value_) internal {
+    bytes memory payload = abi.encodeWithSignature(
+        "myCallback(address,uint256)",
+        address(0),
+        value_
+    );
+
+    SYSTEM.requestCallbackV_1_0(ISystemContract.CallbackConfiguration_V_1_0({
+        chainId: chainId_,
+        recipient: recipient_,
+        gasLimit: CALLBACK_GAS_LIMIT,
+        payload: payload
+    }));
+}
+```
+
+- Requesting a callback doesn't require an incoming event. It's an ordinary call on `SYSTEM`, so a plain external method can do it too, though most requests come from inside `react()`.
+
+- Set `gasLimit` to cover the destination call. The proxy reserves overhead for charging on top of it, and a limit that's too tight surfaces as a `CallbackFailure` event rather than a revert you can catch.
+
+- The recipient's address has to be known before you can call it, while the recipient usually needs your contract's address to authenticate the callback. Deploy the reactive contract first, then the recipient with that address, then set the recipient on the reactive contract through an owner-only setter.
+
+- Emitting a `Callback` event still works for contracts that already rely on it, but it's deprecated.
+
+Either method causes the system contract to emit `CallbackRequest`, which the network picks up to submit the destination transaction. Its three indexed fields are the destination chain, the requesting reactive contract, and the recipient, which makes it cheap for explorers and off-chain infrastructure to filter:
+
+```solidity
+event CallbackRequest(
+    uint256 indexed chainId,
+    address indexed sender,
+    address indexed recipient,
+    CallbackVersion version,
+    bytes configuration
+);
+```
+
+Writing the contract that receives the callback, including the guards it needs, is covered in [Callback Contracts](./callback-contracts.md).
+
+## Settling Debt On Demand
+
+Charges come out of reserves first, and [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol) settles any shortfall automatically through `pay(uint256)` as long as the contract has a balance. When neither covers it, the debt stands, and a contract in debt receives nothing: the system contract stops delivering reactive transactions until it's cleared. Topping up reserves clears debt first, so this only matters for contracts meant to settle from their own balance. [Economy](./economy.md) covers the full flow.
+
+`_coverDebt()` does that settling, but it's internal, so expose it yourself if an outside call should be able to trigger it:
+
+```solidity
+/// @notice Settles outstanding debt from this contract's own balance.
+function coverDebt() external {
+    _coverDebt();
+}
+```
+
+Whether to leave it open to any caller depends on what else the balance is for. Funds only ever move from your contract to its service provider, and the call reverts with `InsufficientFunds` if the balance won't cover the debt, so a contract funded purely to pay for its own execution can leave it ungated. Add an owner check if the contract holds funds for anything else.
 
 ## Verifying Reactive Contracts
 
 Contracts can be verified during or after deployment using the Sourcify endpoint. Sourcify is a decentralized verification service that matches deployed bytecode with source code, making contracts auditable and transparent.
 
-## Verify After Deployment
+### Verify After Deployment
 
 ```bash
 forge verify-contract \
@@ -41,7 +354,7 @@ Replace:
 - `$CONTRACT_ADDR` → deployed contract address
 - `$CONTRACT_NAME` → contract name (e.g. `MyContract`)
 
-## Verify on Deployment
+### Verify On Deployment
 
 ```bash
 forge create \
@@ -58,7 +371,7 @@ Replace:
 - `$PATH` → e.g. `src/MyContract.sol:MyContract`
 - `$PRIVATE_KEY` → deployer key
 
-Example: 
+Example:
 
 ```bash
 forge create \
@@ -73,14 +386,5 @@ forge create \
   --constructor-args \
     $ARGUMENT_1 \
     $ARGUMENT_2 \
-    $ARGUMENT_3 \
-    # ...add more as needed
+    $ARGUMENT_3
 ```
-
-:::warning[Broadcast Error]
-If you encounter the error below, your Foundry version doesn't expect the `--broadcast` flag for `forge create`. Remove `--broadcast` and retry.
-
-```go
-error: unexpected argument '--broadcast' found
-```
-:::
