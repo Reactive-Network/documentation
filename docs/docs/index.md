@@ -111,7 +111,7 @@ The consensus layer moved from Geth+Prism to CometBFT. This is not a new chain: 
 
 [//]: # ([Origins & Destinations →]&#40;./origins-and-destinations.mdx&#41; Understand origin and destination chains and their callback proxy addresses.)
 
-[Reactive Contracts →](./reactive-contracts.md) Learn how reactive contracts subscribe to events and trigger actions.
+[Reactive Contracts →](./reactive-contracts.mdx) Learn how to write a reactive contract, subscribe to events, and trigger callbacks.
 
 [//]: # ([Economy →]&#40;./economy&#41; Understand callback payments and Reactive's economy.)
 
