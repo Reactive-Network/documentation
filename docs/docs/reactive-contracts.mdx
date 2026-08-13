@@ -7,6 +7,9 @@ hide_title: true
 ---
 
 import CronTable from "../../src/components/cron-table";
+import ReactiveInheritanceTable from "../../src/components/reactive-inheritance-table";
+import WildcardTable from "../../src/components/wildcard-table";
+import SubscriptionTable from "../../src/components/subscription-table";
 
 ![Reactive Contracts Image](img/reactive-contracts.jpg)
 
@@ -67,17 +70,8 @@ Three imports, though only two are strictly required. [AbstractReactive](https:/
 
 Between the two base contracts, these are the names you inherit:
 
-| Name                  | Comes from                                                                                                          | What it's for                                                                                                  |
-|-----------------------|---------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| `SYSTEM`              | [AbstractReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractReactive.sol) | The system contract at `0x8888888888888888888888888888888888888888`, where you subscribe and request callbacks |
-| `REACTIVE_IGNORE`     | [AbstractReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractReactive.sol) | Wildcard value for any topic position                                                                          |
-| `onlySystem`          | [AbstractReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractReactive.sol) | Rejects `react()` calls from anyone but the system contract                                                    |
-| `LogRecord`           | [IReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/IReactive.sol)         | The struct `react()` receives                                                                                  |
-| `_SERVICE_PROVIDER`   | [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol)       | The contract allowed to bill you, `SYSTEM` for a reactive contract                                             |
-| `onlyServiceProvider` | [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol)       | Rejects calls from anyone but that service provider. `onlySystem` is this same check under a clearer name      |
-| `pay(uint256)`        | [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol)       | Already implemented, and it verifies the caller. Don't write your own                                          |
-| `_coverDebt()`        | [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol)       | Settles outstanding debt from the contract's balance. Internal, so expose it yourself if you want it callable  |
-| `receive()`           | [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol)       | Accepts funds, `virtual` so you can override it                                                                |
+<ReactiveInheritanceTable />
+
 ## Subscriptions
 
 A subscription tells the network which logs should reach your contract. Each one is a set of criteria passed to `SYSTEM.subscribe()`, and both it and its counterpart take the same six arguments:
@@ -104,19 +98,11 @@ function unsubscribe(
 
 Each criterion narrows or widens independently. `topic0` is normally the event signature hash, with topics 1 through 3 holding indexed parameters, and any position can be left open:
 
-| Criterion              | Wildcard          | Matches                          |
-|------------------------|-------------------|----------------------------------|
-| `chainId_`             | `0`               | Every chain we monitor           |
-| `contract_`            | `address(0)`      | Every contract on the chain      |
-| `topic0_` to `topic3_` | `REACTIVE_IGNORE` | Any value in that position       |
+<WildcardTable />
 
 Combining them gives you the usual shapes:
 
-| Subscription                   | `chainId_` | `contract_`  | `topic0_`         |
-|--------------------------------|------------|--------------|-------------------|
-| Every event from one contract  | specific   | specific     | `REACTIVE_IGNORE` |
-| One event type across a chain  | specific   | `address(0)` | specific          |
-| One event from one contract    | specific   | specific     | specific          |
+<SubscriptionTable />
 
 At least one criterion has to be specific. Subscribing to every event on every contract on every chain isn't allowed.
 

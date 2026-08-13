@@ -6,11 +6,13 @@ slug: /callback-contracts
 hide_title: true
 ---
 
+import CallbackInheritanceTable from "../../src/components/callback-inheritance-table";
+
 ![Callback Contracts Image](./img/callback-contracts.jpg)
 
 ## Overview
 
-A callback contract lives on a destination chain and receives calls triggered by a reactive contract. When a [reactive contract](./reactive-contracts.md) requests a callback, the network submits a transaction on the destination chain through a callback proxy, and that proxy calls your contract. From your contract's side, nothing exotic happens: it's an ordinary function call from an ordinary address. There's no `react()`, no subscription, and no `LogRecord`. What a callback contract needs is a way to prove the call is authentic, and funds to pay for it.
+A callback contract lives on a destination chain and receives calls triggered by a reactive contract. When a [reactive contract](./reactive-contracts.mdx) requests a callback, the network submits a transaction on the destination chain through a callback proxy, and that proxy calls your contract. From your contract's side, nothing exotic happens: it's an ordinary function call from an ordinary address. There's no `react()`, no subscription, and no `LogRecord`. What a callback contract needs is a way to prove the call is authentic, and funds to pay for it.
 
 ## Inheritance
 
@@ -54,15 +56,7 @@ Two imports cover it. [AbstractCallback](https://github.com/Reactive-Network/rea
 
 A contract can't be both reactive and callback. `AbstractPayer` holds a single immutable `_SERVICE_PROVIDER`, and `AbstractReactive` hardcodes it to `SYSTEM` while `AbstractCallback` sets it to the proxy, so inheriting both gives the same base constructor arguments twice and won't compile. A reactive contract that wants to call itself has to check `msg.sender` and the injected address by hand.
 
-| Name                  | Comes from                                                                                                          | What it's for                                                                                     |
-|-----------------------|---------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
-| `_CALLBACK_SENDER`    | [AbstractCallback](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractCallback.sol)  | The reactive contract authorized to trigger your callbacks                                        |
-| `onlyCallbackSender`  | [AbstractCallback](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractCallback.sol)  | Checks the injected address against `_CALLBACK_SENDER`, reverting with `CallbackNotAuthorized`     |
-| `_SERVICE_PROVIDER`   | [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol)        | The callback proxy, which is what bills you                                                       |
-| `onlyServiceProvider` | [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol)        | Rejects calls from anyone but the proxy, reverting with `NotAuthorized`                           |
-| `pay(uint256)`        | [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol)        | Already implemented, and it verifies the caller. Don't write your own                             |
-| `_coverDebt()`        | [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol)        | Settles outstanding debt from the contract's balance. Internal, so expose it yourself if you want it callable |
-| `receive()`           | [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol)        | Accepts funds, `virtual` so you can override it                                                   |
+<CallbackInheritanceTable />
 
 ## Authorizing Callbacks
 
