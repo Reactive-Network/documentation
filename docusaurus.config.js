@@ -270,11 +270,11 @@ const config = {
             },
             {
               from: "/architecture/react-vm",
-              to: "/reactvm"
+              to: "/"
             },
             {
               from: "/docs/architecture/react-vm",
-              to: "/reactvm"
+              to: "/"
             },
             {
               from: "/compendium",
