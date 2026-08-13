@@ -15,12 +15,12 @@ const WildcardTable = () => {
                 <tr>
                     <td><code>chainId_</code></td>
                     <td><code>0</code></td>
-                    <td>Every chain we monitor</td>
+                    <td>Any chain</td>
                 </tr>
                 <tr>
                     <td><code>contract_</code></td>
                     <td><code>address(0)</code></td>
-                    <td>Every contract on the chain</td>
+                    <td>Any contract on the specified chain</td>
                 </tr>
                 <tr>
                     <td><code>topic0_</code> to <code>topic3_</code></td>

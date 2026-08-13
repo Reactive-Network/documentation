@@ -15,7 +15,7 @@ import SubscriptionTable from "../../src/components/subscription-table";
 
 ## Overview
 
-A reactive contract is an ordinary Solidity contract with one extra ability: it can subscribe to events on any chain we monitor, and the network calls it when a matching log appears. That call arrives at `react()`, where the contract can update its state, request a callback on another chain, or change its own subscriptions. Contracts on the receiving end of a callback are covered in [Callback Contracts](./callback-contracts.md).
+A reactive contract is an ordinary Solidity contract with one extra ability: it can subscribe to events on any chain Reactive Network monitors. When a matching log appears, the system contract calls `react()`, where the contract can update its state, request a callback on another chain, or change its own subscriptions. Contracts on the receiving end of a callback are covered in [Callback Contracts](./callback-contracts.mdx).
 
 ## Inheritance
 
@@ -56,17 +56,15 @@ contract MyReactive is AbstractReactive {
 }
 ```
 
-That compiles, deploys, and starts receiving events. Three requirements are doing the work.
+That compiles, deploys, and starts receiving events. Three requirements are doing the work:
 
-**Inherit [AbstractReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractReactive.sol).** It supplies `SYSTEM`, `REACTIVE_IGNORE`, and `onlySystem`, and brings [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol) with it.
+- **Inherit [AbstractReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractReactive.sol).** It supplies `SYSTEM`, `REACTIVE_IGNORE`, and `onlySystem`, and brings [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol) with it.
 
-**Implement `react()` with `onlySystem`.** [IReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/IReactive.sol) leaves it abstract, so the contract won't compile without it. The modifier checks `msg.sender` against the service provider, which for a reactive contract is `SYSTEM` at `0x8888888888888888888888888888888888888888`, and reverts with `NotAuthorized` for anyone else. Without it, a caller can hand your contract a fabricated log record.
+- **Implement `react()` with `onlySystem`.** [IReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/IReactive.sol) leaves it abstract, so the contract won't compile without it. The modifier checks `msg.sender` against the service provider, which for a reactive contract is `SYSTEM` at `0x8888888888888888888888888888888888888888`, and reverts with `NotAuthorized` for anyone else. Without it, a caller can hand your contract a fabricated log record.
 
-**Make the constructor `payable` and fund it.** Reactive transactions cost gas and the contract pays for them. Reserves, charges, and debt are covered in [Economy](./economy.md).
+- **Make the constructor `payable` and fund it.** Reactive transactions cost gas and the contract pays for them. Reserves, charges, and debt are covered in [Economy](./economy.md).
 
-The constructor also subscribes, which is what makes the contract receive anything at all. See [Subscriptions](#subscriptions).
-
-Three imports, though only two are strictly required. [AbstractReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractReactive.sol) is the base you inherit, and [IReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/IReactive.sol) is needed for the `/// @inheritdoc IReactive` tag, though not for `LogRecord`, which inheritance already provides. [ISystemContract](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/ISystemContract.sol) is needed only when you name the callback configuration struct, but a contract that observes events without ever acting on them is the exception, so expect to [request callbacks](#requesting-callbacks) and import it from the start.
+[AbstractReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractReactive.sol) is the base you inherit, and [IReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/IReactive.sol) is needed for the `/// @inheritdoc IReactive` tag, though not for `LogRecord`, which inheritance already provides. [ISystemContract](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/ISystemContract.sol) is needed only when you name the callback configuration struct, but a contract that observes events without ever acting on them is the exception, so expect to [request callbacks](#requesting-callbacks) and import it from the start.
 
 Between the two base contracts, these are the names you inherit:
 
@@ -74,7 +72,7 @@ Between the two base contracts, these are the names you inherit:
 
 ## Subscriptions
 
-A subscription tells the network which logs should reach your contract. Each one is a set of criteria passed to `SYSTEM.subscribe()`, and both it and its counterpart take the same six arguments:
+A subscription tells the network which logs should reach your contract. Each one is a set of criteria passed to `SYSTEM.subscribe()`, and both methods take the same six arguments:
 
 ```solidity
 function subscribe(
@@ -96,7 +94,7 @@ function unsubscribe(
 ) external;
 ```
 
-Each criterion narrows or widens independently. `topic0` is normally the event signature hash, with topics 1 through 3 holding indexed parameters, and any position can be left open:
+Each criterion narrows or widens independently. `topic0` is normally the event signature hash, with topics 1-3 holding indexed parameters, and any position can be left open:
 
 <WildcardTable />
 
@@ -104,17 +102,19 @@ Combining them gives you the usual shapes:
 
 <SubscriptionTable />
 
+:::info[Criteria Limit]
 At least one criterion has to be specific. Subscribing to every event on every contract on every chain isn't allowed.
+:::
 
 ### Limits Worth Knowing
 
-- **Equality only.** Criteria match exact values. There are no ranges, comparisons, or bitwise filters.
+**Equality only.** Criteria match exact values. There are no ranges, comparisons, or bitwise filters.
 
-- **One criteria set per subscription.** There's no way to express OR within a single subscription. Call `subscribe()` once per combination you want, which is also how a contract watches several contracts or several event types at once.
+**One criteria set per subscription.** There's no way to express `OR` within a single subscription. Call `subscribe()` once per combination you want, which is also how a contract watches several contracts or several event types at once.
 
-- **Duplicates are allowed but pointless.** Two identical subscriptions behave as one, and you pay gas for both calls.
+**Duplicates are allowed but pointless.** Two identical subscriptions behave as one, and you pay gas for both calls.
 
-- **Subscriptions live in the node, not in contract storage.** You can't read your own back on-chain, so track them yourself if your logic depends on knowing them.
+**Subscriptions live in the node, not in contract storage.** You can't read your own back on-chain, so track them yourself if your logic depends on knowing them.
 
 ### Changing Subscriptions At Runtime
 
