@@ -1,6 +1,6 @@
 ---
 title: Demos
-sidebar_position: 9
+sidebar_position: 8
 description: Practical Reactive Network demos covering event subscriptions, log monitoring, dynamic callbacks, and real-world automation examples including Uniswap V2 stop orders.
 slug: /demos
 hide_title: true

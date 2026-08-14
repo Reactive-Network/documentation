@@ -1,6 +1,6 @@
 ---
 title: Testing with Foundry
-sidebar_position: 10
+sidebar_position: 9
 description: Test Reactive Contracts locally with Foundry using reactive-test-lib. Simulate event-driven, cross-chain smart contract execution with forge test without using a testnet.
 slug: /testing
 hide_title: true
