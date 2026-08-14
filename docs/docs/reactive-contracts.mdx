@@ -35,7 +35,7 @@ contract MyReactive is AbstractReactive {
     address private immutable _originContract;
     uint256 private immutable _topic0;
 
-    // `payable`, because the contract pays for the reactive transactions it triggers.
+    // `payable` so the contract can be funded at deployment.
     constructor(uint256 originChainId_, address originContract_, uint256 topic0_) payable {
         _originChainId = originChainId_;
         _originContract = originContract_;

@@ -12,9 +12,11 @@ import CallbackInheritanceTable from "../../src/components/callback-inheritance-
 
 ## Overview
 
-A callback contract lives on a destination chain and receives calls triggered by a reactive contract. When a [reactive contract](./reactive-contracts.mdx) requests a callback, the network submits a transaction on the destination chain through a callback proxy, and that proxy calls your contract. From your contract's side, nothing exotic happens: it's an ordinary function call from an ordinary address. There's no `react()`, no subscription, and no `LogRecord`. What a callback contract needs is a way to prove the call is authentic, and funds to pay for it.
+A callback contract lives on a destination chain and receives calls triggered by a reactive contract. When a [reactive contract](./reactive-contracts.mdx) requests a callback, Reactive Network submits a transaction on the destination chain through a callback proxy, and that proxy calls your contract. From your contract's side, nothing exotic happens: it's an ordinary function call from an ordinary address. There's no `react()`, no subscription, and no `LogRecord`. What a callback contract needs is a way to prove the call is authentic, and funds to pay for it.
 
 ## Inheritance
+
+[AbstractCallback](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractCallback.sol) is the base, and [IPayable](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/IPayable.sol) is needed only as the type of the constructor's proxy argument.
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
@@ -27,7 +29,7 @@ import { AbstractCallback } from "@reactive/src/base/AbstractCallback.sol";
 contract MyCallback is AbstractCallback {
     event Handled(address indexed reactive_, uint256 value_);
 
-    // `payable`, because the contract pays for the callbacks it receives.
+    // `payable` so the contract can be funded at deployment.
     constructor(IPayable callbackProxy_, address callbackSender_)
         payable
         AbstractCallback(callbackProxy_, callbackSender_)
@@ -44,17 +46,15 @@ contract MyCallback is AbstractCallback {
 }
 ```
 
-Three requirements are doing the work.
+Three requirements are doing the work:
 
-**Inherit [AbstractCallback](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractCallback.sol) with two constructor arguments.** `callbackProxy_` is the callback proxy on this chain, which becomes the contract's service provider for payment. `callbackSender_` is the reactive contract you're authorizing. Both are stored immutably, so neither can be changed after deployment.
+- **Inherit [AbstractCallback](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractCallback.sol) with two constructor arguments.** `callbackProxy_` is the callback proxy on the chosen chain, which becomes the contract's service provider for payment. `callbackSender_` is the reactive contract you're authorizing. Both are stored immutably, so neither can be changed after deployment.
 
-**Declare the first parameter as an `address` and guard the method twice.** The proxy overwrites the first 160 bits of the payload with the address of the reactive contract that requested the callback, so the first argument is always that address regardless of what you name it.
+- **Declare the first parameter as an `address` and guard the method twice.** The proxy overwrites the first 160 bits of the payload with the address of the reactive contract that requested the callback, so the first argument is always that address regardless of what you name it.
 
-**Make the constructor `payable` and fund it.** The proxy charges the recipient for callback execution, in this chain's native currency.
+- **Keep the contract funded.** The proxy charges the recipient for callback execution, in this chain's native token. A `payable` constructor lets you fund at deployment, but it isn't required: `receive()` is inherited as payable, and `depositTo()` on the proxy credits the contract without its cooperation.
 
-Two imports cover it. [AbstractCallback](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractCallback.sol) is the base, and [IPayable](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/IPayable.sol) is needed only as the type of the constructor's proxy argument.
-
-A contract can't be both reactive and callback. `AbstractPayer` holds a single immutable `_SERVICE_PROVIDER`, and `AbstractReactive` hardcodes it to `SYSTEM` while `AbstractCallback` sets it to the proxy, so inheriting both gives the same base constructor arguments twice and won't compile. A reactive contract that wants to call itself has to check `msg.sender` and the injected address by hand.
+A contract can't be both reactive and callback. [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol) holds a single immutable `_SERVICE_PROVIDER`, and [AbstractReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractReactive.sol) hardcodes it to `SYSTEM` while [AbstractCallback](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractCallback.sol) sets it to the proxy, so inheriting both gives the same base constructor arguments twice and won't compile. A reactive contract that wants to call itself has to check `msg.sender` and the injected address by hand.
 
 <CallbackInheritanceTable />
 
@@ -70,21 +70,21 @@ Together they establish that the call came through the network and originated fr
 
 - The first argument's name is yours; only its type and position matter. Pass it straight to `onlyCallbackSender` and use it as the sender's identity if you need it.
 
-- Inheriting `AbstractCallback` isn't strictly required. Any contract with a matching function signature will receive the call, but then it has no authentication and no way to pay, so it will accept forged calls and accrue debt it can't settle.
+- Inheriting [AbstractCallback](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractCallback.sol) isn't strictly required. Any contract with a matching function signature will receive the call, but then it has no authentication and no way to pay, so it will accept forged calls and accrue debt it can't settle.
 
-- The proxy checks that the target address has code before calling, reverting with `NotAContract` otherwise. A callback to an address holding no contract never reaches the call stage.
+- The proxy checks that the target address has code before calling, reverting with `NotAContract` otherwise. A callback aimed at an address holding no contract never reaches the call stage, and isn't charged.
 
 ## Paying For Callbacks
 
-Callbacks are billed to the recipient, not to the reactive contract that requested them. That's worth stating plainly, because the request happens on Reactive Network while the charge lands on the destination chain, in that chain's native currency.
+Callbacks are billed to the recipient, not to the reactive contract that requested them. The request happens on Reactive Network, but the charge lands here, in this chain's native token: ETH on Ethereum, BNB on BNB Chain, and so on, never REACT.
 
-Reserves are held for you by the callback proxy on each destination chain. Send funds to it, or call `depositTo(yourContract)`, and a charge is drawn from reserves first. If reserves fall short, the shortfall becomes debt and the proxy calls `pay(uint256)` on your contract with a limited gas budget, which `AbstractPayer` already implements. A contract holding a balance settles on the spot.
+A contract in debt receives nothing. The proxy reverts with `InDebt` before it attempts delivery, so callbacks stop arriving until the debt clears. Charges draw on reserves first, and [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol) settles any shortfall automatically through `pay()`, so this only bites a contract that has run out of both. [Economy](./economy.md) covers funding routes, the fee formula, and the `cast` commands for reading balances, reserves, and debt.
 
-A contract in debt receives nothing. The proxy reverts with `InDebt` before it even attempts delivery, so callbacks stop arriving until the debt clears. Depositing enough to cover it pays the debt down first and puts the contract back in service.
+Two things about callback billing that have no equivalent on the reactive side:
 
 - **A failed callback still costs you.** The proxy charges after the call regardless of the outcome, so a reverting callback method burns gas, emits `CallbackFailure`, and bills you for the attempt.
 
-- **Gas comes in two flavours of failure.** The requester sets `gasLimit`, and the proxy reserves overhead out of it for charging and kickback. If what remains is below that overhead, the proxy reverts with `InsufficientGas` and your method is never called. If it clears the overhead but isn't enough for your method to finish, your method reverts and the proxy emits `CallbackFailure`. Both trace back to a `gasLimit` set too low on the reactive side.
+- **Not all the requested gas reaches you.** The proxy withholds gas for its own accounting and for settling payment if you owe anything, and forwards only the remainder. A `gasLimit` too low to cover that overhead fails with `InsufficientGas` before your method runs; one that clears the overhead but not your method's needs lets your method revert and surfaces as `CallbackFailure`. Both are set on the reactive side, so a recipient that keeps failing may need the requester to raise the limit rather than more funding.
 
 - `_coverDebt()` is internal, so expose it yourself if an outside call should be able to settle:
 
