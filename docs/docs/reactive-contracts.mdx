@@ -19,6 +19,8 @@ A reactive contract is an ordinary Solidity contract with one extra ability: it 
 
 ## Inheritance
 
+[AbstractReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractReactive.sol) is the base you inherit, and [IReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/IReactive.sol) is needed for the `/// @inheritdoc IReactive` tag, though not for `LogRecord`, which inheritance already provides. [ISystemContract](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/ISystemContract.sol) is needed only when you name the callback configuration struct, but a contract that observes events without ever acting on them is the exception, so expect to [request callbacks](#requesting-callbacks) and import it from the start.
+
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
 
@@ -62,9 +64,7 @@ That compiles, deploys, and starts receiving events. Three requirements are doin
 
 - **Implement `react()` with `onlySystem`.** [IReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/IReactive.sol) leaves it abstract, so the contract won't compile without it. The modifier checks `msg.sender` against the service provider, which for a reactive contract is `SYSTEM` at `0x8888888888888888888888888888888888888888`, and reverts with `NotAuthorized` for anyone else. Without it, a caller can hand your contract a fabricated log record.
 
-- **Make the constructor `payable` and fund it.** Reactive transactions cost gas and the contract pays for them. Reserves, charges, and debt are covered in [Economy](./economy.md).
-
-[AbstractReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractReactive.sol) is the base you inherit, and [IReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/IReactive.sol) is needed for the `/// @inheritdoc IReactive` tag, though not for `LogRecord`, which inheritance already provides. [ISystemContract](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/ISystemContract.sol) is needed only when you name the callback configuration struct, but a contract that observes events without ever acting on them is the exception, so expect to [request callbacks](#requesting-callbacks) and import it from the start.
+- **Keep the contract funded.** Reactive transactions cost gas and the contract pays for them. A `payable` constructor lets you fund at deployment, which is the simplest route, but it isn't required: `receive()` is inherited as payable, so a contract can be topped up afterwards, and `depositTo()` credits it without its cooperation. What matters is that funds are there before the first event arrives. [Economy](./economy.md) covers reserves, charges, and debt.
 
 Between the two base contracts, these are the names you inherit:
 
@@ -72,7 +72,7 @@ Between the two base contracts, these are the names you inherit:
 
 ## Subscriptions
 
-A subscription tells the network which logs should reach your contract. Each one is a set of criteria passed to `SYSTEM.subscribe()`, and both methods take the same six arguments:
+A subscription tells Reactive which logs should reach your contract. Each one is a set of criteria passed to `SYSTEM.subscribe()`, and both methods take the same six arguments:
 
 ```solidity
 function subscribe(
@@ -159,7 +159,7 @@ function updateLimit(uint256 limit_) external payable onlyOwner {
 }
 ```
 
-### CRON Events
+### Subscribing To CRON Events
 
 The legacy system contract at `0x0000000000000000000000000000000000fffFfF` emits `Cron` events at fixed block intervals, which gives a reactive contract scheduled execution with no polling and no external automation. Only authorized validator root addresses can call its `cron()` method, so these events come from the network itself rather than from anything you deploy.
 
@@ -241,6 +241,8 @@ An ERC-20 `Transfer(address indexed from, address indexed to, uint256 value)` is
 
 - `react()` can do anything an ordinary function can, including subscribing, unsubscribing, and requesting callbacks. It's a normal transaction on Reactive Network, not a restricted callback context.
 
+- Where `react()` sits in the wider flow, from the debt check that precedes it to the charge that follows, is laid out in [Economy](./economy.md).
+
 ## Requesting Callbacks
 
 Reacting to an event only changes state on Reactive Network. To act on another chain, ask the system contract to post a callback. This is what `ISystemContract` is imported for, since naming the configuration struct writes that identifier into your own file.
@@ -286,6 +288,8 @@ function _requestCallback(uint256 chainId_, address recipient_, uint256 value_) 
 
 - Requesting a callback doesn't require an incoming event. It's an ordinary call on `SYSTEM`, so a plain external method can do it too, though most requests come from inside `react()`.
 
+- Callbacks are billed to the recipient on the destination chain, in that chain's native currency, not to the reactive contract that requested them. A recipient in debt receives nothing, and a failed callback still costs it. See [Callback Contracts](./callback-contracts.mdx).
+
 - Set `gasLimit` to cover the destination call. The proxy reserves overhead for charging on top of it, and a limit that's too tight surfaces as a `CallbackFailure` event rather than a revert you can catch.
 
 - The recipient's address has to be known before you can call it, while the recipient usually needs your contract's address to authenticate the callback. Deploy the reactive contract first, then the recipient with that address, then set the recipient on the reactive contract through an owner-only setter.
@@ -304,13 +308,13 @@ event CallbackRequest(
 );
 ```
 
-Writing the contract that receives the callback, including the guards it needs, is covered in [Callback Contracts](./callback-contracts.md).
+Writing the contract that receives the callback is covered in [Callback Contracts](./callback-contracts.md).
 
 ## Settling Debt On Demand
 
-Charges come out of reserves first, and [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol) settles any shortfall automatically through `pay(uint256)` as long as the contract has a balance. When neither covers it, the debt stands, and a contract in debt receives nothing: the system contract stops delivering reactive transactions until it's cleared. Topping up reserves clears debt first, so this only matters for contracts meant to settle from their own balance. [Economy](./economy.md) covers the full flow.
+A contract in debt receives nothing: the system contract stops delivering reactive transactions until the debt clears. Charges draw on reserves first and [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol) settles any shortfall automatically through `pay()`, so this only bites a contract that has run out of both.
 
-`_coverDebt()` does that settling, but it's internal, so expose it yourself if an outside call should be able to trigger it:
+`_coverDebt()` settles from the contract's own balance, but it's internal, so expose it yourself if an outside call should be able to trigger it:
 
 ```solidity
 /// @notice Settles outstanding debt from this contract's own balance.
@@ -319,7 +323,7 @@ function coverDebt() external {
 }
 ```
 
-Whether to leave it open to any caller depends on what else the balance is for. Funds only ever move from your contract to its service provider, and the call reverts with `InsufficientFunds` if the balance won't cover the debt, so a contract funded purely to pay for its own execution can leave it ungated. Add an owner check if the contract holds funds for anything else.
+Leaving it open to any caller lets a third party fund the contract and restart it, which is useful for contracts serving other people. Add `onlyOwner` if the balance is meant for anything else, or omit the wrapper entirely and rely on `depositTo()`. [Economy](./economy.md) covers the trade-offs and the commands.
 
 ## Verifying Reactive Contracts
 
