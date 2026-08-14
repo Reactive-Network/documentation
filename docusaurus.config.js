@@ -372,6 +372,10 @@ const config = {
               from: "/reactvm",
               to: "/"
             },
+            {
+              from: "/reactive-library",
+              to: "/reactive-contracts"
+            }
           ]
         }
       ]
