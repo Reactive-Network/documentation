@@ -68,7 +68,7 @@ To check the outstanding debt, query the relevant proxy contract (`0x88888888888
 cast call $PROXY_ADDR "debts(address)" $CONTRACT_ADDR --rpc-url $RPC_URL | cast to-dec
 ```
 
-[More on Reactive Economy →](economy.md)
+[More on Reactive Economy →](economy.mdx)
 
 ## Getting Testnet lREACT
 
