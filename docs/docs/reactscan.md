@@ -66,7 +66,7 @@ The **Contract** page provides a detailed view of all transactions related to a 
 Your REACT balance is also visible on your RVM page for easy reference.
 :::
 
-The page displays the current **contract status**, either `Active` or `Inactive`. If your contract is inactive, you can follow the instructions on the [Debt Coverage](./economy.md#direct-transfers) page to activate it.
+The page displays the current **contract status**, either `Active` or `Inactive`. If your contract is inactive, you can follow the instructions on the [Debt Coverage](./economy.mdx#direct-transfers) page to activate it.
 
 ![Img 6](./reactscan-img/6.jpg)
 
