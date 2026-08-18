@@ -64,7 +64,7 @@ That compiles, deploys, and starts receiving events. Three requirements are doin
 
 - **Implement `react()` with `onlySystem`.** [IReactive](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/interfaces/IReactive.sol) leaves it abstract, so the contract won't compile without it. The modifier checks `msg.sender` against the service provider, which for a reactive contract is `SYSTEM` at `0x8888888888888888888888888888888888888888`, and reverts with `NotAuthorized` for anyone else. Without it, a caller can hand your contract a fabricated log record.
 
-- **Keep the contract funded.** Reactive transactions cost gas and the contract pays for them. A `payable` constructor lets you fund at deployment, which is the simplest route, but it isn't required: `receive()` is inherited as payable, so a contract can be topped up afterwards, and `depositTo()` credits it without its cooperation. What matters is that funds are there before the first event arrives. [Economy](./economy.md) covers reserves, charges, and debt.
+- **Keep the contract funded.** Reactive transactions cost gas and the contract pays for them. A `payable` constructor lets you fund at deployment, which is the simplest route, but it isn't required: `receive()` is inherited as payable, so a contract can be topped up afterwards, and `depositTo()` credits it without its cooperation. What matters is that funds are there before the first event arrives. [Economy](./economy.mdx) covers reserves, charges, and debt.
 
 Between the two base contracts, these are the names you inherit:
 
@@ -241,7 +241,7 @@ An ERC-20 `Transfer(address indexed from, address indexed to, uint256 value)` is
 
 - `react()` can do anything an ordinary function can, including subscribing, unsubscribing, and requesting callbacks. It's a normal transaction on Reactive Network, not a restricted callback context.
 
-- Where `react()` sits in the wider flow, from the debt check that precedes it to the charge that follows, is laid out in [Economy](./economy.md).
+- Where `react()` sits in the wider flow, from the debt check that precedes it to the charge that follows, is laid out in [Economy](./economy.mdx).
 
 ## Requesting Callbacks
 
@@ -323,7 +323,7 @@ function coverDebt() external {
 }
 ```
 
-Leaving it open to any caller lets a third party fund the contract and restart it, which is useful for contracts serving other people. Add `onlyOwner` if the balance is meant for anything else, or omit the wrapper entirely and rely on `depositTo()`. [Economy](./economy.md) covers the trade-offs and the commands.
+Leaving it open to any caller lets a third party fund the contract and restart it, which is useful for contracts serving other people. Add `onlyOwner` if the balance is meant for anything else, or omit the wrapper entirely and rely on `depositTo()`. [Economy](./economy.mdx) covers the trade-offs and the commands.
 
 ## Verifying Reactive Contracts
 

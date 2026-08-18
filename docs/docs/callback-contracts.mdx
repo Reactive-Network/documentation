@@ -78,7 +78,7 @@ Together they establish that the call came through the network and originated fr
 
 Callbacks are billed to the recipient, not to the reactive contract that requested them. The request happens on Reactive Network, but the charge lands here, in this chain's native token: ETH on Ethereum, BNB on BNB Chain, and so on, never REACT.
 
-A contract in debt receives nothing. The proxy reverts with `InDebt` before it attempts delivery, so callbacks stop arriving until the debt clears. Charges draw on reserves first, and [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol) settles any shortfall automatically through `pay()`, so this only bites a contract that has run out of both. [Economy](./economy.md) covers funding routes, the fee formula, and the `cast` commands for reading balances, reserves, and debt.
+A contract in debt receives nothing. The proxy reverts with `InDebt` before it attempts delivery, so callbacks stop arriving until the debt clears. Charges draw on reserves first, and [AbstractPayer](https://github.com/Reactive-Network/reactive-lib-omni/blob/master/src/base/AbstractPayer.sol) settles any shortfall automatically through `pay()`, so this only bites a contract that has run out of both. [Economy](./economy.mdx) covers funding routes, the fee formula, and the `cast` commands for reading balances, reserves, and debt.
 
 Two things about callback billing that have no equivalent on the reactive side:
 

@@ -1,19 +1,14 @@
 ---
-title: Economy
+title: Economy & System Interactions
 sidebar_position: 5
-description: Learn how reactive contracts pay for execution and cross-chain callbacks, including REACT funding, transaction fees, and callback pricing.
+description: How reactive and callback contracts pay for execution; the fee formula, reserves and debt, funding routes, gas limits, and the reactive transaction lifecycle
 slug: /economy
 hide_title: true
 ---
 
+import FundsTable from "../../src/components/funds-table";
+
 ![Economy](./img/economy.jpg)
-
-## System Contract Interaction
-
-![Payment System](img/payment.png)
-
-![Reactive Tx Lifecycle](img/trigger.png)
-
 
 ## Overview
 
@@ -23,17 +18,25 @@ Payment works the same way on both sides of the network. On Reactive, the system
 
 Three separate numbers govern whether a contract can execute:
 
-| Value    | Held by                           | Meaning                      |
-|----------|-----------------------------------|------------------------------|
-| Balance  | The contract itself               | Funds the contract can spend |
-| Reserves | System contract or callback proxy | Pre-paid credit for fees     |
-| Debt     | System contract or callback proxy | Fees owed but not yet paid   |
+<FundsTable />
 
 Charges consume reserves before debt accrues, and deposits clear debt before adding reserves, so a contract never holds both at once. Its balance is separate from both: a direct transfer raises the balance without creating reserves or settling debt.
+
+![Payment System](img/payment.png)
 
 :::warning[Any Debt Blocks Execution]
 Execution stops whenever debt is greater than zero, not merely when a contract is underfunded. The system contract won't call `react()` and the callback proxy won't deliver a callback while any amount remains outstanding.
 :::
+
+## System Contract Interactions
+
+Every reactive transaction runs through the system contract's `trigger()` method, and the ordering of its six steps explains most of the behaviour described on this page.
+
+![Reactive Tx Lifecycle](img/trigger.png)
+
+The debt check comes first, before any gas is spent, which is why an indebted contract goes quiet rather than failing loudly. And the charge comes after execution, calculated from gas actually consumed, which is why a reverting `react()` is still billed: the system contract catches the revert, logs it, and proceeds to step 5 regardless.
+
+The kickback in step 6 goes to `tx.origin`, the validator that posted the transaction. Fees don't accumulate in the system contract; they pay whoever did the work of delivering the notification.
 
 ## Fee Model
 
