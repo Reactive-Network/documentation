@@ -69,8 +69,7 @@ cast call $SYSTEM_CONTRACT_ADDR "_extraGas()" --rpc-url $REACTIVE_RPC | cast to-
 cast call $SYSTEM_CONTRACT_ADDR "_maxChargeGas()" --rpc-url $REACTIVE_RPC | cast to-dec
 ```
 
-Each callback proxy is configured at deployment and has no defaults, so
-values vary by destination chain and must be read from the proxy itself:
+Each callback proxy is configured at deployment and has no defaults, so values vary by destination chain and must be read from the proxy itself:
 
 ```bash
 cast call $CALLBACK_PROXY_ADDR "_gasPriceCoeffPer1000()" --rpc-url $DESTINATION_RPC | cast to-dec
@@ -264,8 +263,7 @@ This returns the system contract for reactive contracts and the callback proxy f
 
 ## Inspecting Callbacks
 
-The system contract records every callback posted to a destination chain,
-indexed by the hash of the reactive transaction that requested it. Because a single reactive transaction can request several callbacks, the call returns an array:
+The system contract records every callback posted to a destination chain, indexed by the hash of the reactive transaction that requested it. Because a single reactive transaction can request several callbacks, the call returns an array:
 
 ```bash
 cast call $SYSTEM_CONTRACT_ADDR "getCallbacks(uint256)((uint256,address,uint256,uint256,uint256,bytes)[])" $REACTIVE_TX_HASH --rpc-url $REACTIVE_RPC
