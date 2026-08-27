@@ -1,18 +1,16 @@
 name: Check build
 on:
-  pull_request:
-    types: [opened, reopened, edited, synchronize]
+  workflow_dispatch:
 jobs:
   docker-build:
     name: Build project
     runs-on: self-hosted
-    # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
     permissions:
       contents: read
       packages: write
       attestations: write
       id-token: write
-  
+
     steps:
       - id: checkout
         name: Checkout

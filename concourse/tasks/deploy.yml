@@ -1,0 +1,19 @@
+---
+platform: linux
+
+inputs:
+  - name: app-git
+
+params:
+  KUBECONFIG_CONTENT: ""
+  KUBERNETES_RESOURCE_NAME: documentation
+  KUBERNETES_NAMESPACE: mainnet
+  INGRESS_DOMAIN: dev.reactive.network
+  INGRESS_CLASS: traefik
+  ENV: mainnet
+
+run:
+  path: bash
+  args:
+    - concourse/scripts/deploy.sh
+  dir: app-git
