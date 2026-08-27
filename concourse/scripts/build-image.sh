@@ -35,9 +35,9 @@ buildctl --addr "${BUILDKIT_HOST}" build \
   --local dockerfile=. \
   --opt platform=linux/amd64 \
   --opt build-arg:BUILDNUM=1 \
-  --opt "build-arg:GOOGLE_TAG=${GOOGLE_TAG:-}" \
-  --opt "build-arg:ALGOLIA_ID=${ALGOLIA_ID:-}" \
-  --opt "build-arg:ALGOLIA_KEY=${ALGOLIA_KEY:-}" \
+  --opt "build-arg:GOOGLE_TAG=${GOOGLE_TAG:-none}" \
+  --opt "build-arg:ALGOLIA_ID=${ALGOLIA_ID:-none}" \
+  --opt "build-arg:ALGOLIA_KEY=${ALGOLIA_KEY:-none}" \
   --import-cache "type=registry,ref=${cache_ref}" \
   --export-cache "type=registry,ref=${cache_ref},mode=max,ignore-error=true" \
   --output "type=image,name=${TAG_IMAGE},push=true" \
