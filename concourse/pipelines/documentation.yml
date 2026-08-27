@@ -60,7 +60,7 @@ resources:
       password: ((ghcr-credentials.password))
 
 serial_groups:
-  - deploy
+  - deploy-documentation
 
 groups:
   - name: meta
@@ -69,7 +69,7 @@ groups:
   - name: ci
     jobs:
       - build-image
-      - deploy
+      - deploy-mainnet-from-build
 
 jobs:
   - name: set-self
@@ -116,14 +116,14 @@ jobs:
           ALGOLIA_ID: ((documentation-build.algolia-id))
           ALGOLIA_KEY: ((documentation-build.algolia-key))
 
-  - name: deploy
-    serial_groups: [deploy]
+  - name: deploy-mainnet-from-build
+    serial_groups: [deploy-documentation]
     plan:
       - in_parallel:
           steps:
             - get: app-git
               passed: [build-image]
-              trigger: true
+              trigger: false
             - get: ci-shared
               passed: [set-self]
             - get: deployer-image
