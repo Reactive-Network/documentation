@@ -1,5 +1,10 @@
 ---
 # documentation — source pipeline (no Slack hooks).
+# Empty defaults so interpolate succeeds without KCM; real values from ((documentation-build.*)) when present.
+documentation-build:
+  google-tag: ""
+  algolia-id: ""
+  algolia-key: ""
 
 resources:
   - name: ci-shared
