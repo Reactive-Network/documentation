@@ -1,0 +1,20 @@
+---
+platform: linux
+
+inputs:
+  - name: app-git
+  - name: ci-shared
+
+params:
+  GHCR_USERNAME: ""
+  GHCR_PASSWORD: ""
+  GOOGLE_TAG: ""
+  ALGOLIA_ID: ""
+  ALGOLIA_KEY: ""
+  CI_SHARED_DIR: ../ci-shared
+
+run:
+  path: bash
+  args:
+    - concourse/scripts/build-image.sh
+  dir: app-git

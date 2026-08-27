@@ -1,0 +1,131 @@
+---
+# documentation — source pipeline (no Slack hooks).
+
+resources:
+  - name: ci-shared
+    type: git
+    icon: github
+    source:
+      uri: https://github.com/Reactive-Network/ci.git
+      branch: master
+      paths:
+        - concourse/
+      username: ((github-access-token.username))
+      password: ((github-access-token.password))
+    check_every: 1m
+
+  - name: app-git
+    type: git
+    icon: github
+    source:
+      uri: https://github.com/Reactive-Network/documentation.git
+      branch: main
+      username: ((github-access-token.username))
+      password: ((github-access-token.password))
+    webhook_token: ((webhook-token-documentation))
+    check_every: 1m
+
+  - name: app-git-concourse
+    type: git
+    icon: github
+    source:
+      uri: https://github.com/Reactive-Network/documentation.git
+      branch: main
+      paths:
+        - concourse/**
+      username: ((github-access-token.username))
+      password: ((github-access-token.password))
+    webhook_token: ((webhook-token-documentation))
+    check_every: 1m
+
+  - name: builder-image
+    type: registry-image
+    source:
+      repository: ghcr.io/reactive-network/ci-image
+      tag: builder-1d296957
+      username: ((ghcr-credentials.username))
+      password: ((ghcr-credentials.password))
+
+  - name: deployer-image
+    type: registry-image
+    source:
+      repository: ghcr.io/reactive-network/ci-image
+      tag: deployer-14da7d57
+      username: ((ghcr-credentials.username))
+      password: ((ghcr-credentials.password))
+
+serial_groups:
+  - deploy
+
+groups:
+  - name: meta
+    jobs:
+      - set-self
+  - name: ci
+    jobs:
+      - build-image
+      - deploy
+
+jobs:
+  - name: set-self
+    plan:
+      - in_parallel:
+          - get: app-git-concourse
+            trigger: true
+          - get: ci-shared
+            trigger: true
+      - task: render-and-validate
+        file: ci-shared/concourse/tasks/render-and-validate.yml
+        input_mapping:
+          pipeline-src: app-git-concourse
+          ci-shared: ci-shared
+        output_mapping:
+          rendered: rendered
+        params:
+          PIPELINE_NAME: documentation
+          PIPELINE_SRC_PATH: pipeline-src/concourse/pipelines/documentation.yml
+          VARS_FILE: pipeline-src/concourse/vars/sample.yml
+          CI_RESOURCE: ci-shared
+      - set_pipeline: self
+        file: rendered/pipeline.yml
+
+  - name: build-image
+    plan:
+      - in_parallel:
+          steps:
+            - get: app-git
+              trigger: true
+            - get: ci-shared
+              passed: [set-self]
+            - get: builder-image
+      - task: build-image
+        image: builder-image
+        file: app-git/concourse/tasks/build-image.yml
+        input_mapping:
+          app-git: app-git
+          ci-shared: ci-shared
+        params:
+          GHCR_USERNAME: ((ghcr-credentials.username))
+          GHCR_PASSWORD: ((ghcr-credentials.password))
+          GOOGLE_TAG: ((documentation-build.google-tag))
+          ALGOLIA_ID: ((documentation-build.algolia-id))
+          ALGOLIA_KEY: ((documentation-build.algolia-key))
+
+  - name: deploy
+    serial_groups: [deploy]
+    plan:
+      - in_parallel:
+          steps:
+            - get: app-git
+              passed: [build-image]
+              trigger: true
+            - get: ci-shared
+              passed: [set-self]
+            - get: deployer-image
+      - task: deploy
+        image: deployer-image
+        file: app-git/concourse/tasks/deploy.yml
+        input_mapping:
+          app-git: app-git
+        params:
+          KUBECONFIG_CONTENT: ((kubeconfig-prq))

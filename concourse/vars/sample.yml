@@ -1,0 +1,22 @@
+# Sample Concourse vars for documentation pipeline validation.
+
+github-access-token:
+  username: git
+  password: CHANGE_ME
+
+ghcr-credentials:
+  username: CHANGE_ME
+  password: CHANGE_ME
+
+kubeconfig-prq:
+  content: CHANGE_ME
+
+webhook-token-documentation: CHANGE_ME
+
+documentation-build:
+  google-tag: CHANGE_ME
+  algolia-id: CHANGE_ME
+  algolia-key: CHANGE_ME
+
+slack-notify:
+  secret: CHANGE_ME
