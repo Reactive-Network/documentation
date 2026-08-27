@@ -1,11 +1,7 @@
 name: "Docs - Build and Deploy"
 
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-
+'on':
+  workflow_dispatch: {}
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
