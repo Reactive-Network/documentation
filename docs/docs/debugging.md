@@ -1,6 +1,6 @@
 ---
 title: Debugging
-sidebar_position: 15
+sidebar_position: 10
 description: The page dedicated to debugging of most frequent errors and issues on Reactive Network.
 slug: /debugging
 hide_title: true
@@ -32,7 +32,7 @@ bytes memory payload = abi.encodeWithSignature(
 emit Callback(chain_id, stop_order, CALLBACK_GAS_LIMIT, payload);
 ```
 
-[More on Callbacks →](events-and-callbacks.md#callbacks-to-destination-chains)
+[More on Callbacks →](reactive-contracts.mdx#requesting-callbacks)
 
 ## Contract Inactive
 
@@ -68,7 +68,7 @@ To check the outstanding debt, query the relevant proxy contract (`0x88888888888
 cast call $PROXY_ADDR "debts(address)" $CONTRACT_ADDR --rpc-url $RPC_URL | cast to-dec
 ```
 
-[More on Reactive Economy →](economy.md)
+[More on Reactive Economy →](economy.mdx)
 
 ## Getting Testnet lREACT
 

@@ -1,10 +1,9 @@
 ---
 title: RNK RPC Methods
-sidebar_position: 11
+sidebar_position: 7
 description: Learn about Reactive Network's custom JSON-RPC methods for querying filters, subscriptions, and block sequences.
 slug: /rnk-rpc-methods
 hide_title: true
-unlisted: true
 ---
 
 ![RNK RPC Methods](./img/rnk-rpc-methods.jpg)
@@ -96,7 +95,7 @@ curl --location 'https://lasna-omni-rpc.rnk.dev/' \
   "jsonrpc": "2.0",
   "method": "rnk_getFilterById",
   "params": [
-    "0xbce1695aafe72c3929c5dacf2a4c1f8d"
+    "0xadb7fbfd0a567716dc6d1a52ec8cfd86"
   ],
   "id": 1
 }' | jq
@@ -157,7 +156,7 @@ curl --location 'https://lasna-omni-rpc.rnk.dev/' \
   "jsonrpc": "2.0",
   "method": "rnk_getBlockSequences",
   "params": [
-    "0x331E09"
+    "0x4702EC"
   ],
   "id": 1
 }' | jq
@@ -180,10 +179,11 @@ Returns an object with the following fields:
   "jsonrpc": "2.0",
   "id": 1,
   "result": {
-    "StateRoot": "0xae228178ffd763ea8f19a796a938ba51ebe32f913ff0c59ce253cb830069d0c1",
-    "FromSeq": 100473548,
-    "ToSeq": 100473550,
-    "FiltersVersion": 716,
+    "StateRoot": "0x932ec31ed84d2f36001a55777024b592670674c9f7f1cea66a494ef1ca745627",
+    "FromSeq": 138210576,
+    "ToSeq": 138210613,
+    "FiltersVersion": 0,
+    "FiltersDigest": "0xaccc05596ea0602947da5a52ec749731345b4f775364ac1181c3b685d7971983",
     "GasUsed": 22715,
     "ReactiveTxCount": 0,
     "Sequences": []

@@ -2,7 +2,7 @@
 sidebar_position: 1
 title: Getting Started
 description: Explore Reactive Network — an automation layer for EVM chains. Build Reactive Contracts — event-driven smart contracts for cross-chain, on-chain automation.
-slug: /
+slug: /legacy/
 hide_title: true
 ---
 
@@ -35,8 +35,6 @@ This makes it possible to build conditional cross-chain workflows such as:
 ## Step 2 — Reactive Essentials
 
 [Reactive Mainnet & Lasna Testnet →](./reactive-mainnet.mdx) Connect to Reactive Mainnet or Lasna Testnet.
-
-[Reactive Library →](./reactive-lib.mdx) Use Reactive abstract contracts and interfaces.
 
 [Events & Callbacks →](./events-and-callbacks.md) Learn how event subscriptions trigger cross-chain callbacks. 
 
