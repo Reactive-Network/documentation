@@ -28,21 +28,23 @@ Local commits may include both pipeline and GHA renames; **do not merge GHA reti
 | Capability | Concourse job | Trigger | Notes |
 |------------|---------------|---------|-------|
 | Build image | `build-image` | auto on push | — |
-| Deploy mainnet | `deploy-mainnet-from-build` | manual (R3) | R10-a; `passed: [build-image]` |
+| Deploy mainnet | `deploy-mainnet-from-build` | auto after `build-image` | R3 exception (07.10.2026); `passed: [build-image]` |
 
 ### Operator commands
 
 | Job | Action |
 |-----|--------|
-| `deploy-mainnet-from-build` | `fly -t ci trigger-job -j documentation/deploy-mainnet-from-build` |
+| `deploy-mainnet-from-build` | runs on its own after each `main` build; manual re-run: `fly -t ci trigger-job -j documentation/deploy-mainnet-from-build` |
 
 ---
 
 ## Production deploy (R10)
 
+Documentation is the agreed exception to R3: production deploys automatically after every successful `build-image` on `main`.
+
 | Env | Job | Trigger | Build chain |
 |-----|-----|---------|-------------|
-| `mainnet` | `deploy-mainnet-from-build` | manual (`trigger: false`) | `passed: [build-image]` |
+| `mainnet` | `deploy-mainnet-from-build` | auto (`trigger: true`) | `passed: [build-image]` |
 
 ### R10-b deferral
 
@@ -55,9 +57,9 @@ Add **`deploy-mainnet-from-tag`** when release capability is added. See [Product
 
 | Legacy workflow | Status |
 |-----------------|--------|
-| `_legacy-ci.yaml` | Retired; `workflow_dispatch` only |
+| `_legacy-ci.yaml`, `_legacy-check.yaml` | Deleted 07.10.2026 |
 
-`check.yaml` is unchanged (local build check only; not prod deploy).
+Production deploys go through Concourse only.
 
 ---
 

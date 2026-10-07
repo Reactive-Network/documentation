@@ -62,15 +62,6 @@ resources:
 serial_groups:
   - deploy-documentation
 
-groups:
-  - name: meta
-    jobs:
-      - set-self
-  - name: ci
-    jobs:
-      - build-image
-      - deploy-mainnet-from-build
-
 jobs:
   - name: set-self
     plan:
@@ -116,6 +107,7 @@ jobs:
           ALGOLIA_ID: ((documentation-build.algolia-id))
           ALGOLIA_KEY: ((documentation-build.algolia-key))
 
+  # Auto deploy to prod on every successful main build (agreed exception to R3, 07.10.2026).
   - name: deploy-mainnet-from-build
     serial_groups: [deploy-documentation]
     plan:
@@ -123,7 +115,7 @@ jobs:
           steps:
             - get: app-git
               passed: [build-image]
-              trigger: false
+              trigger: true
             - get: ci-shared
               passed: [set-self]
             - get: deployer-image
