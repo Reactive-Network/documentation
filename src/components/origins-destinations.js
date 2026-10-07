@@ -164,10 +164,3 @@ const MainnetChainTable = () => {
 };
 
 export default MainnetChainTable;
-
-
-
-
-
-
-
