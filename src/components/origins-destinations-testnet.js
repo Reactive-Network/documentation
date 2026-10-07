@@ -3,15 +3,6 @@ import React from 'react';
 const TestnetChainTable = () => {
     const data = [
         {
-            chain: 'Avalanche Fuji',
-            chainId: 43113,
-            explorer: 'https://43113.testnet.routescan.io',
-            callbackAddress: '',
-            rpcUrl: 'https://chainlist.org/chain/43113',
-            origin: true,
-            destination: false
-        },
-        {
             chain: 'Base Sepolia',
             chainId: 84532,
             explorer: 'https://sepolia.basescan.org',
@@ -19,15 +10,6 @@ const TestnetChainTable = () => {
             rpcUrl: 'https://chainlist.org/chain/84532',
             origin: true,
             destination: true
-        },
-        {
-            chain: 'BSC Testnet',
-            chainId: 97,
-            explorer: 'https://testnet.bscscan.com',
-            callbackAddress: '',
-            rpcUrl: 'https://chainlist.org/chain/97',
-            origin: true,
-            destination: false
         },
         {
             chain: 'Ethereum Sepolia',
@@ -46,15 +28,6 @@ const TestnetChainTable = () => {
             rpcUrl: 'https://lasna-rpc.rnk.dev/',
             origin: true,
             destination: true
-        },
-        {
-            chain: 'Polygon Amoy',
-            chainId: 80002,
-            explorer: 'https://amoy.polygonscan.com',
-            callbackAddress: '',
-            rpcUrl: 'https://chainlist.org/chain/80002',
-            origin: true,
-            destination: false
         },
         {
             chain: 'Unichain Sepolia',
