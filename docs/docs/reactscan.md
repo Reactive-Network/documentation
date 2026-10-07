@@ -17,46 +17,7 @@ Reactscan is a tool that provides developers with an overview of the Reactive Ne
 
 [Lasna Scan (Testnet) →](https://lasna.reactscan.net/)
 
-## My RVM Address
 
-Your contracts and reactive transactions are located in your RVM address section, which should match the deployment address.
-
-[Learn more about ReactVM →](./reactvm.md)
-
-## How to Find Your RVM Address
-
-1. Navigate to the **Latest RVMs** section on the main page.
-2. If your address doesn’t appear there, click the **View All RVMs** link to access the complete list of addresses.
-
-![Img 1](./reactscan-img/1.jpg)
-
-3. Alternatively, use the search bar at the top of the page to locate your RVM address by entering it directly into the search field.
-
-4. For direct access, you can open your RVM page by entering the following URL into your browser: **https://reactscan.net/rvm/ADDRESS**. Replace `ADDRESS` with your unique RVM address.
-
-:::info[Good to Know]
-Clicking the **[watch]** button on your RVM page moves your RVM address to the top of the list in the **Latest RVMs** section. This feature ensures quick and convenient access to your address directly from the main page. With your address pinned at the top, there's no need to manually search or enter it into the search bar — it will always be available.
-:::
-
-![Img 2](./reactscan-img/2.jpg)
-
-![Img 3](./reactscan-img/3.jpg)
-
-## RVM Page for Developers
-
-On your RVM page, you can access a detailed view of the contracts you've deployed and the transactions you've initiated. Additionally, your balance in REACT is displayed for quick reference.
-
-![Img 4](./reactscan-img/4.jpg)
-
-The **Main Transactions** page provides an overview of all transactions, organized into a table with the following columns: **Numb, Hash, Status, Time, Origin, Interacted With, Type,** and **Callbacks.** Here’s a detailed explanation of some key columns:
-
-- **Type**: indicates the nature of the transaction. It can take two values - **DEPLOY** (transaction where a contract was deployed) and **REACT** (a transaction that reacts to an originating transaction).
-
-- **Callbacks**: If a transaction generates callbacks, this column displays the exact number of callbacks triggered. For transactions with no callbacks, it simply shows **N/A**. You can click the transaction hash to open its details and view all associated callbacks.
-
-- **Interacted With**: the contract initiating the transaction.
-
-![Img 5](./reactscan-img/5.jpg)
 
 ### Contract
 
@@ -89,8 +50,6 @@ Next to the transactions section, you can view the **subscriptions** associated 
 - **Criteria**: **Origin Contract**, **topic_0**, **topic_1**, **topic_2**, and **topic_3**.
 
 ![Img 7](./reactscan-img/7.jpg)
-
-[Learn more about Subscriptions →](./subscriptions.md)
 
 ## RVM Transaction
 

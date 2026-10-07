@@ -193,7 +193,7 @@ function _subscribeToCron() internal {
 
 - Cron subscriptions bill on every tick whether or not your `react()` does anything. Pick the longest interval that fits, and build in a way to switch it off, unsubscribing to pause and resubscribing to resume.
 
-- A callback can target Reactive Network itself, with `chainId: block.chainid` and `recipient: address(this)`, which runs work in a fresh transaction rather than inside `react()`. The receiving method still needs the guards described in [Callback Contracts](./callback-contracts.md).
+- A callback can target Reactive Network itself, with `chainId: block.chainid` and `recipient: address(this)`, which runs work in a fresh transaction rather than inside `react()`. The receiving method still needs the guards described in [Callback Contracts](./callback-contracts.mdx).
 
 ## Reacting To Events
 
@@ -308,7 +308,7 @@ event CallbackRequest(
 );
 ```
 
-Writing the contract that receives the callback is covered in [Callback Contracts](./callback-contracts.md).
+Writing the contract that receives the callback is covered in [Callback Contracts](./callback-contracts.mdx).
 
 ## Settling Debt On Demand
 

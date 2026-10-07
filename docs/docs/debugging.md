@@ -32,7 +32,7 @@ bytes memory payload = abi.encodeWithSignature(
 emit Callback(chain_id, stop_order, CALLBACK_GAS_LIMIT, payload);
 ```
 
-[More on Callbacks →](events-and-callbacks.md#callbacks-to-destination-chains)
+[More on Callbacks →](reactive-contracts.mdx#requesting-callbacks)
 
 ## Contract Inactive
 

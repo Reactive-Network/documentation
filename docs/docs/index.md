@@ -119,8 +119,6 @@ The consensus layer moved from Geth+Prism to CometBFT. This is not a new chain: 
 
 [Reactive Mainnet & Lasna Testnet →](./reactive-mainnet.mdx) Connect to Reactive Mainnet or Lasna Testnet.
 
-[Reactive Library →](./reactive-lib.mdx) Use Reactive's abstract contracts and interfaces.
-
 [RNK RPC Methods →](./rnk-rpc-methods.md) Reference RPC methods for Reactive's nodes.
 
 [//]: # (### Step 3 — Reactive Building)

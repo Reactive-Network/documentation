@@ -36,8 +36,6 @@ This makes it possible to build conditional cross-chain workflows such as:
 
 [Reactive Mainnet & Lasna Testnet →](./reactive-mainnet.mdx) Connect to Reactive Mainnet or Lasna Testnet.
 
-[Reactive Library →](./reactive-lib.mdx) Use Reactive abstract contracts and interfaces.
-
 [Events & Callbacks →](./events-and-callbacks.md) Learn how event subscriptions trigger cross-chain callbacks. 
 
 [Subscriptions →](./subscriptions.md) Configure event subscriptions.
