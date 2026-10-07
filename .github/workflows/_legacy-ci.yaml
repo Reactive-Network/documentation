@@ -85,7 +85,7 @@ jobs:
         uses: azure/k8s-set-context@v4
         with:
           method: service-account
-          k8s-url: https://109.235.247.124:6443
+          k8s-url: https://10.0.0.100:6443
           k8s-secret: ${{ secrets.PRQ_SA_KEY }}
 
       - name: "Deploy"
