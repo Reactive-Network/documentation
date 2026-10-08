@@ -51,7 +51,7 @@ Reactive Mainnet is the production network for reactive contracts. Lasna Testnet
 
 ### Reactive Faucet
 
-To obtain testnet REACT (lREACT), send ETH to one of the faucet contracts:
+To obtain testnet lREACT, send SepETH to one of the faucet contracts:
 
 ```json
 Ethereum Sepolia: `0x9b9BB25f1A81078C544C829c5EB7822d747Cf434`
@@ -89,11 +89,11 @@ Amounts above 5 ETH are lost and will not generate additional lREACT.
 You can request lREACT by calling `request(address)` on a faucet contract:
 
 ```bash
-cast send 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434 --rpc-url $ETHEREUM_SEPOLIA_RPC --private-key $ETHEREUM_SEPOLIA_PRIVATE_KEY "request(address)" $CONTRACT_ADDR --value 0.1ether
+cast send 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434 --rpc-url $ETHEREUM_SEPOLIA_RPC --private-key $ETHEREUM_SEPOLIA_PRIVATE_KEY "request(address)" $WALLET_ADDR --value 0.1ether
 ```
 
 ```bash
-cast send 0x2afaFD298b23b62760711756088F75B7409f5967 --rpc-url $BASE_SEPOLIA_RPC --private-key $BASE_SEPOLIA_PRIVATE_KEY "request(address)" $CONTRACT_ADDR --value 0.1ether
+cast send 0x2afaFD298b23b62760711756088F75B7409f5967 --rpc-url $BASE_SEPOLIA_RPC --private-key $BASE_SEPOLIA_PRIVATE_KEY "request(address)" $WALLET_ADDR --value 0.1ether
 ```
 
 ## Lasna Testnet
@@ -101,9 +101,9 @@ cast send 0x2afaFD298b23b62760711756088F75B7409f5967 --rpc-url $BASE_SEPOLIA_RPC
 Network parameters:
 
 * **Network Name:** Reactive Lasna
-* **RPC URL:** https://lasna-omni-rpc.rnk.dev/
+* **RPC URL:** https://lasna-rpc.rnk.dev/
 * **Chain ID:** 5318007
 * **Currency Symbol:** lREACT
-* **Block Explorer:** https://lasna-omni.reactscan.net/
+* **Block Explorer:** https://lasna.reactscan.net/
 
 <LasnaButton />
