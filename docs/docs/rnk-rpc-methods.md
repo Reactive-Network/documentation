@@ -23,7 +23,7 @@ This method does not require any input parameters.
 #### cURL
 
 ```bash
-curl --location 'https://lasna-omni-rpc.rnk.dev/' \
+curl --location 'https://lasna-rpc.rnk.dev/' \
 --header 'Content-Type: application/json' \
 --data '{
   "jsonrpc": "2.0",
@@ -89,7 +89,7 @@ Returns details of a specific event filter by its unique identifier.
 #### cURL
 
 ```bash
-curl --location 'https://lasna-omni-rpc.rnk.dev/' \
+curl --location 'https://lasna-rpc.rnk.dev/' \
 --header 'Content-Type: application/json' \
 --data '{
   "jsonrpc": "2.0",
@@ -150,7 +150,7 @@ Returns the reactive transaction sequences processed in a given Reactive Network
 #### cURL
 
 ```bash
-curl --location 'https://lasna-omni-rpc.rnk.dev/' \
+curl --location 'https://lasna-rpc.rnk.dev/' \
 --header 'Content-Type: application/json' \
 --data '{
   "jsonrpc": "2.0",
