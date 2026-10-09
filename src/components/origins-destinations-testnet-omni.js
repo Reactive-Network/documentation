@@ -6,7 +6,7 @@ const TestnetChainTable = () => {
             chain: 'Base Sepolia',
             chainId: 84532,
             explorer: 'https://sepolia.basescan.org',
-            callbackAddress: '0xa6eA49Ed671B8a4dfCDd34E36b7a75Ac79B8A5a6',
+            callbackAddress: '0x476F44b11F5C942c58f4c8E3d0300E5710743585',
             rpcUrl: 'https://chainlist.org/chain/84532',
             origin: true,
             destination: true
@@ -15,7 +15,7 @@ const TestnetChainTable = () => {
             chain: 'Ethereum Sepolia',
             chainId: 11155111,
             explorer: 'https://sepolia.etherscan.io',
-            callbackAddress: '0xc9f36411C9897e7F959D99ffca2a0Ba7ee0D7bDA',
+            callbackAddress: '0xAa14d9Cd0f788Ca23d11805986C1d8bd035D23b4',
             rpcUrl: 'https://chainlist.org/chain/11155111',
             origin: true,
             destination: true
@@ -24,7 +24,7 @@ const TestnetChainTable = () => {
             chain: 'Reactive Lasna',
             chainId: 5318007,
             explorer: 'https://lasna.reactscan.net',
-            callbackAddress: '0x0000000000000000000000000000000000fffFfF',
+            callbackAddress: '0x8888888888888888888888888888888888888888',
             rpcUrl: 'https://lasna-rpc.rnk.dev/',
             origin: true,
             destination: true
@@ -33,7 +33,7 @@ const TestnetChainTable = () => {
             chain: 'Unichain Sepolia',
             chainId: 1301,
             explorer: 'https://sepolia.uniscan.xyz',
-            callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
+            callbackAddress: '0x775c9B990ADe401060B78D0e98684eEf8d2466C1',
             rpcUrl: 'https://chainlist.org/chain/1301',
             origin: true,
             destination: true
