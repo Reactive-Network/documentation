@@ -4,11 +4,10 @@ sidebar_position: 2
 description: Learn how reactive contracts subscribe to event logs on origin chains and send callback transactions to destination chains.
 slug: /origins-and-destinations
 hide_title: true
-unlisted: true
 ---
 
-import MainnetChainTable from "../../src/components/origins-destinations";
-import TestnetChainTable from "../../src/components/origins-destinations-testnet";
+import MainnetChainTable from "../../src/components/origins-destinations-omni";
+import TestnetChainTable from "../../src/components/origins-destinations-testnet-omni";
 
 ![Origins & Destinations Image](./img/origins-and-destinations.jpg)
 
@@ -44,9 +43,3 @@ Origin is the chain where events originate (and are read from). Destination is t
 <TestnetChainTable />
 
 [//]: # (emojis for status ✅ ➖ ⌛)
-
-[//]: # (:::info[Callbacks])
-
-[//]: # (Not all origin chains are compatible as destination chains. Please refer to the table below before implementing callbacks.)
-
-[//]: # (:::)

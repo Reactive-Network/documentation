@@ -15,7 +15,7 @@ const MainnetChainTable = () => {
             chain: 'Arbitrum',
             chainId: 42161,
             explorer: 'https://www.arbiscan.io/',
-            callbackAddress: '0x4730c58FDA9d78f60c987039aEaB7d261aAd942E',
+            callbackAddress: '⌛',
             rpcUrl: 'https://chainlist.org/chain/42161',
             origin: true,
             destination: true
@@ -24,7 +24,7 @@ const MainnetChainTable = () => {
             chain: 'Avalanche',
             chainId: 43114,
             explorer: 'https://avascan.info/',
-            callbackAddress: '0x934Ea75496562D4e83E80865c33dbA600644fCDa',
+            callbackAddress: '⌛',
             rpcUrl: 'https://chainlist.org/chain/43114',
             origin: true,
             destination: true
@@ -33,7 +33,7 @@ const MainnetChainTable = () => {
             chain: 'Base',
             chainId: 8453,
             explorer: 'https://basescan.org/',
-            callbackAddress: '0x0D3E76De6bC44309083cAAFdB49A088B8a250947',
+            callbackAddress: '⌛',
             rpcUrl: 'https://chainlist.org/chain/8453',
             origin: true,
             destination: true
@@ -42,7 +42,7 @@ const MainnetChainTable = () => {
             chain: 'BSC',
             chainId: 56,
             explorer: 'https://bscscan.com/',
-            callbackAddress: '0xdb81A196A0dF9Ef974C9430495a09B6d535fAc48',
+            callbackAddress: '⌛',
             rpcUrl: 'https://chainlist.org/chain/56',
             origin: true,
             destination: true
@@ -51,7 +51,7 @@ const MainnetChainTable = () => {
             chain: 'Ethereum',
             chainId: 1,
             explorer: 'https://etherscan.io/',
-            callbackAddress: '0x1D5267C1bb7D8bA68964dDF3990601BDB7902D76',
+            callbackAddress: '⌛',
             rpcUrl: 'https://chainlist.org/chain/1',
             origin: true,
             destination: true
@@ -60,7 +60,7 @@ const MainnetChainTable = () => {
             chain: 'HyperEVM',
             chainId: 999,
             explorer: 'https://hyperevmscan.io/',
-            callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
+            callbackAddress: '⌛',
             rpcUrl: 'https://chainlist.org/chain/999',
             origin: true,
             destination: true
@@ -87,7 +87,7 @@ const MainnetChainTable = () => {
             chain: 'Reactive',
             chainId: 1597,
             explorer: 'https://reactscan.net',
-            callbackAddress: '0x0000000000000000000000000000000000fffFfF',
+            callbackAddress: '0x8888888888888888888888888888888888888888',
             rpcUrl: 'https://mainnet-rpc.rnk.dev/',
             origin: true,
             destination: true
@@ -105,7 +105,7 @@ const MainnetChainTable = () => {
             chain: 'Robinhood',
             chainId: 4663,
             explorer: 'https://robinhoodchain.blockscout.com/',
-            callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
+            callbackAddress: '⌛',
             rpcUrl: 'https://chainlist.org/chain/4663',
             origin: true,
             destination: true
@@ -114,7 +114,7 @@ const MainnetChainTable = () => {
             chain: 'Unichain',
             chainId: 130,
             explorer: 'https://uniscan.xyz/',
-            callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
+            callbackAddress: '⌛',
             rpcUrl: 'https://chainlist.org/chain/130',
             origin: true,
             destination: true
