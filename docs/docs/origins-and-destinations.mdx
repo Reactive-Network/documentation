@@ -4,11 +4,10 @@ sidebar_position: 2
 description: Learn how reactive contracts subscribe to event logs on origin chains and send callback transactions to destination chains.
 slug: /origins-and-destinations
 hide_title: true
-unlisted: true
 ---
 
-import MainnetChainTable from "../../src/components/origins-destinations";
-import TestnetChainTable from "../../src/components/origins-destinations-testnet";
+import MainnetChainTable from "../../src/components/origins-destinations-omni";
+import TestnetChainTable from "../../src/components/origins-destinations-testnet-omni";
 
 ![Origins & Destinations Image](./img/origins-and-destinations.jpg)
 
@@ -27,13 +26,17 @@ Callbacks are delivered by Reactive Signer, which posts transactions to destinat
 
 A destination contract can validate a callback by checking that `msg.sender` is the relevant callback proxy and the original sender from Reactive Network is Reactive Signer.
 
-## Mainnet Chains
+[//]: # (## Mainnet Chains)
 
-:::info[Origin/Destination]
-Origin is the chain where events originate (and are read from). Destination is the chain where callbacks are delivered in response to those events. Mainnets and testnets must not be mixed: if the origin is a mainnet, the destination must also be a mainnet.
-:::
+[//]: # ()
+[//]: # (:::info[Origin/Destination])
 
-<MainnetChainTable />
+[//]: # (Origin is the chain where events originate &#40;and are read from&#41;. Destination is the chain where callbacks are delivered in response to those events. Mainnets and testnets must not be mixed: if the origin is a mainnet, the destination must also be a mainnet.)
+
+[//]: # (:::)
+
+[//]: # ()
+[//]: # (<MainnetChainTable />)
 
 ## Testnet Chains
 
