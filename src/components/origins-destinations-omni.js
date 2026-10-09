@@ -15,7 +15,7 @@ const MainnetChainTable = () => {
             chain: 'Arbitrum',
             chainId: 42161,
             explorer: 'https://www.arbiscan.io/',
-            callbackAddress: '',
+            callbackAddress: '⌛',
             rpcUrl: 'https://chainlist.org/chain/42161',
             origin: true,
             destination: true
@@ -24,7 +24,7 @@ const MainnetChainTable = () => {
             chain: 'Avalanche',
             chainId: 43114,
             explorer: 'https://avascan.info/',
-            callbackAddress: '',
+            callbackAddress: '⌛',
             rpcUrl: 'https://chainlist.org/chain/43114',
             origin: true,
             destination: true
@@ -33,7 +33,7 @@ const MainnetChainTable = () => {
             chain: 'Base',
             chainId: 8453,
             explorer: 'https://basescan.org/',
-            callbackAddress: '',
+            callbackAddress: '⌛',
             rpcUrl: 'https://chainlist.org/chain/8453',
             origin: true,
             destination: true
@@ -42,7 +42,7 @@ const MainnetChainTable = () => {
             chain: 'BSC',
             chainId: 56,
             explorer: 'https://bscscan.com/',
-            callbackAddress: '',
+            callbackAddress: '⌛',
             rpcUrl: 'https://chainlist.org/chain/56',
             origin: true,
             destination: true
@@ -51,7 +51,7 @@ const MainnetChainTable = () => {
             chain: 'Ethereum',
             chainId: 1,
             explorer: 'https://etherscan.io/',
-            callbackAddress: '',
+            callbackAddress: '⌛',
             rpcUrl: 'https://chainlist.org/chain/1',
             origin: true,
             destination: true
@@ -60,7 +60,7 @@ const MainnetChainTable = () => {
             chain: 'HyperEVM',
             chainId: 999,
             explorer: 'https://hyperevmscan.io/',
-            callbackAddress: '',
+            callbackAddress: '⌛',
             rpcUrl: 'https://chainlist.org/chain/999',
             origin: true,
             destination: true
@@ -105,7 +105,7 @@ const MainnetChainTable = () => {
             chain: 'Robinhood',
             chainId: 4663,
             explorer: 'https://robinhoodchain.blockscout.com/',
-            callbackAddress: '',
+            callbackAddress: '⌛',
             rpcUrl: 'https://chainlist.org/chain/4663',
             origin: true,
             destination: true
@@ -114,7 +114,7 @@ const MainnetChainTable = () => {
             chain: 'Unichain',
             chainId: 130,
             explorer: 'https://uniscan.xyz/',
-            callbackAddress: '',
+            callbackAddress: '⌛',
             rpcUrl: 'https://chainlist.org/chain/130',
             origin: true,
             destination: true
