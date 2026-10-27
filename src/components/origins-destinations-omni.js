@@ -2,20 +2,11 @@ import React from 'react';
 
 const MainnetChainTable = () => {
     const data = [
-        // {
-        //     chain: 'Abstract',
-        //     chainId: 2741,
-        //     explorer: 'https://abscan.org/',
-        //     callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
-        //     rpcUrl: 'https://chainlist.org/chain/2741',
-        //     origin: true,
-        //     destination: true
-        // },
         {
             chain: 'Arbitrum',
             chainId: 42161,
             explorer: 'https://www.arbiscan.io/',
-            callbackAddress: '⌛',
+            callbackAddress: '0xaee8d2deBaB5bE353bfec167C58a549923892e11',
             rpcUrl: 'https://chainlist.org/chain/42161',
             origin: true,
             destination: true
@@ -24,7 +15,7 @@ const MainnetChainTable = () => {
             chain: 'Avalanche',
             chainId: 43114,
             explorer: 'https://avascan.info/',
-            callbackAddress: '⌛',
+            callbackAddress: '0x8bdfC7e564B90b31c49Cf1079d4c44400F4e14B4',
             rpcUrl: 'https://chainlist.org/chain/43114',
             origin: true,
             destination: true
@@ -33,7 +24,7 @@ const MainnetChainTable = () => {
             chain: 'Base',
             chainId: 8453,
             explorer: 'https://basescan.org/',
-            callbackAddress: '⌛',
+            callbackAddress: '0xCc780DdE33f56f55dE778D42c930959374a4a068',
             rpcUrl: 'https://chainlist.org/chain/8453',
             origin: true,
             destination: true
@@ -42,7 +33,7 @@ const MainnetChainTable = () => {
             chain: 'BSC',
             chainId: 56,
             explorer: 'https://bscscan.com/',
-            callbackAddress: '⌛',
+            callbackAddress: '0xfc41eE9d3A836b41399BEcce83b06B3e5650f3BB',
             rpcUrl: 'https://chainlist.org/chain/56',
             origin: true,
             destination: true
@@ -51,7 +42,7 @@ const MainnetChainTable = () => {
             chain: 'Ethereum',
             chainId: 1,
             explorer: 'https://etherscan.io/',
-            callbackAddress: '⌛',
+            callbackAddress: '0xFCE1F192F489c988392aBC16E91e359d540d94Fe',
             rpcUrl: 'https://chainlist.org/chain/1',
             origin: true,
             destination: true
@@ -60,29 +51,11 @@ const MainnetChainTable = () => {
             chain: 'HyperEVM',
             chainId: 999,
             explorer: 'https://hyperevmscan.io/',
-            callbackAddress: '⌛',
+            callbackAddress: '0x754120EC7a6eF81E4c5c835AA603C63Da64693E6',
             rpcUrl: 'https://chainlist.org/chain/999',
             origin: true,
             destination: true
         },
-        // {
-        //     chain: 'Linea',
-        //     chainId: 59144,
-        //     explorer: 'https://lineascan.build/',
-        //     callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
-        //     rpcUrl: 'https://chainlist.org/chain/59144',
-        //     origin: true,
-        //     destination: true
-        // },
-        // {
-        //     chain: 'Plasma',
-        //     chainId: 9745,
-        //     explorer: 'https://plasmascan.to/',
-        //     callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
-        //     rpcUrl: 'https://chainlist.org/chain/9745',
-        //     origin: true,
-        //     destination: true
-        // },
         {
             chain: 'Reactive',
             chainId: 1597,
@@ -92,20 +65,11 @@ const MainnetChainTable = () => {
             origin: true,
             destination: true
         },
-        // {
-        //     chain: 'Sonic',
-        //     chainId: 146,
-        //     explorer: 'https://sonicscan.org/',
-        //     callbackAddress: '0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4',
-        //     rpcUrl: 'https://chainlist.org/chain/146',
-        //     origin: true,
-        //     destination: true
-        // },
         {
             chain: 'Robinhood',
             chainId: 4663,
             explorer: 'https://robinhoodchain.blockscout.com/',
-            callbackAddress: '⌛',
+            callbackAddress: '0x476F44b11F5C942c58f4c8E3d0300E5710743585',
             rpcUrl: 'https://chainlist.org/chain/4663',
             origin: true,
             destination: true
@@ -114,7 +78,7 @@ const MainnetChainTable = () => {
             chain: 'Unichain',
             chainId: 130,
             explorer: 'https://uniscan.xyz/',
-            callbackAddress: '⌛',
+            callbackAddress: '0x754120EC7a6eF81E4c5c835AA603C63Da64693E6',
             rpcUrl: 'https://chainlist.org/chain/130',
             origin: true,
             destination: true
