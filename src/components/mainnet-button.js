@@ -7,7 +7,7 @@ const checkWallet = async () => {
         const chainId = await window.ethereum.request({ method: 'eth_chainId' });
 
         if (chainId === CHAIN_ID) {
-            alert('Already connected to Kopli Testnet.');
+            alert('Already connected to Reactive Mainnet.');
         }
         return true;
     } else {
