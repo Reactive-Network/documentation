@@ -139,6 +139,91 @@ Returns a filter object with the following fields:
 }
 ```
 
+## rnk_getCallBackLogs
+
+Returns the callbacks emitted in a given Reactive Network block. Each entry pairs the reactive transaction with the callback logs it produced.
+
+#### Parameters
+
+1. **blockNumber**: `uint64` — The block number as a decimal integer (not hex, not quoted).
+
+#### cURL
+
+```bash
+curl --location 'https://lasna-rpc.rnk.dev/' \
+--header 'Content-Type: application/json' \
+--data '{
+  "jsonrpc": "2.0",
+  "method": "rnk_getCallBackLogs",
+  "params": [
+    7973280
+  ],
+  "id": 1
+}' | jq
+```
+
+#### Response
+
+Returns an array of objects, one per reactive transaction that emitted callbacks. Each object contains:
+
+- **migrationProxy** (`object`): The mapping between the legacy RVM address and the contract's address on Reactive Network:
+  - **RvmId** (`string`): The legacy RVM address.
+  - **RnkContract** (`string`): The contract's address on Reactive Network.
+- **trx** (`object`): The reactive transaction, in the standard Ethereum transaction format.
+- **logs** (`array[object]`): The callback logs emitted by the transaction, in the standard Ethereum log format. For each log, `topic_1` is the destination chain ID, `topic_2` is the destination contract address, and `topic_3` is the callback gas limit.
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": [
+    {
+      "migrationProxy": {
+        "RvmId": "0x1234e8c7f3176c2f18dde6df178f13de006e20e8",
+        "RnkContract": "0x740c2b88cdbb84b67914b37562b8733174b76d04"
+      },
+      "trx": {
+        "type": "0x2",
+        "chainId": "0x512577",
+        "nonce": "0x29a481",
+        "to": "0x0000000000000000000000000000000000ffffff",
+        "gas": "0xdbba0",
+        "gasPrice": null,
+        "maxPriorityFeePerGas": "0x174876e800",
+        "maxFeePerGas": "0x174876e800",
+        "value": "0x0",
+        "input": "0xcebbda8d...",
+        "accessList": [],
+        "v": "0x1",
+        "r": "0x3324b111e6cd273256d2fad3b67f35be04b15a45b1890cc83bc434a9d09be884",
+        "s": "0x59f12a5207eec7883ff09619de698220e87288ef0b0e1a8cbe5c50d4c55e688e",
+        "yParity": "0x1",
+        "hash": "0x6dacb1e252ccd5d556ce62e90770bcd8c6a923430a8aed4b1b710b8f17208137"
+      },
+      "logs": [
+        {
+          "address": "0x000c008800bb84b67900007562b8730074006d00",
+          "topics": [
+            "0x8dd725fa9d6cd150017ab9e60318d40616439424e2fade9c1c58854950917dfc",
+            "0x0000000000000000000000000000000000000000000000000000000000aa36a7",
+            "0x000000000000000000000000514b8e8b4d9032f7f90afe851c08a8bf92f8f545",
+            "0x00000000000000000000000000000000000000000000000000000000001312d0"
+          ],
+          "data": "0x0000000000000000000000000000000000000000000000000000000000000020...",
+          "blockNumber": "0x79a9a0",
+          "transactionHash": "0x6dacb1e252ccd5d556ce62e90770bcd8c6a923430a8aed4b1b710b8f17208137",
+          "transactionIndex": "0x1",
+          "blockHash": "0x32f49087c4e6ce00e5c8079ec9e7554c3f7fbb24c7c582c63bb008dab46e5b01",
+          "blockTimestamp": "0x0",
+          "logIndex": "0x3",
+          "removed": false
+        }
+      ]
+    }
+  ]
+}
+```
+
 ## rnk_getBlockSequences
 
 Returns the reactive transaction sequences processed in a given Reactive Network block. Each sequence represents a batch of reactive transactions triggered by origin-chain events.
@@ -187,6 +272,47 @@ Returns an object with the following fields:
     "GasUsed": 22715,
     "ReactiveTxCount": 0,
     "Sequences": []
+  }
+}
+```
+
+## rnk_getCommittedSequenceFrontier
+
+Returns the latest committed block height and its reactive transaction sequence range. The result is a subset of the data returned by [rnk_getBlockSequences](#rnk_getblocksequences).
+
+#### Parameters
+
+This method does not require any input parameters.
+
+#### cURL
+
+```bash
+curl --location 'https://lasna-rpc.rnk.dev/' \
+--header 'Content-Type: application/json' \
+--data '{
+  "jsonrpc": "2.0",
+  "method": "rnk_getCommittedSequenceFrontier",
+  "params": [],
+  "id": 1
+}' | jq
+```
+
+#### Response
+
+Returns an object with the following fields:
+
+- **height** (`string`): The hex-encoded number of the latest committed block.
+- **fromSeq** (`string`): The hex-encoded starting sequence number in that block.
+- **toSeq** (`string`): The hex-encoded ending sequence number in that block.
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "height": "0x79b121",
+    "fromSeq": "0xa4ac570",
+    "toSeq": "0xa4ac575"
   }
 }
 ```
