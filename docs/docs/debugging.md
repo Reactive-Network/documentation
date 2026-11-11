@@ -70,6 +70,30 @@ cast call $PROXY_ADDR "debts(address)" $CONTRACT_ADDR --rpc-url $RPC_URL | cast 
 
 [More on Reactive Economy →](economy.mdx)
 
+## Callbacks Silently Not Delivered
+
+A contract can request a callback that is never dispatched, with no error on any chain. The signature: `react()` clearly ran — its events are visible on Reactive and the reactive transaction shows the callback being placed — yet nothing ever arrives on the destination chain.
+
+The usual cause is debt that accrued while the triggering logs were still being processed. Every matched log is delivered and billed as its own reactive transaction, so a burst of matching logs charges the contract back to back. Once the burst exhausts reserves and balance, the network stops serving the contract — including delivery of the callback that the same burst requested. The contract goes quiet rather than failing loudly, and the missing callback is the only symptom. Reactscan shows the contract as inactive (see [Contract Inactive](#contract-inactive)), but nothing reverts anywhere.
+
+Confirm the diagnosis by querying the debt; anything greater than zero blocks execution:
+
+```bash
+cast call $SYSTEM_CONTRACT_ADDR "debt(address)" $REACTIVE_CONTRACT_ADDR --rpc-url $REACTIVE_RPC | cast to-dec
+```
+
+Then check whether a delivery was ever recorded for the reactive transaction that placed the callback. Records are written only after delivery, so an empty array means no delivery has happened — allow some time before concluding the callback was dropped:
+
+```bash
+cast call $SYSTEM_CONTRACT_ADDR "getCallbacks(uint256)((uint256,address,uint256,uint256,uint256,bytes)[])" $REACTIVE_TX_HASH --rpc-url $REACTIVE_RPC
+```
+
+To recover, settle the debt with `depositTo()` and re-trigger the source event if the missed callback still matters. To prevent a recurrence, size the float for the worst-case number of matching logs a single origin transaction can produce — see [Sizing the Float](economy.mdx#sizing-the-float).
+
+A worked example from a live deployment: a monitoring contract on Reactive Lasna (November 2026) funded with 0.3 REACT was hit by a deliberately triggered 60-log event storm, which exhausted the float mid-flight, put the contract in debt, and left its requested pause callback undelivered — while the same flow, redeployed with a storm-sized float, delivered in seconds. The full postmortem with transaction hashes is in the [reactive-vault-guard](https://github.com/AlexLavoie42/reactive-vault-guard) repository.
+
+[More on Reactive Economy →](economy.mdx)
+
 ## Getting Testnet lREACT
 
 ### Reactive Faucet

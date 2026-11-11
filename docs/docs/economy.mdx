@@ -107,6 +107,22 @@ Before invoking a callback recipient, the callback proxy sets aside gas for its 
 
 Funds can go to one of two places. `depositTo()` credits reserves held by the system contract, which are spent automatically before any debt accrues. A transfer to the contract raises the contract's own balance, which the contract hands over when charged. Reserves can only ever be spent on fees, while a balance stays under the contract's control.
 
+### Sizing the Float
+
+How much to fund matters as much as where. Every log that matches a subscription is delivered as its own reactive transaction, and each one is charged separately, so cost scales with the number of matched logs rather than with the number of user actions on the origin chain. The fee formula above prices one such transaction.
+
+The case that catches developers is a burst. A single origin transaction can emit many matching logs — an exploit loop, an airdrop sweep, a liquidation cascade — and each becomes a reactive transaction billed back to back. If the burst exhausts reserves and balance mid-storm, the contract accrues debt and execution stops while the storm is still being processed, so a callback requested during that same storm is never delivered. Nothing fails loudly anywhere; the callback simply never appears on the destination chain.
+
+Size from the filter's worst case, not the happy path:
+
+$$
+float \geq c_{log} \cdot N_{storm} \cdot m
+$$
+
+Where $$c_{log}$$ is the observed charge per reactive transaction for your contract, $$N_{storm}$$ is the largest number of matching logs one origin transaction can produce, and $$m$$ is a safety margin. Measure $$c_{log}$$ by triggering a small batch of matching logs and dividing the total charge by the count.
+
+For a sense of scale, measured on Reactive Lasna in November 2026 while operating a deployed monitoring contract: a charge of roughly 0.016 REACT per reactive transaction, and an 8-log event storm billed ≈ 0.13 REACT. An earlier deployment of the same contract carried a 0.3 REACT float, and a deliberately triggered 60-log storm exhausted it mid-flight — the contract went into debt, and the callback the storm had requested was never delivered. Redeployed with the float sized for the storm, the same flow delivered its callback within seconds. A margin of 10× the expected worst-case storm cost is a reasonable starting rule, all the more so because a reverting `react()` is charged in full (see [Fee Model](#fee-model)).
+
 ### Deposit to Reserves via the System Contract
 
 `depositTo()` credits any contract from the caller's own funds. It settles outstanding debt first, then adds the remainder to reserves. The caller pays the transaction fee.
